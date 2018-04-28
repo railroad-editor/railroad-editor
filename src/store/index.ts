@@ -9,14 +9,14 @@ export function configureStore(initialState?: RootState) {
   let store
   if (process.env.NODE_ENV === 'development') {
     store = createStore(rootReducer, initialState, compose(
+      persistState('tools'),    // これが先でないとうまく動かない
       devToolsEnhancer({
         actionsBlacklist: [BUILDER_SET_MOUSE_POSITION, BUILDER_SET_MARKER_POSITION, BUILDER_SET_TEMPORARY_RAIL]
       }),
-      persistState()
     ))
   } else {
     store = createStore(rootReducer, initialState, compose(
-      persistState()
+      persistState('tools')
     ))
   }
 

@@ -7577,7 +7577,7 @@ react-material-ui-form-validator@next:
 
 "react-paper-bindings@https://github.com/kota65535/react-paper-bindings.dist#master":
   version "1.0.0"
-  resolved "https://github.com/kota65535/react-paper-bindings.dist#99ffe9d9d6940b6d11011d635c0c9f268ca60926"
+  resolved "https://github.com/kota65535/react-paper-bindings.dist#e4c7109e40cd69bed92379ddeaa5ba5308a311c1"
 
 react-popper@^0.8.0:
   version "0.8.3"
