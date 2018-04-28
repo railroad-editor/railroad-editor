@@ -1,0 +1,19 @@
+{
+	"ProjectName": "railroad-editor",
+	"ProjectPath": "/Users/tozawa/Projects/railroad-editor",
+	"InitializationTime": "2018-04-29-01-10-37",
+	"LastConfigurationTime": "2018-04-29-01-09-42",
+	"LastNPMInstallTime": "",
+	"FrontendLastBuildTime": "2018-04-29-02-19-17",
+	"LastPublishTime": "2018-04-29-02-19-20",
+	"BackendLastSyncTime": "2018-04-29-02-21-09",
+	"BackendLastBuildTime": "",
+	"BackendLastPushTime": "",
+	"BackendProjectID": "afb78a90-fb33-4b35-aabb-2be1304f8015",
+	"BackendProjectName": "railroad-editor",
+	"BackendProjectConsoleUrl": "https://console.aws.amazon.com/mobilehub/home#/afb78a90-fb33-4b35-aabb-2be1304f8015/build",
+	"BackendProjectCreationTime": "2018-04-28T08:32:11.825Z",
+	"BackendProjectLastUpdatedTime": "2018-04-28T17:01:00.933Z",
+	"Framework": "react",
+	"BackendLastSyncToDevTime": "2018-04-29-02-24-47"
+}

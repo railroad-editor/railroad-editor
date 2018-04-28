@@ -1,0 +1,272 @@
+{
+	"name": "railroad-editor",
+	"projectId": "afb78a90-fb33-4b35-aabb-2be1304f8015",
+	"region": "ap-northeast-1",
+	"state": "NORMAL",
+	"createdDate": "2018-04-28T08:32:11.825Z",
+	"lastUpdatedDate": "2018-04-28T17:01:00.933Z",
+	"consoleUrl": "https://console.aws.amazon.com/mobilehub/home#/afb78a90-fb33-4b35-aabb-2be1304f8015/build",
+	"resources": [
+		{
+			"type": "AWS::S3::Bucket",
+			"name": "railroadeditor-userfiles-mobilehub-69379349",
+			"arn": null,
+			"feature": "user-data",
+			"attributes": {
+				"lastUpdateRequestID": "b4439e71-4b05-11e8-b53e-3bd2e92b4ba0",
+				"region": "ap-northeast-1",
+				"s3-bucket-console-url": "https://s3.console.aws.amazon.com/s3/buckets/railroadeditor-userfiles-mobilehub-69379349"
+			}
+		},
+		{
+			"type": "AWS::IAM::Policy",
+			"name": "railroadeditor_userfiles_MOBILEHUB_69379349",
+			"arn": null,
+			"feature": "user-data",
+			"attributes": {
+				"authType": "authenticated",
+				"lastUpdateRequestID": "b4439e71-4b05-11e8-b53e-3bd2e92b4ba0",
+				"role": "railroadeditor_auth_MOBILEHUB_69379349"
+			}
+		},
+		{
+			"type": "AWS::IAM::Policy",
+			"name": "railroadeditor_userfiles_MOBILEHUB_69379349",
+			"arn": null,
+			"feature": "user-data",
+			"attributes": {
+				"authType": "unauthenticated",
+				"lastUpdateRequestID": "b4439e71-4b05-11e8-b53e-3bd2e92b4ba0",
+				"role": "railroadeditor_unauth_MOBILEHUB_69379349"
+			}
+		},
+		{
+			"type": "AWS::Cognito::IdentityPool",
+			"name": "railroadeditor_MOBILEHUB_69379349",
+			"arn": "ap-northeast-1:047463f2-70ee-4de1-925c-f75f46ae67a8",
+			"feature": "user-signin",
+			"attributes": {
+				"lastUpdateRequestID": "8bc1ebad-4ac3-11e8-a08d-450774c10c61",
+				"poolid": "ap-northeast-1:047463f2-70ee-4de1-925c-f75f46ae67a8",
+				"roleARNs": "arn:aws:iam::561678142736:role/railroadeditor_auth_MOBILEHUB_69379349,arn:aws:iam::561678142736:role/railroadeditor_unauth_MOBILEHUB_69379349"
+			}
+		},
+		{
+			"type": "AWS::IAM::Role",
+			"name": "railroadeditor_smsverification_MOBILEHUB_69379349",
+			"arn": "arn:aws:iam::561678142736:role/service-role/railroadeditor_smsverification_MOBILEHUB_69379349",
+			"feature": "user-signin",
+			"attributes": {
+				"lastUpdateRequestID": "8bc1ebad-4ac3-11e8-a08d-450774c10c61",
+				"user-pools-role-key": "user-pools-execution-role"
+			}
+		},
+		{
+			"type": "AWS::Cognito::UserPool",
+			"name": "railroad-editor",
+			"arn": "ap-northeast-1_SW4VnlrmO",
+			"feature": "user-signin",
+			"attributes": {
+				"lastUpdateRequestID": "8bc1ebad-4ac3-11e8-a08d-450774c10c61",
+				"region": "ap-northeast-1",
+				"user-pool-id": "ap-northeast-1_SW4VnlrmO",
+				"user-pools-client-id": "260r8fbm1jsol78gq3k1rs3f",
+				"user-pools-client-secret": "1ei14473pdfkbhp1br2p4i2gmpsjhr6gp9eaehb1ti73vdcgmdcg",
+				"user-pools-id": "ap-northeast-1_SW4VnlrmO",
+				"user-pools-web-client-id": "6dedi9vc5b14dijcfeomuhfdav"
+			}
+		},
+		{
+			"type": "AWS::IAM::Role",
+			"name": "railroadeditor_auth_MOBILEHUB_69379349",
+			"arn": "arn:aws:iam::561678142736:role/railroadeditor_auth_MOBILEHUB_69379349",
+			"feature": "user-signin",
+			"attributes": {
+				"authType": "authenticated",
+				"lastUpdateRequestID": "8bc1ebad-4ac3-11e8-a08d-450774c10c61"
+			}
+		},
+		{
+			"type": "AWS::IAM::Role",
+			"name": "railroadeditor_unauth_MOBILEHUB_69379349",
+			"arn": "arn:aws:iam::561678142736:role/railroadeditor_unauth_MOBILEHUB_69379349",
+			"feature": "user-signin",
+			"attributes": {
+				"authType": "unauthenticated",
+				"lastUpdateRequestID": "a5ca736f-4abe-11e8-9ef7-7f90d812f133"
+			}
+		},
+		{
+			"type": "AWS::Pinpoint::AnalyticsApplication",
+			"name": "railroadeditor_MobileHub",
+			"arn": "989b8b385f0147ee9c77e34caac43e50",
+			"feature": "analytics",
+			"attributes": {
+				"lastUpdateRequestID": "a5ca736f-4abe-11e8-9ef7-7f90d812f133"
+			}
+		},
+		{
+			"type": "AWS::IAM::Policy",
+			"name": "railroadeditor_mobileanalytics_MOBILEHUB_69379349",
+			"arn": null,
+			"feature": "analytics",
+			"attributes": {
+				"authType": "authenticated",
+				"lastUpdateRequestID": "8bc1ebad-4ac3-11e8-a08d-450774c10c61",
+				"role": "railroadeditor_auth_MOBILEHUB_69379349"
+			}
+		},
+		{
+			"type": "AWS::IAM::Policy",
+			"name": "railroadeditor_mobileanalytics_MOBILEHUB_69379349",
+			"arn": null,
+			"feature": "analytics",
+			"attributes": {
+				"authType": "unauthenticated",
+				"lastUpdateRequestID": "8bc1ebad-4ac3-11e8-a08d-450774c10c61",
+				"role": "railroadeditor_unauth_MOBILEHUB_69379349"
+			}
+		},
+		{
+			"type": "AWS::S3::Bucket",
+			"name": "railroadeditor-hosting-mobilehub-69379349",
+			"arn": null,
+			"feature": "hosting",
+			"attributes": {
+				"lastUpdateRequestID": "a5ca736f-4abe-11e8-9ef7-7f90d812f133",
+				"region": "ap-northeast-1",
+				"s3-bucket-console-url": "https://s3.console.aws.amazon.com/s3/buckets/railroadeditor-hosting-mobilehub-69379349",
+				"s3-bucket-website-url": "https://s3.amazonaws.com/railroadeditor-hosting-mobilehub-69379349"
+			}
+		},
+		{
+			"type": "AWS::CloudFront::Distribution",
+			"name": "d2v8bu4e76jqt1.cloudfront.net",
+			"arn": null,
+			"feature": "hosting",
+			"attributes": {
+				"id": "E1M9WMZDPR47FX",
+				"lastUpdateRequestID": "a5ca736f-4abe-11e8-9ef7-7f90d812f133"
+			}
+		},
+		{
+			"type": "AWS::IAM::Policy",
+			"name": "railroadeditor_hosting_MOBILEHUB_69379349",
+			"arn": null,
+			"feature": "hosting",
+			"attributes": {
+				"authType": "authenticated",
+				"lastUpdateRequestID": "8bc1ebad-4ac3-11e8-a08d-450774c10c61",
+				"role": "railroadeditor_auth_MOBILEHUB_69379349"
+			}
+		},
+		{
+			"type": "AWS::IAM::Policy",
+			"name": "railroadeditor_hosting_MOBILEHUB_69379349",
+			"arn": null,
+			"feature": "hosting",
+			"attributes": {
+				"authType": "unauthenticated",
+				"lastUpdateRequestID": "8bc1ebad-4ac3-11e8-a08d-450774c10c61",
+				"role": "railroadeditor_unauth_MOBILEHUB_69379349"
+			}
+		},
+		{
+			"type": "AWS::ApiGateway::RestApi",
+			"name": "Layout",
+			"arn": "arn:aws:execute-api:ap-northeast-1:561678142736:foo866bgvk",
+			"feature": "cloud-api",
+			"attributes": {
+				"cfLogicalID": "Layout",
+				"cfPhysicalID": "foo866bgvk",
+				"configApiName": "Layout",
+				"deeplinkURL": "https://console.aws.amazon.com/apigateway/home?region=ap-northeast-1#/apis/foo866bgvk/resources",
+				"existing": "true",
+				"region": "ap-northeast-1",
+				"stages": "beta,local,prod"
+			}
+		},
+		{
+			"type": "AWS::IAM::Role",
+			"name": "MOBILEHUB-69379349-Development-lambdaexecutionrole-1D2E7SOHDCVV8",
+			"arn": null,
+			"feature": "cloud-api",
+			"attributes": {
+				"cfLogicalID": "lambdaexecutionrole",
+				"cfPhysicalID": "MOBILEHUB-69379349-Development-lambdaexecutionrole-1D2E7SOHDCVV8",
+				"deeplinkURL": "https://console.aws.amazon.com/iam/home?region=ap-northeast-1#roles/MOBILEHUB-69379349-Development-lambdaexecutionrole-1D2E7SOHDCVV8",
+				"lastUpdateTimestamp": "1524907699552",
+				"reason": "none",
+				"region": "ap-northeast-1",
+				"status": "CREATE_COMPLETE"
+			}
+		},
+		{
+			"type": "AWS::CloudFormation::Stack",
+			"name": "arn:aws:cloudformation:ap-northeast-1:561678142736:stack/MOBILEHUB-69379349-Development-CloudLogic-9C70RTPMHG9G/6f685a50-4ac6-11e8-9595-50a68668d04a",
+			"arn": null,
+			"feature": "cloud-api",
+			"attributes": {
+				"cfLogicalID": "CloudLogic",
+				"cfPhysicalID": "arn:aws:cloudformation:ap-northeast-1:561678142736:stack/MOBILEHUB-69379349-Development-CloudLogic-9C70RTPMHG9G/6f685a50-4ac6-11e8-9595-50a68668d04a",
+				"deeplinkURL": "https://console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stack/detail?stackId=arn:aws:cloudformation:ap-northeast-1:561678142736:stack/MOBILEHUB-69379349-Development-CloudLogic-9C70RTPMHG9G/6f685a50-4ac6-11e8-9595-50a68668d04a",
+				"lastUpdateTimestamp": "1524907712491",
+				"reason": "none",
+				"region": "ap-northeast-1",
+				"status": "CREATE_COMPLETE"
+			}
+		},
+		{
+			"type": "AWS::IAM::Policy",
+			"name": "MOBIL-lamb-AM2T5S74XLCY",
+			"arn": null,
+			"feature": "cloud-api",
+			"attributes": {
+				"cfLogicalID": "lambdaexecutionpolicy",
+				"cfPhysicalID": "MOBIL-lamb-AM2T5S74XLCY",
+				"lastUpdateTimestamp": "1524907710410",
+				"reason": "none",
+				"region": "ap-northeast-1",
+				"status": "CREATE_COMPLETE"
+			}
+		},
+		{
+			"type": "AWS::IAM::Policy",
+			"name": "MOBIL-Poli-1F158R1Q2WNS9",
+			"arn": null,
+			"feature": "cloud-api",
+			"attributes": {
+				"cfLogicalID": "PolicyLayout",
+				"cfPhysicalID": "MOBIL-Poli-1F158R1Q2WNS9",
+				"lastUpdateTimestamp": "1524907691225",
+				"reason": "none",
+				"region": "ap-northeast-1",
+				"status": "CREATE_COMPLETE"
+			}
+		},
+		{
+			"type": "AWS::S3::Bucket",
+			"name": "railroadeditor-deployments-mobilehub-69379349",
+			"arn": null,
+			"feature": "common",
+			"attributes": {
+				"region": "ap-northeast-1",
+				"s3-bucket-console-url": "https://s3.console.aws.amazon.com/s3/buckets/railroadeditor-deployments-mobilehub-69379349"
+			}
+		},
+		{
+			"type": "AWS::CloudFormation::Stack",
+			"name": "Development",
+			"arn": "arn:aws:cloudformation:ap-northeast-1:561678142736:stack/MOBILEHUB-69379349-Development/6c93dd90-4ac6-11e8-8fb5-50a68a175ae6",
+			"feature": "cloud-api",
+			"attributes": {
+				"cfHash": "1567563073",
+				"primary": "true",
+				"region": "ap-northeast-1",
+				"stack-arn": "arn:aws:cloudformation:ap-northeast-1:561678142736:stack/MOBILEHUB-69379349-Development/6c93dd90-4ac6-11e8-8fb5-50a68a175ae6",
+				"stateDetails": "none",
+				"stateSummary": "CREATE_COMPLETE"
+			}
+		}
+	]
+}
