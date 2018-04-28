@@ -68,6 +68,7 @@
     "recompose": "^0.27.0",
     "redux-actions": "^2.3.0",
     "redux-devtools-extension": "^2.13.2",
+    "redux-localstorage": "^0.4.1",
     "reselect": "^3.0.1",
     "resolve": "1.6.0",
     "selenium-server-standalone-jar": "^3.11.0",

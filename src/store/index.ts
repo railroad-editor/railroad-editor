@@ -1,5 +1,6 @@
-import {createStore, Store} from 'redux';
+import {compose, createStore} from 'redux';
 import {devToolsEnhancer} from "redux-devtools-extension";
+import persistState from 'redux-localstorage'
 import rootReducer from '../reducers';
 import {RootState} from "./type";
 import {BUILDER_SET_MARKER_POSITION, BUILDER_SET_MOUSE_POSITION, BUILDER_SET_TEMPORARY_RAIL} from "actions/constants";
@@ -7,12 +8,16 @@ import {BUILDER_SET_MARKER_POSITION, BUILDER_SET_MOUSE_POSITION, BUILDER_SET_TEM
 export function configureStore(initialState?: RootState) {
   let store
   if (process.env.NODE_ENV === 'development') {
-    store = createStore(rootReducer, initialState, devToolsEnhancer({
-      actionsBlacklist: [BUILDER_SET_MOUSE_POSITION, BUILDER_SET_MARKER_POSITION, BUILDER_SET_TEMPORARY_RAIL]
-      // actionsBlacklist: [BUILDER_SET_MOUSE_POSITION, BUILDER_SET_MARKER_POSITION]
-    })) as Store<RootState>;
+    store = createStore(rootReducer, initialState, compose(
+      devToolsEnhancer({
+        actionsBlacklist: [BUILDER_SET_MOUSE_POSITION, BUILDER_SET_MARKER_POSITION, BUILDER_SET_TEMPORARY_RAIL]
+      }),
+      persistState()
+    ))
   } else {
-    store = createStore(rootReducer, initialState) as Store<RootState>;
+    store = createStore(rootReducer, initialState, compose(
+      persistState()
+    ))
   }
 
   if ((<any>module).hot) {
