@@ -61,9 +61,9 @@ export class LayoutCard extends React.Component<LayoutCardProps, LayoutCardState
       <React.Fragment>
         <Button
           onClick={this.props.onClick}
+          onContextMenu={this.onMenuOpen}
         >
           <StyledCardContent
-            onContextMenu={this.onMenuOpen}
           >
             <S3Image level={'private'} imgKey={imgKey}/>
             <Typography align="left" variant="body2">
