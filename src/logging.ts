@@ -8,7 +8,11 @@ import * as logdown from 'logdown'
 // Loglevelを使う場合
 function initLoglevel (name) {
   let logger = loglevel.getLogger(name)
-  logger.setLevel('DEBUG')
+  if (process.env.REACT_APP_ENV === 'local') {
+    logger.setLevel('DEBUG')
+  } else {
+    logger.setLevel('INFO')
+  }
   return logger
 }
 

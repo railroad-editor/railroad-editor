@@ -149,8 +149,10 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
     mouseWheel = (e: React.WheelEvent<HTMLElement>, { view }: { view: View }) => {
       e.nativeEvent.preventDefault()
 
+      LOGGER.debug(e.nativeEvent)
+
       // ホイールの移動距離からズーム倍率を計算する
-      const delta = e.nativeEvent.wheelDelta
+      const delta = - e.nativeEvent.deltaY
       const newZoom = (1 + delta * ZOOM_FACTOR) * this.state.zoom
 
       // 最大拡大率・最小縮小率を超えないようにする

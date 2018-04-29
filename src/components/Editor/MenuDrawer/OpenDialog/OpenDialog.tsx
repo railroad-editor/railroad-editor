@@ -1,17 +1,16 @@
 import * as React from 'react'
-import {CardContent, DialogContent, DialogTitle} from "material-ui"
+import {DialogContent, DialogTitle} from "material-ui"
 import Dialog from "material-ui/Dialog";
-import Button from "material-ui/Button";
 import Typography from "material-ui/Typography";
-import {LayoutCard} from "components/Editor/MenuDrawer/OpenDialog/OpenDialog.style";
 import {S3Image} from 'aws-amplify-react';
 import LayoutAPI from "apis/layout"
 import getLogger from "logging";
 import {LayoutData, LayoutMeta} from "reducers/layout";
 import {getLayoutImageFileName} from "apis/storage";
 import {UserRailGroupData} from "reducers/builder";
-import * as moment from "moment";
 import {RailItemData} from "components/rails";
+import {LayoutCard} from "components/Editor/MenuDrawer/OpenDialog/LayoutCard/LayoutCard";
+import {ConfirmationDialog} from "components/Editor/LayerPalette/ConfirmationDialog/ConfirmationDialog";
 
 const LOGGER = getLogger(__filename)
 
@@ -29,6 +28,9 @@ export interface OpenDialogState {
   isLoaded: boolean
   layoutMetas: LayoutMeta[]
   layoutImageFiles: string[]
+
+  deleteDialogOpen: boolean
+  targetLayoutId: string
 }
 
 
@@ -39,7 +41,9 @@ export class OpenDialog extends React.Component<OpenDialogProps, OpenDialogState
     this.state = {
       isLoaded: false,
       layoutMetas: [],
-      layoutImageFiles: []
+      layoutImageFiles: [],
+      deleteDialogOpen: false,
+      targetLayoutId: null
     }
 
     this.onClick = this.onClick.bind(this)
@@ -56,6 +60,11 @@ export class OpenDialog extends React.Component<OpenDialogProps, OpenDialogState
       layoutMetas: sortedLayouts,
       layoutImageFiles: sortedLayouts.map(meta => getLayoutImageFileName(this.props.authData.username, meta.id))
     })
+  }
+
+  deleteLayout = (layoutId) => async () => {
+    await LayoutAPI.deleteLayoutData(this.props.authData.username, layoutId)
+    await this.loadLayoutList()
   }
 
 
@@ -75,8 +84,27 @@ export class OpenDialog extends React.Component<OpenDialogProps, OpenDialogState
     }
   }
 
+  openDeleteDialog = (layoutId: string) => (e: React.MouseEvent<HTMLElement>) => {
+    this.setState({
+      deleteDialogOpen: true,
+      targetLayoutId: layoutId
+    })
+  }
+
+  closeDeleteDialog = () => {
+    this.setState({
+      deleteDialogOpen: false,
+      targetLayoutId: null
+    })
+  }
 
   render() {
+    let layoutName = ''
+    if (this.state.targetLayoutId) {
+      layoutName = this.state.layoutMetas.find(layout => layout.id === this.state.targetLayoutId).name
+    }
+
+
     return (
       <Dialog
         open={this.props.open}
@@ -91,28 +119,27 @@ export class OpenDialog extends React.Component<OpenDialogProps, OpenDialogState
             You have {this.state.layoutMetas.length} layouts.
           </Typography>
           {_.range(this.state.layoutMetas.length).map(idx => {
+            const {layoutMetas, layoutImageFiles} = this.state
+
             return (
-              <Button onClick={this.onClick(this.state.layoutMetas[idx])}
-                      color="primary"
-              >
-              <LayoutCard>
-                <CardContent>
-                  <S3Image level={'private'} imgKey={this.state.layoutImageFiles[idx]}/>
-                  <Typography align="left" variant="body2">
-                    Title: {this.state.layoutMetas[idx].name}
-                  </Typography>
-                  {/*<Typography>*/}
-                    {/*ID: {this.state.layoutMetas[idx].id}*/}
-                  {/*</Typography>*/}
-                  <Typography align="left" variant="body2">
-                    Last modified: {moment(this.state.layoutMetas[idx].lastModified).format('MMMM Do YYYY, hh:mm:ss')}
-                  </Typography>
-                </CardContent>
-              </LayoutCard>
-              </Button>
+                <LayoutCard
+                  imgKey={layoutImageFiles[idx]}
+                  title={layoutMetas[idx].name}
+                  lastModified={layoutMetas[idx].lastModified}
+                  onClick={this.onClick(layoutMetas[idx])}
+                  onDelete={this.openDeleteDialog(layoutMetas[idx].id)}
+                  onRename={this.openDeleteDialog(layoutMetas[idx].id)}
+                />
             )
           })}
         </DialogContent>
+        <ConfirmationDialog
+          title={'Delete Layout'}
+          text={`Are you OK to delete layout "${layoutName}"? \nThis action cannot be reverted.`}
+          open={this.state.deleteDialogOpen}
+          onOK={this.deleteLayout(this.state.targetLayoutId)}
+          onClose={this.closeDeleteDialog}
+        />
       </Dialog>
     )
   }
