@@ -138,6 +138,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     return _.range(this.joints.length).map(i => {
       return (
         <Joint
+          key={`j-${i}`}
           position={jointPositions[i]}
           angle={jointAngles[i]}
           opacity={opacity}

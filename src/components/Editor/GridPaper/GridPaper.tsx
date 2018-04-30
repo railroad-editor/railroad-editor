@@ -63,6 +63,7 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
     let verticalLines = _.range(this.props.width / this.props.gridSize + 1).map(i => {
       return (
         <Line
+          key={`v-line${i}`}
           from={new Point(this.props.gridSize * i, 0)}
           to={new Point(this.props.gridSize * i, this.props.height)}
           data={{type: 'GridLine'}}
@@ -73,6 +74,7 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
     let horizontalLines = _.range(this.props.height / this.props.gridSize + 1).map(i => {
       return (
         <Line
+          key={`h-line${i}`}
           from={new Point(0, this.props.gridSize * i)}
           to={new Point(this.props.width,this.props.gridSize * i)}
           data={{type: 'GridLine'}}

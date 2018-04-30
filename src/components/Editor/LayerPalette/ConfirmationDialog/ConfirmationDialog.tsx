@@ -38,7 +38,7 @@ export class ConfirmationDialog extends React.Component<RenameLayerDialogProps, 
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {this.props.text.split("\n").map(i => {
-              return <div>{i}</div>;
+              return <div key={`d-${i}`}>{i}</div>;
             })}
           </DialogContentText>
         </DialogContent>

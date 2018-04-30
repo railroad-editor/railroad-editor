@@ -93,10 +93,10 @@
   },
   "scripts": {
     "start": "REACT_APP_ENV=dev node scripts/start.js",
-    "beta-build": "REACT_APP_ENV=beta node scripts/build.js",
-    "prod-build": "REACT_APP_ENV=prod node scripts/build.js",
-    "beta-publish": "npm run beta-build && awsmobile publish --test",
-    "prod-publish": "npm run prod-build && awsmobile publish",
+    "build-beta": "REACT_APP_ENV=beta node scripts/build.js",
+    "build": "REACT_APP_ENV=prod node scripts/build.js",
+    "publish-beta": "npm run build-beta && awsmobile publish --test",
+    "publish": "npm run build && awsmobile publish",
     "test": "node scripts/test.js --env=jsdom"
   },
   "devDependencies": {

@@ -99,6 +99,8 @@ export default class Layout extends React.Component<LayoutProps, {}> {
   render() {
     const {layout, temporaryRails, temporaryRailGroup} = this.props
 
+    LOGGER.debug('Layout render()')
+
     return (
       <React.Fragment>
         <Layer

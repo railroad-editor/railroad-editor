@@ -46,25 +46,25 @@ class App extends React.Component<WithStyles<'root'>, {}> {
   }
 
   resizeWindow = () => {
-    this._request = requestAnimationFrame(this.resizePaper)
+    // this._request = requestAnimationFrame(this.resizePaper)
   }
 
   resizePaper = () => {
-    this.forceUpdate()
-    this._request = null
+    // this.forceUpdate()
+    // this._request = null
   }
 
   componentDidMount() {
     this.setState({ mounted: true })
-    window.addEventListener('resize', this.resizeWindow)
+    // window.addEventListener('resize', this.resizeWindow)
   }
 
   componentWillUnmount() {
-    if (this._request) {
-      cancelAnimationFrame(this._request)
-      this._request = null
-    }
-    window.removeEventListener('resize', this.resizeWindow)
+    // if (this._request) {
+    //   cancelAnimationFrame(this._request)
+    //   this._request = null
+    // }
+    // window.removeEventListener('resize', this.resizeWindow)
   }
 
   // コンテキストメニュー無効

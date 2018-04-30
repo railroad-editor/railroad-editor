@@ -142,30 +142,32 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
             <AddLayerButton onClick={this.openAddDialog}/>
           </TitleDiv>
 
-          {layers.map((layer, index) =>
-            <Grid container justify="center" spacing={0}>
-              <Grid item xs={3} key={`${index}-1`}>
-                <Checkbox
-                  checked={layers[index].visible}
-                  onChange={this.onToggleVisible(layer.id)}
-                  value={layers[index].id.toString()}
-                />
-              </Grid>
-              <Grid item xs={9} key={`${index}-2`}>
-                {/* <Layer> で囲わずにSecondaryActionを使うとズレる */}
-                <LayerListItem
-                  button
-                  active={activeLayerId === layer.id}
-                  onClick={this.onChangeActive(layer.id)}
-                  onDelete={this.openDeleteDialog(layer.id)}
-                  onRename={this.openUpdateDialog(layer.id)}
-                  isDeletable={this.props.layers.length >= 2}
-                >
-                  <ListItemText primary={layer.name}/>
-                </LayerListItem>
-              </Grid>
-            </Grid>
-          )}
+          <Grid container justify="center" spacing={0}>
+            {layers.map((layer, index) =>
+              <React.Fragment key={`layer-${index}`}>
+                <Grid item xs={3}>
+                  <Checkbox
+                    checked={layers[index].visible}
+                    onChange={this.onToggleVisible(layer.id)}
+                    value={layers[index].id.toString()}
+                  />
+                </Grid>
+                <Grid item xs={9}>
+                  {/* <Layer> で囲わずにSecondaryActionを使うとズレる */}
+                  <LayerListItem
+                    button
+                    active={activeLayerId === layer.id}
+                    onClick={this.onChangeActive(layer.id)}
+                    onDelete={this.openDeleteDialog(layer.id)}
+                    onRename={this.openUpdateDialog(layer.id)}
+                    isDeletable={this.props.layers.length >= 2}
+                  >
+                    <ListItemText primary={layer.name}/>
+                  </LayerListItem>
+                </Grid>
+              </React.Fragment>
+            )}
+          </Grid>
         </Paper>
         <LayerSettingDialog
           title={'New Layer'}
