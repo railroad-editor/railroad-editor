@@ -16,7 +16,7 @@ import qs from "query-string"
 import {Redirect} from "react-router";
 
 const API_ENDPOINTS = {
-  local: "https://foo866bgvk.execute-api.ap-northeast-1.amazonaws.com/local",
+  dev: "https://foo866bgvk.execute-api.ap-northeast-1.amazonaws.com/dev",
   beta: "https://foo866bgvk.execute-api.ap-northeast-1.amazonaws.com/beta",
   prod: "https://foo866bgvk.execute-api.ap-northeast-1.amazonaws.com/prod",
 }

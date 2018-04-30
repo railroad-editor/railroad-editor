@@ -92,7 +92,7 @@
     "whatwg-fetch": "2.0.3"
   },
   "scripts": {
-    "start": "REACT_APP_ENV=local node scripts/start.js",
+    "start": "REACT_APP_ENV=dev node scripts/start.js",
     "beta-build": "REACT_APP_ENV=beta node scripts/build.js",
     "prod-build": "REACT_APP_ENV=prod node scripts/build.js",
     "beta-publish": "npm run beta-build && awsmobile publish --test",
