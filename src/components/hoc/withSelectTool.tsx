@@ -10,6 +10,10 @@ import {currentLayoutData} from "selectors";
 import {LayoutData} from "reducers/layout";
 import {DEFAULT_SELECTION_RECT_COLOR, DEFAULT_SELECTION_RECT_OPACITY} from "constants/tools";
 import {getAllRailComponents} from "components/rails/utils";
+import {BuilderStore} from "store/builderStore";
+import {LayoutStore} from "store/layoutStore";
+import {inject, observer} from "mobx-react";
+import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 
 const LOGGER = getLogger(__filename)
 
@@ -20,13 +24,17 @@ export interface WithSelectToolPublicProps {
   selectToolMouseUp: (e: ToolEvent) => void
   selectionRectFrom: Point
   selectionRectTo: Point
+
+  builder?: BuilderStore
+  layout?: LayoutStore
+
 }
 
-export interface WithSelectToolPrivateProps {
-  layout: LayoutData
-  activeLayerId: number
-  setMousePosition: (point: Point) => void
-}
+// export interface WithSelectToolPrivateProps {
+//   layout: LayoutData
+//   activeLayerId: number
+//   setMousePosition: (point: Point) => void
+// }
 
 interface WithSelectToolState {
   selectionRectFrom: Point
@@ -34,7 +42,7 @@ interface WithSelectToolState {
 }
 
 
-type WithSelectToolProps = WithSelectToolPublicProps & WithSelectToolPrivateProps & WithBuilderPublicProps
+type WithSelectToolProps = WithSelectToolPublicProps & WithBuilderPublicProps
 
 /**
  * レールの矩形選択機能を提供するHOC。
@@ -42,19 +50,21 @@ type WithSelectToolProps = WithSelectToolPublicProps & WithSelectToolPrivateProp
  */
 export default function withSelectTool(WrappedComponent: React.ComponentClass<WithSelectToolProps>) {
 
-  const mapStateToProps = (state: RootState) => {
-    return {
-      layout: currentLayoutData(state),
-      activeLayerId: state.builder.activeLayerId,
-    }
-  }
+  // const mapStateToProps = (state: RootState) => {
+  //   return {
+  //     layout: currentLayoutData(state),
+  //     activeLayerId: state.builder.activeLayerId,
+  //   }
+  // }
+  //
+  // const mapDispatchToProps = (dispatch: any) => {
+  //   return {
+  //     setMousePosition: (point: Point) => dispatch(setMousePosition(point))
+  //   }
+  // }
 
-  const mapDispatchToProps = (dispatch: any) => {
-    return {
-      setMousePosition: (point: Point) => dispatch(setMousePosition(point))
-    }
-  }
-
+  @inject(STORE_BUILDER, STORE_LAYOUT)
+  @observer
   class WithSelectTool extends React.Component<WithSelectToolProps, WithSelectToolState> {
 
     public static DEBOUNCE_THRESHOLD = 5
@@ -131,8 +141,9 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
       }
 
       // 選択対象は現在のレイヤーのレールとする
-      const rails = getAllRailComponents().filter(rc => rc.props.layerId === this.props.activeLayerId)
+      const rails = getAllRailComponents().filter(rc => rc.props.layerId === this.props.builder.activeLayerId)
 
+      const selected = []
       rails.forEach((rail: any) => {
         // 矩形がRailPartを構成するPathを含むか、交わっているか確認する
         const targetPaths = rail.railPart.path.children
@@ -144,10 +155,14 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
 
         // 上記の条件を満たしていれば選択状態にする
         if (result) {
+          selected.push(rail.props.id)
           LOGGER.info('selected', rail.props.id)
-          this.props.builderSelectRail(rail.props.id)
         }
       })
+
+      this.props.builderSelectRails(selected)
+
+
       // 矩形を削除する
       this.selectionRect.remove()
       this.selectionRect = null
@@ -169,6 +184,6 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
     }
   }
 
-  return connect(mapStateToProps, mapDispatchToProps)(WithSelectTool)
+  return WithSelectTool
 
 }

@@ -1,7 +1,7 @@
 import {Action, handleActions} from 'redux-actions';
 import * as Actions from "actions/constants"
 import {PaletteItem} from "store/type";
-import {RailData, RailGroupData, RailItemData} from "components/rails";
+import {RailComponentClasses, RailData, RailGroupData, RailItemData} from "components/rails";
 import update from "immutability-helper";
 import {JointInfo} from "components/rails/RailBase";
 import {RailGroupDataPayload} from "reducers/layout";
@@ -88,18 +88,52 @@ export class BuilderStore {
   @observable activeTool: Tools
 
 
-  constructor({ paletteItem, lastPaletteItems, activeLayerId, paperViewLoaded, temporaryRailGroup, userRailGroups,
+  constructor({ paletteItem, lastPaletteItems, activeLayerId, paperViewLoaded, temporaryRails, temporaryRailGroup, userRailGroups,
                 userRails, activeTool}) {
     this.paletteItem = paletteItem
     this.lastPaletteItems = lastPaletteItems
     this.activeLayerId = activeLayerId
     this.paperViewLoaded = paperViewLoaded
+    this.temporaryRails = temporaryRails
     this.temporaryRailGroup = temporaryRailGroup
     this.userRailGroups = userRailGroups
     this.userRails = userRails
     this.intersects = false
     this.activeTool = activeTool
   }
+
+  @computed
+  get paletteRailGroupData() {
+    const {type, name} = this.paletteItem
+    if (type !== 'RailGroup' && name) {
+      return null
+    }
+    return _.clone(this.userRailGroups.find(rg => rg.name === name))
+  }
+
+  @computed
+  get nextPivotJointInfo() {
+    const temporaryRailGroup = this.temporaryRailGroup
+    const userRailGroupData = this.paletteRailGroupData
+    if (! (temporaryRailGroup && userRailGroupData)) {
+      return { railId: 0, jointId: 0 }
+    }
+    const currentIndex = _.indexOf(userRailGroupData.openJoints, temporaryRailGroup.pivotJointInfo)
+    const nextIndex = (currentIndex + 1) % userRailGroupData.openJoints.length
+    return userRailGroupData.openJoints[nextIndex]
+  }
+
+  @computed
+  get nextPivotJointIndex() {
+    const temporaryRails = this.temporaryRails
+    if (temporaryRails.length !== 1) {
+      return 0
+    }
+    const {type, pivotJointIndex} = temporaryRails[0]
+    const {numJoints, pivotJointChangingStride} = RailComponentClasses[type].defaultProps
+    return (pivotJointIndex + pivotJointChangingStride) % numJoints
+  }
+
 
 
   @action
@@ -181,7 +215,7 @@ export class BuilderStore {
   }
 
   @action
-  updateTemporaryRailGroup = (item: RailGroupData) => {
+  updateTemporaryRailGroup = (item: Partial<RailGroupData>) => {
     this.temporaryRailGroup = {
       ...this.temporaryRailGroup,
       ...item
@@ -216,6 +250,11 @@ export class BuilderStore {
   @action
   addUserRail = (item: RailItemData) => {
     this.userRails.push(item)
+  }
+
+  @action
+  setIntersects = (intersects: boolean) => {
+    this.intersects = intersects
   }
 }
 

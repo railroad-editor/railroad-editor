@@ -11,19 +11,25 @@ import {
 import {RailData, RailGroupData} from "components/rails";
 import getLogger from "logging";
 import {LayerData, LayoutData} from "reducers/layout";
-import {JointPair} from "components/hoc/withBuilder";
+import {JointPair, default as withBuilder} from "components/hoc/withBuilder";
 import {DetectionState} from "components/rails/parts/primitives/DetectablePart";
 import shallowEqualObjects from "shallow-equal/objects"
+import {compose} from "recompose";
+import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
+import {observer, inject} from "mobx-react";
+import {LayoutStore} from "store/layoutStore";
+import {BuilderStore} from "store/builderStore";
 
 const LOGGER = getLogger(__filename)
 
 
 export interface LayoutProps {
-  layout: LayoutData
-  temporaryRails: RailData[]
-  temporaryRailGroup: RailGroupData
-  activeLayerId: number
-  activeLayerData: LayerData
+  layout?: LayoutStore
+  builder?: BuilderStore
+  // temporaryRails: RailData[]
+  // temporaryRailGroup: RailGroupData
+  // activeLayerId: number
+  // activeLayerData: LayerData
 
   builderDisconnectJoint: (railId: number) => void
   builderConnectJoints: (pairs: JointPair[]) => void
@@ -32,7 +38,9 @@ export interface LayoutProps {
 }
 
 
-export default class Layout extends React.Component<LayoutProps, {}> {
+@inject(STORE_BUILDER, STORE_LAYOUT)
+@observer
+export class Layout extends React.Component<LayoutProps, {}> {
 
   temporaryCloseJoints: JointPair[]
 
@@ -44,9 +52,9 @@ export default class Layout extends React.Component<LayoutProps, {}> {
   componentDidUpdate(prevProps: LayoutProps) {
 
     // レイアウトのレールが追加・削除されたら、近傍ジョイントを探して自動的に接続する
-    if (this.props.layout.rails.length !== prevProps.layout.rails.length) {
-      this.connectCloseJoints()
-    }
+    // if (this.props.layout.currentLayoutData.rails.length !== prevProps.layout.currentLayoutData.rails.length) {
+    //   this.connectCloseJoints()
+    // }
 
     // 仮レールが追加または可視状態に変わった場合、近傍ジョイントを探して検出状態にする
     // TODO: 右クリックに対応できない。仮レールが変更された場合、で決め打ちしたほうがよいかも
@@ -60,20 +68,16 @@ export default class Layout extends React.Component<LayoutProps, {}> {
     }
   }
 
-  connectCloseJoints = () => {
-    const jointPairs = getAllOpenCloseJoints(this.props.layout.rails)
-    LOGGER.info("Unconnected close joints", jointPairs)
-    this.props.builderConnectJoints(jointPairs)
-  }
 
 
   validateAddedTemporaryRails = () => {
-    const {temporaryRails, layout, activeLayerId} = this.props
+    const {temporaryRails, activeLayerId} = this.props.builder;
+    const {currentLayoutData} = this.props.layout;
     // レールの重なりを検出する。検査対象はアクティブレイヤーかつ、仮レールの近傍ジョイントを持たないレール
-    // 仮レールの近傍ジョイント
-    this.temporaryCloseJoints = _.flatMap(temporaryRails, r => getCloseJointsOf(r.id, layout.rails))
+    // 仮レールの近傍ジョイン
+    this.temporaryCloseJoints = _.flatMap(temporaryRails, r => getCloseJointsOf(r.id, currentLayoutData.rails))
     // アクティブレイヤーのレール
-    const railsInActiveLayer = layout.rails.filter(r => r.layerId === activeLayerId).map(r => r.id)
+    const railsInActiveLayer = currentLayoutData.rails.filter(r => r.layerId === activeLayerId).map(r => r.id)
     // 検査対象
     const intersectionTestTargets = _.without(railsInActiveLayer, ...this.temporaryCloseJoints.map(j => j.to.railId))
     // 重なりを検査
@@ -97,7 +101,8 @@ export default class Layout extends React.Component<LayoutProps, {}> {
 
 
   render() {
-    const {layout, temporaryRails, temporaryRailGroup} = this.props
+    const {temporaryRails, temporaryRailGroup} = this.props.builder
+    const {currentLayoutData, activeLayerData} = this.props.layout;
 
     LOGGER.debug('Layout render()')
 
@@ -110,28 +115,28 @@ export default class Layout extends React.Component<LayoutProps, {}> {
           {
             temporaryRails.length > 0 &&
             createRailOrRailGroupComponent(temporaryRailGroup, temporaryRails,
-              { id: -1, name: 'Temporary', visible: true, color: this.props.activeLayerData.color})
+              { id: -1, name: 'Temporary', visible: true, color: activeLayerData.color})
           }
         </Layer>
 
         {
-          layout.layers.map(layer =>
+          currentLayoutData.layers.map(layer =>
             <Layer
               data={layer}
               visible={layer.visible}
               key={layer.id}
             >
               { // レールグループに所属していないレールを生成する
-                layout.rails
+                currentLayoutData.rails
                   .filter(r => r.layerId === layer.id)
                   .filter(r => ! r.groupId)
                   .map(item => createRailComponent(item, layer))
               }
               { // レールグループに所属しているレールを生成する
                 // レールグループ内のレールは同じレイヤーに所属していなくても良い
-                layout.railGroups
+                currentLayoutData.railGroups
                   .map(item => {
-                    const children = layout.rails.filter(c => c.groupId === item.id)
+                    const children = currentLayoutData.rails.filter(c => c.groupId === item.id)
                     return createRailGroupComponent(item, children, layer)
                   })
               }
@@ -146,8 +151,8 @@ export default class Layout extends React.Component<LayoutProps, {}> {
 
 
 const temporaryRailHasChangedVisible = (currentProps: LayoutProps, prevProps: LayoutProps) => {
-  const currentOnes = currentProps.temporaryRails
-  const prevOnes = prevProps.temporaryRails
+  const currentOnes = currentProps.builder.temporaryRails
+  const prevOnes = prevProps.builder.temporaryRails
   // レールが追加された時
   if (currentOnes.length > prevOnes.length) return true
   // レールが現在可視状態で、以前と状態が異なる場合
@@ -158,8 +163,8 @@ const temporaryRailHasChangedVisible = (currentProps: LayoutProps, prevProps: La
 
 
 const temporaryRailHasChangedInvisible = (currentProps: LayoutProps, prevProps: LayoutProps) => {
-  const currentOnes = currentProps.temporaryRails
-  const prevOnes = prevProps.temporaryRails
+  const currentOnes = currentProps.builder.temporaryRails
+  const prevOnes = prevProps.builder.temporaryRails
   // レールが削除された時
   if (currentOnes.length < prevOnes.length) return true
   // レールが現在不可視状態で、以前と状態が異なる場合
@@ -168,3 +173,7 @@ const temporaryRailHasChangedInvisible = (currentProps: LayoutProps, prevProps: 
   return false
 }
 
+
+export default compose<LayoutProps, LayoutProps|any>(
+  withBuilder,
+)(Layout)

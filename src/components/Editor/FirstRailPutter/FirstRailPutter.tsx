@@ -7,7 +7,12 @@ import {SettingsStoreState} from "reducers/settings";
 import {PaletteItem} from "store/type";
 import getLogger from "logging";
 import {RailData} from "components/rails";
-import {WithBuilderPublicProps} from "components/hoc/withBuilder";
+import {default as withBuilder, WithBuilderPublicProps} from "components/hoc/withBuilder";
+import {compose} from "recompose";
+import {inject, observer} from "mobx-react";
+import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
+import {BuilderStore} from "store/builderStore";
+import {LayoutStore} from "store/layoutStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -19,11 +24,13 @@ enum Phase {
 
 export interface FirstRailPutterProps {
   mousePosition: Point
-  paletteItem: PaletteItem
-  temporaryRails: RailData[]
-  settings: SettingsStoreState
+  // paletteItem: PaletteItem
+  // temporaryRails: RailData[]
+  // settings: SettingsStoreState
 
-  deleteTemporaryRail: () => void
+  // deleteTemporaryRail: () => void
+  builder?: BuilderStore
+  layout?: LayoutStore
 }
 
 export interface FirstRailPutterState {
@@ -34,7 +41,9 @@ export interface FirstRailPutterState {
 type FirstRailPutterEnhancedProps = FirstRailPutterProps & WithBuilderPublicProps
 
 
-export default class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProps, FirstRailPutterState> {
+@inject(STORE_BUILDER, STORE_LAYOUT)
+@observer
+export class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProps, FirstRailPutterState> {
 
   constructor(props: FirstRailPutterEnhancedProps) {
     super(props)
@@ -70,7 +79,7 @@ export default class FirstRailPutter extends React.Component<FirstRailPutterEnha
   mouseRightDown = (e: MouseEvent) => {
     // 位置が決定済みならキャンセルする
     if (this.state.phase === Phase.SET_ANGLE) {
-      this.props.deleteTemporaryRail()
+      this.props.builder.deleteTemporaryRail()
       this.setState({
         phase: Phase.SET_POSITION
       })
@@ -116,8 +125,8 @@ export default class FirstRailPutter extends React.Component<FirstRailPutterEnha
         />
         {/* 不可視の四角形、イベントハンドリング用 */}
         <RectPart
-          width={this.props.settings.paperWidth}
-          height={this.props.settings.paperHeight}
+          width={this.props.layout.config.paperWidth}
+          height={this.props.layout.config.paperHeight}
           position={position}
           opacity={0}
           onClick={this.onClick}
@@ -129,7 +138,7 @@ export default class FirstRailPutter extends React.Component<FirstRailPutterEnha
 
 
   private getNearestGridPosition = (pos) => {
-    const {paperWidth, paperHeight, gridSize} = this.props.settings
+    const {paperWidth, paperHeight, gridSize} = this.props.layout.config
     const xNums = _.range(0, paperWidth, gridSize);
     const xPos = getClosest(pos.x, xNums)
     const yNums = _.range(0, paperHeight, gridSize);
@@ -155,7 +164,7 @@ export default class FirstRailPutter extends React.Component<FirstRailPutterEnha
       const itemData = this.props.builderGetRailItemData()
       const angle = getFirstRailAngle(this.state.fixedPosition, this.props.mousePosition)
       // 角度が変わっていたら仮レールを設置する
-      if (_.isEmpty(this.props.temporaryRails) || this.props.temporaryRails[0].angle !== angle) {
+      if (_.isEmpty(this.props.builder.temporaryRails) || this.props.builder.temporaryRails[0].angle !== angle) {
         this.props.builderSetTemporaryRail({
           ...itemData,
           position: this.state.fixedPosition,
@@ -191,3 +200,8 @@ const getFirstRailAngle = (anchor: Point, cursor: Point, step: number = 45) => {
   const candidates = _.range(-180, 180, step)
   return getClosest(angle, candidates)
 }
+
+
+export default compose<FirstRailPutterProps, FirstRailPutterProps|any>(
+  withBuilder,
+)(FirstRailPutter)

@@ -9,6 +9,10 @@ import {JointInfo, RailBase, RailBaseProps, RailBaseState} from "components/rail
 import {connect} from "react-redux";
 import {RailData, RailGroupData} from "components/rails/index";
 import {compose} from "recompose";
+import {BuilderStore} from "store/builderStore";
+import {LayoutStore} from "store/layoutStore";
+import {inject, observer} from "mobx-react";
+import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 
 const LOGGER = getLogger(__filename)
 
@@ -25,17 +29,20 @@ export interface WithRailBaseProps {
   onMount?: (ref: RailBase<RailBaseProps, RailBaseState>) => void
   onUnmount?: (ref: RailBase<RailBaseProps, RailBaseState>) => void
 
-  // states
-  temporaryRails: RailData[]
-  temporaryRailGroup: RailGroupData
-  activeLayerId: number
-  nextPivotJointIndex: number
-  nextPivotJointInfo: JointInfo
-  intersects: boolean
+  builder?: BuilderStore
+  layout?: LayoutStore
 
-  // actionssetTemporaryRail
-  updateTemporaryRail: (item: Partial<RailData>) => void
-  updateTemporaryRailGroup: (item: Partial<RailGroupData>) => void
+  // // states
+  // temporaryRails: RailData[]
+  // temporaryRailGroup: RailGroupData
+  // activeLayerId: number
+  // nextPivotJointIndex: number
+  // nextPivotJointInfo: JointInfo
+  // intersects: boolean
+  //
+  // // actionssetTemporaryRail
+  // updateTemporaryRail: (item: Partial<RailData>) => void
+  // updateTemporaryRailGroup: (item: Partial<RailGroupData>) => void
 }
 
 export type RailBaseEnhancedProps = RailBaseProps & WithRailBaseProps & WithBuilderPublicProps
@@ -47,24 +54,9 @@ export type RailBaseEnhancedProps = RailBaseProps & WithRailBaseProps & WithBuil
  */
 export default function withRailBase(WrappedComponent: React.ComponentClass<RailBaseProps>) {
 
-  const mapStateToProps = (state: RootState): Partial<WithRailBaseProps> => {
-    return {
-      temporaryRails: state.builder.temporaryRails,
-      temporaryRailGroup: state.builder.temporaryRailGroup,
-      activeLayerId: state.builder.activeLayerId,
-      nextPivotJointIndex: nextPivotJointIndex(state),
-      nextPivotJointInfo: nextPivotJointInfo(state),
-      intersects: state.builder.intersects,
-    }
-  }
 
-  const mapDispatchToProps = (dispatch: any): Partial<WithRailBaseProps> => {
-    return {
-      updateTemporaryRail: (item: Partial<RailData>) => dispatch(updateTemporaryItem(item)),
-      updateTemporaryRailGroup: (item: Partial<RailGroupData>) => dispatch(updateTemporaryRailGroup(item)),
-    }
-  }
-
+  @inject(STORE_BUILDER, STORE_LAYOUT)
+  @observer
   class WithRailBase extends React.Component<RailBaseEnhancedProps, {}> {
 
     rail: RailBase<any, any>
@@ -110,7 +102,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * @param {MouseEvent} e
      */
     onJointMouseMove = (jointId: number, e: MouseEvent) => {
-      if (this.props.intersects) {
+      if (this.props.builder.intersects) {
         this.joints[jointId].part.setState({
           isError: true
         })
@@ -129,7 +121,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      */
     onJointMouseLeave = (jointId: number, e: MouseEvent) => {
       // PivotJointIndexを保存しておきたいので、削除するのではなく不可視にする
-      this.props.updateTemporaryRail({visible: false})
+      this.props.builder.updateTemporaryRail({visible: false})
     }
 
 
@@ -140,12 +132,12 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      */
     onJointLeftClick = (jointId: number, e: MouseEvent) => {
       // 仮レールがこのレイヤーの他のレールと重なっていたら、何もせずに返る
-      if (this.props.intersects) {
+      if (this.props.builder.intersects) {
         // ジョイントの検出状態を変更させない
         return false
       }
 
-      if (_.isEmpty(this.props.temporaryRails)) {
+      if (_.isEmpty(this.props.builder.temporaryRails)) {
         return false
       }
 
@@ -160,15 +152,15 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * @param {MouseEvent} e
      */
     onJointRightClick = (jointId: number, e: MouseEvent) => {
-      if (this.props.temporaryRailGroup) {
+      if (this.props.builder.temporaryRailGroup) {
         // レールグループの場合
-        this.props.updateTemporaryRailGroup({
-          pivotJointInfo: this.props.nextPivotJointInfo
+        this.props.builder.updateTemporaryRailGroup({
+          pivotJointInfo: this.props.builder.nextPivotJointInfo
         })
-      } else if (this.props.temporaryRails) {
+      } else if (this.props.builder.temporaryRails) {
         // 単体レールの場合
-        this.props.updateTemporaryRail({
-          pivotJointIndex: this.props.nextPivotJointIndex
+        this.props.builder.updateTemporaryRail({
+          pivotJointIndex: this.props.builder.nextPivotJointIndex
         })
       }
       // ジョイントの検出状態は変更しない
@@ -247,10 +239,10 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
 
       // PivotJointの設定
       let pivotJointInfo
-      if (this.props.temporaryRailGroup == null) {
+      if (this.props.builder.temporaryRailGroup == null) {
         pivotJointInfo = openJoints[0]
       } else {
-        pivotJointInfo = this.props.temporaryRailGroup.pivotJointInfo
+        pivotJointInfo = this.props.builder.temporaryRailGroup.pivotJointInfo
       }
 
       // レールグループデータの作成
@@ -272,10 +264,10 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
       const railData = this.props.builderGetRailItemData()
       // PivotJointを設定する
       let pivotJointIndex
-      if (_.isEmpty(this.props.temporaryRails)) {
+      if (_.isEmpty(this.props.builder.temporaryRails)) {
         pivotJointIndex = this.initializePivotJointIndex(railData)
       } else {
-        pivotJointIndex = this.props.temporaryRails[0].pivotJointIndex
+        pivotJointIndex = this.props.builder.temporaryRails[0].pivotJointIndex
       }
 
       // 仮レールを設置する
@@ -302,7 +294,6 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
 
   return compose<WithRailBaseProps, WithRailBaseProps|any>(
     withBuilder,
-    connect(mapStateToProps, mapDispatchToProps, null, {withRef: true})
   )(WithRailBase)
 }
 

@@ -8,6 +8,8 @@ import LayoutAPI from "apis/layout";
 import {UserRailGroupData} from "store/builderStore";
 import {DEFAULT_GRID_SIZE, DEFAULT_INITIAL_ZOOM, DEFAULT_PAPER_HEIGHT, DEFAULT_PAPER_WIDTH} from "constants/tools";
 import {createViewModel} from "mobx-utils";
+import {getAllOpenCloseJoints} from "components/rails/utils";
+import * as mobx from "mobx"
 
 
 export interface LayoutConfig {
@@ -89,6 +91,16 @@ export class LayoutStore {
   }
 
   @computed
+  get activeLayerData() {
+    return this.currentLayoutData.layers.find(layer => layer.id === builderStore.activeLayerId)
+  }
+
+  @computed
+  get activeLayerRails() {
+    return this.currentLayoutData.rails.filter(r => r.layerId === builderStore.activeLayerId)
+  }
+
+  @computed
   get isLayoutEmpty() {
     return this.currentLayoutData.rails.length === 0
   }
@@ -109,80 +121,80 @@ export class LayoutStore {
     return ids.length > 0 ? Math.max(...ids) + 1 : 1
   }
 
-  @action
-  addRail = (item: RailData, overwrite?: boolean) => {
-    const layout = this.histories[this.historyIndex]
-    // レイアウトを更新
-    const newLayout = update(layout, {
-      rails: {$push: [item]}
-    })
-    // ヒストリを更新
-    return this.addHistory(newLayout, overwrite)
+  @computed
+  get nextRailId() {
+    let ids = this.currentLayoutData.rails.map(r => r.id)
+    return ids.length > 0 ? Math.max(...ids) + 1 : 1
+  }
+
+  @computed
+  get nextRailGroupId() {
+    let ids = this.currentLayoutData.railGroups.map(r => r.id)
+    return ids.length > 0 ? Math.max(...ids) + 1 : 1
+  }
+
+  @computed
+  get unconnectedCloseJoints() {
+    return getAllOpenCloseJoints(this.currentLayoutData.rails)
   }
 
   @action
-  updateRail = (item: Partial<RailData>, overwrite?: boolean) => {
-    const layout = this.histories[this.historyIndex]
-    // 対象のアイテムを探す
-    const itemIndex = layout.rails.findIndex((rail) => rail.id === item.id)
-    // 見つからなかったら何もしない
-    if (itemIndex === -1) {
-      return
-    }
-    const targetRail = layout.rails[itemIndex]
+  addRail = (item: RailData, commit = true) => {
+    if (commit) this.commit()
 
-    // 対向ジョイントの更新 or 追加
-    let opposingJoints = {
-      ...targetRail.opposingJoints,
-      ...item.opposingJoints,
-    }
-    // opposingJoints がnullか空のオブジェクトなら全削除 (一部削除はできない)
-    if (_.isEmpty(item.opposingJoints)) {
-      opposingJoints = {}
-    }
+    item.id = this.nextRailId
+    this.currentLayoutData.rails.push(item)
+  }
 
-    const newRailData = {
-      ...targetRail,
+  @action
+  updateRail = (item: Partial<RailData>, commit = true) => {
+    if (commit) this.commit()
+
+    const index = this.currentLayoutData.rails.findIndex(rail => rail.id === item.id)
+    const target = this.currentLayoutData.rails[index]
+
+    this.currentLayoutData.rails[index] = {
+      ...target,
       ...item,
-      opposingJoints: removeEmpty(opposingJoints)
+      opposingJoints: removeEmpty({
+        ...target.opposingJoints,
+        ...item.opposingJoints
+      })
     }
-    // レイアウトを更新
-    const newLayout = update(layout, {
-      rails: {
-        [itemIndex]: {$set: newRailData}
-      }
-    })
-    // ヒストリを更新
-    return this.addHistory(newLayout, overwrite)
   }
 
   @action
-  deleteRail = (item: Partial<RailData>, overwrite) => {
+  updateRails = (items: Partial<RailData>[], commit = true) => {
+    if (commit) this.commit()
+
+    items.forEach(item => this.updateRail(item, false))
+
+    // this.currentLayoutData.rails.forEach(r => {
+    //   r.selected = true
+    // })
+  }
+
+
+  @action
+  deleteRail = (item: Partial<RailData>, overwrite = false) => {
     const layout = this.histories[this.historyIndex]
-    // レールをリストから削除する
-    const newRails = layout.rails.filter(rail => ! (rail.id === item.id))
+
+    const newLayout = _.clone(layout);
+    newLayout.rails = layout.rails.filter(rail => ! (rail.id === item.id))
     // レールグループに所属していたら削除する
-    const newRailGroups = layout.railGroups.map(group => {
+    newLayout.railGroups = layout.railGroups.map(group => {
       return {
         ...group,
         rails: group.rails.filter( r => ! (r === item.id))
       }
     })
-
-    // レイアウトを更新
-    const newLayout = {
-      ...layout,
-      rails: newRails,
-      railGroups: newRailGroups
-    }
-
     // ヒストリを更新
     return this.addHistory(newLayout, overwrite)
   }
 
 
   @action
-  addRailGroup = (item: RailGroupData, children: RailData[], overwrite) => {
+  addRailGroup = (item: RailGroupData, children: RailData[], overwrite = false) => {
     const layout = this.histories[this.historyIndex]
 
     // 各レールにグループIDを付与する
@@ -363,11 +375,17 @@ export class LayoutStore {
     }
   }
 
+  commit = () => {
+    this.histories[this.historyIndex+1] = mobx.toJS(this.currentLayoutData)
+    this.historyIndex += 1
+  }
+
   addHistory = (layout: LayoutData, overwrite = false) => {
     if (overwrite) {
       this.histories[this.historyIndex] = layout
     } else {
-      this.histories.push(layout)
+      this.histories[this.historyIndex+1] = layout
+      this.historyIndex += 1
     }
   }
 }

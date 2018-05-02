@@ -25,6 +25,9 @@ import {CommonStore} from "store/commonStore";
 import {LayoutStore} from "store/layoutStore";
 import {STORE_COMMON, STORE_LAYOUT} from "constants/stores";
 import {GridPaper} from "components/Editor/GridPaper/GridPaper";
+import Layout from "components/Editor/Layout/Layout";
+import {Tools} from "constants/tools";
+import FirstRailPutter from "components/Editor/FirstRailPutter/FirstRailPutter";
 
 const LOGGER = getLogger(__filename)
 
@@ -119,24 +122,24 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             matrix={matrix}
             setPaperLoaded={this.props.common.setPaperLoaded}
           >
-            {/*<Layout />*/}
+            <Layout />
 
             {/*/!* 後から書いたコンポーネントの方が前面に配置される *!/*/}
-            {/*{this.props.isLayoutEmpty &&*/}
-              {/*<FirstRailPutter mousePosition={this.state.mousePosition}/>*/}
-            {/*}*/}
+            {this.props.layout.isLayoutEmpty &&
+              <FirstRailPutter mousePosition={this.state.mousePosition}/>
+            }
 
 
-            {/*<Tool*/}
-              {/*active={this.isActive(*/}
-                {/*Tools.STRAIGHT_RAILS, Tools.CURVE_RAILS, Tools.TURNOUTS, Tools.SPECIAL_RAILS, Tools.RAIL_GROUPS)}*/}
-              {/*name={'Rails'}*/}
-              {/*onMouseDown={this.onMouseDown}*/}
-              {/*onMouseMove={this.onMouseMove}*/}
-              {/*onMouseDrag={this.onMouseDrag}*/}
-              {/*onMouseUp={this.onMouseUp}*/}
-              {/*onKeyDown={this.props.builderKeyDown}*/}
-            {/*/>*/}
+            <Tool
+              active={this.isActive(
+                Tools.STRAIGHT_RAILS, Tools.CURVE_RAILS, Tools.TURNOUTS, Tools.SPECIAL_RAILS, Tools.RAIL_GROUPS)}
+              name={'Rails'}
+              onMouseDown={this.onMouseDown}
+              onMouseMove={this.onMouseMove}
+              onMouseDrag={this.onMouseDrag}
+              onMouseUp={this.onMouseUp}
+              onKeyDown={this.props.builderKeyDown}
+            />
             {/*<Tool*/}
               {/*active={this.isActive(Tools.PAN)}*/}
               {/*name={Tools.PAN}*/}
@@ -155,11 +158,11 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
 
 export default compose<EditorProps|any, EditorProps|any>(
-  // withBuilder,
+  withBuilder,
   // withFullscreen,
   // withTools,
-  // withMoveTool,
-  // withSelectTool,
+  withMoveTool,
+  withSelectTool,
   // withSnackbar(),
   // connect(mapStateToProps, mapDispatchToProps)
 )(Editor)

@@ -12,6 +12,10 @@ import {
 } from "constants/tools";
 import {PaperScope, Point, ToolEvent, View} from 'paper'
 import getLogger from "logging";
+import {inject, observer} from "mobx-react";
+import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
+import {BuilderStore} from "store/builderStore";
+import {LayoutStore} from "store/layoutStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -23,11 +27,8 @@ export interface WithMoveToolPublicProps {
   moveToolMouseUp: (e: ToolEvent) => void
   moveToolMouseDrag: (e: ToolEvent) => void
   resetViewPosition: () => void
-}
-
-export interface WithMoveToolPrivateProps {
-  setMousePosition: (point: Point) => void
-  paperViewLoaded: boolean
+  builder?: BuilderStore
+  layout?: LayoutStore
 }
 
 
@@ -41,25 +42,28 @@ interface WithMoveToolState {
   zoom: number
 }
 
-export type WithMoveToolProps = WithMoveToolPublicProps & WithMoveToolPrivateProps
+export type WithMoveToolProps = WithMoveToolPublicProps
 
 /**
  * キャンバスのパニング・ズーム機能を提供するHOC。
  */
 export default function withMoveTool(WrappedComponent: React.ComponentClass<WithMoveToolPublicProps>) {
 
-  const mapStateToProps = (state: RootState) => {
-    return {
-      paperViewLoaded: state.builder.paperViewLoaded
-    }
-  }
+  // const mapStateToProps = (state: RootState) => {
+  //   return {
+  //     paperViewLoaded: state.builder.paperViewLoaded
+  //   }
+  // }
+  //
+  // const mapDispatchToProps = (dispatch: any) => {
+  //   return {
+  //     setMousePosition: (point: Point) => dispatch(setMousePosition(point))
+  //   }
+  // }
 
-  const mapDispatchToProps = (dispatch: any) => {
-    return {
-      setMousePosition: (point: Point) => dispatch(setMousePosition(point))
-    }
-  }
 
+  @inject(STORE_BUILDER, STORE_LAYOUT)
+  @observer
   class WithMoveTool extends React.Component<WithMoveToolProps, WithMoveToolState> {
 
     private _pan: any
@@ -100,7 +104,7 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
     }
 
     componentWillReceiveProps(props: WithMoveToolProps) {
-      if (this.props.paperViewLoaded === false && props.paperViewLoaded === true) {
+      if (this.props.builder.paperViewLoaded === false && props.builder.paperViewLoaded === true) {
         this.resetViewPosition()
       }
     }
@@ -254,6 +258,6 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
     }
   }
 
-  return connect(mapStateToProps, mapDispatchToProps)(WithMoveTool)
+  return WithMoveTool
 
 }
