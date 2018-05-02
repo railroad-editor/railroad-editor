@@ -5,8 +5,10 @@ import * as _ from "lodash";
 
 
 export interface GridPaperProps {
-  width: number
-  height: number
+  viewWidth: number
+  viewHeight: number
+  paperWidth: number
+  paperHeight: number
   gridSize: number
   onWheel: any
   setPaperLoaded: (loaded: boolean) => void
@@ -40,12 +42,12 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
   }
 
   createVerticalLines = () => {
-    return _.range(this.props.width / this.props.gridSize + 1).map(i => {
+    return _.range(this.props.paperWidth / this.props.gridSize + 1).map(i => {
       return (
         <Line
           key={`v-line${i}`}
           from={new Point(this.props.gridSize * i, 0)}
-          to={new Point(this.props.gridSize * i, this.props.height)}
+          to={new Point(this.props.gridSize * i, this.props.paperHeight)}
           data={{type: 'GridLine'}}
           strokeColor={i % 10 === 0 ? 'white' : 'red'}
         />)
@@ -53,12 +55,12 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
   }
 
   createHorizontalLines = () => {
-    return _.range(this.props.height / this.props.gridSize + 1).map(i => {
+    return _.range(this.props.paperHeight / this.props.gridSize + 1).map(i => {
       return (
         <Line
           key={`h-line${i}`}
           from={new Point(0, this.props.gridSize * i)}
-          to={new Point(this.props.width,this.props.gridSize * i)}
+          to={new Point(this.props.paperWidth,this.props.gridSize * i)}
           data={{type: 'GridLine'}}
           strokeColor={i % 10 === 0 ? 'white' : 'red'}
         />)
@@ -67,12 +69,12 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
 
 
   render() {
-    const {width, height, onWheel} = this.props
+    const {viewWidth, viewHeight, onWheel} = this.props
     const matrix = this.props.matrix || DEFAULT_MATRIX
 
     return (
-        <View width={width}
-              height={height}
+        <View width={viewWidth}
+              height={viewHeight}
               matrix={matrix}
               onWheel={onWheel}
               settings={{

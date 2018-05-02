@@ -5,7 +5,13 @@ import DetectablePart from "./primitives/DetectablePart";
 import CirclePart from "./primitives/CirclePart";
 import {JointMeta} from "components/rails/parts/types";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
-import {JOINT_DETECTION_OPACITY_RATE, JOINT_FILL_COLORS} from "constants/parts";
+import {
+  JOINT_DETECTION_OPACITY_RATE,
+  JOINT_FILL_COLORS,
+  JOINT_HEIGHT,
+  JOINT_HIT_RADIUS,
+  JOINT_WIDTH
+} from "constants/parts";
 import TrianglePart from "components/rails/parts/primitives/TrianglePart";
 import getLogger from "logging";
 
@@ -46,13 +52,6 @@ export default class Joint extends React.Component<JointProps, {}> {
     hasOpposingJoint: false,
     detectionEnabled: true
   }
-  static WIDTH = 8;
-  static HEIGHT = 18;
-  static HIT_RADIUS = 16;
-  static FLOW_COLOR_1 = "royalblue";
-  static FLOW_COLOR_2 = "greenyellow";
-  static ANIMATION_MAX = 30
-  static ANIMATION_MIN = 60
 
   part: DetectablePart
 
@@ -91,14 +90,14 @@ export default class Joint extends React.Component<JointProps, {}> {
       <DetectablePart
         mainPart={
           <TrianglePart
-            width={Joint.WIDTH}
-            height={Joint.HEIGHT}
+            width={JOINT_WIDTH}
+            height={JOINT_HEIGHT}
             opacity={opacity}
           />
         }
         detectionPart={
           <CirclePart
-            radius={Joint.HIT_RADIUS}
+            radius={JOINT_HIT_RADIUS}
             opacity={opacity * JOINT_DETECTION_OPACITY_RATE}
           />
         }

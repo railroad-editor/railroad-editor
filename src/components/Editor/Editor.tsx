@@ -26,7 +26,7 @@ import {LayoutStore} from "store/layoutStore";
 import {STORE_COMMON, STORE_LAYOUT} from "constants/stores";
 import {GridPaper} from "components/Editor/GridPaper/GridPaper";
 import Layout from "components/Editor/Layout/Layout";
-import {Tools} from "constants/tools";
+import {DEFAULT_VIEW_HEIGHT, DEFAULT_VIEW_WIDTH, Tools} from "constants/tools";
 import FirstRailPutter from "components/Editor/FirstRailPutter/FirstRailPutter";
 
 const LOGGER = getLogger(__filename)
@@ -115,8 +115,10 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
           <StyledPalette />
           <StyledLayerPalette layers={this.props.layout.currentLayoutData.layers} />
           <GridPaper
-            width={paperWidth}
-            height={paperHeight}
+            viewWidth={DEFAULT_VIEW_WIDTH}
+            viewHeight={DEFAULT_VIEW_HEIGHT}
+            paperWidth={paperWidth}
+            paperHeight={paperHeight}
             gridSize={gridSize}
             onWheel={this.props.moveToolMouseWheel}
             matrix={matrix}

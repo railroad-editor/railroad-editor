@@ -1,3 +1,5 @@
+import {SCALE} from "constants/parts";
+
 export enum Tools {
   STRAIGHT_RAILS = 'Straight Rails',
   CURVE_RAILS = 'Curve Rails',
@@ -14,8 +16,12 @@ export enum Tools {
   DELETE = 'Delete',
 }
 
-export const DEFAULT_PAPER_WIDTH = 2100
-export const DEFAULT_PAPER_HEIGHT = 1400
+export const DEFAULT_VIEW_WIDTH = 1920
+export const DEFAULT_VIEW_HEIGHT = 1080
+
+export const DEFAULT_PAPER_WIDTH = 5600
+export const DEFAULT_PAPER_HEIGHT = 4200
+
 export const DEFAULT_GRID_SIZE = 70
 export const DEFAULT_INITIAL_ZOOM = 1
 
