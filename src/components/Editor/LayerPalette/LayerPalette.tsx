@@ -3,28 +3,24 @@ import LayersIcon from 'material-ui-icons/Layers';
 import {Checkbox, Grid, ListItemText, Paper} from 'material-ui'
 import {TitleDiv} from "./styles";
 import Rnd from 'react-rnd'
-import {LayerData} from "reducers/layout";
-import AddLayerButton from "components/Editor/LayerPalette/AddLayerButton/AddLayerButton";
 import {LayerListItem} from "components/Editor/LayerPalette/LayerListItem/LayerListItem";
 import getLogger from "logging";
 import {getClosest} from "constants/utils";
-import LayerSettingDialog from "components/Editor/LayerPalette/LayerSettingDialog";
+import LayerSettingDialog from "components/Editor/LayerPalette/LayerSettingDialog/LayerSettingDialog";
 import {ConfirmationDialog} from "components/Editor/LayerPalette/ConfirmationDialog/ConfirmationDialog";
 import Typography from "material-ui/Typography";
+import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
+import {inject, observer} from "mobx-react";
+import {LayoutStore} from "store/layoutStore";
+import {BuilderStore} from "store/builderStore";
+import PaletteAddButton from "components/common/PaletteAddButton/PaletteAddButton";
 
 const LOGGER = getLogger(__filename)
 
 export interface LayerPaletteProps {
   className?: string
-
-  layers: LayerData[]
-  activeLayerId: number
-  nextLayerId: number
-
-  setActiveLayer: (layerId: number) => void
-  updateLayer: (item: Partial<LayerData>) => void
-  addLayer: (item: LayerData) => void
-  deleteLayer: (itemId: number) => void
+  layout?: LayoutStore
+  builder?: BuilderStore
 }
 
 export interface LayerPaletteState {
@@ -34,7 +30,16 @@ export interface LayerPaletteState {
   deleteDialogOpen: boolean
 }
 
+const DEFAULT_LAYER_DATA = {
+  id: 0,
+  name: '',
+  visible: true,
+  color: '#000'
+}
 
+
+@inject(STORE_BUILDER, STORE_LAYOUT)
+@observer
 export default class LayerPalette extends React.Component<LayerPaletteProps, LayerPaletteState> {
 
   constructor(props: LayerPaletteProps) {
@@ -52,15 +57,15 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
   }
 
   onToggleVisible = (layerId: number) => (e: React.SyntheticEvent<HTMLInputElement>) => {
-    const targetLayer = this.props.layers.find(layer => layer.id === layerId)
-    this.props.updateLayer({
+    const targetLayer = this.props.layout.currentLayoutData.layers.find(layer => layer.id === layerId)
+    this.props.layout.updateLayer({
       id: layerId,
       visible: !targetLayer.visible,
     })
   }
 
   onChangeActive = (layerId: number) => (e: React.MouseEvent<HTMLElement>) => {
-    this.props.setActiveLayer(layerId)
+    this.props.builder.setActiveLayer(layerId)
   }
 
 
@@ -91,7 +96,7 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
   }
 
   openDeleteDialog = (layerId: number) => (e: React.MouseEvent<HTMLElement>) => {
-    if (this.props.layers.length < 2) {
+    if (this.props.layout.currentLayoutData.layers.length < 2) {
       LOGGER.warn(`You cannot delete the last layer!`)
       return
     }
@@ -110,21 +115,18 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
 
   deleteLayer = () => {
     const layerId = this.state.targetLayerId
-    const restLayerIds = this.props.layers
+    const restLayerIds = this.props.layout.currentLayoutData.layers
       .map(layer => layer.id)
       .filter(id => id !== layerId)
 
-    this.props.deleteLayer(layerId)
-    this.props.setActiveLayer(getClosest(layerId, restLayerIds))
+    this.props.layout.deleteLayer(layerId)
+    this.props.builder.setActiveLayer(getClosest(layerId, restLayerIds))
   }
 
 
   render() {
-    const {layers, activeLayerId} = this.props
-    let layerName = ''
-    if (this.state.targetLayerId) {
-      layerName = this.props.layers.find(layer => layer.id === this.state.targetLayerId).name
-    }
+    const layers = this.props.layout.currentLayoutData.layers
+    const activeLayer = layers.find(layer => layer.id === this.state.targetLayerId)
 
     return (
       <Rnd
@@ -139,11 +141,11 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
             <Typography variant="subheading" color="inherit" style={{flex: 1}}>
               Layers
             </Typography>
-            <AddLayerButton onClick={this.openAddDialog}/>
+            <PaletteAddButton onClick={this.openAddDialog}/>
           </TitleDiv>
 
-          <Grid container justify="center" spacing={0}>
-            {layers.map((layer, index) =>
+          {layers.map((layer, index) =>
+            <Grid container justify="center" spacing={0}>
               <React.Fragment key={`layer-${index}`}>
                 <Grid item xs={3}>
                   <Checkbox
@@ -156,33 +158,36 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
                   {/* <Layer> で囲わずにSecondaryActionを使うとズレる */}
                   <LayerListItem
                     button
-                    active={activeLayerId === layer.id}
+                    active={this.props.builder.activeLayerId === layer.id}
                     onClick={this.onChangeActive(layer.id)}
                     onDelete={this.openDeleteDialog(layer.id)}
                     onRename={this.openUpdateDialog(layer.id)}
-                    isDeletable={this.props.layers.length >= 2}
+                    isDeletable={layers.length >= 2}
                   >
-                    <ListItemText primary={layer.name}/>
+                    <ListItemText primary={'unko'}/>
                   </LayerListItem>
                 </Grid>
               </React.Fragment>
-            )}
-          </Grid>
+            </Grid>
+          )}
         </Paper>
         <LayerSettingDialog
           title={'New Layer'}
           open={this.state.addDialogOpen}
           onClose={this.closeAddDialog}
+          layer={DEFAULT_LAYER_DATA}
+          addLayer={this.props.layout.addLayer}
         />
         <LayerSettingDialog
-          title={'Change Layer Settings'}
+          title={'Layer Settings'}
           open={this.state.updateDialogOpen}
           onClose={this.closeRenameDialog}
-          layerId={this.state.targetLayerId}
+          layer={activeLayer}
+          updateLayer={this.props.layout.updateLayer}
         />
         <ConfirmationDialog
           title={'Delete Layer'}
-          text={`Are you OK to delete "${layerName}"? \nAll rails on the layer are deleted.`}
+          text={`Are you OK to delete "${activeLayer ? activeLayer.name: ''}"? \nAll rails on the layer are deleted.`}
           open={this.state.deleteDialogOpen}
           onOK={this.deleteLayer}
           onClose={this.closeDeleteDialog}

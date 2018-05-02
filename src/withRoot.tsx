@@ -1,13 +1,14 @@
 import * as React from 'react';
 import createMuiTheme from 'material-ui/styles/createMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-// import lightBlue from 'material-ui/colors/lightBlue';
 import cyan from 'material-ui/colors/cyan';
 import green from 'material-ui/colors/green';
-import {Provider} from "react-redux";
-import {configureStore} from "./store";
 import {SnackbarProvider} from 'material-ui-snackbar-provider'
 import CssBaseline from "material-ui/CssBaseline";
+import {createStores} from "store/createStore";
+import {Provider as MobxProvider} from "mobx-react";
+import makeInspectable from 'mobx-devtools-mst';
+
 
 // A theme with custom primary and secondary color.
 // It's optional.
@@ -38,14 +39,16 @@ const snackbarProps = {
 }
 
 
-const store = configureStore();
+const stores = createStores();
+makeInspectable(stores);
+
 
 function withRoot(Component: React.ComponentType) {
   function WithRoot(props: object) {
     // MuiThemeProvider makes the theme available down the React tree
     // thanks to React context.
     return (
-      <Provider store={store}>
+      <MobxProvider {...stores}>
         <MuiThemeProvider theme={theme}>
           {/* Reboot kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline>
@@ -55,7 +58,7 @@ function withRoot(Component: React.ComponentType) {
             </SnackbarProvider>
           </CssBaseline>
         </MuiThemeProvider>
-      </Provider>
+      </MobxProvider>
     );
   }
 

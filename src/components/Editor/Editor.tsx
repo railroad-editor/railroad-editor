@@ -10,30 +10,30 @@ import withMoveTool, {WithMoveToolProps} from '../hoc/withMoveTool'
 import {EditorBody, StyledLayerPalette, StyledPalette, StyledToolBar, StyledWrapper} from "./Editor.style";
 
 import './Paper.css'
-import GridPaper from "components/Editor/GridPaper";
 import withBuilder, {WithBuilderPublicProps} from "../hoc/withBuilder";
 import {RootState} from "store/type";
 import {connect} from "react-redux";
 import {LayoutData} from "reducers/layout";
 import {currentLayoutData, isLayoutEmpty} from "selectors";
 import getLogger from "logging";
-import FirstRailPutter from "./FirstRailPutter";
 import withSelectTool, {WithSelectToolPublicProps} from "components/hoc/withSelectTool";
-import {Tools} from "constants/tools";
 import {SettingsStoreState} from "reducers/settings";
 import {withSnackbar} from 'material-ui-snackbar-provider'
-import Layout from "components/Editor/Layout";
 import {Point} from "paper";
+import {inject, observer} from "mobx-react";
+import {CommonStore} from "store/commonStore";
+import {LayoutStore} from "store/layoutStore";
+import {STORE_COMMON, STORE_LAYOUT} from "constants/stores";
+import {GridPaper} from "components/Editor/GridPaper/GridPaper";
 
 const LOGGER = getLogger(__filename)
 
 
 export interface EditorProps {
-  layout: LayoutData
   width: number
   height: number
-  isLayoutEmpty: boolean
-  settings: SettingsStoreState
+  common?: CommonStore
+  layout?: LayoutStore
 }
 
 
@@ -45,24 +45,14 @@ type EnhancedEditorProps = EditorProps
   & WithSelectToolPublicProps
 
 
-const mapStateToProps = (state: RootState) => {
-  return {
-    layout: currentLayoutData(state),
-    isLayoutEmpty: isLayoutEmpty(state),
-    settings: state.settings
-  }
-}
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {}
-}
-
 export interface EditorState {
   // マウス位置
   mousePosition: Point
 }
 
 
+@inject(STORE_COMMON, STORE_LAYOUT)
+@observer
 class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
   constructor(props: EnhancedEditorProps) {
@@ -102,58 +92,59 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
   render() {
 
-    const toolbarProps = Object.assign(_.pick(this.props,
-      ['activeTool', 'setTool', 'undo', 'redo', 'canUndo', 'canRedo', 'paletteItem', 'resetViewPosition']), {
-    })
-
+    // const toolbarProps = Object.assign(_.pick(this.props,
+    //   ['activeTool', 'setTool', 'undo', 'redo', 'canUndo', 'canRedo', 'paletteItem', 'resetViewPosition']), {
+    // })
+    //
     const matrix = _.pick(this.props, [
       'sx', 'sy', 'tx', 'ty', 'x', 'y', 'zoom',
     ])
 
-    const {paperWidth, paperHeight, gridSize} = this.props.settings
+    const {paperWidth, paperHeight, gridSize} = this.props.layout.config
 
     // LOGGER.debug(`from=${this.props.selectionRectFrom}, to=${this.props.selectionRectTo}`)
 
     return (
 
       <StyledWrapper>
-        <StyledToolBar {...toolbarProps} />
+        <StyledToolBar  />
         <EditorBody>
           <StyledPalette />
-          <StyledLayerPalette layers={this.props.layout.layers} />
+          <StyledLayerPalette layers={this.props.layout.currentLayoutData.layers} />
           <GridPaper
             width={paperWidth}
             height={paperHeight}
             gridSize={gridSize}
             onWheel={this.props.moveToolMouseWheel}
             matrix={matrix}
+            setPaperLoaded={this.props.common.setPaperLoaded}
           >
-            <Layout />
+            {/*<Layout />*/}
 
-            {/* 後から書いたコンポーネントの方が前面に配置される */}
-            {this.props.isLayoutEmpty &&
-              <FirstRailPutter mousePosition={this.state.mousePosition}/>
-            }
+            {/*/!* 後から書いたコンポーネントの方が前面に配置される *!/*/}
+            {/*{this.props.isLayoutEmpty &&*/}
+              {/*<FirstRailPutter mousePosition={this.state.mousePosition}/>*/}
+            {/*}*/}
 
 
-            <Tool
-              active={this.isActive(
-                Tools.STRAIGHT_RAILS, Tools.CURVE_RAILS, Tools.TURNOUTS, Tools.SPECIAL_RAILS, Tools.RAIL_GROUPS)}
-              name={'Rails'}
-              onMouseDown={this.onMouseDown}
-              onMouseMove={this.onMouseMove}
-              onMouseDrag={this.onMouseDrag}
-              onMouseUp={this.onMouseUp}
-              onKeyDown={this.props.builderKeyDown}
-            />
-            <Tool
-              active={this.isActive(Tools.PAN)}
-              name={Tools.PAN}
-              onMouseDown={this.props.moveToolMouseDown}
-              onMouseDrag={this.props.moveToolMouseDrag}
-              onMouseUp={this.props.moveToolMouseUp}
-              onMouseMove={this.props.moveToolMouseMove}
-            />
+            {/*<Tool*/}
+              {/*active={this.isActive(*/}
+                {/*Tools.STRAIGHT_RAILS, Tools.CURVE_RAILS, Tools.TURNOUTS, Tools.SPECIAL_RAILS, Tools.RAIL_GROUPS)}*/}
+              {/*name={'Rails'}*/}
+              {/*onMouseDown={this.onMouseDown}*/}
+              {/*onMouseMove={this.onMouseMove}*/}
+              {/*onMouseDrag={this.onMouseDrag}*/}
+              {/*onMouseUp={this.onMouseUp}*/}
+              {/*onKeyDown={this.props.builderKeyDown}*/}
+            {/*/>*/}
+            {/*<Tool*/}
+              {/*active={this.isActive(Tools.PAN)}*/}
+              {/*name={Tools.PAN}*/}
+              {/*onMouseDown={this.props.moveToolMouseDown}*/}
+              {/*onMouseDrag={this.props.moveToolMouseDrag}*/}
+              {/*onMouseUp={this.props.moveToolMouseUp}*/}
+              {/*onMouseMove={this.props.moveToolMouseMove}*/}
+            {/*/>*/}
           </GridPaper>
         </EditorBody>
       </StyledWrapper>
@@ -163,13 +154,13 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 }
 
 
-export default compose<EditorProps, EditorProps|any>(
-  withBuilder,
-  withFullscreen,
-  withTools,
-  withMoveTool,
-  withSelectTool,
-  withSnackbar(),
-  connect(mapStateToProps, mapDispatchToProps)
+export default compose<EditorProps|any, EditorProps|any>(
+  // withBuilder,
+  // withFullscreen,
+  // withTools,
+  // withMoveTool,
+  // withSelectTool,
+  // withSnackbar(),
+  // connect(mapStateToProps, mapDispatchToProps)
 )(Editor)
 

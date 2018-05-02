@@ -11,3 +11,6 @@ export const SmallButton = styled(Button as any)`
   }
 `
 
+export const Spacer = styled.div`
+  height: 20px;
+`

@@ -13,10 +13,11 @@ const StyledIconButton = styled(IconButton as any)`
     &.active, &:active {
         color: orange;
     }
+    margin-left: 5px;
   }
 `
 
-const AddLayerButton: React.SFC<IconButtonProps> = (props) => {
+const PaletteAddButton: React.SFC<IconButtonProps> = (props) => {
   return (
     <StyledIconButton {...props}>
       <AddBoxIcon/>
@@ -24,6 +25,6 @@ const AddLayerButton: React.SFC<IconButtonProps> = (props) => {
   )
 }
 
-export default AddLayerButton
+export default PaletteAddButton
 
 

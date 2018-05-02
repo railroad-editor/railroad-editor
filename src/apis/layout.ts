@@ -2,6 +2,7 @@ import {API} from "aws-amplify";
 import {LayoutData, LayoutMeta} from "reducers/layout";
 import {UserRailGroupData} from "reducers/builder";
 import {RailItemData} from "components/rails";
+import {LayoutConfig} from "store/layoutStore";
 
 
 export interface LayoutList {
@@ -11,24 +12,36 @@ export interface LayoutList {
 export interface LayoutDataWithMeta {
   layout: LayoutData
   meta: LayoutMeta
+  config: LayoutConfig
   userRailGroups: UserRailGroupData[]
   userCustomRails: RailItemData[]
 }
 
 
-const fetchLayoutList = async (userId: string): Promise<LayoutList> => {
-  return await API.get('Layout', `/users/${userId}/layouts`, {headers: {}})
+const fetchLayoutList = async (userId: string): Promise<LayoutMeta[]> => {
+  const result = await API.get('Layout', `/users/${userId}/layouts`, {headers: {}})
+  return result.layouts
 }
 
 const fetchLayoutData = async (userId: string, layoutId: string): Promise<LayoutDataWithMeta> => {
   return await API.get('Layout', `/users/${userId}/layouts/${layoutId}`, {headers: {}})
 }
 
-const saveLayoutData = async (userId: string, layoutData: LayoutDataWithMeta) => {
-  const layoutId = layoutData.meta.id
+const saveLayoutData = async (userId: string,
+                              layoutData: LayoutData,
+                              layoutMeta: LayoutMeta,
+                              userRailGroups: UserRailGroupData[],
+                              userCustomRails: RailItemData[]
+                              ) => {
+  const layoutId = layoutMeta.id
   return await API.put('Layout', `/users/${userId}/layouts/${layoutId}`, {
     headers: {},
-    body: layoutData
+    body: {
+      layout: layoutData,
+      meta: layoutMeta,
+      userRailGroups: userRailGroups,
+      userCustomRails: userCustomRails
+    }
   })
 }
 

@@ -36,14 +36,6 @@ export const nextLayerId = (state: RootState) => {
   return ids.length > 0 ? Math.max(...ids) + 1 : 1
 }
 
-export const canUndo = (state: RootState) => {
-  return state.layout.historyIndex > 0
-}
-
-export const canRedo = (state: RootState) => {
-  return state.layout.histories.length > 1 && state.layout.historyIndex + 1 < state.layout.histories.length
-}
-
 
 export const paletteRailGroupData = (state: RootState) => {
   const {type, name} = state.builder.paletteItem

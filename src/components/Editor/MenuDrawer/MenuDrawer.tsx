@@ -8,19 +8,23 @@ import SaveIcon from "material-ui-icons/Save";
 import LoginIcon from "material-ui-icons/LockOpen";
 import LogoutIcon from "material-ui-icons/Lock";
 import SettingsIcon from "material-ui-icons/Settings";
-import LayoutNameDialog from "components/Editor/MenuDrawer/NewLayoutDialog";
-import OpenDialog from "components/Editor/MenuDrawer/OpenDialog";
-import LoginDialog from "components/Editor/ToolBar/LoginDialog";
+import OpenLayoutDialog from "components/Editor/MenuDrawer/OpenLayoutDialog/OpenLayoutDialog";
 import Auth from "aws-amplify/lib/Auth";
 import LayoutAPI from "apis/layout"
 import StorageAPI from "apis/storage"
 import {LayoutData, LayoutMeta} from "reducers/layout";
 import Divider from "material-ui/Divider";
 import getLogger from "logging";
-import SettingsDialog from "components/Editor/MenuDrawer/SettingsDialog";
 import {UserRailGroupData} from "reducers/builder";
 import {RailItemData} from "components/rails";
 import {AuthData} from "components/common/Authenticator/AuthPiece/AuthPiece";
+import {SettingsDialog} from "components/Editor/ToolBar/SettingsDialog/SettingsDialog";
+import {inject, observer} from "mobx-react";
+import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
+import {CommonStore} from "store/commonStore";
+import {LayoutStore} from "store/layoutStore";
+import {BuilderStore} from "store/builderStore";
+import SaveLayoutDialog from "components/Editor/MenuDrawer/SaveLayoutDialog/SaveLayoutDialog";
 
 const LOGGER = getLogger(__filename)
 
@@ -29,52 +33,49 @@ export interface MenuDrawerProps {
   open: boolean
   onClose: () => void
 
-  authData: any
-  currentLayoutData: LayoutData
-  layoutMeta: LayoutMeta
-  userRailGroups: UserRailGroupData[]
-  userCustomRails: RailItemData[]
-
-  setAuthData: (authData: AuthData) => void
+  common?: CommonStore
+  layout?: LayoutStore
+  builder?: BuilderStore
 }
 
 export interface MenuDrawerState {
-  openLogin: boolean
   openOpen: boolean
   openCreateNew: boolean
   openSaveNew: boolean
-  openSettings: boolean
 }
 
 
+@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT)
+@observer
 export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState> {
 
   constructor(props: MenuDrawerProps) {
     super(props)
     this.state = {
-      openLogin: false,
       openOpen: false,
       openCreateNew: false,
       openSaveNew: false,
-      openSettings: false
     }
   }
 
 
   save = async () => {
-    const {authData, layoutMeta, currentLayoutData, userRailGroups, userCustomRails} = this.props
+    const {meta, currentLayoutData} = this.props.layout
+    const {userRailGroups, userRails} = this.props.builder
+    const {authData} = this.props.common
+
     const userId = authData.username
-    if (layoutMeta) {
+    if (meta) {
       const savedData = {
         layout: currentLayoutData,
-        meta: layoutMeta,
+        meta: meta,
         userRailGroups: userRailGroups,
-        userCustomRails: userCustomRails,
+        userCustomRails: userRails,
       }
       LOGGER.info(savedData)
-      LayoutAPI.saveLayoutData(userId, savedData)
-      StorageAPI.saveCurrentLayoutImage(userId, layoutMeta.id)
-      this.closeMenu()
+      // LayoutAPI.saveLayoutData(userId, savedData)
+      StorageAPI.saveCurrentLayoutImage(userId, meta.id)
+      this.props.onClose()
     } else {
       this.openSaveNewDialog()
     }
@@ -82,26 +83,17 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
 
   logout = async () => {
     await Auth.signOut()
-    this.props.setAuthData(null)
-    this.closeMenu()
+    this.props.common.setAuthData(null)
+    this.props.onClose()
   }
 
-  openLoginDialog = () => {
-    this.setState({ openLogin: true })
-  }
-
-  closeLoginDialog = () => {
-    this.setState({ openLogin: false })
-    this.closeMenu()
-  }
-
-  openOpenDialog = () => {
+  openLayoutsDialog = () => {
     this.setState({ openOpen: true })
   }
 
-  closeOpenDialog = () => {
+  closeLayoutsDialog = () => {
     this.setState({ openOpen: false })
-    this.closeMenu()
+    this.props.onClose()
   }
 
   openCreateNewDialog = () => {
@@ -110,7 +102,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
 
   closeCreateNewDialog = () => {
     this.setState({ openCreateNew: false })
-    this.closeMenu()
+    this.props.onClose()
   }
 
   openSaveNewDialog = () => {
@@ -119,23 +111,6 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
 
   closeSaveNewDialog = () => {
     this.setState({ openSaveNew: false })
-    this.closeMenu()
-  }
-
-  openSettingsDialog = () => {
-    this.setState({
-      openSettings: true
-    })
-  }
-
-  closeSettingsDialog = () => {
-    this.setState({
-      openSettings: false
-    })
-    this.closeMenu()
-  }
-
-  closeMenu = () => {
     this.props.onClose()
   }
 
@@ -158,17 +133,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
           // onKeyDown={this.toggleDrawer('left', false)}
         >
           <List>
-            {! this.props.authData &&
-            <ListItem button
-                      onClick={this.openLoginDialog}
-              >
-                <ListItemIcon>
-                  <LoginIcon/>
-                </ListItemIcon>
-                <ListItemText primary="Login"/>
-              </ListItem>
-            }
-            {this.props.authData &&
+            {this.props.common.isAuth &&
               <React.Fragment>
                 <ListItem button onClick={this.logout}>
                   <ListItemIcon>
@@ -177,7 +142,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
                   <ListItemText primary="Logout"/>
                 </ListItem>
                 <Divider />
-                <ListItem button onClick={this.openOpenDialog}>
+                <ListItem button onClick={this.openLayoutsDialog}>
                   <ListItemIcon>
                     <CloudIcon/>
                   </ListItemIcon>
@@ -195,28 +160,33 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
                   </ListItemIcon>
                   <ListItemText primary="Save"/>
                 </ListItem>
-                <ListItem button onClick={this.openSettingsDialog}>
-                  <ListItemIcon>
-                    <SettingsIcon/>
-                  </ListItemIcon>
-                  <ListItemText primary="Settings"/>
-                </ListItem>
               </React.Fragment>
             }
           </List>
-          <LayoutNameDialog
+          <SaveLayoutDialog
             title={"Create New Layout"}
-            okButtonTitle={"Create"}
             open={this.state.openCreateNew}
-            onClose={this.closeCreateNewDialog}/>
-          <LayoutNameDialog
-            save
-            title={"Save New Layout"}
-            okButtonTitle={"Save"}
-            open={this.state.openSaveNew} onClose={this.closeSaveNewDialog}/>
-          <OpenDialog open={this.state.openOpen} onClose={this.closeOpenDialog}/>
-          <LoginDialog open={this.state.openLogin} onClose={this.closeLoginDialog}/>
-          <SettingsDialog open={this.state.openSettings} onClose={this.closeSettingsDialog}/>
+            onClose={this.closeCreateNewDialog}
+            authData={this.props.common.authData}
+            saveLayout={this.props.layout.saveLayout}
+            setLayoutMeta={this.props.layout.setLayoutMeta}
+          />
+          <SaveLayoutDialog
+            title={"Save Layout"}
+            open={this.state.openSaveNew} onClose={this.closeSaveNewDialog}
+            authData={this.props.common.authData}
+            saveLayout={this.props.layout.saveLayout}
+            setLayoutMeta={this.props.layout.setLayoutMeta}
+          />
+          <OpenLayoutDialog
+            open={this.state.openOpen}
+            onClose={this.closeLayoutsDialog}
+            authData={this.props.common.authData}
+            layouts={this.props.common.layouts}
+            loadLayout={this.props.layout.loadLayout}
+            loadLayoutList={this.props.common.loadLayoutList}
+          />
+          {/*<LoginDialog open={this.state.openLogin} onClose={this.closeLoginDialog}/>*/}
         </div>
       </Drawer>
     )

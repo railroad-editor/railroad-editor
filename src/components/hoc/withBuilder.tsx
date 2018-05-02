@@ -17,6 +17,7 @@ import {DetectionState} from "components/rails/parts/primitives/DetectablePart";
 import NewRailGroupDialog from "components/hoc/NewRailGroupDialog/NewRailGroupDialog";
 import railItems from "constants/railItems.json"
 import {TEMPORARY_RAIL_OPACITY} from "constants/tools";
+import {inject, observer} from "mobx-react";
 
 
 const LOGGER = getLogger(__filename)
@@ -118,6 +119,8 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
   }
 
+  @inject('builder', 'layout')
+  @observer
   class WithBuilder extends React.Component<WithBuilderProps, WithBuilderState> {
 
     constructor(props: WithBuilderProps) {
@@ -584,7 +587,8 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
   }
 
-  return connect(mapStateToProps, mapDispatchToProps, null, {withRef: true})(WithBuilder)
+  // return connect(mapStateToProps, mapDispatchToProps, null, {withRef: true})(WithBuilder)
+  return WithBuilder
 }
 
 

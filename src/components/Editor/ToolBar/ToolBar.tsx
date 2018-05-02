@@ -13,35 +13,33 @@ import DeleteIcon from 'material-ui-icons/Delete'
 import PanToolIcon from 'material-ui-icons/PanTool'
 import AspectRatioIcon from "material-ui-icons/AspectRatio";
 import MenuIcon from "material-ui-icons/Menu";
+import SettingsIcon from "material-ui-icons/Settings";
 import {PaletteItem} from "store/type";
 import {LastPaletteItems} from "reducers/builder";
 import {LayoutData, LayoutMeta} from "reducers/layout";
 import getLogger from "logging";
 import Typography from "material-ui/Typography";
 import * as classNames from "classnames"
-import MenuDrawer from "components/Editor/MenuDrawer";
 import Tooltip from "material-ui/Tooltip";
 import {WithBuilderPublicProps} from "components/hoc/withBuilder";
-import LoginDialog from "components/Editor/ToolBar/LoginDialog";
-import SignUpDialog from "components/Editor/ToolBar/SignUpDialog";
+import {LayoutStore} from "store/layoutStore";
+import {inject, observer} from "mobx-react";
+import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
+import {BuilderStore} from "store/builderStore";
+import {CommonStore} from "store/commonStore";
+import {MenuDrawer} from "components/Editor/MenuDrawer/MenuDrawer";
+import LoginDialog from "components/Editor/ToolBar/LoginDialog/LoginDialog";
+import SignUpDialog from "components/Editor/ToolBar/SignUpDialog/SignUpDialog";
+import {SettingsDialog} from "components/Editor/ToolBar/SettingsDialog/SettingsDialog";
 
 const LOGGER = getLogger(__filename)
 
 
 export interface ToolBarProps {
-  activeTool: string
-  setTool: any
+  common?: CommonStore
+  builder?: BuilderStore
+  layout?: LayoutStore
 
-  lastPaletteItems: LastPaletteItems
-  currentLayoutData: LayoutData
-  canUndo: boolean
-  canRedo: boolean
-  authData: any
-  layoutMeta: LayoutMeta
-
-  selectPaletteItem: (item: PaletteItem) => void
-  undo: () => void
-  redo: () => void
   removeSelectedItems: () => void
   resetViewPosition: () => void
 }
@@ -50,13 +48,17 @@ export interface ToolBarState {
   openMenu: boolean
   openLogin: boolean
   openSignUp: boolean
+  openSettings: boolean
   el: HTMLElement | undefined
 }
 
 type EnhancedToolBarProps = ToolBarProps & WithBuilderPublicProps
 
 
-export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState> {
+
+@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT)
+@observer
+export default class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState> {
 
   constructor(props: EnhancedToolBarProps) {
     super(props)
@@ -64,24 +66,25 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
       openMenu: false,
       openLogin: false,
       openSignUp: false,
+      openSettings: false,
       el: undefined,
     }
 
   }
 
   isActive(tool: string) {
-    return this.props.activeTool === tool
+    return this.props.builder.activeTool === tool
   }
 
   onClickBuilderItem = (tool: Tools) => (e: MouseEvent) => {
-    this.props.setTool(tool)
+    this.props.builder.setActiveTool(tool)
     // 最後に選択していたアイテムを選択する
-    this.props.selectPaletteItem(this.props.lastPaletteItems[tool])
+    this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[tool])
   }
 
 
   openMenu = (e) => {
-    LOGGER.info(this.props.layoutMeta)
+    LOGGER.info(this.props.layout.meta)
     this.setState({
       openMenu: true
     })
@@ -99,7 +102,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
     })
   }
 
-  closeLoginDialog = (e) => {
+  closeLoginDialog = () => {
     this.setState({
       openLogin: false
     })
@@ -111,12 +114,23 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
     })
   }
 
-  closeSignUpDialog = (e) => {
+  closeSignUpDialog = () => {
     this.setState({
       openSignUp: false
     })
   }
 
+  openSettingsDialog = (e) => {
+    this.setState({
+      openSettings: true
+    })
+  }
+
+  closeSettingsDialog = () => {
+    this.setState({
+      openSettings: false
+    })
+  }
 
 
   render() {
@@ -203,9 +217,9 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
               <StyledIconButton
                 className={classNames({
                   'active': this.isActive(Tools.UNDO),
-                  'disabled': ! this.props.canUndo
+                  'disabled': ! this.props.layout.canUndo
                 })}
-                onClick={this.props.undo}>
+                onClick={this.props.layout.undo}>
                 <UndoIcon/>
               </StyledIconButton>
             </Tooltip>
@@ -213,9 +227,9 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
               <StyledIconButton
                 className={classNames({
                   'active': this.isActive(Tools.REDO),
-                  'disabled': ! this.props.canRedo
+                  'disabled': ! this.props.layout.canRedo
                 })}
-                onClick={this.props.redo}>
+                onClick={this.props.layout.redo}>
                 <RedoIcon/>
               </StyledIconButton>
             </Tooltip>
@@ -234,7 +248,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                 className={classNames({
                   'active': this.isActive(Tools.PAN)
                 })}
-                onClick={() => this.props.setTool(Tools.PAN)}
+                onClick={() => this.props.builder.setActiveTool(Tools.PAN)}
               >
                 <PanToolIcon/>
               </StyledIconButton>
@@ -250,27 +264,53 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
               </StyledIconButton>
             </Tooltip>
 
-            {/* メニューアイコンを右端に配置するための空白 */}
+            <Tooltip title={Tools.RESET_VIEW}>
+              <StyledIconButton
+                onClick={this.openSettingsDialog}
+              >
+                <SettingsIcon/>
+              </StyledIconButton>
+            </Tooltip>
+            <SettingsDialog
+              title={'Settings'}
+              open={this.state.openSettings}
+              onClose={this.closeSettingsDialog}
+              config={this.props.layout.config}
+              setConfig={this.props.layout.setConfig}
+            />
+
+            {/*/!* メニューアイコンを右端に配置するための空白 *!/*/}
             <Typography variant="title" color="inherit" style={{flex: 1}} />
 
             {/* ログインボタン */}
-            {! this.props.authData &&
+            {! this.props.common.authData &&
               <StyledLoginButton onClick={this.openLoginDialog}>
                 Login
               </StyledLoginButton>
             }
-            <LoginDialog open={this.state.openLogin} onClose={this.closeLoginDialog} />
 
-            {/* サインアップボタン */}
-            {! this.props.authData &&
+            <LoginDialog
+              open={this.state.openLogin}
+              onClose={this.closeLoginDialog}
+              setAuthData={this.props.common.setAuthData}
+              loadLayoutList={this.props.common.loadLayoutList}
+            />
+
+            {/*/!* サインアップボタン *!/*/}
+            {! this.props.common.authData &&
               <StyledSignUpButton variant="raised" color="secondary" onClick={this.openSignUpDialog}>
                 Sign Up
               </StyledSignUpButton>
             }
-            <SignUpDialog open={this.state.openSignUp} onClose={this.closeSignUpDialog} />
+            <SignUpDialog
+              open={this.state.openSignUp}
+              onClose={this.closeSignUpDialog}
+              setAuthData={this.props.common.setAuthData}
+              loadLayoutList={this.props.common.loadLayoutList}
+            />
 
-            {/* メニュー */}
-            {this.props.authData &&
+            {/*/!* メニュー *!/*/}
+            {this.props.common.authData &&
               <Tooltip id="tooltip-menu" title={"Menu"}>
                 <StyledIconButton onClick={this.openMenu} >
                   <MenuIcon/>

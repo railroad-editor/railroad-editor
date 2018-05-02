@@ -6,19 +6,22 @@ import CurveRailIcon from '../ToolBar/Icon/CurveRailIcon'
 import TurnoutIcon from "../ToolBar/Icon/TurnoutIcon";
 import SpecialRailIcon from "components/Editor/ToolBar/Icon/SpecialRailIcon";
 import RailGroupIcon from "components/Editor/ToolBar/Icon/RailGroupIcon";
-import BuilderPalette from "./BuilderPalette"
+import BuilderPalette from "./BuilderPalette/BuilderPalette"
 import Rnd from "react-rnd"
 import {UserRailGroupData} from "reducers/builder";
-import CustomStraightRailDialog from "components/Editor/Palette/BuilderPalette/CustomStraightRailDialog";
-import CustomCurveRailDialog from "components/Editor/Palette/BuilderPalette/CustomCurveRailDialog";
+import CustomStraightRailDialog from "components/Editor/Palette/BuilderPalette/CustomStraightRailDialog/CustomStraightRailDialog";
+import CustomCurveRailDialog from "components/Editor/Palette/BuilderPalette/CustomCurveRailDialog/CustomCurveRailDialog";
+import {inject, observer} from "mobx-react";
+import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
+import {LayoutStore} from "store/layoutStore";
+import {BuilderStore} from "store/builderStore";
+import {RailItemData} from "components/rails";
 
 
 export interface PaletteProps {
   className?: string
   tool: Tools
-  setPaletteMode: (mode: string) => void
-  userRailGroups: UserRailGroupData[]
-  userCustomRails: any
+  builder?: BuilderStore
 }
 
 export interface PaletteState {
@@ -26,6 +29,8 @@ export interface PaletteState {
 }
 
 
+@inject(STORE_BUILDER)
+@observer
 export default class Palette extends React.Component<PaletteProps, PaletteState> {
 
   constructor(props: PaletteProps) {
@@ -36,7 +41,7 @@ export default class Palette extends React.Component<PaletteProps, PaletteState>
   }
 
   isActive = (tool: string) => {
-    return this.props.tool === tool
+    return this.props.builder.activeTool === tool
   }
 
   openCustomDialog = () => {
@@ -53,8 +58,8 @@ export default class Palette extends React.Component<PaletteProps, PaletteState>
 
 
   render() {
-    const customStraightRails = this.props.userCustomRails.filter(c => c.paletteName === Tools.STRAIGHT_RAILS)
-    const customCurveRails = this.props.userCustomRails.filter(c => c.paletteName === Tools.CURVE_RAILS)
+    const customStraightRails = this.props.builder.userRails.filter(c => c.paletteName === Tools.STRAIGHT_RAILS)
+    const customCurveRails = this.props.builder.userRails.filter(c => c.paletteName === Tools.CURVE_RAILS)
 
     return (
       <Rnd
@@ -69,8 +74,10 @@ export default class Palette extends React.Component<PaletteProps, PaletteState>
           customItems={customStraightRails}
           customDialog={
             <CustomStraightRailDialog
+              title={'Custom Straight Rail'}
               open={this.isActive(Tools.STRAIGHT_RAILS) && this.state.customDialogOpen}
               onClose={this.closeCustomDialog}
+              addUserRail={this.props.builder.addUserRail}
             />
           }
           openCustomDialog={this.openCustomDialog}
@@ -83,8 +90,10 @@ export default class Palette extends React.Component<PaletteProps, PaletteState>
           customItems={customCurveRails}
           customDialog={
             <CustomCurveRailDialog
+              title={'Custom Curve Rail'}
               open={this.isActive(Tools.CURVE_RAILS) && this.state.customDialogOpen}
               onClose={this.closeCustomDialog}
+              addUserRail={this.props.builder.addUserRail}
             />
           }
           openCustomDialog={this.openCustomDialog}
@@ -105,7 +114,7 @@ export default class Palette extends React.Component<PaletteProps, PaletteState>
           active={this.isActive(Tools.RAIL_GROUPS)}
           icon={<RailGroupIcon/>}
           title={Tools.RAIL_GROUPS}
-          items={this.props.userRailGroups.map(rg => {
+          items={this.props.builder.userRailGroups.map(rg => {
             return {name: rg.name, type: 'RailGroup'}
           })}
         />

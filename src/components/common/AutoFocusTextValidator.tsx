@@ -1,19 +1,20 @@
 import * as React from "react";
-import TextField from "material-ui/TextField";
+import {TextValidator} from 'react-material-ui-form-validator';
+
 
 /**
  * 自身にオートフォーカスする TextField
  */
-export default class AutoFocusTextField extends React.Component<any, {}> {
+export default class AutoFocusTextValidator extends React.Component<any, {}> {
 
   render() {
     const delay = this.props.delay ? this.props.delay : 250
     return (
-      <TextField
+      <TextValidator
         {...this.props}
         inputRef={(input) => { if (input) setTimeout(() => input.focus(), delay)}}
       >
-      </TextField>
+      </TextValidator>
     )
   }
 }

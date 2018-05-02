@@ -2,120 +2,65 @@ import * as React from "react";
 import Dialog from "material-ui/Dialog";
 import {DialogActions, DialogContent, DialogTitle, FormControl} from "material-ui";
 import Button from "material-ui/Button";
-import AutoFocusTextField from "components/common/AutoFocusTextField";
+import AutoFocusTextValidator from "components/common/AutoFocusTextValidator";
 import ChromePicker from "react-color/lib/components/chrome/Chrome";
 import Popover from "material-ui/Popover";
 import Typography from "material-ui/Typography";
 import Grid from "material-ui/Grid";
-import {SmallButton} from "components/Editor/LayerPalette/LayerSettingDialog/styles";
+import {SmallButton, Spacer} from "components/Editor/LayerPalette/LayerSettingDialog/styles";
 import {LayerData} from "reducers/layout";
+import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
+import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 
 
-export interface LayerSettingDialogProps {
-  title: string
-  open: boolean
-  onClose: () => void
-  layerId?: number
-
-  layers: LayerData[]
-  activeLayerId: number
-  nextLayerId: number
-
-  setActiveLayer: (layerId: number) => void
-  updateLayer: (item: Partial<LayerData>) => void
-  addLayer: (item: LayerData) => void
-  deleteLayer: (itemId: number) => void
+export interface LayerSettingDialogProps extends FormDialogProps {
+  layer: LayerData
+  addLayer?: (item: LayerData) => void
+  updateLayer?: (item: Partial<LayerData>) => void
 }
 
-export interface LayerSettingDialogState {
-  name: string
-  isError: boolean
-  errorText: string
+export interface LayerSettingDialogState extends FormDialogState {
   pickerOpen: boolean
   pickerAnchor: HTMLElement
-  color: string
 }
 
 
-export class LayerSettingDialog extends React.Component<LayerSettingDialogProps, LayerSettingDialogState> {
-
-  static INITIAL_STATE = {
-    name: '',
-    isError: false,
-    errorText: ' ',
-    pickerOpen: false,
-    pickerAnchor: null,
-    color: '#000',
-  }
+export default class LayerSettingDialog extends FormDialog<LayerSettingDialogProps, LayerSettingDialogState> {
 
   anchorEl: any
 
   constructor(props: LayerSettingDialogProps) {
     super(props)
-    this.state = LayerSettingDialog.INITIAL_STATE
-
-    this.onOK = this.onOK.bind(this)
-    this.onTextChange = this.onTextChange.bind(this)
+    this.state = this.getInitialState()
   }
 
-  onEnter = (e) => {
-    const {layers, layerId} = this.props
-    if (layerId) {
-      // レイヤーIDが与えられていればそのレイヤーデータを入れる
-      const targetLayer = layers.find(layer => layer.id === layerId)
-      const {id, ...rest} = targetLayer
-      this.setState({
-          ...LayerSettingDialog.INITIAL_STATE,
-          ...rest
-        } as any
-      )
-    } else {
-      // レイヤーIDが無ければ完全初期化
-      this.setState(LayerSettingDialog.INITIAL_STATE)
+  getInitialState = () => {
+    return {
+      inputs: _.mapValues(this.props.layer, (v) => String(v)),
+      disabled: true,
+      pickerOpen: false,
+      pickerAnchor: null,
     }
   }
 
   onOK = (e) => {
-    const {layers, layerId} = this.props
-    if (layerId) {
-      // レイヤーIDが与えられていれば更新
-      const targetLayer = layers.find(layer => layer.id === layerId)
-      if (targetLayer) {
-        this.props.updateLayer({
-          id: targetLayer.id,
-          name: this.state.name,
-          color: this.state.color,
-        })
-      }
-    } else {
-      // レイヤーIDが無ければ新規作成
+    if (this.props.addLayer) {
       this.props.addLayer({
-        id: this.props.nextLayerId,
-        name: this.state.name,
-        visible: true,
-        color: this.state.color
+          id: 0,
+          name: this.state.inputs.name,
+          color: this.state.inputs.color,
+          visible: true
+        }
+      )
+    }
+    if (this.props.updateLayer) {
+      this.props.updateLayer({
+        ...this.props.layer,
+        name: this.state.inputs.name,
+        color: this.state.inputs.color,
       })
     }
-
     this.props.onClose()
-  }
-
-
-  onTextChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-    const text = e.currentTarget.value
-    if (text && text.match(/.+/)) {
-      this.setState({
-        name: text,
-        isError: false,
-        errorText: ' '
-      })
-    } else {
-      this.setState({
-        name: text,
-        isError: true,
-        errorText: 'Must not be empty.'
-      })
-    }
   }
 
   openColorPicker = (e) => {
@@ -125,7 +70,12 @@ export class LayerSettingDialog extends React.Component<LayerSettingDialogProps,
   }
 
   onColorChange = (color) => {
-    this.setState({ color: color.hex });
+    this.setState({
+      inputs: {
+        ...this.state.inputs,
+        color: color.hex
+      }
+    })
   }
 
   closeColorPicker = (e) => {
@@ -134,71 +84,57 @@ export class LayerSettingDialog extends React.Component<LayerSettingDialogProps,
     })
   }
 
-
-  render() {
-    const { open, onClose, title } = this.props
-
+  renderValidators = () => {
     return (
-      <Dialog
-        open={open}
-        onEnter={this.onEnter}
-        onClose={onClose}
-      >
-        <DialogTitle id={title}>{title}</DialogTitle>
-        <DialogContent>
-          {/* レイヤー名 */}
-          <FormControl>
-            <AutoFocusTextField
-              error={this.state.isError}
-              autoFocus
-              margin="dense"
-              id="layer-name"
-              label="Layer Name"
-              value={this.state.name}
-              helperText={this.state.errorText}
-              onChange={this.onTextChange}
-            />
-          </FormControl>
-          {/* レールの色 */}
-          <Grid container justify="center" alignItems="center" spacing={0}>
-            <Grid item xs={6}>
-              <Typography align="center" variant="body2">
-                Rail Color
-              </Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <SmallButton
-                onClick={this.openColorPicker}
-                buttonRef={ref => this.anchorEl = ref}
-                style={{backgroundColor: this.state.color}}
-                variant="raised"
-              />
-            </Grid>
+      <React.Fragment>
+        <ValidatorForm
+          ref={(form) => this._form = form}
+        >
+          <AutoFocusTextValidator
+            label="Layer Name"
+            name="name"
+            key="name"
+            value={this.state.inputs.name}
+            onChange={this.onChange('name')}
+            validatorListener={this.handleValidation}
+            validators={['required']}
+            errorMessages={['this field is required']}
+          />
+        </ValidatorForm>
+        <Spacer />
+
+        {/* Rail color */}
+        <Grid container justify="center" alignItems="center" spacing={0}>
+          <Grid item xs={6}>
+            <Typography align="center" variant="body2">
+              Rail Color
+            </Typography>
           </Grid>
-          <Popover
-            open={this.state.pickerOpen}
-            onClose={this.closeColorPicker}
-            anchorEl={this.anchorEl}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left'
-            }}
-          >
-            <ChromePicker
-              color={ this.state.color }
-              onChangeComplete={ this.onColorChange }
+          <Grid item xs={6}>
+            <SmallButton
+              onClick={this.openColorPicker}
+              buttonRef={ref => this.anchorEl = ref}
+              style={{backgroundColor: this.state.inputs.color}}
+              variant="raised"
             />
-          </Popover>
-        </DialogContent>
-        <DialogActions>
-          <Button disabled={this.state.isError || ! this.state.name} variant="raised" onClick={this.onOK} color="primary">
-            OK
-          </Button>
-          <Button onClick={this.props.onClose} color="primary" autoFocus>
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
+          </Grid>
+        </Grid>
+        {/* Color picker */}
+        <Popover
+          open={this.state.pickerOpen}
+          onClose={this.closeColorPicker}
+          anchorEl={this.anchorEl}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left'
+          }}
+        >
+          <ChromePicker
+            color={ this.state.inputs.color }
+            onChangeComplete={ this.onColorChange }
+          />
+        </Popover>
+      </React.Fragment>
     )
   }
 }

@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import {View} from "react-paper-bindings";
-import Palette from "./Palette";
-import ToolBar from "./ToolBar";
-import LayerPalette from "./LayerPalette";
+import Palette from "./Palette/Palette";
+import ToolBar from "./ToolBar/ToolBar";
+import LayerPalette from "./LayerPalette/LayerPalette";
 
 
 export const StyledWrapper = styled.div`

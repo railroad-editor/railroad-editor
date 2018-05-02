@@ -3,7 +3,7 @@ import {DialogActions, DialogContent, DialogTitle} from "material-ui"
 import Dialog from "material-ui/Dialog";
 import Button from "material-ui/Button";
 import getLogger from "logging";
-import AutoFocusTextField from "components/common/AutoFocusTextField";
+import AutoFocusTextField from "components/common/AutoFocusTextValidator";
 
 const LOGGER = getLogger(__filename)
 
