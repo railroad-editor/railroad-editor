@@ -209,9 +209,12 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
 
 
     render() {
+      // ストアは除外する
+      const props = _.omit(this.props, ['builder', 'layout'])
+
       return (
         <WrappedComponent
-          {...this.props}
+          {...props}
           onJointMouseEnter={this.onJointMouseEnter}
           onJointMouseMove={this.onJointMouseMove}
           onJointMouseLeave={this.onJointMouseLeave}

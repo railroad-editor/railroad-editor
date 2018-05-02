@@ -119,7 +119,7 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
       .map(layer => layer.id)
       .filter(id => id !== layerId)
 
-    this.props.layout.deleteLayer(layerId)
+    this.props.layout.deleteLayer({id: layerId})
     this.props.builder.setActiveLayer(getClosest(layerId, restLayerIds))
   }
 
@@ -164,7 +164,7 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
                     onRename={this.openUpdateDialog(layer.id)}
                     isDeletable={layers.length >= 2}
                   >
-                    <ListItemText primary={'unko'}/>
+                    <ListItemText primary={layer.name}/>
                   </LayerListItem>
                 </Grid>
               </React.Fragment>

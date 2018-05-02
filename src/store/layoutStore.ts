@@ -167,7 +167,7 @@ export class LayoutStore {
   @action
   deleteRail = (item: Partial<RailData>) => {
     // レールリストから削除
-    this.currentLayoutData.rails = this.currentLayoutData.rails.filter(rail => ! (rail.id === item.id))
+    this.currentLayoutData.rails = this.currentLayoutData.rails.filter(rail => rail.id !== item.id)
     // レールグループに所属していたら削除
     this.currentLayoutData.railGroups = this.currentLayoutData.railGroups.map(group => {
       return {
@@ -180,7 +180,7 @@ export class LayoutStore {
 
   @action
   addRailGroup = (item: RailGroupData, children: RailData[], overwrite = false) => {
-    const layout = this.histories[this.historyIndex]
+    item.id = this.nextRailGroupId
 
     // 各レールにグループIDを付与する
     const newChildren = children.map(c => {
@@ -195,89 +195,38 @@ export class LayoutStore {
       rails: newChildren.map(c => c.id)
     }
 
-    // レイアウトを更新
-    const newLayout = update(layout, {
-      rails: {$push: newChildren},
-      railGroups: {$push: [newRailGroup]}
-    })
-    // ヒストリを更新
-    return this.addHistory(newLayout, overwrite)
+    this.currentLayoutData.rails.push(...newChildren)
+    this.currentLayoutData.railGroups.push(newRailGroup)
   }
 
   @action
-  deleteRailGroup = (item: Partial<RailGroupData>, overwrite: boolean) => {
-    const layout = this.histories[this.historyIndex]
-    // 対象のレールグループを探す
-    const itemIndex = layout.railGroups.findIndex((item) => item.id === item.id)
-    // 見つからなかったら何もしない
-    if (itemIndex === -1) {
-      return
-    }
-    // 対象のレールグループに所属しないレールを探す
-    const children = layout.rails.filter(r => ! (r.groupId === layout.railGroups[itemIndex].id))
-
-    // レイアウトを更新
-    const newLayout = update(layout, {
-      rails: {$set: children},
-      railGroups: {$splice: [[itemIndex, 1]]}
-    })
-    // ヒストリを更新
-    return this.addHistory(newLayout, overwrite)
+  deleteRailGroup = (item: Partial<RailGroupData>) => {
+    this.currentLayoutData.rails = this.currentLayoutData.rails.filter(rail => rail.groupId !== item.id)
+    this.currentLayoutData.railGroups = this.currentLayoutData.railGroups.filter(railGroup => railGroup.id !== item.id)
   }
 
   @action
-  addLayer = (item: LayerData, overwrite = false) => {
+  addLayer = (item: LayerData) => {
     item.id = this.nextLayerId
-    const layout = this.histories[this.historyIndex]
-    const newLayout = createViewModel(layout);
-    newLayout.layers.push(item)
-    newLayout.submit()
-
-    // ヒストリを更新
-    return this.addHistory(newLayout, overwrite)
+    this.currentLayoutData.layers.push(item)
   }
 
   @action
-  updateLayer = (item: Partial<LayerData>, overwrite = false) => {
-    const layout = this.histories[this.historyIndex]
+  updateLayer = (item: Partial<LayerData>) => {
+    const index = this.currentLayoutData.layers.findIndex(rail => rail.id === item.id)
+    const target = this.currentLayoutData.layers[index]
 
-    const newLayout = createViewModel(layout);
-    newLayout.layers = newLayout.layers.map(layer => {
-      if (layer.id === item.id) {
-        return {
-          ...layer,
-          ...item
-        }
-      } else {
-        return layer
-      }
-    })
-    newLayout.submit()
-
-    // ヒストリを更新
-    return this.addHistory(newLayout, overwrite)
-  }
-
-  @action
-  deleteLayer = (id: number, overwrite = false) => {
-    const layout = this.histories[this.historyIndex]
-    // 対象のアイテムを探す
-    const itemIndex = layout.layers.findIndex(layer => layer.id === id)
-    // 見つからなかったら何もしない
-    if (itemIndex === -1) {
-      return
+    this.currentLayoutData.layers[index] = {
+      ...target,
+      ...item,
     }
-    // レイヤーに所属しないレール
-    const rails = layout.rails.filter(rail => rail.layerId !== id)
+  }
 
-    // レイアウトを更新
-    const newLayout = update(layout, {
-      layers: {$splice: [[itemIndex, 1]]},
-      rails: {$set: rails}
-    })
-    // ヒストリを更新
-    return this.addHistory(newLayout, overwrite)
-
+  @action
+  deleteLayer = (item: Partial<LayerData>) => {
+    this.currentLayoutData.layers = this.currentLayoutData.layers.filter(layer => layer.id !== item.id)
+    // レイヤーに所属するレールを削除
+    this.currentLayoutData.rails = this.currentLayoutData.rails.filter(rail => rail.layerId !== item.id)
   }
 
   @action
@@ -319,11 +268,11 @@ export class LayoutStore {
     this.historyIndex = 0
   }
 
-  @action
-  addCurrentLayoutToHistory = () => {
-    const layout = this.histories[this.historyIndex]
-    return this.addHistory(layout, false)
-  }
+  // @action
+  // addCurrentLayoutToHistory = () => {
+  //   const layout = this.histories[this.historyIndex]
+  //   return this.addHistory(layout, false)
+  // }
 
   @action
   saveLayout = async () => {
@@ -360,19 +309,20 @@ export class LayoutStore {
     }
   }
 
+  @action
   commit = () => {
     this.histories[this.historyIndex+1] = mobx.toJS(this.currentLayoutData)
     this.historyIndex += 1
   }
 
-  addHistory = (layout: LayoutData, overwrite = false) => {
-    if (overwrite) {
-      this.histories[this.historyIndex] = layout
-    } else {
-      this.histories[this.historyIndex+1] = layout
-      this.historyIndex += 1
-    }
-  }
+  // addHistory = (layout: LayoutData, overwrite = false) => {
+  //   if (overwrite) {
+  //     this.histories[this.historyIndex] = layout
+  //   } else {
+  //     this.histories[this.historyIndex+1] = layout
+  //     this.historyIndex += 1
+  //   }
+  // }
 }
 
 

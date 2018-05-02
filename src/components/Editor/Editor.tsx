@@ -21,7 +21,13 @@ import {LayoutStore} from "store/layoutStore";
 import {STORE_COMMON, STORE_LAYOUT} from "constants/stores";
 import {GridPaper} from "components/Editor/GridPaper/GridPaper";
 import Layout from "components/Editor/Layout/Layout";
-import {DEFAULT_VIEW_HEIGHT, DEFAULT_VIEW_WIDTH, Tools} from "constants/tools";
+import {
+  DEFAULT_PAPER_BACKGROUND_COLOR,
+  DEFAULT_PAPER_COLOR, DEFAULT_PAPER_LINE_COLOR,
+  DEFAULT_VIEW_HEIGHT,
+  DEFAULT_VIEW_WIDTH,
+  Tools
+} from "constants/tools";
 import FirstRailPutter from "components/Editor/FirstRailPutter/FirstRailPutter";
 
 const LOGGER = getLogger(__filename)
@@ -114,6 +120,9 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             viewHeight={DEFAULT_VIEW_HEIGHT}
             paperWidth={paperWidth}
             paperHeight={paperHeight}
+            paperColor={DEFAULT_PAPER_COLOR}
+            backgroundColor={DEFAULT_PAPER_BACKGROUND_COLOR}
+            lineColor={DEFAULT_PAPER_LINE_COLOR}
             gridSize={gridSize}
             onWheel={this.props.moveToolMouseWheel}
             matrix={matrix}

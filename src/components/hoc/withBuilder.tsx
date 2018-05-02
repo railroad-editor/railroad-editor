@@ -264,6 +264,8 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       if (temporaryRailGroup) {
         // レールグループを追加
         const children = temporaryRails.map((temporaryRail, idx) => {
+          LOGGER.debug(_.keys(temporaryRail))
+          LOGGER.debug(_.pickBy(temporaryRail, p => ! _.isFunction(p)))
           return {
             ...temporaryRail,
             id: nextRailId + idx,    // IDを新規に割り振る

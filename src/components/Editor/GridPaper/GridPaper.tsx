@@ -2,7 +2,7 @@ import * as React from 'react'
 import {Layer, Line, Path, Raster, Tool, View} from 'react-paper-bindings'
 import {Point} from 'paper';
 import * as _ from "lodash";
-
+import {Rectangle} from "react-paper-bindings";
 
 export interface GridPaperProps {
   viewWidth: number
@@ -10,6 +10,9 @@ export interface GridPaperProps {
   paperWidth: number
   paperHeight: number
   gridSize: number
+  lineColor: string
+  paperColor: string
+  backgroundColor: string
   onWheel: any
   setPaperLoaded: (loaded: boolean) => void
   matrix?: any
@@ -42,34 +45,50 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
   }
 
   createVerticalLines = () => {
-    return _.range(this.props.paperWidth / this.props.gridSize + 1).map(i => {
+    const {paperWidth, paperHeight, gridSize, lineColor} = this.props
+    return _.range(paperWidth / gridSize + 1).map(i => {
       return (
         <Line
           key={`v-line${i}`}
-          from={new Point(this.props.gridSize * i, 0)}
-          to={new Point(this.props.gridSize * i, this.props.paperHeight)}
+          from={new Point(gridSize * i, 0)}
+          to={new Point(gridSize * i, paperHeight)}
           data={{type: 'GridLine'}}
-          strokeColor={i % 10 === 0 ? 'white' : 'red'}
+          // strokeColor={i % 10 === 0 ? 'white' : 'red'}
+          strokeColor={lineColor}
         />)
     })
   }
 
   createHorizontalLines = () => {
-    return _.range(this.props.paperHeight / this.props.gridSize + 1).map(i => {
+    const {paperWidth, paperHeight, gridSize, lineColor} = this.props
+    return _.range(paperHeight / gridSize + 1).map(i => {
       return (
         <Line
           key={`h-line${i}`}
-          from={new Point(0, this.props.gridSize * i)}
-          to={new Point(this.props.paperWidth,this.props.gridSize * i)}
+          from={new Point(0, gridSize * i)}
+          to={new Point(paperWidth,gridSize * i)}
           data={{type: 'GridLine'}}
-          strokeColor={i % 10 === 0 ? 'white' : 'red'}
+          // strokeColor={i % 10 === 0 ? 'white' : 'red'}
+          strokeColor={lineColor}
         />)
     })
   }
 
+  createBackground = () => {
+    const {paperWidth, paperHeight, paperColor} = this.props
+    return (
+      <Rectangle
+        from={new Point(0, 0)}
+        to={new Point(paperWidth, paperHeight)}
+        fillColor={paperColor}
+      />
+    )
+  }
+
+
 
   render() {
-    const {viewWidth, viewHeight, onWheel} = this.props
+    const {viewWidth, viewHeight, backgroundColor, onWheel} = this.props
     const matrix = this.props.matrix || DEFAULT_MATRIX
 
     return (
@@ -80,12 +99,18 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
               settings={{
                 applyMatrix: false
               }}
+              canvasProps={{
+                style: {
+                  backgroundColor: backgroundColor
+                }
+              }}
               ref={(view) => {
                 this.view = view
                 if (view) window.CANVAS = view.canvas
               }}
         >
           <Layer>
+            {this.createBackground()}
             {this.createVerticalLines()}
             {this.createHorizontalLines()}
           </Layer>
