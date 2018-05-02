@@ -22,3 +22,4 @@ declare module paper {
 }
 
 declare var _: any
+declare var $: any

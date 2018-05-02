@@ -1,16 +1,18 @@
 import * as React from 'react'
-import {connect} from 'react-redux';
-import {setTool} from "../../actions/tools";
-import {PaletteItem, RootState} from "store/type";
-import {selectPaletteItem} from "actions/builder";
+import {PaletteItem} from "store/type";
 import {LastPaletteItems} from "reducers/builder";
 import {Tools} from "constants/tools";
+import {inject, observer} from "mobx-react";
+import {STORE_BUILDER} from "constants/stores";
+import {BuilderStore} from "store/builderStore";
+import * as $ from "jquery";
 
 export interface WithToolsPrivateProps {
-  activeTool: string
+  activeTool: Tools
   setTool: (tool: string, mode?: any) => void
   lastPaletteItems: LastPaletteItems
   selectPaletteItem: (item: PaletteItem) => void
+  builder?: BuilderStore
 }
 
 export interface WithToolsPublicProps {
@@ -25,22 +27,10 @@ type WithToolsProps =  WithToolsPublicProps & WithToolsPrivateProps
  */
 export default function withTools(WrappedComponent: React.ComponentClass<WithToolsPublicProps>) {
 
-  const mapStateToProps = (state: RootState): Partial<WithToolsPrivateProps> => {
-    return {
-      activeTool: state.tools.activeTool,
-      lastPaletteItems: state.builder.lastPaletteItems
-    }
-  }
-
-  const mapDispatchToProps = (dispatch: any) => {
-    return {
-      setTool: (tool: string) => dispatch(setTool(tool)),
-      selectPaletteItem: (item: PaletteItem) => dispatch(selectPaletteItem(item))
-    }
-  }
-
-  class WithToolsComponent extends React.Component<WithToolsProps, {}> {
-    private _prevTool: string | null;
+  @inject(STORE_BUILDER)
+  @observer
+  class WithTools extends React.Component<WithToolsProps, {}> {
+    private _prevTool: Tools
 
     constructor(props: WithToolsProps) {
       super(props)
@@ -50,36 +40,49 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
       this._prevTool = null
     }
 
+
+    dialogExists = () => {
+      const dialogDivs = $('div[role="dialog"]')
+      return dialogDivs.length > 0
+    }
+
+
     keyDown = (e: KeyboardEvent) => {
+      if (this.dialogExists()) return
+
       switch (e.key) {
         case 'Alt':
           // シフトを押している間はPANツールが有効になる。離すと元に戻る
           this._prevTool = this.props.activeTool
-          this.props.setTool(Tools.PAN)
+          this.props.builder.setActiveTool(Tools.PAN)
+          break
+        case 's':
+          this.props.builder.setActiveTool(Tools.STRAIGHT_RAILS)
+          this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[Tools.STRAIGHT_RAILS])
+          break
+        case 'c':
+          this.props.builder.setActiveTool(Tools.CURVE_RAILS)
+          this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[Tools.CURVE_RAILS])
+          break
+        case 't':
+          this.props.builder.setActiveTool(Tools.TURNOUTS)
+          this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[Tools.TURNOUTS])
+          break
+        case 'x':
+          this.props.builder.setActiveTool(Tools.SPECIAL_RAILS)
+          this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[Tools.SPECIAL_RAILS])
+          break
+        case 'g':
+          this.props.builder.setActiveTool(Tools.RAIL_GROUPS)
+          this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[Tools.RAIL_GROUPS])
           break
       }
-      //   case 's':
-      //     this.props.setTool(Tools.STRAIGHT_RAILS)
-      //     this.props.selectPaletteItem(this.props.lastPaletteItems[Tools.STRAIGHT_RAILS])
-      //     break
-      //   case 'c':
-      //     this.props.setTool(Tools.CURVE_RAILS)
-      //     this.props.selectPaletteItem(this.props.lastPaletteItems[Tools.CURVE_RAILS])
-      //     break
-      //   case 't':
-      //     this.props.setTool(Tools.TURNOUTS)
-      //     this.props.selectPaletteItem(this.props.lastPaletteItems[Tools.TURNOUTS])
-      //     break
-      //   case 'd':
-      //     this.props.setTool(Tools.DELETE)
-      //     break
-      // }
     }
 
     keyUp = (e: KeyboardEvent) => {
       switch (e.key) {
         case 'Alt':
-          this.props.setTool(this._prevTool)
+          this.props.builder.setActiveTool(this._prevTool)
           break
       }
     }
@@ -103,5 +106,5 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
     }
   }
 
-  return connect(mapStateToProps, mapDispatchToProps)(WithToolsComponent)
+  return WithTools
 }

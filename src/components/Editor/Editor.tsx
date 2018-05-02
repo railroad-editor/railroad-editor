@@ -79,17 +79,17 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
   onMouseDown = (e) => {
     this.props.builderMouseDown(e)
     this.props.selectToolMouseDown(e)
-    // this.props.moveToolMouseDown(e)
+    this.props.moveToolMouseDown(e)
   }
 
   onMouseDrag = (e) => {
     this.props.selectToolMouseDrag(e)
-    // this.props.moveToolMouseDrag(e)
+    this.props.moveToolMouseDrag(e)
   }
 
   onMouseUp = (e) => {
     this.props.selectToolMouseUp(e)
-    // this.props.moveToolMouseUp(e)
+    this.props.moveToolMouseUp(e)
   }
 
 
@@ -162,7 +162,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 export default compose<EditorProps|any, EditorProps|any>(
   withBuilder,
   // withFullscreen,
-  // withTools,
+  withTools,
   withMoveTool,
   withSelectTool,
   // withSnackbar(),
