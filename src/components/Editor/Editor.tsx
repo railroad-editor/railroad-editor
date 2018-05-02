@@ -3,7 +3,7 @@ import {compose} from 'recompose'
 
 import {Layer, Raster, Rectangle, Tool, View} from 'react-paper-bindings'
 
-import withFullscreen, {WithFullscreenProps} from '../hoc/withFullscreen'
+import {WithFullscreenProps} from '../hoc/withFullscreen'
 import withTools, {WithToolsPrivateProps} from '../hoc/withTools'
 import withMoveTool, {WithMoveToolProps} from '../hoc/withMoveTool'
 
@@ -11,13 +11,8 @@ import {EditorBody, StyledLayerPalette, StyledPalette, StyledToolBar, StyledWrap
 
 import './Paper.css'
 import withBuilder, {WithBuilderPublicProps} from "../hoc/withBuilder";
-import {RootState} from "store/type";
-import {connect} from "react-redux";
-import {LayoutData} from "reducers/layout";
-import {currentLayoutData, isLayoutEmpty} from "selectors";
 import getLogger from "logging";
 import withSelectTool, {WithSelectToolPublicProps} from "components/hoc/withSelectTool";
-import {SettingsStoreState} from "reducers/settings";
 import {withSnackbar} from 'material-ui-snackbar-provider'
 import {Point} from "paper";
 import {inject, observer} from "mobx-react";
@@ -66,7 +61,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
   }
 
   isActive = (... tools: string[]) => {
-    return tools.includes(this.props.activeTool)
+    return tools.includes(this.props.builder.activeTool)
   }
 
 
@@ -79,17 +74,17 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
   onMouseDown = (e) => {
     this.props.builderMouseDown(e)
     this.props.selectToolMouseDown(e)
-    this.props.moveToolMouseDown(e)
+    // this.props.moveToolMouseDown(e)
   }
 
   onMouseDrag = (e) => {
     this.props.selectToolMouseDrag(e)
-    this.props.moveToolMouseDrag(e)
+    // this.props.moveToolMouseDrag(e)
   }
 
   onMouseUp = (e) => {
     this.props.selectToolMouseUp(e)
-    this.props.moveToolMouseUp(e)
+    // this.props.moveToolMouseUp(e)
   }
 
 

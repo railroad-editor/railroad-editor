@@ -1,13 +1,8 @@
 import * as React from 'react';
-import {RootState} from "store/type";
-import {setMousePosition} from "actions/builder";
-import {connect} from "react-redux";
 import {Path, Point, ToolEvent} from 'paper'
 import {Rectangle} from "react-paper-bindings";
 import getLogger from "logging";
 import {WithBuilderPublicProps} from "components/hoc/withBuilder";
-import {currentLayoutData} from "selectors";
-import {LayoutData} from "reducers/layout";
 import {DEFAULT_SELECTION_RECT_COLOR, DEFAULT_SELECTION_RECT_OPACITY} from "constants/tools";
 import {getAllRailComponents} from "components/rails/utils";
 import {BuilderStore} from "store/builderStore";

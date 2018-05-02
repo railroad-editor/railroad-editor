@@ -1,13 +1,9 @@
 import * as React from "react";
 import {Rectangle} from "react-paper-bindings";
 import getLogger from "logging";
-import {RootState} from "store/type";
-import {updateTemporaryItem, updateTemporaryRailGroup} from "actions/builder";
 import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
-import {nextPivotJointIndex, nextPivotJointInfo} from "selectors";
-import {JointInfo, RailBase, RailBaseProps, RailBaseState} from "components/rails/RailBase";
-import {connect} from "react-redux";
-import {RailData, RailGroupData} from "components/rails/index";
+import {RailBase, RailBaseProps, RailBaseState} from "components/rails/RailBase";
+import {RailData} from "components/rails/index";
 import {compose} from "recompose";
 import {BuilderStore} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";

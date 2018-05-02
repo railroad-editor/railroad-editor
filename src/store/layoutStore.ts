@@ -139,17 +139,13 @@ export class LayoutStore {
   }
 
   @action
-  addRail = (item: RailData, commit = true) => {
-    if (commit) this.commit()
-
+  addRail = (item: RailData) => {
     item.id = this.nextRailId
     this.currentLayoutData.rails.push(item)
   }
 
   @action
-  updateRail = (item: Partial<RailData>, commit = true) => {
-    if (commit) this.commit()
-
+  updateRail = (item: Partial<RailData>) => {
     const index = this.currentLayoutData.rails.findIndex(rail => rail.id === item.id)
     const target = this.currentLayoutData.rails[index]
 
@@ -164,32 +160,21 @@ export class LayoutStore {
   }
 
   @action
-  updateRails = (items: Partial<RailData>[], commit = true) => {
-    if (commit) this.commit()
-
-    items.forEach(item => this.updateRail(item, false))
-
-    // this.currentLayoutData.rails.forEach(r => {
-    //   r.selected = true
-    // })
+  updateRails = (items: Partial<RailData>[]) => {
+    items.forEach(item => this.updateRail(item))
   }
 
-
   @action
-  deleteRail = (item: Partial<RailData>, overwrite = false) => {
-    const layout = this.histories[this.historyIndex]
-
-    const newLayout = _.clone(layout);
-    newLayout.rails = layout.rails.filter(rail => ! (rail.id === item.id))
-    // レールグループに所属していたら削除する
-    newLayout.railGroups = layout.railGroups.map(group => {
+  deleteRail = (item: Partial<RailData>) => {
+    // レールリストから削除
+    this.currentLayoutData.rails = this.currentLayoutData.rails.filter(rail => ! (rail.id === item.id))
+    // レールグループに所属していたら削除
+    this.currentLayoutData.railGroups = this.currentLayoutData.railGroups.map(group => {
       return {
         ...group,
         rails: group.rails.filter( r => ! (r === item.id))
       }
     })
-    // ヒストリを更新
-    return this.addHistory(newLayout, overwrite)
   }
 
 

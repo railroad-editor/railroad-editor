@@ -1,6 +1,4 @@
 import * as React from 'react'
-import {PaletteItem} from "store/type";
-import {LastPaletteItems} from "reducers/builder";
 import {Tools} from "constants/tools";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER} from "constants/stores";
@@ -8,10 +6,6 @@ import {BuilderStore} from "store/builderStore";
 import * as $ from "jquery";
 
 export interface WithToolsPrivateProps {
-  activeTool: Tools
-  setTool: (tool: string, mode?: any) => void
-  lastPaletteItems: LastPaletteItems
-  selectPaletteItem: (item: PaletteItem) => void
   builder?: BuilderStore
 }
 
@@ -25,7 +19,7 @@ type WithToolsProps =  WithToolsPublicProps & WithToolsPrivateProps
 /**
  * キーボードでのツールの切替機能を提供するHOC。
  */
-export default function withTools(WrappedComponent: React.ComponentClass<WithToolsPublicProps>) {
+export default function withTools(WrappedComponent: React.ComponentClass<WithToolsProps>) {
 
   @inject(STORE_BUILDER)
   @observer
@@ -53,7 +47,7 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
       switch (e.key) {
         case 'Alt':
           // シフトを押している間はPANツールが有効になる。離すと元に戻る
-          this._prevTool = this.props.activeTool
+          this._prevTool = this.props.builder.activeTool
           this.props.builder.setActiveTool(Tools.PAN)
           break
         case 's':

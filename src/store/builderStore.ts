@@ -1,13 +1,8 @@
-import {Action, handleActions} from 'redux-actions';
-import * as Actions from "actions/constants"
 import {PaletteItem} from "store/type";
 import {RailComponentClasses, RailData, RailGroupData, RailItemData} from "components/rails";
-import update from "immutability-helper";
 import {JointInfo} from "components/rails/RailBase";
-import {RailGroupDataPayload} from "reducers/layout";
 import {RailGroupProps} from "components/rails/RailGroup/RailGroup";
 import {action, computed, observable} from "mobx";
-import {actionFieldDecorator} from "mobx/lib/api/actiondecorator";
 import {Tools} from "constants/tools";
 
 

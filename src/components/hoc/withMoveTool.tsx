@@ -1,7 +1,4 @@
 import * as React from 'react';
-import {RootState} from "store/type";
-import {setMousePosition} from "actions/builder";
-import {connect} from "react-redux";
 import {
   DEFAULT_INITIAL_ZOOM,
   DEFAULT_PAPER_HEIGHT,

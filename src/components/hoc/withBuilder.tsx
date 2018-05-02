@@ -259,6 +259,8 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       const {temporaryRails, temporaryRailGroup, activeLayerId, deleteTemporaryRail} = this.props.builder
       const {nextRailId, nextRailGroupId, addRail, addRailGroup} = this.props.layout
 
+      this.props.layout.commit()
+
       if (temporaryRailGroup) {
         // レールグループを追加
         const children = temporaryRails.map((temporaryRail, idx) => {
@@ -340,10 +342,10 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       LOGGER.info(`[Builder] Selected rail IDs: ${selectedRails.map(r => r.id)}`); // `
 
       selectedRails.forEach(item => {
-        // this.props.addHistory()
         this.disconnectJoint(item.id)
-        this.props.layout.deleteRail(item, true)
+        this.props.layout.deleteRail(item)
       })
+      this.props.layout.commit()
     }
 
 
@@ -378,7 +380,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
         opposingJoints: null
       })
 
-      this.props.layout.updateRails(updatedData, false)
+      this.props.layout.updateRails(updatedData)
     }
 
     /**
@@ -402,7 +404,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
         ]
       })
 
-      this.props.layout.updateRails(target, false)
+      this.props.layout.updateRails(target)
     }
 
 
@@ -443,7 +445,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       this.props.layout.updateRail({
         id: railData.id,
         selected: true
-      }, false)
+      })
     }
 
     /**
@@ -454,7 +456,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       this.props.layout.updateRail({
         id: railData.id,
         selected: ! railData.selected,
-      }, false)
+      })
     }
 
     /**
@@ -465,7 +467,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       this.props.layout.updateRail({
         id: railData.id,
         selected: false
-      }, false)
+      })
     }
 
     /**
@@ -478,7 +480,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
           id: r.id,
           selected: false
         }
-      }), false)
+      }))
     }
 
     render() {
