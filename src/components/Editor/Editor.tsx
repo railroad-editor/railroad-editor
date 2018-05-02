@@ -110,7 +110,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
     return (
 
       <StyledWrapper>
-        <StyledToolBar  />
+        <StyledToolBar resetViewPosition={this.props.resetViewPosition} />
         <EditorBody>
           <StyledPalette />
           <StyledLayerPalette layers={this.props.layout.currentLayoutData.layers} />
@@ -140,14 +140,14 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
               onMouseUp={this.onMouseUp}
               onKeyDown={this.props.builderKeyDown}
             />
-            {/*<Tool*/}
-              {/*active={this.isActive(Tools.PAN)}*/}
-              {/*name={Tools.PAN}*/}
-              {/*onMouseDown={this.props.moveToolMouseDown}*/}
-              {/*onMouseDrag={this.props.moveToolMouseDrag}*/}
-              {/*onMouseUp={this.props.moveToolMouseUp}*/}
-              {/*onMouseMove={this.props.moveToolMouseMove}*/}
-            {/*/>*/}
+            <Tool
+              active={this.isActive(Tools.PAN)}
+              name={Tools.PAN}
+              onMouseDown={this.props.moveToolMouseDown}
+              onMouseDrag={this.props.moveToolMouseDrag}
+              onMouseUp={this.props.moveToolMouseUp}
+              onMouseMove={this.props.moveToolMouseMove}
+            />
           </GridPaper>
         </EditorBody>
       </StyledWrapper>

@@ -40,7 +40,6 @@ export interface ToolBarProps {
   builder?: BuilderStore
   layout?: LayoutStore
 
-  removeSelectedItems: () => void
   resetViewPosition: () => void
 }
 

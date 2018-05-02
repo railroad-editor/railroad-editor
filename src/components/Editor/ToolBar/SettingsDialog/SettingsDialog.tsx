@@ -28,13 +28,12 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
 
   onOK = () => {
     // 設定値が全て文字列で入ってくるので、数値に変換を試みる
-    const newConfig = {}
-    Object.keys(this.state).forEach(key => {
-      const strVal = this.state[key]
-      const numVal = Number(this.state[key])
-      newConfig[key] = numVal ? numVal : strVal
+    const newConfig = _.mapValues(this.state.inputs, value => {
+      const numVal = Number(value)
+      return numVal ? numVal : value
     })
 
+    LOGGER.info(newConfig)
     this.props.setConfig(newConfig as LayoutConfig)
     this.props.onClose()
   }
