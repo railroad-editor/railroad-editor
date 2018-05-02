@@ -520,7 +520,6 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
           />
           <NewRailGroupDialog
             title={'New Rail Group'}
-            okButtonTitle={'OK'}
             open={this.state.newRailGroupDialogOpen}
             onClose={this.onNewRailGroupDialogClose}
             onOK={this.onNewRailGroupDialogOK}

@@ -1,100 +1,45 @@
 import * as React from 'react'
-import {DialogActions, DialogContent, DialogTitle} from "material-ui"
-import Dialog from "material-ui/Dialog";
-import Button from "material-ui/Button";
 import getLogger from "logging";
-import AutoFocusTextField from "components/common/AutoFocusTextValidator";
+import AutoFocusTextValidator from "components/common/AutoFocusTextValidator";
+import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
+import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 
 const LOGGER = getLogger(__filename)
 
-export interface NewRailGroupDialogProps {
-  title: string
-  okButtonTitle: string
-  open: boolean
-  onClose: () => void
+export interface NewRailGroupDialogProps extends FormDialogProps {
   onOK: (name: string) => void
 }
 
-export interface NewRailGroupDialogState {
-  name: string
-  isError: boolean
-  errorText: string
-}
 
-
-export default class NewRailGroupDialog extends React.Component<NewRailGroupDialogProps, NewRailGroupDialogState> {
+export default class NewRailGroupDialog extends FormDialog<NewRailGroupDialogProps, FormDialogState> {
 
   constructor(props: NewRailGroupDialogProps) {
     super(props)
-    this.state = {
-      name: '',
-      isError: false,
-      errorText: ' '
-    }
-
-    this.onOK = this.onOK.bind(this)
-    this.onTextChange = this.onTextChange.bind(this)
-  }
-
-  onEnter = (e) => {
-    this.setState({
-      name: ''
-    })
+    this.state = this.getInitialState()
   }
 
   onOK = (e) => {
-    this.props.onOK(this.state.name)
+    this.props.onOK(this.state.inputs.name)
     this.props.onClose()
   }
 
-  onTextChange(e: React.SyntheticEvent<any>) {
-    const text = e.currentTarget.value
-    if (text && text.match(/.{1,}/)) {
-      this.setState({
-        name: text,
-        isError: false,
-        errorText: ' '
-      })
-    } else {
-      this.setState({
-        name: text,
-        isError: true,
-        errorText: 'Must be over 1 characters'
-      })
-    }
-  }
-
-
-  render() {
-    const { open, onClose, title, okButtonTitle } = this.props
-
+  renderValidators = () => {
     return (
-      <Dialog
-        open={open}
-        onEnter={this.onEnter}
-        onClose={onClose}
+      <ValidatorForm
+        ref={(form) => this._form = form}
       >
-        <DialogTitle id={title}>{title}</DialogTitle>
-        <DialogContent>
-          <AutoFocusTextField
-            error={this.state.isError}
-            autoFocus
-            margin="normal"
-            id="rail-group-name"
-            label="Rail Group Name"
-            helperText={this.state.errorText}
-            onChange={this.onTextChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button disabled={this.state.isError || ! this.state.name} variant="raised" onClick={this.onOK} color="primary">
-            {okButtonTitle}
-          </Button>
-          <Button onClick={onClose} color="primary" autoFocus>
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
+        <AutoFocusTextValidator
+          label="Rail Group Name"
+          name="name"
+          key="name"
+          value={this.state.inputs.name}
+          onChange={this.onChange('name')}
+          validatorListener={this.handleValidation}
+          validators={['required']}
+          errorMessages={['this field is required']}
+        />
+      </ValidatorForm>
     )
   }
+
 }
