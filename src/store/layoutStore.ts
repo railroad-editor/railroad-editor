@@ -1,4 +1,4 @@
-import {RailData, RailGroupData} from "components/rails";
+import {RailData} from "components/rails";
 import {action, computed, observable, toJS} from "mobx";
 import LayoutAPI from "apis/layout";
 import commonStore from "./commonStore";
@@ -33,7 +33,6 @@ export interface LayoutStoreState {
 export interface LayoutData {
   layers: LayerData[]
   rails: RailData[]
-  railGroups: RailGroupData[]
 }
 
 export interface LayerData {
@@ -56,7 +55,6 @@ export const INITIAL_STATE: LayoutStoreState = {
         }
       ],
       rails: [],
-      railGroups: []
     }
   ],
   historyIndex: 0,
@@ -126,12 +124,6 @@ export class LayoutStore {
   }
 
   @computed
-  get nextRailGroupId() {
-    let ids = this.currentLayoutData.railGroups.map(r => r.id)
-    return ids.length > 0 ? Math.max(...ids) + 1 : 1
-  }
-
-  @computed
   get unconnectedCloseJoints() {
     return getAllOpenCloseJoints(this.currentLayoutData.rails)
   }
@@ -166,49 +158,11 @@ export class LayoutStore {
   deleteRail = (item: Partial<RailData>) => {
     // レールリストから削除
     this.currentLayoutData.rails = this.currentLayoutData.rails.filter(rail => rail.id !== item.id)
-    // レールグループに所属していたら削除
-    const railGroups = this.currentLayoutData.railGroups.map(group => {
-      return {
-        ...group,
-        rails: group.rails.filter( r => ! (r === item.id))
-      }
-    })
-    // 中身が空のレールグループを削除
-    this.currentLayoutData.railGroups = railGroups.filter(railGroup => railGroup.rails.length > 0)
   }
 
   @action
   deleteRails = (items: Partial<RailData>[]) => {
     items.forEach(item => this.deleteRail(item))
-  }
-
-
-  @action
-  addRailGroup = (item: RailGroupData, children: RailData[]) => {
-    item.id = this.nextRailGroupId
-
-    // 各レールにグループIDを付与する
-    const newChildren = children.map((child, idx) => {
-      return {
-        ...child,
-        id: this.nextRailId + idx,
-        groupId: item.id,
-      }
-    })
-
-    const newRailGroup = {
-      ...item,
-      rails: newChildren.map(c => c.id)
-    }
-
-    this.currentLayoutData.rails.push(...newChildren)
-    this.currentLayoutData.railGroups.push(newRailGroup)
-  }
-
-  @action
-  deleteRailGroup = (item: Partial<RailGroupData>) => {
-    this.currentLayoutData.rails = this.currentLayoutData.rails.filter(rail => rail.groupId !== item.id)
-    this.currentLayoutData.railGroups = this.currentLayoutData.railGroups.filter(railGroup => railGroup.id !== item.id)
   }
 
   @action
@@ -273,12 +227,6 @@ export class LayoutStore {
     this.histories = [layoutData]
     this.historyIndex = 0
   }
-
-  // @action
-  // addCurrentLayoutToHistory = () => {
-  //   const layout = this.histories[this.historyIndex]
-  //   return this.addHistory(layout, false)
-  // }
 
   @action
   saveLayout = async () => {

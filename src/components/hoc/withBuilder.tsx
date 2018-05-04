@@ -329,6 +329,11 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       })
     }
 
+    /**
+     * レールグループを複数のレールとして追加する。
+     * @param {RailGroupData} railGroup
+     * @param {RailData[]} children
+     */
     private addRailGroup = (railGroup: RailGroupData, children: RailData[]) => {
       const tmpRGC = getTemporaryRailGroupComponent()
       const childComponents = tmpRGC.children
@@ -554,7 +559,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       const railGroup: UserRailGroupData = {
         type: 'RailGroup',
         rails: newRails,
-        id: this.props.layout.nextRailGroupId,
+        id: 0,
         name: name,
         position: new Point(0, 0),
         angle: 0,
