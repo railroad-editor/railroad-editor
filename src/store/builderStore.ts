@@ -85,6 +85,8 @@ export class BuilderStore {
 
   @observable selecting: boolean
 
+  // @observable zoom
+
 
   constructor({ paletteItem, lastPaletteItems, activeLayerId, paperViewLoaded, temporaryRails, temporaryRailGroup, userRailGroups,
                 userRails, activeTool, selecting}) {

@@ -234,7 +234,7 @@ export default class ToolBar extends React.Component<EnhancedToolBarProps, ToolB
                 className={classNames({
                   'active': this.isActive(Tools.DELETE)
                 })}
-                onClick={this.props.builderRemoveSelectedRails}
+                onClick={this.props.builderDeleteSelectedRails}
               >
                 <DeleteIcon/>
               </StyledIconButton>

@@ -71,12 +71,11 @@ export default class RailGroup extends React.Component<RailGroupProps, {}> {
 
   render() {
     const {position, angle, visible} = this.props
-    LOGGER.debug('RailGroup#render', this.group, this.group ? this.group.children : '')
     const children = this.getChildComponents()
     const pivotPosition = this.getPivotPosition()
     const groupAngle = this.getAngle()
 
-    // LOGGER.debug(`RailGroup ${this.props.id}`, position, angle, 'pivot:', this.pivotPosition, this.pivotAngle)
+    LOGGER.debug('RailGroup#render', this.group, children, angle, pivotPosition, groupAngle)
 
     return (
       <GroupComponent
