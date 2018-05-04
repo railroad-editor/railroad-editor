@@ -275,47 +275,46 @@ export default class ToolBar extends React.Component<EnhancedToolBarProps, ToolB
               setConfig={this.props.layout.setConfig}
             />
 
-            {/*/!* メニューアイコンを右端に配置するための空白 *!/*/}
+            {/* メニューアイコンを右端に配置するための空白 */}
             <Typography variant="title" color="inherit" style={{flex: 1}} />
 
-            {/* ログインボタン */}
-            {! this.props.common.authData &&
-              <StyledLoginButton onClick={this.openLoginDialog}>
-                Login
-              </StyledLoginButton>
+            {/* ログイン・サインアップボタン */}
+            {! this.props.common.isAuth &&
+              <React.Fragment>
+                <StyledLoginButton onClick={this.openLoginDialog}>
+                  Login
+                </StyledLoginButton>
+                <StyledSignUpButton variant="raised" color="secondary" onClick={this.openSignUpDialog}>
+                  Sign Up
+                </StyledSignUpButton>
+                <LoginDialog
+                  open={this.state.openLogin}
+                  onClose={this.closeLoginDialog}
+                  setAuthData={this.props.common.setAuthData}
+                  loadLayoutList={this.props.common.loadLayoutList}
+                />
+                <SignUpDialog
+                  open={this.state.openSignUp}
+                  onClose={this.closeSignUpDialog}
+                  setAuthData={this.props.common.setAuthData}
+                  loadLayoutList={this.props.common.loadLayoutList}
+                />
+              </React.Fragment>
             }
 
-            <LoginDialog
-              open={this.state.openLogin}
-              onClose={this.closeLoginDialog}
-              setAuthData={this.props.common.setAuthData}
-              loadLayoutList={this.props.common.loadLayoutList}
-            />
-
-            {/*/!* サインアップボタン *!/*/}
-            {! this.props.common.authData &&
-              <StyledSignUpButton variant="raised" color="secondary" onClick={this.openSignUpDialog}>
-                Sign Up
-              </StyledSignUpButton>
-            }
-            <SignUpDialog
-              open={this.state.openSignUp}
-              onClose={this.closeSignUpDialog}
-              setAuthData={this.props.common.setAuthData}
-              loadLayoutList={this.props.common.loadLayoutList}
-            />
-
-            {/*/!* メニュー *!/*/}
-            {this.props.common.authData &&
-              <Tooltip id="tooltip-menu" title={"Menu"}>
-                <StyledIconButton onClick={this.openMenu} >
-                  <MenuIcon/>
-                </StyledIconButton>
-              </Tooltip>
+            {/* メニュー */}
+            {this.props.common.isAuth &&
+              <React.Fragment>
+                <Tooltip id="tooltip-menu" title={"Menu"}>
+                  <StyledIconButton onClick={this.openMenu} >
+                    <MenuIcon/>
+                  </StyledIconButton>
+                </Tooltip>
+                <MenuDrawer open={this.state.openMenu} onClose={this.closeMenu}/>
+              </React.Fragment>
             }
           </MuiToolbar>
         </AppBar>
-        <MenuDrawer open={this.state.openMenu} onClose={this.closeMenu}/>
       </React.Fragment>
     )
   }

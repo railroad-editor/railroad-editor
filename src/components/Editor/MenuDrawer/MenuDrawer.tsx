@@ -119,8 +119,6 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
         onClose={onClose}
         anchor="right"
       >
-        {/*これが無いとログアウト時にフックしてくれないので必須*/}
-        {/*<Authenticator hidden={true}/>*/}
         <div
           tabIndex={0}
           role="button"
@@ -128,35 +126,31 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
           // onKeyDown={this.toggleDrawer('left', false)}
         >
           <List>
-            {this.props.common.isAuth &&
-              <React.Fragment>
-                <ListItem button onClick={this.logout}>
-                  <ListItemIcon>
-                    <LogoutIcon/>
-                  </ListItemIcon>
-                  <ListItemText primary="Logout"/>
-                </ListItem>
-                <Divider />
-                <ListItem button onClick={this.openLayoutsDialog}>
-                  <ListItemIcon>
-                    <CloudIcon/>
-                  </ListItemIcon>
-                  <ListItemText primary="My Layouts"/>
-                </ListItem>
-                <ListItem button onClick={this.openCreateNewDialog}>
-                  <ListItemIcon>
-                    <OpenInNewIcon/>
-                  </ListItemIcon>
-                  <ListItemText primary="New Layout"/>
-                </ListItem>
-                <ListItem button onClick={this.save}>
-                  <ListItemIcon>
-                    <SaveIcon/>
-                  </ListItemIcon>
-                  <ListItemText primary="Save"/>
-                </ListItem>
-              </React.Fragment>
-            }
+            <ListItem button onClick={this.logout}>
+              <ListItemIcon>
+                <LogoutIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Logout"/>
+            </ListItem>
+            <Divider />
+            <ListItem button onClick={this.openLayoutsDialog}>
+              <ListItemIcon>
+                <CloudIcon/>
+              </ListItemIcon>
+              <ListItemText primary="My Layouts"/>
+            </ListItem>
+            <ListItem button onClick={this.openCreateNewDialog}>
+              <ListItemIcon>
+                <OpenInNewIcon/>
+              </ListItemIcon>
+              <ListItemText primary="New Layout"/>
+            </ListItem>
+            <ListItem button onClick={this.save}>
+              <ListItemIcon>
+                <SaveIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Save"/>
+            </ListItem>
           </List>
           <SaveLayoutDialog
             title={"Create New Layout"}
@@ -181,7 +175,6 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
             loadLayout={this.props.layout.loadLayout}
             loadLayoutList={this.props.common.loadLayoutList}
           />
-          {/*<LoginDialog open={this.state.openLogin} onClose={this.closeLoginDialog}/>*/}
         </div>
       </Drawer>
     )

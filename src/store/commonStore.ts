@@ -3,6 +3,7 @@ import {AuthData} from "components/common/Authenticator/AuthPiece/AuthPiece";
 import {LayoutMeta} from "store/layoutStore";
 import LayoutAPI from "apis/layout";
 import {create, persist} from "mobx-persist";
+import Auth from "aws-amplify/lib/Auth";
 
 
 const INITIAL_STATE = {
@@ -13,13 +14,14 @@ const INITIAL_STATE = {
 
 export class CommonStore {
   @observable layouts: LayoutMeta[]
-  @persist('object') @observable authData: AuthData
+  @observable authData: AuthData
   @observable isPaperLoaded: boolean
 
   constructor({layouts, authData}) {
     this.layouts = layouts
     this.authData = authData
   }
+
 
   @computed
   get isAuth() {
@@ -35,6 +37,9 @@ export class CommonStore {
   @action
   setAuthData = (authData: any) => {
     this.authData = authData
+    if (authData) {
+      this.loadLayoutList()
+    }
   }
 
   @action
@@ -52,7 +57,7 @@ const hydrate = create({})
 
 const store = new CommonStore(INITIAL_STATE)
 
-hydrate('authData', store).then(() => console.log('authData hydrated'))
+// hydrate('authData', store).then(() => console.log('authData hydrated'))
 
 export default store
 

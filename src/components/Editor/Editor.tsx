@@ -30,6 +30,7 @@ import {
   Tools
 } from "constants/tools";
 import FirstRailPutter from "components/Editor/FirstRailPutter/FirstRailPutter";
+import Auth from "aws-amplify/lib/Auth";
 
 const LOGGER = getLogger(__filename)
 
@@ -67,8 +68,17 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.props.resetViewPosition()
+  }
+
+  async componentWillMount() {
+    const session = await Auth.currentSession()
+    const userInfo = await Auth.currentUserInfo()
+    if (userInfo) {
+      LOGGER.info(`UserInfo: ${userInfo}`)
+      this.props.common.setAuthData(userInfo)
+    }
   }
 
 
