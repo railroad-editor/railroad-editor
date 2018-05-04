@@ -1,6 +1,5 @@
 import {RailData, RailGroupData} from "components/rails";
-import * as mobx from "mobx";
-import {action, computed, observable} from "mobx";
+import {action, computed, observable, toJS} from "mobx";
 import LayoutAPI from "apis/layout";
 import commonStore from "./commonStore";
 import builderStore from "./builderStore";
@@ -185,14 +184,15 @@ export class LayoutStore {
 
 
   @action
-  addRailGroup = (item: RailGroupData, children: RailData[], overwrite = false) => {
+  addRailGroup = (item: RailGroupData, children: RailData[]) => {
     item.id = this.nextRailGroupId
 
     // 各レールにグループIDを付与する
-    const newChildren = children.map(c => {
+    const newChildren = children.map((child, idx) => {
       return {
-        ...c,
-        groupId: item.id
+        ...child,
+        id: this.nextRailId + idx,
+        groupId: item.id,
       }
     })
 
@@ -317,7 +317,7 @@ export class LayoutStore {
 
   @action
   commit = () => {
-    const layout = mobx.toJS(this.currentLayoutData)
+    const layout = toJS(this.currentLayoutData)
     LOGGER.info('LayoutStore#commit', layout)
     this.histories[this.historyIndex+1] = layout
     this.historyIndex += 1

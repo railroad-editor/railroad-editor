@@ -1,7 +1,6 @@
 import * as React from 'react'
 import {Point, ToolEvent} from "paper";
 import getLogger from "logging";
-import update from "immutability-helper";
 import {RailData, RailGroupData} from "components/rails";
 import {JointInfo} from "components/rails/RailBase";
 import {getCloseJointsOf, getRailComponent, intersectsOf} from "components/rails/utils";
@@ -34,7 +33,7 @@ export interface WithBuilderPublicProps {
   builderDeselectAllRails: () => void
   builderDeleteSelectedRails: () => void
   builderGetRailItemData: (name?: string) => any
-  builderGetUserRailGroupData: (name?: string) => UserRailGroupData
+  builderGetRailGroupItemData: (name?: string) => UserRailGroupData
   builderSetTemporaryRail: (railData: Partial<RailData>) => void
   builderAddRail: () => void
   builderSetTemporaryRailGroup: (railGroupData: Partial<RailGroupData>, childRails: RailData[]) => void
@@ -193,14 +192,16 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
      * @param {string} name
      * @returns {any}
      */
-    getUserRailGroupData = (name?: string) => {
+    getUserRailGroupItemData = (name?: string) => {
       if (!name) {
         name = this.props.builder.paletteItem.name
         if (this.props.builder.paletteItem.type !== 'RailGroup') {
           return null
         }
       }
-      return this.props.builder.userRailGroups.find(rg => rg.name === name)
+      const ret = this.props.builder.userRailGroups.find(rg => rg.name === name)
+      LOGGER.debug('withBuilder#getUserRailGroupItemData', ret)
+      return ret
     }
 
     /**
@@ -508,29 +509,30 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
 
     /**
      * 選択中のレールを新しいレールグループとして登録する
+     * @param {string} name
      */
     private registerRailGroup = (name: string) => {
-      // 選択中のレールコンポーネントのPropsを取得する
       const selectedRails = this.getSelectedRails()
-      // 空いているジョイントを探す
-      // レールグループ内のレール以外に繋がっているジョイントも空きジョイントとする
+      // このレールグループの未接続ジョイントリストを作成
       const openJoints = []
+      selectedRails.map((rail, idx) => {
+        const opposingJointIds = _.keys(rail.opposingJoints).map(k => Number(k))
+        const numJoints = getRailComponent(rail.id).props.numJoints
+        const openJointIds = _.without(_.range(numJoints), ...opposingJointIds)
+        openJointIds.forEach(id => openJoints.push({ railId: idx, jointId: id }))
+      })
+      // レールグループメンバー
       let newRails = selectedRails.map((rail, idx) => {
-        const opposingJointIds = _.keys(rail.opposingJoints).map(k => parseInt(k))
-        const openJointIds = _.without(_.range(rail.numJoints), ...opposingJointIds)
-        openJointIds.forEach(id => openJoints.push({
-          railId: idx,
-          jointId: id
-        }))
-        return update(rail, {
-          id: {$set: -2-idx},           // 仮のIDを割り当てる
-          enableJoints: {$set: false},  // ジョイントは無効にしておく
-          selected: {$set: false},      // 選択状態は解除しておく
-          railGroup: {$set: -1},        // 仮のレールグループIDを割り当てる
-        })
+        return {
+          ...rail,
+          id: -2 - idx,           // 仮のレールIDを割り当て
+          enableJoints: false,    // ジョイント無効
+          selected: false,        // 選択状態を解除
+          railGroup: -1           // 仮のレールグループIDを割り当て
+        }
       })
 
-      // レールグループデータを生成する
+      // レールグループデータ
       const railGroup: UserRailGroupData = {
         type: 'RailGroup',
         rails: newRails,
@@ -540,8 +542,11 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
         angle: 0,
         openJoints: openJoints
       }
+
+      LOGGER.info('withBuilder#registerRailGroup', railGroup)
       this.props.builder.addUserRailGroup(railGroup)
     }
+
 
     private onNewRailGroupDialogClose = () => {
       this.setState({
@@ -572,7 +577,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
             builderMouseMove={this.mouseMove}
             builderKeyDown={this.keyDown}
             builderGetRailItemData={this.getRailItemData}
-            builderGetUserRailGroupData={this.getUserRailGroupData}
+            builderGetRailGroupItemData={this.getUserRailGroupItemData}
             builderSetTemporaryRail={this.setTemporaryRail}
             builderSetTemporaryRailGroup={this.setTemporaryRailGroup}
             builderAddRail={this.addRail}

@@ -167,7 +167,7 @@ export class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProp
   }
 
   private showTemporaryRailOrRailGroup = () => {
-    if (this.props.builderGetUserRailGroupData()) {
+    if (this.props.builderGetRailGroupItemData()) {
       this.showTemporaryRailGroup()
     } else if (this.props.builderGetRailItemData()) {
       this.showTemporaryRail()
@@ -175,7 +175,7 @@ export class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProp
   }
 
   private showTemporaryRailGroup = () => {
-    const {rails, openJoints} = this.props.builderGetUserRailGroupData()
+    const {rails, openJoints} = this.props.builderGetRailGroupItemData()
     const angle = getFirstRailAngle(this.state.fixedPosition, this.props.mousePosition)
 
     if (! this.props.builder.temporaryRailGroup) {

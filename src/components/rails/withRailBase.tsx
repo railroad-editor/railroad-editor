@@ -73,7 +73,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
     onJointMouseEnter = (jointId: number, e: MouseEvent) => {
       if (this.props.builder.selecting) return
 
-      if (this.props.builderGetUserRailGroupData()) {
+      if (this.props.builderGetRailGroupItemData()) {
         this.showTemporaryRailGroup(jointId)
       } else if (this.props.builderGetRailItemData()) {
         this.showTemporaryRail(jointId)
@@ -224,7 +224,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * @param {number} jointId
      */
     private showTemporaryRailGroup = (jointId: number) => {
-      const {rails, openJoints} = this.props.builderGetUserRailGroupData()
+      const {rails, openJoints} = this.props.builderGetRailGroupItemData()
 
       // PivotJointの設定
       let pivotJointInfo
