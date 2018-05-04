@@ -3,32 +3,28 @@ import {Point} from "paper";
 import {Rectangle, Tool} from "react-paper-bindings";
 import RectPart from "../../rails/parts/primitives/RectPart";
 import {getClosest} from "constants/utils";
-import {SettingsStoreState} from "reducers/settings";
-import {PaletteItem} from "store/type";
 import getLogger from "logging";
-import {RailData} from "components/rails";
 import {default as withBuilder, WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
+import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
+import CirclePart from "components/rails/parts/primitives/CirclePart";
+import {RAIL_PUTTER_MARKER_OPACITY, RAIL_PUTTER_MARKER_RADIUS} from "constants/tools";
+import {JOINT_DETECTION_OPACITY_RATE, JOINT_FILL_COLORS} from "constants/parts";
 
 const LOGGER = getLogger(__filename)
 
 
 enum Phase {
   SET_POSITION,
+  SET_POSITION_GRID,
   SET_ANGLE
 }
 
 export interface FirstRailPutterProps {
   mousePosition: Point
-  // paletteItem: PaletteItem
-  // temporaryRails: RailData[]
-  // settings: SettingsStoreState
-
-  // deleteTemporaryRail: () => void
   builder?: BuilderStore
   layout?: LayoutStore
 }
@@ -36,6 +32,7 @@ export interface FirstRailPutterProps {
 export interface FirstRailPutterState {
   fixedPosition: Point
   phase: Phase
+
 }
 
 type FirstRailPutterEnhancedProps = FirstRailPutterProps & WithBuilderPublicProps
@@ -77,19 +74,36 @@ export class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProp
   }
 
   mouseRightDown = (e: MouseEvent) => {
-    // 位置が決定済みならキャンセルする
+    // レールの向きを変更する
     if (this.state.phase === Phase.SET_ANGLE) {
-      this.props.builder.deleteTemporaryRail()
-      this.setState({
-        phase: Phase.SET_POSITION
-      })
+      if (this.props.builder.temporaryRailGroup) {
+        // レールグループの場合
+        this.props.builder.updateTemporaryRailGroup({
+          pivotJointInfo: this.props.builder.nextPivotJointInfo
+        })
+      } else if (this.props.builder.temporaryRails) {
+        // 単体レールの場合
+        this.props.builder.updateTemporaryRail({
+          pivotJointIndex: this.props.builder.nextPivotJointIndex
+        })
+      }
+    }
+  }
+
+  getMarkerPosition = () => {
+    switch (this.state.phase) {
+      case Phase.SET_POSITION:
+        return this.props.mousePosition
+      case Phase.SET_POSITION_GRID:
+        return this.getNearestGridPosition(this.props.mousePosition)
+      default:
+        return this.props.mousePosition
     }
   }
 
   onSetPosition = () => {
-    const position = this.getNearestGridPosition(this.props.mousePosition)
     this.setState({
-      fixedPosition: position,
+      fixedPosition: this.getMarkerPosition(),
       phase: Phase.SET_ANGLE
     })
   }
@@ -98,7 +112,14 @@ export class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProp
     this.addRail()
   }
 
-  onMouseMove = (e: MouseEvent) => {
+  onMouseMove = (e: MouseEvent|any) => {
+    // Ctrlキーを押している間はグリッド設置モードに移行する
+    if (! e.modifiers.control && this.state.phase === Phase.SET_POSITION_GRID) {
+      this.setState({phase: Phase.SET_POSITION})
+    }
+    if (e.modifiers.control && this.state.phase === Phase.SET_POSITION) {
+      this.setState({phase: Phase.SET_POSITION_GRID})
+    }
     if (this.state.phase === Phase.SET_ANGLE) {
       this.setTemporaryRail()
     }
@@ -111,17 +132,16 @@ export class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProp
     if (this.state.phase === Phase.SET_ANGLE) {
       position = this.state.fixedPosition
     } else {
-      position = this.getNearestGridPosition(this.props.mousePosition)
+      position = this.getMarkerPosition()
     }
 
     return (
       <React.Fragment>
-        <RectPart
-          width={70}
-          height={70}
+        <CirclePart
+          radius={RAIL_PUTTER_MARKER_RADIUS}
           position={position}
-          fillColor={'orange'}
-          opacity={0.5}
+          fillColor={JOINT_FILL_COLORS[0]}
+          opacity={JOINT_DETECTION_OPACITY_RATE}
         />
         {/* 不可視の四角形、イベントハンドリング用 */}
         <RectPart
