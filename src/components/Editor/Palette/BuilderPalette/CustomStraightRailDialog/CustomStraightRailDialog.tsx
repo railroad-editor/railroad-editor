@@ -82,6 +82,7 @@ export default class CustomStraightRailDialog extends FormDialog<CustomStraightR
             key="length"
             value={this.state.inputs.name}
             onChange={this.onChange('length')}
+            onKeyPress={this.onKeyPress}
             validatorListener={this.handleValidation}
             validators={['required']}
             errorMessages={['this field is required']}
@@ -103,6 +104,7 @@ export default class CustomStraightRailDialog extends FormDialog<CustomStraightR
             key="name"
             value={this.state.inputs.name}
             onChange={this.onChange('name')}
+            onKeyPress={this.onKeyPress}
             validatorListener={this.handleValidation}
             validators={['required']}
             errorMessages={['this field is required']}

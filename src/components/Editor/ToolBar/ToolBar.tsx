@@ -263,7 +263,7 @@ export default class ToolBar extends React.Component<EnhancedToolBarProps, ToolB
               </StyledIconButton>
             </Tooltip>
 
-            <Tooltip title={Tools.RESET_VIEW}>
+            <Tooltip title={'Settings'}>
               <StyledIconButton
                 onClick={this.openSettingsDialog}
               >

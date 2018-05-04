@@ -124,6 +124,10 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
               key="innerRadius"
               value={this.state.inputs.innerRadius}
               onChange={this.onChange('innerRadius')}
+              onKeyPress={this.onKeyPress}
+              validatorListener={this.handleValidation}
+              validators={['required']}
+              errorMessages={['this field is required']}
               onBlur={this.onInnterRadiusBlur}
             />
             <br />
@@ -134,6 +138,10 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
               key="outerRadius"
               value={this.state.inputs.outerRadius}
               onChange={this.onChange('outerRadius')}
+              onKeyPress={this.onKeyPress}
+              validatorListener={this.handleValidation}
+              validators={['required']}
+              errorMessages={['this field is required']}
               onBlur={this.onOuterRadiusBlur}
             />
           </React.Fragment>
@@ -146,6 +154,10 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
             key="radius"
             value={this.state.inputs.radius}
             onChange={this.onChange('radius')}
+            onKeyPress={this.onKeyPress}
+            validatorListener={this.handleValidation}
+            validators={['required']}
+            errorMessages={['this field is required']}
           />
         }
         <br />
@@ -156,6 +168,10 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
           key="centerAngle"
           value={this.state.inputs.centerAngle}
           onChange={this.onChange('centerAngle')}
+          onKeyPress={this.onKeyPress}
+          validatorListener={this.handleValidation}
+          validators={['required']}
+          errorMessages={['this field is required']}
         />
         <br />
         <FormControlLabel
@@ -174,6 +190,7 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
           key="name"
           value={this.state.inputs.name}
           onChange={this.onChange('name')}
+          onKeyPress={this.onKeyPress}
           validatorListener={this.handleValidation}
           validators={['required']}
           errorMessages={['this field is required']}

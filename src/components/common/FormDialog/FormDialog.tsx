@@ -67,6 +67,13 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
     })
   }
 
+  onKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      this.onOK()
+      e.preventDefault()
+    }
+  }
+
   render() {
     const {open, onClose, title} = this.props
 

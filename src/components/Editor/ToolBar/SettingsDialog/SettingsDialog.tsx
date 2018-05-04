@@ -38,6 +38,7 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
     this.props.onClose()
   }
 
+
   renderValidators = () => {
     return (
       <ValidatorForm
@@ -50,6 +51,7 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
           key="paperWidth"
           value={this.state.inputs.paperWidth}
           onChange={this.onChange('paperWidth')}
+          onKeyPress={this.onKeyPress}
           validatorListener={this.handleValidation}
           validators={['required']}
           errorMessages={['this field is required']}
@@ -61,6 +63,7 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
           key="paperHeight"
           value={this.state.inputs.paperHeight}
           onChange={this.onChange('paperHeight')}
+          onKeyPress={this.onKeyPress}
           validatorListener={this.handleValidation}
           validators={['required']}
           errorMessages={['this field is required']}
@@ -72,6 +75,7 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
           key="gridSize"
           value={this.state.inputs.gridSize}
           onChange={this.onChange('gridSize')}
+          onKeyPress={this.onKeyPress}
           validatorListener={this.handleValidation}
           validators={['required']}
           errorMessages={['this field is required']}

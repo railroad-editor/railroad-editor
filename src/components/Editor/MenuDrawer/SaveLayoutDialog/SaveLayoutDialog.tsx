@@ -91,6 +91,7 @@ export default class SaveLayoutDialog extends FormDialog<SaveLayoutDialogProps, 
           key="name"
           value={this.state.inputs.name}
           onChange={this.onChange('name')}
+          onKeyPress={this.onKeyPress}
           validatorListener={this.handleValidation}
           validators={['required']}
           errorMessages={['this field is required']}
