@@ -14,6 +14,7 @@ import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_LAYOUT} from 'constants/stores';
 import {BuilderStore, UserRailGroupData} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
+import * as $ from "jquery";
 
 
 const LOGGER = getLogger(__filename)
@@ -126,7 +127,14 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
 
 
+    dialogExists = () => {
+      const dialogDivs = $('div[role="dialog"]')
+      return dialogDivs.length > 0
+    }
+
     keyDown(e: ToolEvent | any) {
+      if (this.dialogExists()) return
+
       let methodName= 'keyDown_'
       if (e.modifiers.control) {
         methodName = methodName.concat('Ctrl')
@@ -154,7 +162,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       if (selectedRails.length > 0) {
         this.setState({
           newRailGroupDialogOpen: true,
-          deleteOnRegistered: true,
+          deleteOnRegistered: false,
         })
       }
     }

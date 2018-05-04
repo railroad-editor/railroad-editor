@@ -211,6 +211,7 @@ export class BuilderStore {
   setTemporaryRailGroup = (item: RailGroupData, children: RailData[]) => {
     this.temporaryRails = children
     this.temporaryRailGroup = item
+    this.temporaryRailGroup.rails = children.map(c => c.id)
   }
 
   @action
