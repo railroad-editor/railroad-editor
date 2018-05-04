@@ -3,7 +3,6 @@ import {ReactNode} from 'react'
 import {HideableDiv, ScrollablePaper,} from "./style";
 import Selector from "./Selector/Selector"
 import {TitleDiv} from "../../LayerPalette/styles";
-import {PaletteItem} from "store/type";
 import Typography from "material-ui/Typography";
 import Divider from "material-ui/Divider";
 import {inject, observer} from "mobx-react";

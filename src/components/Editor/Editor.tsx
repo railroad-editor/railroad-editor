@@ -23,7 +23,8 @@ import {GridPaper} from "components/Editor/GridPaper/GridPaper";
 import Layout from "components/Editor/Layout/Layout";
 import {
   DEFAULT_PAPER_BACKGROUND_COLOR,
-  DEFAULT_PAPER_COLOR, DEFAULT_PAPER_LINE_COLOR,
+  DEFAULT_PAPER_COLOR,
+  DEFAULT_PAPER_LINE_COLOR,
   DEFAULT_VIEW_HEIGHT,
   DEFAULT_VIEW_WIDTH,
   Tools

@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Line} from "react-paper-bindings";
-import {Point, Path} from "paper";
+import {Point} from "paper";
 import * as _ from "lodash";
 
 export const createGridLines = (width, height, gridSize) => {

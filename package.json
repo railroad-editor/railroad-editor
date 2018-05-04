@@ -48,6 +48,7 @@
     "material-ui-snackbar-provider": "next",
     "mobx": "4",
     "mobx-devtools-mst": "^0.9.14",
+    "mobx-persist": "^0.4.1",
     "mobx-react": "^5.0.0",
     "mobx-react-devtools": "^5.0.1",
     "mobx-state-tree": "^2.0.4",

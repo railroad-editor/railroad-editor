@@ -1,16 +1,12 @@
 import * as React from "react";
-import Dialog from "material-ui/Dialog";
-import {DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, FormGroup} from "material-ui";
-import Button from "material-ui/Button";
+import {FormControlLabel} from "material-ui";
 import Checkbox from "material-ui/Checkbox";
 import {Tools} from "constants/tools";
-import TextField from "material-ui/TextField";
-import AutoFocusTextField from "components/common/AutoFocusTextValidator";
+import AutoFocusTextValidator from "components/common/AutoFocusTextValidator";
 import RailPartBase from "components/rails/parts/RailPartBase";
 import {RailItemData} from "components/rails";
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import AutoFocusTextValidator from "components/common/AutoFocusTextValidator";
 
 export interface CustomCurveRailDialogProps extends FormDialogProps {
   addUserRail: (item: RailItemData) => void

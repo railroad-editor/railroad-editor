@@ -5,20 +5,12 @@ import List from "material-ui/List";
 import CloudIcon from "material-ui-icons/Cloud";
 import OpenInNewIcon from "material-ui-icons/OpenInNew";
 import SaveIcon from "material-ui-icons/Save";
-import LoginIcon from "material-ui-icons/LockOpen";
 import LogoutIcon from "material-ui-icons/Lock";
-import SettingsIcon from "material-ui-icons/Settings";
 import OpenLayoutDialog from "components/Editor/MenuDrawer/OpenLayoutDialog/OpenLayoutDialog";
 import Auth from "aws-amplify/lib/Auth";
-import LayoutAPI from "apis/layout"
 import StorageAPI from "apis/storage"
-import {LayoutData, LayoutMeta} from "reducers/layout";
 import Divider from "material-ui/Divider";
 import getLogger from "logging";
-import {UserRailGroupData} from "reducers/builder";
-import {RailItemData} from "components/rails";
-import {AuthData} from "components/common/Authenticator/AuthPiece/AuthPiece";
-import {SettingsDialog} from "components/Editor/ToolBar/SettingsDialog/SettingsDialog";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
 import {CommonStore} from "store/commonStore";

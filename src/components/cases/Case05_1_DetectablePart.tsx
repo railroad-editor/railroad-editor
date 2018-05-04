@@ -2,7 +2,6 @@ import * as React from "react";
 import {Point} from "paper";
 import {View} from "react-paper-bindings";
 import {createGridLines} from "./common";
-import StraightRailPart from "components/rails/parts/StraightRailPart";
 import DetectablePart from "components/rails/parts/primitives//DetectablePart";
 import RectPart from "components/rails/parts/primitives//RectPart";
 import {Pivot} from "components/rails/parts/primitives//PartBase";

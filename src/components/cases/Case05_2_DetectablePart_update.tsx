@@ -1,12 +1,10 @@
 import * as React from "react";
 import {Point} from "paper";
-import {View, Tool} from "react-paper-bindings";
+import {Tool, View} from "react-paper-bindings";
 import {createGridLines} from "./common";
-import StraightRailPart from "components/rails/parts/StraightRailPart";
 import DetectablePart from "components/rails/parts/primitives//DetectablePart";
 import RectPart from "components/rails/parts/primitives//RectPart";
 import {Pivot} from "components/rails/parts/primitives//PartBase";
-import Joint from "components/rails/parts/Joint";
 import PartGroup from "components/rails/parts/primitives//PartGroup";
 
 export default class Case05 extends React.Component<any, any> {

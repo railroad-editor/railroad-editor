@@ -1,18 +1,12 @@
 import * as React from 'react'
-import {DialogActions, DialogContent, DialogTitle} from "material-ui"
-import Dialog from "material-ui/Dialog";
-import Button from "material-ui/Button";
-import {LayoutData, LayoutMeta} from "reducers/layout";
 import * as md5 from "js-md5";
-import LayoutAPI from "apis/layout"
 import StorageAPI from "apis/storage"
 import getLogger from "logging";
 import * as moment from "moment";
-import {UserRailGroupData} from "reducers/builder";
-import AutoFocusTextField, {default as AutoFocusTextValidator} from "components/common/AutoFocusTextValidator";
-import {RailItemData} from "components/rails";
+import {default as AutoFocusTextValidator} from "components/common/AutoFocusTextValidator";
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
+import {LayoutMeta} from "store/layoutStore";
 
 const LOGGER = getLogger(__filename)
 

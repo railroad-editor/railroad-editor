@@ -1,7 +1,6 @@
 import * as React from 'react'
 import {List, ListItemText} from 'material-ui'
 import {StyledListItem} from "./Selector.style";
-import {PaletteItem} from "store/type";
 
 export interface SelectorProps {
   items: PaletteItem[]

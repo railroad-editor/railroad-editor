@@ -1,22 +1,10 @@
 import * as React from 'react'
-import {PaletteItem, RootState} from "store/type";
-import {LayoutData, RailGroupDataPayload} from "reducers/layout";
-import {currentLayoutData, isLayoutEmpty, nextRailGroupId, nextRailId} from "selectors";
 import {Point, ToolEvent} from "paper";
-import {addUserRailGroup, deleteTemporaryRail, setTemporaryRail, setTemporaryRailGroup} from "actions/builder";
-import {UserRailGroupData} from "reducers/builder";
 import getLogger from "logging";
 import update from "immutability-helper";
 import {RailData, RailGroupData} from "components/rails";
-import {addHistory, addRail, addRailGroup, removeRail, updateRail} from "actions/layout";
 import {JointInfo} from "components/rails/RailBase";
-import {
-  getAllOpenCloseJoints,
-  getAllRailComponents,
-  getCloseJointsOf,
-  getRailComponent,
-  intersectsOf
-} from "components/rails/utils";
+import {getAllRailComponents, getCloseJointsOf, getRailComponent, intersectsOf} from "components/rails/utils";
 import RailGroup from "components/rails/RailGroup/RailGroup";
 import {DetectionState} from "components/rails/parts/primitives/DetectablePart";
 import NewRailGroupDialog from "components/hoc/NewRailGroupDialog/NewRailGroupDialog";
@@ -24,7 +12,7 @@ import railItems from "constants/railItems.json"
 import {TEMPORARY_RAIL_OPACITY} from "constants/tools";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_LAYOUT} from 'constants/stores';
-import {BuilderStore} from "store/builderStore";
+import {BuilderStore, UserRailGroupData} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 
 

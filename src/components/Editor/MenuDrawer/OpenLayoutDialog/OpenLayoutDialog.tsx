@@ -5,10 +5,10 @@ import Typography from "material-ui/Typography";
 import {S3Image} from 'aws-amplify-react';
 import LayoutAPI from "apis/layout"
 import getLogger from "logging";
-import {LayoutMeta} from "reducers/layout";
 import {getLayoutImageFileName} from "apis/storage";
 import {LayoutCard} from "components/Editor/MenuDrawer/OpenLayoutDialog/LayoutCard/LayoutCard";
 import {ConfirmationDialog} from "components/Editor/LayerPalette/ConfirmationDialog/ConfirmationDialog";
+import {LayoutMeta} from "store/layoutStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -23,9 +23,6 @@ export interface OpenLayoutDialogProps {
 }
 
 export interface OpenLayoutDialogState {
-  sortedLayouts: LayoutMeta[]
-  layoutImageFiles: string[]
-
   deleteDialogOpen: boolean
   targetLayoutId: string
 }
@@ -36,14 +33,10 @@ export default class OpenLayoutDialog extends React.Component<OpenLayoutDialogPr
   constructor(props: OpenLayoutDialogProps) {
     super(props)
 
-    const sortedLayouts = this.props.layouts.sort((a, b) => b.lastModified - a.lastModified)
     this.state = {
-      sortedLayouts: sortedLayouts,
-      layoutImageFiles: sortedLayouts.map(meta => getLayoutImageFileName(this.props.authData.username, meta.id)),
       deleteDialogOpen: false,
       targetLayoutId: null
     }
-
   }
 
   deleteLayout = (layoutId) => async () => {
@@ -75,8 +68,10 @@ export default class OpenLayoutDialog extends React.Component<OpenLayoutDialogPr
   render() {
     let layoutName = ''
     if (this.state.targetLayoutId) {
-      layoutName = this.state.sortedLayouts.find(layout => layout.id === this.state.targetLayoutId).name
+      layoutName = this.props.layouts.find(layout => layout.id === this.state.targetLayoutId).name
     }
+
+    const sortedLayouts = this.props.layouts.sort((a, b) => b.lastModified - a.lastModified)
 
 
     return (
@@ -91,18 +86,17 @@ export default class OpenLayoutDialog extends React.Component<OpenLayoutDialogPr
           <Typography>
             You have {this.props.layouts.length} layouts.
           </Typography>
-          {_.range(this.state.sortedLayouts.length).map(idx => {
-            const {sortedLayouts, layoutImageFiles} = this.state
-
+          {sortedLayouts.map((meta, idx) => {
+            const layoutImageFile = getLayoutImageFileName(this.props.authData.username, meta.id)
             return (
-                <LayoutCard
-                  imgKey={layoutImageFiles[idx]}
-                  title={sortedLayouts[idx].name}
-                  lastModified={sortedLayouts[idx].lastModified}
-                  onClick={this.onClick(sortedLayouts[idx])}
-                  onDelete={this.openDeleteDialog(sortedLayouts[idx].id)}
-                  onRename={this.openDeleteDialog(sortedLayouts[idx].id)}
-                />
+              <LayoutCard
+                imgKey={layoutImageFile}
+                title={meta.name}
+                lastModified={meta.lastModified}
+                onClick={this.onClick(meta)}
+                onDelete={this.openDeleteDialog(meta.id)}
+                onRename={this.openDeleteDialog(meta.id)}
+              />
             )
           })}
         </DialogContent>

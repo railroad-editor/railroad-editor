@@ -8,14 +8,13 @@ import SpecialRailIcon from "components/Editor/ToolBar/Icon/SpecialRailIcon";
 import RailGroupIcon from "components/Editor/ToolBar/Icon/RailGroupIcon";
 import BuilderPalette from "./BuilderPalette/BuilderPalette"
 import Rnd from "react-rnd"
-import {UserRailGroupData} from "reducers/builder";
-import CustomStraightRailDialog from "components/Editor/Palette/BuilderPalette/CustomStraightRailDialog/CustomStraightRailDialog";
-import CustomCurveRailDialog from "components/Editor/Palette/BuilderPalette/CustomCurveRailDialog/CustomCurveRailDialog";
+import CustomStraightRailDialog
+  from "components/Editor/Palette/BuilderPalette/CustomStraightRailDialog/CustomStraightRailDialog";
+import CustomCurveRailDialog
+  from "components/Editor/Palette/BuilderPalette/CustomCurveRailDialog/CustomCurveRailDialog";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
-import {LayoutStore} from "store/layoutStore";
+import {STORE_BUILDER} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
-import {RailItemData} from "components/rails";
 
 
 export interface PaletteProps {

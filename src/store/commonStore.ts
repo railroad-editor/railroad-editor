@@ -2,6 +2,7 @@ import {action, computed, observable} from "mobx";
 import {AuthData} from "components/common/Authenticator/AuthPiece/AuthPiece";
 import {LayoutMeta} from "store/layoutStore";
 import LayoutAPI from "apis/layout";
+import {create, persist} from "mobx-persist";
 
 
 const INITIAL_STATE = {
@@ -12,7 +13,7 @@ const INITIAL_STATE = {
 
 export class CommonStore {
   @observable layouts: LayoutMeta[]
-  @observable authData: AuthData
+  @persist('object') @observable authData: AuthData
   @observable isPaperLoaded: boolean
 
   constructor({layouts, authData}) {
@@ -47,5 +48,12 @@ export class CommonStore {
   }
 }
 
+const hydrate = create({})
 
-export default new CommonStore(INITIAL_STATE)
+const store = new CommonStore(INITIAL_STATE)
+
+hydrate('authData', store).then(() => console.log('authData hydrated'))
+
+export default store
+
+

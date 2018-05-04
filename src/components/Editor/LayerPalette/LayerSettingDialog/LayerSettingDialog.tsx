@@ -1,16 +1,13 @@
 import * as React from "react";
-import Dialog from "material-ui/Dialog";
-import {DialogActions, DialogContent, DialogTitle, FormControl} from "material-ui";
-import Button from "material-ui/Button";
 import AutoFocusTextValidator from "components/common/AutoFocusTextValidator";
 import ChromePicker from "react-color/lib/components/chrome/Chrome";
 import Popover from "material-ui/Popover";
 import Typography from "material-ui/Typography";
 import Grid from "material-ui/Grid";
 import {SmallButton, Spacer} from "components/Editor/LayerPalette/LayerSettingDialog/styles";
-import {LayerData} from "reducers/layout";
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
+import {LayerData} from "store/layoutStore";
 
 
 export interface LayerSettingDialogProps extends FormDialogProps {

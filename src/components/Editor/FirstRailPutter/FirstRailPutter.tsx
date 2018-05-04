@@ -11,7 +11,7 @@ import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import CirclePart from "components/rails/parts/primitives/CirclePart";
-import {RAIL_PUTTER_MARKER_OPACITY, RAIL_PUTTER_MARKER_RADIUS} from "constants/tools";
+import {RAIL_PUTTER_MARKER_RADIUS} from "constants/tools";
 import {JOINT_DETECTION_OPACITY_RATE, JOINT_FILL_COLORS} from "constants/parts";
 
 const LOGGER = getLogger(__filename)

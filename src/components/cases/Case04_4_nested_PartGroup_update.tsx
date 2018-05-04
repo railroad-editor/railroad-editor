@@ -1,12 +1,11 @@
 import * as React from "react";
 import RectPart from "components/rails/parts/primitives//RectPart";
 import {Point} from "paper";
-import {View, Tool} from "react-paper-bindings";
+import {Tool, View} from "react-paper-bindings";
 import {createGridLines} from "./common";
 import {Pivot} from "components/rails/parts/primitives//PartBase";
 import PartGroup from "components/rails/parts/primitives//PartGroup";
 import CirclePart from "components/rails/parts/primitives//CirclePart";
-import ArcPart, {ArcDirection} from "components/rails/parts/primitives//ArcPart";
 import * as assert from "assert";
 import {pointsEqual} from "components/rails/utils";
 

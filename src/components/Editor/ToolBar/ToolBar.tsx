@@ -14,9 +14,6 @@ import PanToolIcon from 'material-ui-icons/PanTool'
 import AspectRatioIcon from "material-ui-icons/AspectRatio";
 import MenuIcon from "material-ui-icons/Menu";
 import SettingsIcon from "material-ui-icons/Settings";
-import {PaletteItem} from "store/type";
-import {LastPaletteItems} from "reducers/builder";
-import {LayoutData, LayoutMeta} from "reducers/layout";
 import getLogger from "logging";
 import Typography from "material-ui/Typography";
 import * as classNames from "classnames"

@@ -4,19 +4,16 @@ import {
   createRailComponent,
   createRailGroupComponent,
   createRailOrRailGroupComponent,
-  getAllOpenCloseJoints,
   getCloseJointsOf,
   intersectsOf
 } from "components/rails/utils";
-import {RailData, RailGroupData} from "components/rails";
 import getLogger from "logging";
-import {LayerData, LayoutData} from "reducers/layout";
-import {JointPair, default as withBuilder} from "components/hoc/withBuilder";
+import {default as withBuilder, JointPair} from "components/hoc/withBuilder";
 import {DetectionState} from "components/rails/parts/primitives/DetectablePart";
 import shallowEqualObjects from "shallow-equal/objects"
 import {compose} from "recompose";
 import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
-import {observer, inject} from "mobx-react";
+import {inject, observer} from "mobx-react";
 import {LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
 

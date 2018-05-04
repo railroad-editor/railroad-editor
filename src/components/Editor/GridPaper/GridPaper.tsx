@@ -1,8 +1,7 @@
 import * as React from 'react'
-import {Layer, Line, Path, Raster, Tool, View} from 'react-paper-bindings'
+import {Layer, Line, Path, Raster, Rectangle, Tool, View} from 'react-paper-bindings'
 import {Point} from 'paper';
 import * as _ from "lodash";
-import {Rectangle} from "react-paper-bindings";
 
 export interface GridPaperProps {
   viewWidth: number

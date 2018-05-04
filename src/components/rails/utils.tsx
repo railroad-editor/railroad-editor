@@ -6,7 +6,7 @@ import RailGroupContainer from "components/rails/RailGroup";
 import Combinatorics from "js-combinatorics"
 import {Point} from "paper";
 import {JointPair} from "components/hoc/withBuilder";
-import {LayerData} from "reducers/layout";
+import {LayerData} from "store/layoutStore";
 
 const LOGGER = getLogger(__filename)
 

@@ -1,4 +1,3 @@
-import {PaletteItem} from "store/type";
 import {RailComponentClasses, RailData, RailGroupData, RailItemData} from "components/rails";
 import {JointInfo} from "components/rails/RailBase";
 import {RailGroupProps} from "components/rails/RailGroup/RailGroup";
