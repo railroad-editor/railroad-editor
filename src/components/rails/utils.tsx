@@ -7,6 +7,7 @@ import Combinatorics from "js-combinatorics"
 import {Point} from "paper";
 import {JointPair} from "components/hoc/withBuilder";
 import {LayerData} from "store/layoutStore";
+import RailGroup from "components/rails/RailGroup/RailGroup";
 
 const LOGGER = getLogger(__filename)
 
@@ -137,9 +138,9 @@ export const getRailComponent = (id: number): RailBase<RailBaseProps, any> => {
 //   return window.RAIL_COMPONENTS["-1"]
 // }
 //
-// export const getTemporaryRailGroupComponent = (): RailBase<RailBaseProps, any> => {
-//   return window.RAIL_GROUP_COMPONENTS["-1"]
-// }
+export const getTemporaryRailGroupComponent = (): RailGroup => {
+  return window.RAIL_GROUP_COMPONENTS["-1"]
+}
 
 /**
  * 全てのレールコンポーネントを取得する

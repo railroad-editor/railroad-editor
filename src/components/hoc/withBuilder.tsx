@@ -3,7 +3,7 @@ import {Point, ToolEvent} from "paper";
 import getLogger from "logging";
 import {RailData, RailGroupData} from "components/rails";
 import {JointInfo} from "components/rails/RailBase";
-import {getCloseJointsOf, getRailComponent, intersectsOf} from "components/rails/utils";
+import {getCloseJointsOf, getRailComponent, getTemporaryRailGroupComponent, intersectsOf} from "components/rails/utils";
 import RailGroup from "components/rails/RailGroup/RailGroup";
 import {DetectionState} from "components/rails/parts/primitives/DetectablePart";
 import NewRailGroupDialog from "components/hoc/NewRailGroupDialog/NewRailGroupDialog";
@@ -329,27 +329,45 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       })
     }
 
-    /**
-     * レールグループを設置する。
-     * @param {RailGroupData} railGroup
-     * @param {RailData[]} children
-     */
     private addRailGroup = (railGroup: RailGroupData, children: RailData[]) => {
-      const newChildren = children.map((temporaryRail, idx) => {
-        return {
-          ..._.omit(temporaryRail, p => _.isFunction(p)),
-          // id: nextRailId + idx,    // 仮のレールIDを割り振る
-          name: '',
-          layerId: this.props.builder.activeLayerId,  // 現在のレイヤーに置く
-          enableJoints: true,                         // ジョイントを有効化
-          opposingJoints: {},                         // 近傍ジョイントは後で接続する
-          opacity: 1,
-          visible: true,
-        }
+      const tmpRGC = getTemporaryRailGroupComponent()
+      const childComponents = tmpRGC.children
+      LOGGER.info('withBuilder#addRailGroup', 'temporaryRailGroup', tmpRGC)
+      childComponents.forEach(child => {
+        const position = child.railPart.getGlobalJointPosition(child.props.pivotJointIndex)
+        const angle = child.props.angle + tmpRGC.getAngle()
+        LOGGER.info('withBuilder#addRailGroup', child.props, position, angle)
+        this.addSingleRail({
+          ...child.props,
+          position,
+          angle,
+          pivotJointIndex: child.props.pivotJointIndex
+        } as RailData)
       })
-      // レールグループを追加
-      this.props.layout.addRailGroup({ ...railGroup, name: '' }, newChildren)
+
     }
+
+    // /**
+    //  * レールグループを設置する。
+    //  * @param {RailGroupData} railGroup
+    //  * @param {RailData[]} children
+    //  */
+    // private addRailGroup = (railGroup: RailGroupData, children: RailData[]) => {
+    //   const newChildren = children.map((temporaryRail, idx) => {
+    //     return {
+    //       ..._.omit(temporaryRail, p => _.isFunction(p)),
+    //       // id: nextRailId + idx,    // 仮のレールIDを割り振る
+    //       name: '',
+    //       layerId: this.props.builder.activeLayerId,  // 現在のレイヤーに置く
+    //       enableJoints: true,                         // ジョイントを有効化
+    //       opposingJoints: {},                         // 近傍ジョイントは後で接続する
+    //       opacity: 1,
+    //       visible: true,
+    //     }
+    //   })
+    //   // レールグループを追加
+    //   this.props.layout.addRailGroup({ ...railGroup, name: '' }, newChildren)
+    // }
 
 
     /**

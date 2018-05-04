@@ -90,7 +90,7 @@ export default class RailGroup extends React.Component<RailGroupProps, {}> {
     )
   }
 
-  private getAngle() {
+  public getAngle() {
     return this.props.angle - this.getInternalPivotAngle() + 180
   }
 

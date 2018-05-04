@@ -17,8 +17,8 @@ export enum Tools {
 export const DEFAULT_VIEW_WIDTH = 1920
 export const DEFAULT_VIEW_HEIGHT = 1080
 
-export const DEFAULT_PAPER_WIDTH = 2100
-export const DEFAULT_PAPER_HEIGHT = 1400
+export const DEFAULT_PAPER_WIDTH = 700
+export const DEFAULT_PAPER_HEIGHT = 700
 
 export const DEFAULT_PAPER_COLOR = '#e6e6e6'
 export const DEFAULT_PAPER_BACKGROUND_COLOR = '#333333'
