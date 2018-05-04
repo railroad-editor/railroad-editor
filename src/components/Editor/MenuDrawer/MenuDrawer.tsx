@@ -55,9 +55,9 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
     const {meta, currentLayoutData, saveLayout} = this.props.layout
     const {userRailGroups, userRails} = this.props.builder
     const {loadLayoutList} = this.props.common
-    const {authData} = this.props.common
+    const {userInfo} = this.props.common
 
-    const userId = authData.username
+    const userId = userInfo.username
     if (meta) {
       const savedData = {
         layout: currentLayoutData,
@@ -156,21 +156,21 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
             title={"Create New Layout"}
             open={this.state.openCreateNew}
             onClose={this.closeCreateNewDialog}
-            authData={this.props.common.authData}
+            authData={this.props.common.userInfo}
             saveLayout={this.props.layout.saveLayout}
             setLayoutMeta={this.props.layout.setLayoutMeta}
           />
           <SaveLayoutDialog
             title={"Save Layout"}
             open={this.state.openSaveNew} onClose={this.closeSaveNewDialog}
-            authData={this.props.common.authData}
+            authData={this.props.common.userInfo}
             saveLayout={this.props.layout.saveLayout}
             setLayoutMeta={this.props.layout.setLayoutMeta}
           />
           <OpenLayoutDialog
             open={this.state.openOpen}
             onClose={this.closeLayoutsDialog}
-            authData={this.props.common.authData}
+            authData={this.props.common.userInfo}
             layouts={this.props.common.layouts}
             loadLayout={this.props.layout.loadLayout}
             loadLayoutList={this.props.common.loadLayoutList}

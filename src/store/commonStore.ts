@@ -14,29 +14,29 @@ const INITIAL_STATE = {
 
 export class CommonStore {
   @observable layouts: LayoutMeta[]
-  @observable authData: AuthData
+  @observable userInfo: AuthData
   @observable isPaperLoaded: boolean
 
   constructor({layouts, authData}) {
     this.layouts = layouts
-    this.authData = authData
+    this.userInfo = authData
   }
 
 
   @computed
   get isAuth() {
-    return !! this.authData
+    return !! this.userInfo
   }
 
   @computed
   get currentUser() {
-    return this.authData.username
+    return this.userInfo.username
   }
 
 
   @action
   setAuthData = (authData: any) => {
-    this.authData = authData
+    this.userInfo = authData
     if (authData) {
       this.loadLayoutList()
     }
@@ -57,7 +57,7 @@ const hydrate = create({})
 
 const store = new CommonStore(INITIAL_STATE)
 
-// hydrate('authData', store).then(() => console.log('authData hydrated'))
+// hydrate('userInfo', store).then(() => console.log('userInfo hydrated'))
 
 export default store
 

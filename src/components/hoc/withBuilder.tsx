@@ -57,6 +57,7 @@ export interface JointPair {
 
 export interface WithBuilderState {
   newRailGroupDialogOpen: boolean
+  deleteOnRegistered: boolean
 }
 
 
@@ -75,7 +76,8 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       super(props)
 
       this.state = {
-        newRailGroupDialogOpen: false
+        newRailGroupDialogOpen: false,
+        deleteOnRegistered: false,
       }
 
       this.mouseDown = this.mouseDown.bind(this)
@@ -151,13 +153,24 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       const selectedRails = this.getSelectedRails()
       if (selectedRails.length > 0) {
         this.setState({
-          newRailGroupDialogOpen: true
+          newRailGroupDialogOpen: true,
+          deleteOnRegistered: true,
         })
       }
     }
 
     keyDown_CtrlX = (e) => {
-      // this.keyDown_CtrlC(e)
+      const selectedRails = this.getSelectedRails()
+      if (selectedRails.length > 0) {
+        this.setState({
+          newRailGroupDialogOpen: true,
+          deleteOnRegistered: true,
+        })
+      }
+    }
+
+    keyDown_CtrlA = (e) => {
+      this.selectRails(this.props.layout.currentLayoutData.rails.map(rail => rail.id))
     }
 
     /**
@@ -520,7 +533,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
             title={'New Rail Group'}
             open={this.state.newRailGroupDialogOpen}
             onClose={this.onNewRailGroupDialogClose}
-            onOK={this.onNewRailGroupDialogOK}
+            onOK={this.onNewRailGroupDialogOK(this.state.deleteOnRegistered)}
           />
         </React.Fragment>
       )
@@ -533,9 +546,17 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       })
     }
 
-    private onNewRailGroupDialogOK = (name: string) => {
+    private onNewRailGroupDialogOK = (shouldDelete: boolean) => (name: string) => {
       this.registerRailGroup(name)
-      this.deselectAllRails()
+      if (shouldDelete) {
+        this.props.layout.deleteRails(this.props.layout.currentLayoutData.rails.map(rail => {
+          return {
+            id: rail.id
+          }
+        }))
+      } else {
+        this.deselectAllRails()
+      }
     }
 
     /**

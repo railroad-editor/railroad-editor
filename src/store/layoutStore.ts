@@ -173,6 +173,11 @@ export class LayoutStore {
     })
   }
 
+  @action
+  deleteRails = (items: Partial<RailData>[]) => {
+    items.forEach(item => this.deleteRail(item))
+  }
+
 
   @action
   addRailGroup = (item: RailGroupData, children: RailData[], overwrite = false) => {

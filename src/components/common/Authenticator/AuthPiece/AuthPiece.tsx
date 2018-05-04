@@ -5,7 +5,7 @@ export interface AuthData {
 }
 
 export interface AuthPieceProps {
-  // authData: AuthData
+  // userInfo: AuthData
   authState?: any
   onAuthEvent?: any
   onStateChange?: (state: string, data: any) => void
@@ -53,20 +53,6 @@ export default abstract class AuthPiece<P extends AuthPieceProps, S extends Auth
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  // extract username from authData
-  // usernameFromAuthData() {
-  //   const { authData } = this.props;
-  //   if (!authData) { return ''; }
-  //
-  //   let username = '';
-  //   if (typeof authData === 'object') { // user object
-  //     username = authData.user? authData.user.username : authData.username;
-  //   } else {
-  //     username = authData; // username string
-  //   }
-  //
-  //   return username;
-  // }
 
   errorMessage(err: string|any) {
     if (typeof err === 'string') { return err; }
