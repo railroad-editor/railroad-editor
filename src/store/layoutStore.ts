@@ -1,15 +1,11 @@
-import update from 'immutability-helper';
 import {RailData, RailGroupData} from "components/rails";
+import * as mobx from "mobx";
 import {action, computed, observable} from "mobx";
-import {LayoutDataWithMeta} from "apis/layout";
+import LayoutAPI from "apis/layout";
 import commonStore from "./commonStore";
 import builderStore from "./builderStore";
-import LayoutAPI from "apis/layout";
-import {UserRailGroupData} from "store/builderStore";
 import {DEFAULT_GRID_SIZE, DEFAULT_INITIAL_ZOOM, DEFAULT_PAPER_HEIGHT, DEFAULT_PAPER_WIDTH} from "constants/tools";
-import {createViewModel} from "mobx-utils";
 import {getAllOpenCloseJoints} from "components/rails/utils";
-import * as mobx from "mobx"
 
 
 export interface LayoutConfig {
@@ -315,14 +311,6 @@ export class LayoutStore {
     this.historyIndex += 1
   }
 
-  // addHistory = (layout: LayoutData, overwrite = false) => {
-  //   if (overwrite) {
-  //     this.histories[this.historyIndex] = layout
-  //   } else {
-  //     this.histories[this.historyIndex+1] = layout
-  //     this.historyIndex += 1
-  //   }
-  // }
 }
 
 

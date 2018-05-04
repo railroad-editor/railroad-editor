@@ -139,9 +139,9 @@ export class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProp
 
   private getNearestGridPosition = (pos) => {
     const {paperWidth, paperHeight, gridSize} = this.props.layout.config
-    const xNums = _.range(0, paperWidth, gridSize);
+    const xNums = _.range(0, paperWidth + 1, gridSize);
     const xPos = getClosest(pos.x, xNums)
-    const yNums = _.range(0, paperHeight, gridSize);
+    const yNums = _.range(0, paperHeight + 1, gridSize);
     const yPos = getClosest(pos.y, yNums)
     return new Point(xPos, yPos)
   }

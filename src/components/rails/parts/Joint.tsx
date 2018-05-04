@@ -12,7 +12,7 @@ import {
   JOINT_HIT_RADIUS,
   JOINT_WIDTH
 } from "constants/parts";
-import TrianglePart from "components/rails/parts/primitives/TrianglePart";
+import RectPart from "components/rails/parts/primitives/RectPart";
 import getLogger from "logging";
 
 const LOGGER = getLogger(__filename)
@@ -89,7 +89,7 @@ export default class Joint extends React.Component<JointProps, {}> {
     return (
       <DetectablePart
         mainPart={
-          <TrianglePart
+          <RectPart
             width={JOINT_WIDTH}
             height={JOINT_HEIGHT}
             opacity={opacity}

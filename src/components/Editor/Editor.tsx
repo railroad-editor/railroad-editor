@@ -66,6 +66,11 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
     }
   }
 
+  componentDidMount() {
+    this.props.resetViewPosition()
+  }
+
+
   isActive = (... tools: string[]) => {
     return tools.includes(this.props.builder.activeTool)
   }

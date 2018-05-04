@@ -58,14 +58,14 @@ export class Layout extends React.Component<LayoutProps, {}> {
 
     // 仮レールが追加または可視状態に変わった場合、近傍ジョイントを探して検出状態にする
     // TODO: 右クリックに対応できない。仮レールが変更された場合、で決め打ちしたほうがよいかも
-    if (temporaryRailHasChangedVisible(this.props, prevProps)) {
-      this.validateAddedTemporaryRails()
-    }
-
-    // 仮レールが削除または不可視状態に変わった場合、近傍ジョイントを探して非検出状態にする
-    if (temporaryRailHasChangedInvisible(this.props, prevProps)) {
-      this.validateDeletedTemporaryRails()
-    }
+    // if (temporaryRailHasChangedVisible(this.props, prevProps)) {
+    //   this.validateAddedTemporaryRails()
+    // }
+    //
+    // // 仮レールが削除または不可視状態に変わった場合、近傍ジョイントを探して非検出状態にする
+    // if (temporaryRailHasChangedInvisible(this.props, prevProps)) {
+    //   this.validateDeletedTemporaryRails()
+    // }
   }
 
 

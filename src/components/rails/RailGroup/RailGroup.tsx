@@ -47,7 +47,7 @@ export default class RailGroup extends React.Component<RailGroupProps, {}> {
   constructor(props: RailGroupProps) {
     super(props)
     this._children = this.props.children ? new Array((this.props.children as any[]).length) : []
-    this.pivotPosition = new Point(0,0)
+    this.pivotPosition = this.props.position
     this.pivotAngle = 0
   }
 

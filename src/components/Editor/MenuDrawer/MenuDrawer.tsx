@@ -60,8 +60,9 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
 
 
   save = async () => {
-    const {meta, currentLayoutData} = this.props.layout
+    const {meta, currentLayoutData, saveLayout} = this.props.layout
     const {userRailGroups, userRails} = this.props.builder
+    const {loadLayoutList} = this.props.common
     const {authData} = this.props.common
 
     const userId = authData.username
@@ -73,8 +74,10 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
         userCustomRails: userRails,
       }
       LOGGER.info(savedData)
-      // LayoutAPI.saveLayoutData(userId, savedData)
+      saveLayout()
       StorageAPI.saveCurrentLayoutImage(userId, meta.id)
+      // レイアウトリストをロードし直す
+      loadLayoutList()
       this.props.onClose()
     } else {
       this.openSaveNewDialog()

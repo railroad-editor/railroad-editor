@@ -22,7 +22,7 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
   getInitialState = () => {
     return {
       inputs: _.mapValues(this.props.config, (v) => String(v)),
-      disabled: true
+      disabled: false
     }
   }
 

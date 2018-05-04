@@ -1,4 +1,3 @@
-import {DEFAULT_GRID_SIZE, DEFAULT_INITIAL_ZOOM, DEFAULT_PAPER_HEIGHT, DEFAULT_PAPER_WIDTH} from "constants/tools";
 import {action, computed, observable} from "mobx";
 import {AuthData} from "components/common/Authenticator/AuthPiece/AuthPiece";
 import {LayoutMeta} from "store/layoutStore";
