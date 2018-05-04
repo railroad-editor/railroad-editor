@@ -15,6 +15,7 @@ export interface LayoutConfig {
   paperHeight: number
   gridSize: number
   initialZoom: number
+  backgroundImageUrl: string
 }
 
 export interface LayoutMeta {
@@ -63,7 +64,8 @@ export const INITIAL_STATE: LayoutStoreState = {
     paperWidth: DEFAULT_PAPER_WIDTH,
     paperHeight: DEFAULT_PAPER_HEIGHT,
     gridSize: DEFAULT_GRID_SIZE,
-    initialZoom: DEFAULT_INITIAL_ZOOM
+    initialZoom: DEFAULT_INITIAL_ZOOM,
+    backgroundImageUrl: ''
   }
 }
 
@@ -234,6 +236,7 @@ export class LayoutStore {
       commonStore.currentUser,
       this.currentLayoutData,
       this.meta,
+      this.config,
       builderStore.userRailGroups,
       builderStore.userRails
     )
@@ -244,10 +247,9 @@ export class LayoutStore {
     const layout = await LayoutAPI.fetchLayoutData(commonStore.currentUser, layoutId)
     this.setLayoutData(layout.layout)
     this.setLayoutMeta(layout.meta)
-    // TODO: temporary
-    // this.setConfig(layout.config)
+    this.setConfig(layout.config)
     builderStore.setUserRailGroups(layout.userRailGroups)
-    builderStore.setUserRails(layout.userCustomRails)
+    builderStore.setUserRails(layout.userRails)
   }
 
   @action

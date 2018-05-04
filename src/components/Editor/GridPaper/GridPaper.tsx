@@ -12,6 +12,7 @@ export interface GridPaperProps {
   lineColor: string
   paperColor: string
   backgroundColor: string
+  backgroundImageUrl: string
   onWheel: any
   setPaperLoaded: (loaded: boolean) => void
   matrix?: any
@@ -48,7 +49,7 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
     return _.range(paperWidth / gridSize + 1).map(i => {
       return (
         <Line
-          key={`v-line${i}`}
+          key={`v-line${i}`}  //`
           from={new Point(gridSize * i, 0)}
           to={new Point(gridSize * i, paperHeight)}
           data={{type: 'GridLine'}}
@@ -63,7 +64,7 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
     return _.range(paperHeight / gridSize + 1).map(i => {
       return (
         <Line
-          key={`h-line${i}`}
+          key={`h-line${i}`}  //`
           from={new Point(0, gridSize * i)}
           to={new Point(paperWidth,gridSize * i)}
           data={{type: 'GridLine'}}
@@ -84,6 +85,25 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
     )
   }
 
+  createBackgroundImage = () => {
+    const {paperWidth, paperHeight} = this.props
+    const position = new Point(paperWidth / 2, paperHeight / 2)
+    return (
+      <Raster
+        source={this.props.backgroundImageUrl}
+        onLoad={this.onImageLoaded}
+        position={position}
+        opacity={0.5}
+      />
+    )
+  }
+
+  onImageLoaded = (instance) => {
+    const {paperWidth, paperHeight} = this.props
+    const scaleX =  paperWidth / instance.width
+    const scaleY =  paperHeight / instance.height
+    instance.scale(scaleX, scaleY)
+  }
 
 
   render() {
@@ -110,6 +130,7 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
         >
           <Layer>
             {this.createBackground()}
+            {this.createBackgroundImage()}
             {this.createVerticalLines()}
             {this.createHorizontalLines()}
           </Layer>

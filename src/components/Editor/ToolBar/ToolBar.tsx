@@ -273,6 +273,8 @@ export default class ToolBar extends React.Component<EnhancedToolBarProps, ToolB
               onClose={this.closeSettingsDialog}
               config={this.props.layout.config}
               setConfig={this.props.layout.setConfig}
+              userInfo={this.props.common.userInfo}
+              layoutMeta={this.props.layout.meta}
             />
 
             {/* メニューアイコンを右端に配置するための空白 */}

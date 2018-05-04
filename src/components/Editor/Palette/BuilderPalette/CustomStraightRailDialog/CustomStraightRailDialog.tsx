@@ -19,21 +19,6 @@ export interface CustomStraightRailDialogState extends FormDialogState {
 
 export default class CustomStraightRailDialog extends FormDialog<CustomStraightRailDialogProps, CustomStraightRailDialogState> {
 
-  static INITIAL_STATE = {
-    name: '',
-    length: '',
-    errors: {
-      name: false,
-      length: false,
-    },
-    errorTexts: {
-      name: '',
-      length: '',
-    },
-    isDouble: false,
-  }
-
-
   constructor(props: CustomStraightRailDialogProps) {
     super(props)
     this.state = this.getInitialState()
@@ -59,7 +44,7 @@ export default class CustomStraightRailDialog extends FormDialog<CustomStraightR
       paletteName: Tools.STRAIGHT_RAILS,
     })
 
-    this.props.onClose()
+    this.onClose()
   }
 
 
@@ -69,7 +54,7 @@ export default class CustomStraightRailDialog extends FormDialog<CustomStraightR
     });
   };
 
-  renderValidators = () => {
+  renderContent = () => {
     return (
         <ValidatorForm
           ref={(form) => this._form = form}
@@ -80,7 +65,7 @@ export default class CustomStraightRailDialog extends FormDialog<CustomStraightR
             type="number"
             name="length"
             key="length"
-            value={this.state.inputs.name}
+            value={this.state.inputs.length}
             onChange={this.onChange('length')}
             onKeyPress={this.onKeyPress}
             validatorListener={this.handleValidation}

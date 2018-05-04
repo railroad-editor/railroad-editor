@@ -57,7 +57,7 @@ export default class LayerSettingDialog extends FormDialog<LayerSettingDialogPro
         color: this.state.inputs.color,
       })
     }
-    this.props.onClose()
+    this.onClose()
   }
 
   openColorPicker = (e) => {
@@ -81,7 +81,7 @@ export default class LayerSettingDialog extends FormDialog<LayerSettingDialogPro
     })
   }
 
-  renderValidators = () => {
+  renderContent = () => {
     return (
       <React.Fragment>
         <ValidatorForm

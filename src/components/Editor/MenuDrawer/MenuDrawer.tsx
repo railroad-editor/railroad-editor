@@ -159,6 +159,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
             authData={this.props.common.userInfo}
             saveLayout={this.props.layout.saveLayout}
             setLayoutMeta={this.props.layout.setLayoutMeta}
+            layoutConfig={this.props.layout.config}
           />
           <SaveLayoutDialog
             title={"Save Layout"}
@@ -166,6 +167,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
             authData={this.props.common.userInfo}
             saveLayout={this.props.layout.saveLayout}
             setLayoutMeta={this.props.layout.setLayoutMeta}
+            layoutConfig={this.props.layout.config}
           />
           <OpenLayoutDialog
             open={this.state.openOpen}

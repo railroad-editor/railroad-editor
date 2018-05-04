@@ -74,7 +74,7 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
       })
     }
 
-    this.props.onClose()
+    this.onClose()
   }
 
 
@@ -105,7 +105,7 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
     }
   }
 
-  renderValidators = () => {
+  renderContent = () => {
     // const { innerRadius, outerRadius, radius, centerAngle, name } = this.state.inputs
     return (
       <ValidatorForm

@@ -37,6 +37,7 @@ export class CommonStore {
   @action
   setAuthData = (authData: any) => {
     this.userInfo = authData
+    // ログインしたらロードする
     if (authData) {
       this.loadLayoutList()
     }

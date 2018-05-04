@@ -120,7 +120,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
       'sx', 'sy', 'tx', 'ty', 'x', 'y', 'zoom',
     ])
 
-    const {paperWidth, paperHeight, gridSize} = this.props.layout.config
+    const {paperWidth, paperHeight, gridSize, backgroundImageUrl} = this.props.layout.config
 
     // LOGGER.debug(`from=${this.props.selectionRectFrom}, to=${this.props.selectionRectTo}`)
 
@@ -138,6 +138,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             paperHeight={paperHeight}
             paperColor={DEFAULT_PAPER_COLOR}
             backgroundColor={DEFAULT_PAPER_BACKGROUND_COLOR}
+            backgroundImageUrl={backgroundImageUrl}
             lineColor={DEFAULT_PAPER_LINE_COLOR}
             gridSize={gridSize}
             onWheel={this.props.moveToolMouseWheel}

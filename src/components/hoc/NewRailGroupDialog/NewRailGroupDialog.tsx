@@ -20,10 +20,11 @@ export default class NewRailGroupDialog extends FormDialog<NewRailGroupDialogPro
 
   onOK = (e) => {
     this.props.onOK(this.state.inputs.name)
-    this.props.onClose()
+    this.onClose()
   }
 
-  renderValidators = () => {
+  renderContent = () => {
+    console.log(this.state.inputs)
     return (
       <ValidatorForm
         ref={(form) => this._form = form}

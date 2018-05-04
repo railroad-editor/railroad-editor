@@ -41,11 +41,15 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
 
   abstract onOK
 
-  abstract renderValidators
+  abstract renderContent
 
+  // onEnter = () => {
+  //   this.setState(this.getInitialState())
+  // }
 
-  onEnter = () => {
+  onClose = () => {
     this.setState(this.getInitialState())
+    this.props.onClose()
   }
 
   onChange = name => e => {
@@ -75,24 +79,23 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
   }
 
   render() {
-    const {open, onClose, title} = this.props
-
+    const {open, title} = this.props
     return (
       <Dialog
         open={open}
-        onEnter={this.onEnter}
-        onClose={onClose}
+        // onEnter={this.onEnter}
+        onClose={this.onClose}
       >
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-            {this.renderValidators()}
+            {this.renderContent()}
         </DialogContent>
         <DialogActions>
           <Button variant="raised" color="primary"
                   disabled={this.state.disabled} onClick={this.onOK}>
             OK
           </Button>
-          <Button onClick={onClose} color="primary" autoFocus>
+          <Button onClick={this.onClose} color="primary" autoFocus>
             Cancel
           </Button>
         </DialogActions>

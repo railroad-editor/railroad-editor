@@ -7,6 +7,11 @@ const saveCurrentLayoutImage = async (userId: string, layoutId: string) => {
   return await Storage.put(getLayoutImageFileName(userId, layoutId), blobData, {level: 'private'})
 }
 
+const saveBackgroundImage = async (userId: string, layoutId: string, dataUrl: string) => {
+  const blobData = dataURItoBlob(dataUrl);
+  return await Storage.put(backGroundImageName(userId, layoutId), blobData, {level: 'private'})
+}
+
 const fetchLayoutImage =  async (userId: string, layoutId: string) => {
   return await Storage.get(getLayoutImageFileName(userId, layoutId), {level: 'private'})
 }
@@ -15,6 +20,11 @@ const fetchLayoutImage =  async (userId: string, layoutId: string) => {
 export const getLayoutImageFileName = (userId: string, layoutId: string) => {
   return `${userId}-${layoutId}.png`  //`
 }
+
+export const backGroundImageName = (userId: string, layoutId: string) => {
+  return `${userId}-${layoutId}-bg.png`  //`
+}
+
 
 const dataURItoBlob = (dataURI) => {
   let binary = atob(dataURI.split(',')[1]);
@@ -28,5 +38,6 @@ const dataURItoBlob = (dataURI) => {
 
 export default {
   saveCurrentLayoutImage,
-  fetchLayoutImage
+  fetchLayoutImage,
+  saveBackgroundImage,
 }

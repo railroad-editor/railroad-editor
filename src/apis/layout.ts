@@ -13,7 +13,7 @@ export interface LayoutDataWithMeta {
   meta: LayoutMeta
   config: LayoutConfig
   userRailGroups: UserRailGroupData[]
-  userCustomRails: RailItemData[]
+  userRails: RailItemData[]
 }
 
 
@@ -29,18 +29,21 @@ const fetchLayoutData = async (userId: string, layoutId: string): Promise<Layout
 const saveLayoutData = async (userId: string,
                               layoutData: LayoutData,
                               layoutMeta: LayoutMeta,
+                              layoutConfig: LayoutConfig,
                               userRailGroups: UserRailGroupData[],
                               userCustomRails: RailItemData[]
                               ) => {
   const layoutId = layoutMeta.id
+  const body: LayoutDataWithMeta = {
+    layout: layoutData,
+    meta: layoutMeta,
+    config: layoutConfig,
+    userRailGroups: userRailGroups,
+    userRails: userCustomRails
+  }
   return await API.put('Layout', `/users/${userId}/layouts/${layoutId}`, {
     headers: {},
-    body: {
-      layout: layoutData,
-      meta: layoutMeta,
-      userRailGroups: userRailGroups,
-      userCustomRails: userCustomRails
-    }
+    body: body
   })
 }
 

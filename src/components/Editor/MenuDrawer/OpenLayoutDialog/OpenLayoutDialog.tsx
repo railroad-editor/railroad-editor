@@ -39,6 +39,10 @@ export default class OpenLayoutDialog extends React.Component<OpenLayoutDialogPr
     }
   }
 
+  onEnter = () => {
+    this.props.loadLayoutList()
+  }
+
   deleteLayout = (layoutId) => async () => {
     await LayoutAPI.deleteLayoutData(this.props.authData.username, layoutId)
     await this.props.loadLayoutList()
@@ -77,6 +81,7 @@ export default class OpenLayoutDialog extends React.Component<OpenLayoutDialogPr
     return (
       <Dialog
         open={this.props.open}
+        onEnter={this.onEnter}
         onClose={this.props.onClose}
         fullWidth
         maxWidth='md'
