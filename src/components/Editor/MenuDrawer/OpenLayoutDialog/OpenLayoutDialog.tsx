@@ -90,6 +90,7 @@ export default class OpenLayoutDialog extends React.Component<OpenLayoutDialogPr
             const layoutImageFile = getLayoutImageFileName(this.props.authData.username, meta.id)
             return (
               <LayoutCard
+                key={`card-${idx}`}
                 imgKey={layoutImageFile}
                 title={meta.name}
                 lastModified={meta.lastModified}

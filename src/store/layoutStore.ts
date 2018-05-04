@@ -6,6 +6,9 @@ import commonStore from "./commonStore";
 import builderStore from "./builderStore";
 import {DEFAULT_GRID_SIZE, DEFAULT_INITIAL_ZOOM, DEFAULT_PAPER_HEIGHT, DEFAULT_PAPER_WIDTH} from "constants/tools";
 import {getAllOpenCloseJoints} from "components/rails/utils";
+import getLogger from "logging";
+
+const LOGGER = getLogger(__filename)
 
 
 export interface LayoutConfig {
@@ -165,12 +168,14 @@ export class LayoutStore {
     // レールリストから削除
     this.currentLayoutData.rails = this.currentLayoutData.rails.filter(rail => rail.id !== item.id)
     // レールグループに所属していたら削除
-    this.currentLayoutData.railGroups = this.currentLayoutData.railGroups.map(group => {
+    const railGroups = this.currentLayoutData.railGroups.map(group => {
       return {
         ...group,
         rails: group.rails.filter( r => ! (r === item.id))
       }
     })
+    // 中身が空のレールグループを削除
+    this.currentLayoutData.railGroups = railGroups.filter(railGroup => railGroup.rails.length > 0)
   }
 
   @action
@@ -312,7 +317,9 @@ export class LayoutStore {
 
   @action
   commit = () => {
-    this.histories[this.historyIndex+1] = mobx.toJS(this.currentLayoutData)
+    const layout = mobx.toJS(this.currentLayoutData)
+    LOGGER.info('LayoutStore#commit', layout)
+    this.histories[this.historyIndex+1] = layout
     this.historyIndex += 1
   }
 

@@ -121,7 +121,7 @@ export class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProp
       this.setState({phase: Phase.SET_POSITION_GRID})
     }
     if (this.state.phase === Phase.SET_ANGLE) {
-      this.setTemporaryRail()
+      this.showTemporaryRailOrRailGroup()
     }
   }
 
@@ -166,32 +166,60 @@ export class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProp
     return new Point(xPos, yPos)
   }
 
-  private setTemporaryRail = () => {
+  private showTemporaryRailOrRailGroup = () => {
     if (this.props.builderGetUserRailGroupData()) {
-      // 仮レールグループの設置
-      const {rails, openJoints} = this.props.builderGetUserRailGroupData()
-      const pivotJointInfo = openJoints[0]
-      const angle = getFirstRailAngle(this.state.fixedPosition, this.props.mousePosition)
-      const railGroup = {
-        pivotJointInfo: pivotJointInfo,
+      this.showTemporaryRailGroup()
+    } else if (this.props.builderGetRailItemData()) {
+      this.showTemporaryRail()
+    }
+  }
+
+  private showTemporaryRailGroup = () => {
+    const {rails, openJoints} = this.props.builderGetUserRailGroupData()
+    const angle = getFirstRailAngle(this.state.fixedPosition, this.props.mousePosition)
+
+    if (! this.props.builder.temporaryRailGroup) {
+      const tempRailGroup = {
+        pivotJointInfo: openJoints[0],
         position: this.state.fixedPosition,
         angle: angle,
       }
-      this.props.builderSetTemporaryRailGroup(railGroup, rails)
-
-    } else if (this.props.builderGetRailItemData()) {
-      // 仮レールの設置
-      const itemData = this.props.builderGetRailItemData()
-      const angle = getFirstRailAngle(this.state.fixedPosition, this.props.mousePosition)
-      // 角度が変わっていたら仮レールを設置する
-      if (_.isEmpty(this.props.builder.temporaryRails) || this.props.builder.temporaryRails[0].angle !== angle) {
-        this.props.builderSetTemporaryRail({
-          ...itemData,
-          position: this.state.fixedPosition,
-          angle: angle,
-          pivotJointIndex: 0,
-        })
+      LOGGER.info('[FirstRailPutter] TemporaryRailGroup', tempRailGroup)
+      this.props.builderSetTemporaryRailGroup(tempRailGroup, rails)
+    } else if (this.props.builder.temporaryRailGroup.angle !== angle) {
+      const tempRailGroup = {
+        pivotJointInfo: this.props.builder.temporaryRailGroup.pivotJointInfo,
+        position: this.state.fixedPosition,
+        angle: angle,
       }
+      LOGGER.info('[FirstRailPutter] TemporaryRailGroup', tempRailGroup)
+      this.props.builderSetTemporaryRailGroup(tempRailGroup, rails)
+    }
+  }
+
+
+  private showTemporaryRail = () => {
+    const itemData = this.props.builderGetRailItemData()
+    const angle = getFirstRailAngle(this.state.fixedPosition, this.props.mousePosition)
+
+    if (_.isEmpty(this.props.builder.temporaryRails)) {
+      // 仮レール未設置ならPivotJointは0
+      const tempRail = {
+        ...itemData,
+        position: this.state.fixedPosition,
+        angle: angle,
+        pivotJointIndex: 0
+      }
+      this.props.builderSetTemporaryRail(tempRail)
+    } else if (this.props.builder.temporaryRails[0].angle !== angle) {
+      // 仮レールが既に存在するならPivotJointをキープ
+      const tempRail = {
+        ...itemData,
+        position: this.state.fixedPosition,
+        angle: angle,
+        pivotJointIndex: this.props.builder.temporaryRails[0].pivotJointIndex
+      }
+      this.props.builderSetTemporaryRail(tempRail)
     }
   }
 

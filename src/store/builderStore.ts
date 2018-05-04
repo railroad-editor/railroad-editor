@@ -37,6 +37,7 @@ export interface BuilderStoreState {
   // 仮レールと他のレールが重なっているか否か
   intersects: boolean
   activeTool: string
+  selecting: boolean
 }
 
 export const INITIAL_STATE: BuilderStoreState = {
@@ -56,6 +57,7 @@ export const INITIAL_STATE: BuilderStoreState = {
   intersects: false,
   userRails: [],
   activeTool: Tools.STRAIGHT_RAILS,
+  selecting: false,
 }
 
 
@@ -81,9 +83,11 @@ export class BuilderStore {
 
   @observable activeTool: Tools
 
+  @observable selecting: boolean
+
 
   constructor({ paletteItem, lastPaletteItems, activeLayerId, paperViewLoaded, temporaryRails, temporaryRailGroup, userRailGroups,
-                userRails, activeTool}) {
+                userRails, activeTool, selecting}) {
     this.paletteItem = paletteItem
     this.lastPaletteItems = lastPaletteItems
     this.activeLayerId = activeLayerId
@@ -94,6 +98,7 @@ export class BuilderStore {
     this.userRails = userRails
     this.intersects = false
     this.activeTool = activeTool
+    this.selecting = selecting
   }
 
   @computed
@@ -249,6 +254,11 @@ export class BuilderStore {
   @action
   setIntersects = (intersects: boolean) => {
     this.intersects = intersects
+  }
+
+  @action
+  setSelecting = (selecting: boolean) => {
+    this.selecting = selecting
   }
 }
 

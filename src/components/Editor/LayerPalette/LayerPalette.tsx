@@ -144,14 +144,14 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
             <PaletteAddButton onClick={this.openAddDialog}/>
           </TitleDiv>
 
-          {layers.map((layer, index) =>
-            <Grid container justify="center" spacing={0}>
-              <React.Fragment key={`layer-${index}`}>
+          {layers.map((layer, idx) =>
+            <Grid container justify="center" spacing={0} key={`layer-${idx}`}>
+              <React.Fragment key={`layer-${idx}`}>
                 <Grid item xs={3}>
                   <Checkbox
-                    checked={layers[index].visible}
+                    checked={layers[idx].visible}
                     onChange={this.onToggleVisible(layer.id)}
-                    value={layers[index].id.toString()}
+                    value={layers[idx].id.toString()}
                   />
                 </Grid>
                 <Grid item xs={9}>

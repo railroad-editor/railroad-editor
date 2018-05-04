@@ -344,11 +344,12 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       const selectedRails = this.props.layout.currentLayoutData.rails.filter(r => r.selected)
       LOGGER.info(`[Builder] Selected rail IDs: ${selectedRails.map(r => r.id)}`); // `
 
+      this.props.layout.commit()
+
       selectedRails.forEach(item => {
         this.disconnectJoint(item.id)
         this.props.layout.deleteRail(item)
       })
-      this.props.layout.commit()
     }
 
 
@@ -427,6 +428,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
 
     selectRails = (railIds: number[]) => {
+      LOGGER.info('withBuilder#selectRails', railIds)
       const updated = railIds.map(r => {
           const railData = this.getRailDataById(r)
           return {

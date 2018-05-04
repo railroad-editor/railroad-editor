@@ -11,13 +11,13 @@ export interface RailGroupProps extends Partial<RailGroupDefaultProps> {
   position: Point
   angle: number
   id: number
+  pivotJointInfo?: JointInfo
   onMount?: (instance: RailGroup) => void
   onUnmount?: (instance: RailGroup) => void
 }
 
 export interface RailGroupDefaultProps {
   type: string
-  pivotJointInfo: JointInfo
   visible: boolean
   enableJoints: boolean
   name: string
@@ -27,10 +27,6 @@ export interface RailGroupDefaultProps {
 export default class RailGroup extends React.Component<RailGroupProps, {}> {
   public static defaultProps: RailGroupDefaultProps = {
     type: 'RailGroup',
-    pivotJointInfo: {
-      railId: 0,
-      jointId: 0
-    },
     visible: true,
     enableJoints: true,
     name: 'No name',
@@ -53,9 +49,12 @@ export default class RailGroup extends React.Component<RailGroupProps, {}> {
 
 
   private setInternal() {
-    this.group.pivot = this.getPivotPosition()
-    this.group.position = this.props.position
-    this.group.rotation = this.getAngle()
+    LOGGER.debug('RailGroup#setInternal', this.group, this.group ? this.group.children : '')
+    if (this.group.children.length > 0) {
+      this.group.pivot = this.getPivotPosition()
+      this.group.position = this.props.position
+      this.group.rotation = this.getAngle()
+    }
   }
 
   componentDidUpdate() {
@@ -65,13 +64,14 @@ export default class RailGroup extends React.Component<RailGroupProps, {}> {
   componentDidMount() {
     this.setInternal()
     if (this.props.onMount) {
-      this.props.onMount(this as any)
+      this.props.onMount(this)
     }
   }
 
 
   render() {
     const {position, angle, visible} = this.props
+    LOGGER.debug('RailGroup#render', this.group, this.group ? this.group.children : '')
     const children = this.getChildComponents()
     const pivotPosition = this.getPivotPosition()
     const groupAngle = this.getAngle()
@@ -97,6 +97,10 @@ export default class RailGroup extends React.Component<RailGroupProps, {}> {
 
   private getPivotPosition = () => {
     const {pivotJointInfo} = this.props
+    if (! pivotJointInfo) {
+      return undefined
+    }
+
     if (this.children[pivotJointInfo.railId]) {
       // 指定のPivotRailのPivotJointの位置を取得し、保存
       this.pivotPosition = this.children[pivotJointInfo.railId].railPart.getJointPositionToParent(pivotJointInfo.jointId)
@@ -108,6 +112,9 @@ export default class RailGroup extends React.Component<RailGroupProps, {}> {
 
   private getInternalPivotAngle = () => {
     const {pivotJointInfo} = this.props
+    if (! pivotJointInfo) {
+      return 0
+    }
     if (this.children[pivotJointInfo.railId]) {
       // 指定のPivotRailのPivotJointの角度を取得し、保存
       this.pivotAngle = this.children[pivotJointInfo.railId].railPart.getJointAngleToParent(pivotJointInfo.jointId)
@@ -118,7 +125,6 @@ export default class RailGroup extends React.Component<RailGroupProps, {}> {
 
 
   private getChildComponents = () => {
-    const {enableJoints, visible} = this.props
     // 子要素のメソッドを呼び出す必要があるので、refをそれらのpropsに追加する
     // TODO: childrenが空の時のエラー処理
     return React.Children.map(this.props.children, (child: any, i) => {
@@ -126,8 +132,6 @@ export default class RailGroup extends React.Component<RailGroupProps, {}> {
       if (child) {
         return React.cloneElement(child as any, {
           ...child.props,
-          // enableJoints,
-          // visible,
           onMount: (node) => {
             if (child.props.onMount) {
               child.props.onMount(node)

@@ -27,18 +27,6 @@ export interface WithRailBaseProps {
 
   builder?: BuilderStore
   layout?: LayoutStore
-
-  // // states
-  // temporaryRails: RailData[]
-  // temporaryRailGroup: RailGroupData
-  // activeLayerId: number
-  // nextPivotJointIndex: number
-  // nextPivotJointInfo: JointInfo
-  // intersects: boolean
-  //
-  // // actionssetTemporaryRail
-  // updateTemporaryRail: (item: Partial<RailData>) => void
-  // updateTemporaryRailGroup: (item: Partial<RailGroupData>) => void
 }
 
 export type RailBaseEnhancedProps = RailBaseProps & WithRailBaseProps & WithBuilderPublicProps
@@ -83,6 +71,8 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * @param {MouseEvent} e
      */
     onJointMouseEnter = (jointId: number, e: MouseEvent) => {
+      if (this.props.builder.selecting) return
+
       if (this.props.builderGetUserRailGroupData()) {
         this.showTemporaryRailGroup(jointId)
       } else if (this.props.builderGetRailItemData()) {

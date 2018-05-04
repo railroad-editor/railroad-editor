@@ -4,11 +4,12 @@ import {Rectangle} from "react-paper-bindings";
 import getLogger from "logging";
 import {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {DEFAULT_SELECTION_RECT_COLOR, DEFAULT_SELECTION_RECT_OPACITY} from "constants/tools";
-import {getAllRailComponents} from "components/rails/utils";
+import {getAllRailComponents, getRailComponent} from "components/rails/utils";
 import {BuilderStore} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
+import {RailBase} from "components/rails/RailBase";
 
 const LOGGER = getLogger(__filename)
 
@@ -110,6 +111,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
         this.debounceCount += 1
         return
       }
+      this.props.builder.setSelecting(true)
 
       // Pathを毎回生成・削除する場合、PaperRendererで描画するよりも
       // 生のPaperJSオブジェクトを操作したほうが都合が良い。
@@ -131,15 +133,16 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
      * @param {paper.ToolEvent} e
      */
     mouseUp = (e: ToolEvent) => {
+      this.props.builder.setSelecting(false)
       if (! this.selectionRect) {
         return
       }
 
       // 選択対象は現在のレイヤーのレールとする
-      const rails = getAllRailComponents().filter(rc => rc.props.layerId === this.props.builder.activeLayerId)
+      const rails = this.props.layout.activeLayerRails.map(r => getRailComponent(r.id))
 
       const selected = []
-      rails.forEach((rail: any) => {
+      rails.forEach((rail) => {
         // 矩形がRailPartを構成するPathを含むか、交わっているか確認する
         const targetPaths = rail.railPart.path.children
         let result = targetPaths.map(path => {
@@ -156,7 +159,6 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
       })
 
       this.props.builderSelectRails(selected)
-
 
       // 矩形を削除する
       this.selectionRect.remove()
