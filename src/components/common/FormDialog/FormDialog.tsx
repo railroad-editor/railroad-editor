@@ -43,9 +43,9 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
 
   abstract renderContent
 
-  // onEnter = () => {
-  //   this.setState(this.getInitialState())
-  // }
+  onEnter = () => {
+    this.setState(this.getInitialState())
+  }
 
   onClose = () => {
     this.setState(this.getInitialState())
@@ -83,7 +83,7 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
     return (
       <Dialog
         open={open}
-        // onEnter={this.onEnter}
+        onEnter={this.onEnter}
         onClose={this.onClose}
       >
         <DialogTitle>{title}</DialogTitle>

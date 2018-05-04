@@ -16,6 +16,12 @@
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
+"@material-ui/icons@^1.0.0-beta.43":
+  version "1.0.0-beta.43"
+  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-1.0.0-beta.43.tgz#38bba799a4e575de7eced4bd10a0afbd546e9b47"
+  dependencies:
+    recompose "^0.26.0"
+
 "@types/cheerio@*":
   version "0.22.7"
   resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.22.7.tgz#4a92eafedfb2b9f4437d3a4410006d81114c66ce"
@@ -5588,6 +5594,12 @@ material-ui-icons@next:
   resolved "https://registry.yarnpkg.com/material-ui-icons/-/material-ui-icons-1.0.0-beta.36.tgz#86390a61f4c83f718eaba77ccce575834f2cf2a8"
   dependencies:
     recompose "^0.26.0"
+
+material-ui-image@next:
+  version "3.0.0-pre.7"
+  resolved "https://registry.yarnpkg.com/material-ui-image/-/material-ui-image-3.0.0-pre.7.tgz#4ee3ccac88f5c3a3cfd4ed3b6e5660c19809cffd"
+  dependencies:
+    prop-types "^15.5.8"
 
 material-ui-snackbar-provider@next:
   version "1.0.0-pre.3"

@@ -9,11 +9,15 @@ import styled from "styled-components";
 import Grid from "material-ui/Grid";
 import Typography from "material-ui/Typography";
 import {Spacer} from "components/Editor/LayerPalette/LayerSettingDialog/styles";
+import Image from 'material-ui-image'
 
 
-const Thumbnail = styled.img`
-  width: 100px;
-  height: 100px;
+
+const Thumbnail = styled(Image)`
+  && {
+    width: 100px;
+    height: 100px;
+  }
 `
 
 
@@ -49,7 +53,7 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
     })
 
     LOGGER.info(newConfig)
-    this.props.setConfig(newConfig as LayoutConfig)
+    this.props.setConfig(newConfig)
     this.onClose()
   }
 

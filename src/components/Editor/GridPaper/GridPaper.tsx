@@ -99,9 +99,12 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
   }
 
   onImageLoaded = (instance) => {
+    // いったんスケールを元に戻す。２回目のロード時に必要
+    instance.scale(1 / instance.scaling.x, 1 / instance.scaling.y)
     const {paperWidth, paperHeight} = this.props
     const scaleX =  paperWidth / instance.width
     const scaleY =  paperHeight / instance.height
+    // Paperのサイズに合うようにスケールする
     instance.scale(scaleX, scaleY)
   }
 
