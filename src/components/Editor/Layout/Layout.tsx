@@ -8,6 +8,7 @@ import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import {inject, observer} from "mobx-react";
 import {LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
+import {DEFAULT_SELECTED_COLOR, DEFAULT_SELECTED_WIDTH} from "constants/tools";
 
 const LOGGER = getLogger(__filename)
 
@@ -51,6 +52,8 @@ export class Layout extends React.Component<LayoutProps, {}> {
               data={layer}
               visible={layer.visible}
               key={layer.id}
+              selectedWidth={DEFAULT_SELECTED_WIDTH}
+              selectedColor={DEFAULT_SELECTED_COLOR}
             >
               {
                 currentLayoutData.rails
