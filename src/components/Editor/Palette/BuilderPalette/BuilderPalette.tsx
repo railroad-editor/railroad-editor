@@ -10,6 +10,7 @@ import {STORE_BUILDER} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
 import * as classNames from "classnames"
 import {PrimaryPaletteAddButton} from "components/common/PaletteAddButton/PaletteAddButton";
+import Tooltip from "material-ui/Tooltip";
 
 export interface BuilderPaletteProps {
   className?: string
@@ -20,6 +21,7 @@ export interface BuilderPaletteProps {
   customItems?: any[]
   customDialog?: ReactNode
   openCustomDialog?: (e: React.SyntheticEvent<HTMLElement>) => void
+  tooltipTitle?: string
   builder?: BuilderStore
 }
 
@@ -50,7 +52,9 @@ export default class BuilderPalette extends React.Component<BuilderPaletteProps,
                 {this.props.title}
               </Typography>
               {this.props.customDialog &&
-                <PrimaryPaletteAddButton onClick={this.props.openCustomDialog}/>
+                <Tooltip title={this.props.tooltipTitle}>
+                  <PrimaryPaletteAddButton onClick={this.props.openCustomDialog}/>
+                </Tooltip>
               }
             </TitleDiv>
             <Selector
@@ -59,14 +63,14 @@ export default class BuilderPalette extends React.Component<BuilderPaletteProps,
               paletteItem={this.props.builder.paletteItem}
             />
             {! _.isEmpty(this.props.customItems) &&
-              <React.Fragment>
+              <>
                 <Divider />
                 <Selector
                   items={this.props.customItems}
                   selectItem={this.props.builder.setPaletteItem}
                   paletteItem={this.props.builder.paletteItem}
                 />
-              </React.Fragment>
+              </>
             }
           </ScrollablePaper>
         </HideableDiv>

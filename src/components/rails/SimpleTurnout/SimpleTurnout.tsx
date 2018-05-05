@@ -36,7 +36,7 @@ export default class SimpleTurnout extends RailBase<SimpleTurnoutProps, RailBase
     } = this.props
 
     return (
-      <React.Fragment>
+      <>
         <SimpleTurnoutRailPart
           length={length}
           radius={radius}
@@ -58,7 +58,7 @@ export default class SimpleTurnout extends RailBase<SimpleTurnoutProps, RailBase
           ref={this.getInstance}
         />
         {this.createJointComponents()}
-      </React.Fragment>
+      </>
     )
   }
 }

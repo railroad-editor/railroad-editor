@@ -23,7 +23,7 @@ export default class TestCases extends React.Component<any, any> {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <Route path="/tests/1" component={Case01}/>
         <Route path="/tests/2" component={Case02}/>
         <Route path="/tests/3_1" component={Case03_1}/>
@@ -42,7 +42,7 @@ export default class TestCases extends React.Component<any, any> {
         <Route path="/tests/8_1" component={Case08_1}/>
         <Route path="/tests/8_2" component={Case08_2}/>
         <Route path="/tests/9" component={Case09}/>
-      </React.Fragment>
+      </>
     )
   }
 

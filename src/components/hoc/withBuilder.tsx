@@ -585,7 +585,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
 
     render() {
       return (
-        <React.Fragment>
+        <>
           <WrappedComponent
             {...this.props}
             builderMouseDown={this.mouseDown}
@@ -607,7 +607,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
             builderDeleteSelectedRails={this.deleteSelectedRails}
             builderRegisterRailGroup={this.registerRailGroup}
           />
-        </React.Fragment>
+        </>
       )
     }
 

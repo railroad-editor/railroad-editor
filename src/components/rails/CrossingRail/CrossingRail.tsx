@@ -34,7 +34,7 @@ export default class CrossingRail extends RailBase<CrossingRailProps, RailBaseSt
     } = this.props
 
     return (
-      <React.Fragment>
+      <>
         <CrossingRailPart
           length={length}
           position={position}
@@ -54,7 +54,7 @@ export default class CrossingRail extends RailBase<CrossingRailProps, RailBaseSt
           ref={this.getInstance}
         />
         {this.createJointComponents()}
-      </React.Fragment>
+      </>
     )
   }
 }

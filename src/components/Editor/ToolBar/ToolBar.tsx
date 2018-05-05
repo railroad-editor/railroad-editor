@@ -134,7 +134,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <AppBar>
           <MuiToolbar>
             <Tooltip id="tooltip-straight-rail" title={Tools.STRAIGHT_RAILS}>
@@ -296,7 +296,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
 
             {/* ログイン・サインアップボタン */}
             {! this.props.common.isAuth &&
-              <React.Fragment>
+              <>
                 <StyledLoginButton onClick={this.openLoginDialog}>
                   Login
                 </StyledLoginButton>
@@ -315,23 +315,23 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                   setAuthData={this.props.common.setAuthData}
                   loadLayoutList={this.props.common.loadLayoutList}
                 />
-              </React.Fragment>
+              </>
             }
 
             {/* メニュー */}
             {this.props.common.isAuth &&
-              <React.Fragment>
+              <>
                 <Tooltip id="tooltip-menu" title={"Menu"}>
                   <StyledIconButton onClick={this.openMenu} >
                     <MenuIcon/>
                   </StyledIconButton>
                 </Tooltip>
                 <MenuDrawer open={this.state.openMenu} onClose={this.closeMenu}/>
-              </React.Fragment>
+              </>
             }
           </MuiToolbar>
         </AppBar>
-      </React.Fragment>
+      </>
     )
   }
 }

@@ -17,9 +17,9 @@ export const createRailOrRailGroupComponent = (railGroup: RailGroupData, rails: 
     return createRailGroupComponent(railGroup, rails, layer)
   } else {
     return (
-      <React.Fragment>
+      <>
         {rails.map(r => createRailComponent(r, layer))}
-      </React.Fragment>
+      </>
     )
   }
 }

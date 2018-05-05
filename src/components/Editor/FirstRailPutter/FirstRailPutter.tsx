@@ -141,7 +141,7 @@ export class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProp
     }
 
     return (
-      <React.Fragment>
+      <>
         <CirclePart
           radius={RAIL_PUTTER_MARKER_RADIUS}
           position={position}
@@ -157,7 +157,7 @@ export class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProp
           onClick={this.onClick}
           onMouseMove={this.onMouseMove}
         />
-      </React.Fragment>
+      </>
     )
   }
 

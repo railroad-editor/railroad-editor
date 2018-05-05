@@ -33,7 +33,7 @@ export default class DoubleCrossTurnout extends RailBase<DoubleCrossTurnoutProps
     } = this.props
 
     return (
-      <React.Fragment>
+      <>
         <DoubleCrossTurnoutPart
           length={length}
           position={position}
@@ -52,7 +52,7 @@ export default class DoubleCrossTurnout extends RailBase<DoubleCrossTurnoutProps
           ref={this.getInstance}
         />
         {this.createJointComponents()}
-      </React.Fragment>
+      </>
     )
   }
 }

@@ -52,7 +52,7 @@ export class LayerListItem extends React.Component<LayerListItemProps, LayerList
     const {children, onRename, onDelete, isDeletable, ...otherProps} = this.props
 
     return (
-      <React.Fragment>
+      <>
         <SecondaryColorActiveListItem
           {...otherProps as any}
           onContextMenu={this.onMenuOpen}
@@ -68,7 +68,7 @@ export class LayerListItem extends React.Component<LayerListItemProps, LayerList
           <MenuItem onClick={this.onRename}>Setting</MenuItem>
           {isDeletable && <MenuItem onClick={this.onDelete}>Delete</MenuItem>}
         </Menu>
-      </React.Fragment>
+      </>
     )
   }
 }

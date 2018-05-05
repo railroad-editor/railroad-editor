@@ -14,6 +14,7 @@ import {inject, observer} from "mobx-react";
 import {LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
 import {SecondaryPaletteAddButton} from "components/common/PaletteAddButton/PaletteAddButton";
+import Tooltip from "material-ui/Tooltip";
 
 const LOGGER = getLogger(__filename)
 
@@ -141,7 +142,9 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
             <Typography variant="subheading" color="inherit" style={{flex: 1}}>
               Layers
             </Typography>
+            <Tooltip title="Add Layer">
             <SecondaryPaletteAddButton onClick={this.openAddDialog}/>
+            </Tooltip>
           </TitleDiv>
 
           {layers.map((layer, idx) =>

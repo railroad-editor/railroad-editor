@@ -33,7 +33,7 @@ export default class DoubleStraightRail extends RailBase<DoubleStraightRailProps
     } = this.props
 
     return (
-      <React.Fragment>
+      <>
         <DoubleStraightRailPart
           length={length}
           position={position}
@@ -52,7 +52,7 @@ export default class DoubleStraightRail extends RailBase<DoubleStraightRailProps
           ref={this.getInstance}
         />
         {this.createJointComponents()}
-      </React.Fragment>
+      </>
     )
   }
 }

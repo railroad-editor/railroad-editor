@@ -112,7 +112,7 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
         ref={(form) => this._form = form}
       >
         {this.state.isDouble &&
-          <React.Fragment>
+          <>
             <AutoFocusTextValidator
               label="Inner Radius"
               type="number"
@@ -140,7 +140,7 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
               errorMessages={['this field is required']}
               onBlur={this.onOuterRadiusBlur}
             />
-          </React.Fragment>
+          </>
         }
         {! this.state.isDouble &&
           <AutoFocusTextValidator

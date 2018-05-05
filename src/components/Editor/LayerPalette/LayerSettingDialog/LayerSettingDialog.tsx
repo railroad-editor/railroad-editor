@@ -83,7 +83,7 @@ export default class LayerSettingDialog extends FormDialog<LayerSettingDialogPro
 
   renderContent = () => {
     return (
-      <React.Fragment>
+      <>
         <ValidatorForm
           ref={(form) => this._form = form}
         >
@@ -132,7 +132,7 @@ export default class LayerSettingDialog extends FormDialog<LayerSettingDialogPro
             onChangeComplete={ this.onColorChange }
           />
         </Popover>
-      </React.Fragment>
+      </>
     )
   }
 }

@@ -32,7 +32,7 @@ export default class EndRail extends RailBase<EndRailProps, RailBaseState> {
     } = this.props
 
     return (
-      <React.Fragment>
+      <>
         <EndRailPart
           length={length}
           position={position}
@@ -51,7 +51,7 @@ export default class EndRail extends RailBase<EndRailProps, RailBaseState> {
           ref={this.getInstance}
         />
         {this.createJointComponents()}
-      </React.Fragment>
+      </>
     )
   }
 }

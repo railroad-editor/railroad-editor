@@ -85,7 +85,7 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
 
   renderContent = () => {
     return (
-      <React.Fragment>
+      <>
         <ValidatorForm
           ref={(form) => this._form = form}
         >
@@ -147,19 +147,19 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
           <Grid item xs={4}>
             {this.state.inputs['backgroundImageUrl'] &&
               <div style={{position: 'relative'}}>
-                <React.Fragment>
+                <>
                   <Thumbnail src={this.state.inputs['backgroundImageUrl']}/>
                   <DeleteIconButton
                     onClick={this.deleteImage}
                   >
                     <CancelIcon/>
                   </DeleteIconButton>
-                </React.Fragment>
+                </>
               </div>
             }
           </Grid>
         </Grid>
-      </React.Fragment>
+      </>
     )
   }
 }

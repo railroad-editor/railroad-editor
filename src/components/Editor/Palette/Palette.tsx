@@ -20,6 +20,7 @@ import {compose} from "recompose";
 import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {LayoutStore} from "store/layoutStore";
 import {withSnackbar} from 'material-ui-snackbar-provider'
+import Tooltip from "material-ui/Tooltip";
 
 
 
@@ -56,13 +57,13 @@ export class Palette extends React.Component<EnhancedPaletteProps, PaletteState>
   }
 
   openCustomDialog = () => {
-    if (this.props.layout.selectedRails.length > 0) {
-      this.setState({
-        customDialogOpen: true
-      })
-    } else {
+    if (this.props.layout.selectedRails.length === 0 && this.isActive(Tools.RAIL_GROUPS)) {
       this.props.snackbar.showMessage(`Please select at least one rail.`)  //`
+      return
     }
+    this.setState({
+      customDialogOpen: true
+    })
   }
 
   closeCustomDialog = () => {
@@ -102,6 +103,7 @@ export class Palette extends React.Component<EnhancedPaletteProps, PaletteState>
             />
           }
           openCustomDialog={this.openCustomDialog}
+          tooltipTitle={'Add Custom Straight Rail'}
         />
         <BuilderPalette
           active={this.isActive(Tools.CURVE_RAILS)}
@@ -118,6 +120,7 @@ export class Palette extends React.Component<EnhancedPaletteProps, PaletteState>
             />
           }
           openCustomDialog={this.openCustomDialog}
+          tooltipTitle={'Add Custom Curve Rail'}
         />
         <BuilderPalette
           active={this.isActive(Tools.TURNOUTS)}
@@ -146,6 +149,7 @@ export class Palette extends React.Component<EnhancedPaletteProps, PaletteState>
             />
           }
           openCustomDialog={this.openCustomDialog}
+          tooltipTitle={'Add Rail Group'}
         />
       </Rnd>
     )

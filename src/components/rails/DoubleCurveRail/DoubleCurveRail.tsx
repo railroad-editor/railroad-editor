@@ -36,7 +36,7 @@ export default class DoubleCurveRail extends RailBase<DoubleCurveRailProps, Rail
     } = this.props
 
     return (
-      <React.Fragment>
+      <>
         <DoubleCurveRailPart
           innerRadius={innerRadius}
           outerRadius={outerRadius}
@@ -58,7 +58,7 @@ export default class DoubleCurveRail extends RailBase<DoubleCurveRailProps, Rail
           ref={this.getInstance}
         />
         {this.createJointComponents()}
-      </React.Fragment>
+      </>
     )
   }
 }

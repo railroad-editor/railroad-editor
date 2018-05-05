@@ -35,7 +35,7 @@ export class Layout extends React.Component<LayoutProps, {}> {
     LOGGER.debug('Layout render()')
 
     return (
-      <React.Fragment>
+      <>
         <Layer
           key={-1}
           data={{id: -1, name: 'TemporaryLayer'}}
@@ -63,7 +63,7 @@ export class Layout extends React.Component<LayoutProps, {}> {
             </Layer>
           )
         }
-      </React.Fragment>
+      </>
     )
   }
 }

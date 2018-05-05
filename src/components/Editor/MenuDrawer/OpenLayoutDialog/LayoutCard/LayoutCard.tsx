@@ -58,7 +58,7 @@ export class LayoutCard extends React.Component<LayoutCardProps, LayoutCardState
   render() {
     const {imgKey, title, lastModified} = this.props
     return (
-      <React.Fragment>
+      <>
         <Button
           onClick={this.props.onClick}
           onContextMenu={this.onMenuOpen}
@@ -83,7 +83,7 @@ export class LayoutCard extends React.Component<LayoutCardProps, LayoutCardState
           {/*<MenuItem onClick={this.onRename}>Rename</MenuItem>*/}
           <MenuItem onClick={this.onDelete}>Delete</MenuItem>}
         </Menu>
-      </React.Fragment>
+      </>
     )
   }
 }

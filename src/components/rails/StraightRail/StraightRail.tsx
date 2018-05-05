@@ -32,7 +32,7 @@ export default class StraightRail extends RailBase<StraightRailProps, RailBaseSt
     } = this.props
 
     return (
-      <React.Fragment>
+      <>
         <StraightRailPart
           length={length}
           position={position}
@@ -51,7 +51,7 @@ export default class StraightRail extends RailBase<StraightRailProps, RailBaseSt
           ref={this.getInstance}
         />
         {this.createJointComponents()}
-      </React.Fragment>
+      </>
     )
   }
 }

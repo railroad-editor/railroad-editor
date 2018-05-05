@@ -34,7 +34,7 @@ export default class CurveRail extends RailBase<CurveRailProps, RailBaseState> {
     } = this.props
 
     return (
-      <React.Fragment>
+      <>
         <CurveRailPart
           radius={radius}
           centerAngle={centerAngle}
@@ -55,7 +55,7 @@ export default class CurveRail extends RailBase<CurveRailProps, RailBaseState> {
           ref={this.getInstance}
         />
         {this.createJointComponents()}
-      </React.Fragment>
+      </>
     )
   }
 }
