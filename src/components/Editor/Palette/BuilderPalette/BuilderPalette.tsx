@@ -8,8 +8,8 @@ import Divider from "material-ui/Divider";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
-import PaletteAddButton from 'components/common/PaletteAddButton/PaletteAddButton';
 import * as classNames from "classnames"
+import {PrimaryPaletteAddButton} from "components/common/PaletteAddButton/PaletteAddButton";
 
 export interface BuilderPaletteProps {
   className?: string
@@ -50,7 +50,7 @@ export default class BuilderPalette extends React.Component<BuilderPaletteProps,
                 {this.props.title}
               </Typography>
               {this.props.customDialog &&
-                <PaletteAddButton onClick={this.props.openCustomDialog}/>
+                <PrimaryPaletteAddButton onClick={this.props.openCustomDialog}/>
               }
             </TitleDiv>
             <Selector

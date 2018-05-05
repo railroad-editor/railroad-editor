@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {List, ListItemText} from 'material-ui'
-import {StyledListItem} from "./Selector.style";
+import {PrimaryColorActiveListItem, SecondaryColorActiveListItem} from "components/common/ActiveListItem";
 
 export interface SelectorProps {
   items: PaletteItem[]
@@ -24,7 +24,7 @@ export default class Selector extends React.Component<SelectorProps, {}> {
       <List>
         {this.props.items.map((value, index) => {
           return [
-              <StyledListItem
+              <PrimaryColorActiveListItem
                 button
                 active={this.props.paletteItem.name === value.name}
                 // TODO: Performance issue?
@@ -32,7 +32,7 @@ export default class Selector extends React.Component<SelectorProps, {}> {
                 key={index}
               >
                 <ListItemText primary={value.name}/>
-              </StyledListItem>
+              </PrimaryColorActiveListItem>
           ]
         })}
       </List>

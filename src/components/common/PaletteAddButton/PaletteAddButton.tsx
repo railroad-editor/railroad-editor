@@ -2,29 +2,51 @@ import * as React from "react";
 import {default as IconButton, IconButtonProps} from "material-ui/IconButton";
 import AddBoxIcon from 'material-ui-icons/AddBox';
 import styled from "styled-components";
+import {theme} from "withRoot";
 
-const StyledIconButton = styled(IconButton as any)`
+
+export interface PaletteAddButtonProps extends IconButtonProps {
+  className?: string
+}
+
+export class PaletteAddButton extends React.Component<PaletteAddButtonProps, {}> {
+  render() {
+    return (
+      <IconButton {...this.props}>
+        <AddBoxIcon/>
+      </IconButton>
+    )
+  }
+}
+
+export const PrimaryPaletteAddButton = styled(PaletteAddButton)`
   && {
+    color: ${theme.palette.primary[500]}
     width: 24px;
     height: 24px;
     &:hover {
-        color: yellow
+        color: #00FF94
       }
     &.active, &:active {
-        color: orange;
+        color: #FFC700
     }
-    margin-left: 5px;
+    margin-left: 10px;
   }
 `
 
-const PaletteAddButton: React.SFC<IconButtonProps> = (props) => {
-  return (
-    <StyledIconButton {...props}>
-      <AddBoxIcon/>
-    </StyledIconButton>
-  )
-}
-
-export default PaletteAddButton
+export const SecondaryPaletteAddButton = styled(PaletteAddButton)`
+  && {
+    color: ${theme.palette.secondary[500]}
+    width: 24px;
+    height: 24px;
+    &:hover {
+        color: #9DFF00
+      }
+    &.active, &:active {
+        color: #FF9400
+    }
+    margin-left: 10px;
+  }
+`
 
 

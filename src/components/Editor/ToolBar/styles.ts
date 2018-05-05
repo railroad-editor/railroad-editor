@@ -6,10 +6,10 @@ import Button from "material-ui/Button";
 
 export const StyledIconButton = styled(IconButton as any)`
   &:hover {
-    color: yellow
+    color: #FFFF00
   }
   &.active, &:active {
-    color: orange;
+    color: #FFC700
   }
   &.disabled {
     color: ${theme.palette.primary['700'] 

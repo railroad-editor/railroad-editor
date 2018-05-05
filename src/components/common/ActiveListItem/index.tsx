@@ -20,11 +20,20 @@ export default class ActiveListItem extends React.Component<ActiveListItemProps,
   }
 }
 
-export const PrimaryColoredActiveListItem = styled(ActiveListItem)`
+export const PrimaryColorActiveListItem = styled(ActiveListItem)`
   && { 
     background-color: ${props => props.active ? theme.palette.primary[400] : theme.palette.background.default};
     :hover {
       background-color: ${props => props.active ? theme.palette.primary[500] : theme.palette.grey[200]};
+    }
+  }
+`
+
+export const SecondaryColorActiveListItem = styled(ActiveListItem)`
+  && { 
+    background-color: ${props => props.active ? theme.palette.secondary[400] : theme.palette.background.default};
+    :hover {
+      background-color: ${props => props.active ? theme.palette.secondary[500] : theme.palette.grey[200]};
     }
   }
 `

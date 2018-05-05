@@ -1,6 +1,9 @@
 import * as React from "react";
 import {ReactEventHandler} from "react";
-import {ActiveListItemProps, PrimaryColoredActiveListItem} from "components/common/ActiveListItem";
+import {
+  ActiveListItemProps,
+  SecondaryColorActiveListItem
+} from "components/common/ActiveListItem";
 import {MenuItem} from "material-ui";
 import Menu from "material-ui/Menu";
 
@@ -50,12 +53,12 @@ export class LayerListItem extends React.Component<LayerListItemProps, LayerList
 
     return (
       <React.Fragment>
-        <PrimaryColoredActiveListItem
+        <SecondaryColorActiveListItem
           {...otherProps as any}
           onContextMenu={this.onMenuOpen}
         >
           {children}
-        </PrimaryColoredActiveListItem>
+        </SecondaryColorActiveListItem>
         <Menu
           id="simple-menu"
           anchorEl={this.state.anchorEl}

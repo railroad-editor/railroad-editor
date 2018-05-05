@@ -1,7 +1,7 @@
 import * as React from 'react'
 import LayersIcon from 'material-ui-icons/Layers';
 import {Checkbox, Grid, ListItemText, Paper} from 'material-ui'
-import {TitleDiv} from "./styles";
+import {ScrollablePaper, TitleDiv} from "./styles";
 import Rnd from 'react-rnd'
 import {LayerListItem} from "components/Editor/LayerPalette/LayerListItem/LayerListItem";
 import getLogger from "logging";
@@ -13,7 +13,7 @@ import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import {inject, observer} from "mobx-react";
 import {LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
-import PaletteAddButton from "components/common/PaletteAddButton/PaletteAddButton";
+import {SecondaryPaletteAddButton} from "components/common/PaletteAddButton/PaletteAddButton";
 
 const LOGGER = getLogger(__filename)
 
@@ -134,43 +134,47 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
         enableResizing={{}}
         dragHandleClassName='.Layers__title'
       >
-        <Paper>
+        <ScrollablePaper>
           <TitleDiv className='Layers__title'>
             <LayersIcon />
             {/* プラスアイコンを右端に配置するためのスタイル */}
             <Typography variant="subheading" color="inherit" style={{flex: 1}}>
               Layers
             </Typography>
-            <PaletteAddButton onClick={this.openAddDialog}/>
+            <SecondaryPaletteAddButton onClick={this.openAddDialog}/>
           </TitleDiv>
 
           {layers.map((layer, idx) =>
-            <Grid container justify="center" spacing={0} key={`layer-${idx}`}>
-              <React.Fragment key={`layer-${idx}`}>
-                <Grid item xs={3}>
-                  <Checkbox
-                    checked={layers[idx].visible}
-                    onChange={this.onToggleVisible(layer.id)}
-                    value={layers[idx].id.toString()}
-                  />
-                </Grid>
-                <Grid item xs={9}>
-                  {/* <Layer> で囲わずにSecondaryActionを使うとズレる */}
-                  <LayerListItem
-                    button
-                    active={this.props.builder.activeLayerId === layer.id}
-                    onClick={this.onChangeActive(layer.id)}
-                    onDelete={this.openDeleteDialog(layer.id)}
-                    onRename={this.openUpdateDialog(layer.id)}
-                    isDeletable={layers.length >= 2}
-                  >
-                    <ListItemText primary={layer.name}/>
-                  </LayerListItem>
-                </Grid>
-              </React.Fragment>
+            <Grid container justify="center" wrap="nowrap" spacing={0} key={`layer-${idx}`}>
+              <Grid
+                item xs={3}
+                style={{  minWidth: '48px' }}
+              >
+                <Checkbox
+                  checked={layers[idx].visible}
+                  onChange={this.onToggleVisible(layer.id)}
+                  value={layers[idx].id.toString()}
+                  style={{
+                    color: layer.color
+                  }}
+                />
+              </Grid>
+              <Grid item xs={9}>
+                {/* <List> で囲わずにSecondaryActionを使うとズレる */}
+                <LayerListItem
+                  button
+                  active={this.props.builder.activeLayerId === layer.id}
+                  onClick={this.onChangeActive(layer.id)}
+                  onDelete={this.openDeleteDialog(layer.id)}
+                  onRename={this.openUpdateDialog(layer.id)}
+                  isDeletable={layers.length >= 2}
+                >
+                  <ListItemText primary={layer.name}/>
+                </LayerListItem>
+              </Grid>
             </Grid>
           )}
-        </Paper>
+        </ScrollablePaper>
         <LayerSettingDialog
           title={'New Layer'}
           open={this.state.addDialogOpen}

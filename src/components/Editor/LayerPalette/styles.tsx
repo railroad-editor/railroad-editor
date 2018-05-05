@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Paper from "material-ui/Paper";
 
 
 export const TitleDiv = styled.div`
@@ -14,3 +15,9 @@ export const TitleDiv = styled.div`
 `
 
 
+export const ScrollablePaper = styled(Paper as any)`
+  && {
+    min-width: 180px;
+    overflow: auto;
+  }
+`
