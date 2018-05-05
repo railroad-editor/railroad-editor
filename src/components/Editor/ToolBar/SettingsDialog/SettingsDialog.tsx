@@ -10,6 +10,17 @@ import Grid from "material-ui/Grid";
 import Typography from "material-ui/Typography";
 import {Spacer} from "components/Editor/LayerPalette/LayerSettingDialog/styles";
 import Image from 'material-ui-image'
+import CancelIcon from 'material-ui-icons/Cancel'
+import IconButton from "material-ui/IconButton";
+
+const DeleteIconButton = styled(IconButton)`
+  && {
+    position: absolute;
+    right: -5px;
+    top: -5px;
+    color: #000
+  }
+`
 
 
 
@@ -57,7 +68,7 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
     this.onClose()
   }
 
-  handleFile = (e) => {
+  readImageFile = (e) => {
     const file = e.target.files[0]
     console.log(e.target.files)
     const fr = new FileReader()
@@ -66,6 +77,10 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
       this.setInput('backgroundImageUrl', data)
     }
     fr.readAsDataURL(file)
+  }
+
+  deleteImage = (e) => {
+    this.setInput('backgroundImageUrl', '')
   }
 
   renderContent = () => {
@@ -123,7 +138,7 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
             <Button component="label" variant="raised" color="primary">
               Upload File
               <input
-                onChange={this.handleFile}
+                onChange={this.readImageFile}
                 style={{ display: 'none' }}
                 type="file"
               />
@@ -131,7 +146,16 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
           </Grid>
           <Grid item xs={4}>
             {this.state.inputs['backgroundImageUrl'] &&
-            <Thumbnail src={this.state.inputs['backgroundImageUrl']}/>
+              <div style={{position: 'relative'}}>
+                <React.Fragment>
+                  <Thumbnail src={this.state.inputs['backgroundImageUrl']}/>
+                  <DeleteIconButton
+                    onClick={this.deleteImage}
+                  >
+                    <CancelIcon/>
+                  </DeleteIconButton>
+                </React.Fragment>
+              </div>
             }
           </Grid>
         </Grid>
