@@ -14,11 +14,13 @@ import PanToolIcon from 'material-ui-icons/PanTool'
 import AspectRatioIcon from "material-ui-icons/AspectRatio";
 import MenuIcon from "material-ui-icons/Menu";
 import SettingsIcon from "material-ui-icons/Settings";
+import CopyIcon from "material-ui-icons/ContentCopy";
+import CutIcon from "material-ui-icons/ContentCut";
 import getLogger from "logging";
 import Typography from "material-ui/Typography";
 import * as classNames from "classnames"
 import Tooltip from "material-ui/Tooltip";
-import {WithBuilderPublicProps} from "components/hoc/withBuilder";
+import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
@@ -28,6 +30,7 @@ import {MenuDrawer} from "components/Editor/MenuDrawer/MenuDrawer";
 import LoginDialog from "components/Editor/ToolBar/LoginDialog/LoginDialog";
 import SignUpDialog from "components/Editor/ToolBar/SignUpDialog/SignUpDialog";
 import {SettingsDialog} from "components/Editor/ToolBar/SettingsDialog/SettingsDialog";
+import {compose} from "recompose";
 
 const LOGGER = getLogger(__filename)
 
@@ -54,7 +57,7 @@ type EnhancedToolBarProps = ToolBarProps & WithBuilderPublicProps
 
 @inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT)
 @observer
-export default class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState> {
+export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState> {
 
   constructor(props: EnhancedToolBarProps) {
     super(props)
@@ -209,37 +212,50 @@ export default class ToolBar extends React.Component<EnhancedToolBarProps, ToolB
 
             <VerticalDivider/>
 
-            <Tooltip id="tooltip-undo" title={Tools.UNDO}>
+            <Tooltip title={'Copy'}>
+              <StyledIconButton
+                onClick={(e) => {
+                  this.props.builderRegisterRailGroup('Clipboard', false)
+                }}>
+                <CopyIcon/>
+              </StyledIconButton>
+            </Tooltip>
+            <Tooltip title={'Cut'}>
+              <StyledIconButton
+                onClick={(e) => {
+                this.props.builderRegisterRailGroup('Clipboard', true)
+              }}>
+                <CutIcon/>
+              </StyledIconButton>
+            </Tooltip>
+            <Tooltip title={Tools.DELETE}>
+              <StyledIconButton
+                onClick={this.props.builderDeleteSelectedRails}
+              >
+                <DeleteIcon/>
+              </StyledIconButton>
+            </Tooltip>
+
+            <Tooltip title={Tools.UNDO}>
               <StyledIconButton
                 className={classNames({
-                  'active': this.isActive(Tools.UNDO),
                   'disabled': ! this.props.layout.canUndo
                 })}
                 onClick={this.props.layout.undo}>
                 <UndoIcon/>
               </StyledIconButton>
             </Tooltip>
-            <Tooltip id="tooltip-redo" title={Tools.REDO}>
+            <Tooltip title={Tools.REDO}>
               <StyledIconButton
                 className={classNames({
-                  'active': this.isActive(Tools.REDO),
                   'disabled': ! this.props.layout.canRedo
                 })}
                 onClick={this.props.layout.redo}>
                 <RedoIcon/>
               </StyledIconButton>
             </Tooltip>
-            <Tooltip id="tooltip-delete" title={Tools.DELETE}>
-              <StyledIconButton
-                className={classNames({
-                  'active': this.isActive(Tools.DELETE)
-                })}
-                onClick={this.props.builderDeleteSelectedRails}
-              >
-                <DeleteIcon/>
-              </StyledIconButton>
-            </Tooltip>
-            <Tooltip id="tooltip-pan" title={Tools.PAN}>
+
+            <Tooltip title={Tools.PAN}>
               <StyledIconButton
                 className={classNames({
                   'active': this.isActive(Tools.PAN)
@@ -249,12 +265,9 @@ export default class ToolBar extends React.Component<EnhancedToolBarProps, ToolB
                 <PanToolIcon/>
               </StyledIconButton>
             </Tooltip>
-            <Tooltip id="tooltip-reset-view" title={Tools.RESET_VIEW}>
+            <Tooltip title={Tools.RESET_VIEW}>
               <StyledIconButton
-                className={classNames({
-                  'active': this.isActive(Tools.RESET_VIEW)
-                })}
-                onClick={() => this.props.resetViewPosition()}
+                onClick={this.props.resetViewPosition}
               >
                 <AspectRatioIcon/>
               </StyledIconButton>
@@ -322,3 +335,7 @@ export default class ToolBar extends React.Component<EnhancedToolBarProps, ToolB
   }
 }
 
+
+export default compose<ToolBarProps, ToolBarProps>(
+  withBuilder
+)(ToolBar)

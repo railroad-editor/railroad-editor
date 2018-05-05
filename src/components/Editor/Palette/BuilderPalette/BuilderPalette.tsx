@@ -9,6 +9,7 @@ import {inject, observer} from "mobx-react";
 import {STORE_BUILDER} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
 import PaletteAddButton from 'components/common/PaletteAddButton/PaletteAddButton';
+import * as classNames from "classnames"
 
 export interface BuilderPaletteProps {
   className?: string
@@ -38,7 +39,10 @@ export default class BuilderPalette extends React.Component<BuilderPaletteProps,
     return (
       // styleを上書きするために必要
       <div className={this.props.className}>
-        <HideableDiv className={`${this.props.active ? '' : 'hidden'}`}>
+        <HideableDiv className={classNames({
+          'hidden': ! this.props.active
+        })}
+        >
           <ScrollablePaper>
             <TitleDiv className='Palette__title'>
               {this.props.icon}

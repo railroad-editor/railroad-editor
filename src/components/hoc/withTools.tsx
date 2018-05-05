@@ -41,8 +41,10 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
     }
 
 
-    keyDown = (e: KeyboardEvent) => {
+    keyDown = (e: KeyboardEvent|any) => {
       if (this.dialogExists()) return
+      // CtrlキーのショートカットはWithBuilderで扱う
+      if (e.ctrlKey) return
 
       switch (e.key) {
         case 'Alt':

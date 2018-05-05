@@ -242,8 +242,14 @@ export class BuilderStore {
 
   @action
   addUserRailGroup = (item: UserRailGroupData) => {
-    this.userRailGroups.push(item)
-    this.lastPaletteItems['Rail Groups'] = {
+    // 同じ名前のレールグループが居たら上書きする
+    const idx = this.userRailGroups.findIndex(rg => rg.name === item.name)
+    if (idx >= 0) {
+      this.userRailGroups[idx] = item
+    } else {
+      this.userRailGroups.push(item)
+    }
+    this.lastPaletteItems[Tools.RAIL_GROUPS] = {
       type: 'RailGroup',
       name: item.name
     }

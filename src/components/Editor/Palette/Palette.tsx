@@ -13,26 +13,38 @@ import CustomStraightRailDialog
 import CustomCurveRailDialog
   from "components/Editor/Palette/BuilderPalette/CustomCurveRailDialog/CustomCurveRailDialog";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER} from "constants/stores";
+import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
+import NewRailGroupDialog from "components/Editor/Palette/BuilderPalette/NewRailGroupDialog/NewRailGroupDialog";
+import {compose} from "recompose";
+import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
+import {LayoutStore} from "store/layoutStore";
+import {withSnackbar} from 'material-ui-snackbar-provider'
+
 
 
 export interface PaletteProps {
   className?: string
   tool: Tools
   builder?: BuilderStore
+  layout?: LayoutStore
+  addUserRailGroup: any
+  snackbar: any
 }
 
 export interface PaletteState {
   customDialogOpen: boolean
 }
 
+type EnhancedPaletteProps = PaletteProps & WithBuilderPublicProps
 
-@inject(STORE_BUILDER)
+
+
+@inject(STORE_BUILDER, STORE_LAYOUT)
 @observer
-export default class Palette extends React.Component<PaletteProps, PaletteState> {
+export class Palette extends React.Component<EnhancedPaletteProps, PaletteState> {
 
-  constructor(props: PaletteProps) {
+  constructor(props: EnhancedPaletteProps) {
     super(props)
     this.state = {
       customDialogOpen: false
@@ -44,9 +56,13 @@ export default class Palette extends React.Component<PaletteProps, PaletteState>
   }
 
   openCustomDialog = () => {
-    this.setState({
-      customDialogOpen: true
-    })
+    if (this.props.layout.selectedRails.length > 0) {
+      this.setState({
+        customDialogOpen: true
+      })
+    } else {
+      this.props.snackbar.showMessage(`Please select at least one rail.`)  //`
+    }
   }
 
   closeCustomDialog = () => {
@@ -59,6 +75,12 @@ export default class Palette extends React.Component<PaletteProps, PaletteState>
   render() {
     const customStraightRails = this.props.builder.userRails.filter(c => c.paletteName === Tools.STRAIGHT_RAILS)
     const customCurveRails = this.props.builder.userRails.filter(c => c.paletteName === Tools.CURVE_RAILS)
+    const customRailGroups = this.props.builder.userRailGroups
+      .filter(rg => rg.name !== 'Clipboard')
+      .map(rg => { return {name: rg.name, type: 'RailGroup'} })
+    const clipboard = this.props.builder.userRailGroups
+      .filter(rg => rg.name === 'Clipboard')
+      .map(rg => { return {name: rg.name, type: 'RailGroup'} })
 
     return (
       <Rnd
@@ -113,12 +135,26 @@ export default class Palette extends React.Component<PaletteProps, PaletteState>
           active={this.isActive(Tools.RAIL_GROUPS)}
           icon={<RailGroupIcon/>}
           title={Tools.RAIL_GROUPS}
-          items={this.props.builder.userRailGroups.map(rg => {
-            return {name: rg.name, type: 'RailGroup'}
-          })}
+          items={clipboard}
+          customItems={customRailGroups}
+          customDialog={
+            <NewRailGroupDialog
+              title={'New Rail Group'}
+              open={this.isActive(Tools.RAIL_GROUPS) && this.state.customDialogOpen}
+              onClose={this.closeCustomDialog}
+              addUserRailGroup={this.props.builderRegisterRailGroup}
+            />
+          }
+          openCustomDialog={this.openCustomDialog}
         />
       </Rnd>
     )
   }
 }
+
+
+export default compose<PaletteProps, EnhancedPaletteProps>(
+  withBuilder,
+  withSnackbar()
+)(Palette)
 

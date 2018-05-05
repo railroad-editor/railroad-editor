@@ -30,7 +30,6 @@ import {
   Tools
 } from "constants/tools";
 import FirstRailPutter from "components/Editor/FirstRailPutter/FirstRailPutter";
-import Auth from "aws-amplify/lib/Auth";
 
 const LOGGER = getLogger(__filename)
 
@@ -77,28 +76,50 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
     return tools.includes(this.props.builder.activeTool)
   }
 
-
-  onMouseMove = (e) => {
-    this.props.builderMouseMove(e)
-    const mousePosition = this.props.moveToolMouseMove(e)
-    this.setState({mousePosition})
-  }
-
-  onMouseDown = (e) => {
+  buildModeMouseDown = (e) => {
     this.props.builderMouseDown(e)
     this.props.selectToolMouseDown(e)
     // this.props.moveToolMouseDown(e)
   }
 
-  onMouseDrag = (e) => {
-    this.props.selectToolMouseDrag(e)
-    // this.props.moveToolMouseDrag(e)
+  buildModeMouseMove = (e) => {
+    this.props.builderMouseMove(e)
+    const mousePosition = this.props.moveToolMouseMove(e)
+    this.setState({mousePosition})
   }
 
-  onMouseUp = (e) => {
-    this.props.selectToolMouseUp(e)
-    // this.props.moveToolMouseUp(e)
+  buildModeMouseDrag = (e) => {
+    this.props.selectToolMouseDrag(e)
   }
+
+  buildModeMouseUp = (e) => {
+    this.props.selectToolMouseUp(e)
+  }
+
+  buildModeKeyDown = (e) => {
+    this.props.builderKeyDown(e)
+  }
+
+  panModeMouseDown = (e) => {
+    this.props.moveToolMouseDown(e)
+  }
+
+  panModeMouseMove = (e) => {
+    this.props.moveToolMouseMove(e)
+  }
+
+  panModeMouseDrag = (e) => {
+    this.props.moveToolMouseDrag(e)
+  }
+
+  panModeMouseUp = (e) => {
+    this.props.moveToolMouseUp(e)
+  }
+
+  panModeKeyDown = (e) => {
+
+  }
+
 
   // コンテキストメニュー無効化
   noopContextMenu = (e) => {
@@ -154,19 +175,20 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
               active={this.isActive(
                 Tools.STRAIGHT_RAILS, Tools.CURVE_RAILS, Tools.TURNOUTS, Tools.SPECIAL_RAILS, Tools.RAIL_GROUPS)}
               name={'Rails'}
-              onMouseDown={this.onMouseDown}
-              onMouseMove={this.onMouseMove}
-              onMouseDrag={this.onMouseDrag}
-              onMouseUp={this.onMouseUp}
-              onKeyDown={this.props.builderKeyDown}
+              onMouseDown={this.buildModeMouseDown}
+              onMouseMove={this.buildModeMouseMove}
+              onMouseDrag={this.buildModeMouseDrag}
+              onMouseUp={this.buildModeMouseUp}
+              onKeyDown={this.buildModeKeyDown}
             />
             <Tool
               active={this.isActive(Tools.PAN)}
               name={Tools.PAN}
-              onMouseDown={this.props.moveToolMouseDown}
-              onMouseDrag={this.props.moveToolMouseDrag}
-              onMouseUp={this.props.moveToolMouseUp}
-              onMouseMove={this.props.moveToolMouseMove}
+              onMouseDown={this.panModeKeyDown}
+              onMouseMove={this.panModeMouseMove}
+              onMouseDrag={this.panModeMouseDrag}
+              onMouseUp={this.panModeMouseUp}
+              onKeyDown={this.panModeKeyDown}
             />
           </GridPaper>
         </EditorBody>

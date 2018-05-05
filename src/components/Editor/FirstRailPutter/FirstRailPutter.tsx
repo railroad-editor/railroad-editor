@@ -171,6 +171,11 @@ export class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProp
       this.showTemporaryRailGroup()
     } else if (this.props.builderGetRailItemData()) {
       this.showTemporaryRail()
+    } else {
+      // 置けるレールが無かったら状態を戻す
+      this.setState({
+        phase: Phase.SET_POSITION
+      })
     }
   }
 

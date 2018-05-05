@@ -6,7 +6,6 @@ import {JointInfo} from "components/rails/RailBase";
 import {getCloseJointsOf, getRailComponent, getTemporaryRailGroupComponent, intersectsOf} from "components/rails/utils";
 import RailGroup from "components/rails/RailGroup/RailGroup";
 import {DetectionState} from "components/rails/parts/primitives/DetectablePart";
-import NewRailGroupDialog from "components/hoc/NewRailGroupDialog/NewRailGroupDialog";
 import railItems from "constants/railItems.json"
 import {TEMPORARY_RAIL_OPACITY} from "constants/tools";
 import {inject, observer} from "mobx-react";
@@ -14,6 +13,8 @@ import {STORE_BUILDER, STORE_LAYOUT} from 'constants/stores';
 import {BuilderStore, UserRailGroupData} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import * as $ from "jquery";
+import {compose} from "recompose";
+import {withSnackbar} from 'material-ui-snackbar-provider'
 
 
 const LOGGER = getLogger(__filename)
@@ -37,6 +38,8 @@ export interface WithBuilderPublicProps {
   builderSetTemporaryRail: (railData: Partial<RailData>) => void
   builderAddRail: () => void
   builderSetTemporaryRailGroup: (railGroupData: Partial<RailGroupData>, childRails: RailData[]) => void
+  builderRegisterRailGroup: (name: string, shouldDelete: boolean) => void
+  snackbar: any
 }
 
 
@@ -143,24 +146,15 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
 
     keyDown_CtrlC = (e) => {
-      const selectedRails = this.getSelectedRails()
-      if (selectedRails.length > 0) {
-        this.setState({
-          newRailGroupDialogOpen: true,
-          deleteOnRegistered: false,
-        })
-      }
+      this.registerRailGroup('Clipboard', false)
+      this.props.snackbar.showMessage('Copied to "Clipboard" rail group.')
     }
 
     keyDown_CtrlX = (e) => {
-      const selectedRails = this.getSelectedRails()
-      if (selectedRails.length > 0) {
-        this.setState({
-          newRailGroupDialogOpen: true,
-          deleteOnRegistered: true,
-        })
-      }
+      this.registerRailGroup('Clipboard', true)
+      this.props.snackbar.showMessage('Copied to "Clipboard" rail group.')
     }
+
 
     keyDown_CtrlA = (e) => {
       this.selectRails(this.props.layout.currentLayoutData.rails.map(rail => rail.id))
@@ -533,19 +527,37 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     /**
      * 選択中のレールを新しいレールグループとして登録する
      * @param {string} name
+     * @param {boolean} shouldDelete
      */
-    private registerRailGroup = (name: string) => {
-      const selectedRails = this.getSelectedRails()
+    registerRailGroup = (name: string, shouldDelete: boolean) => {
+      const rails = this.getSelectedRails()
+      if (rails.length === 0) {
+        this.props.snackbar.showMessage(`Please select at least one rail.`)  //`
+        return
+      }
+      this.registerRailGroupInner(rails, name)
+      if (shouldDelete) {
+        this.props.layout.deleteRails(this.props.layout.currentLayoutData.rails.map(rail => {
+          return {
+            id: rail.id
+          }
+        }))
+      } else {
+        this.deselectAllRails()
+      }
+    }
+
+    private registerRailGroupInner = (rails: RailData[], name: string) => {
       // このレールグループの未接続ジョイントリストを作成
       const openJoints = []
-      selectedRails.map((rail, idx) => {
+      rails.map((rail, idx) => {
         const opposingJointIds = _.keys(rail.opposingJoints).map(k => Number(k))
         const numJoints = getRailComponent(rail.id).props.numJoints
         const openJointIds = _.without(_.range(numJoints), ...opposingJointIds)
         openJointIds.forEach(id => openJoints.push({ railId: idx, jointId: id }))
       })
       // レールグループメンバー
-      let newRails = selectedRails.map((rail, idx) => {
+      let newRails = rails.map((rail, idx) => {
         return {
           ...rail,
           id: -2 - idx,           // 仮のレールIDを割り当て
@@ -566,28 +578,8 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
         openJoints: openJoints
       }
 
-      LOGGER.info('withBuilder#registerRailGroup', railGroup)
+      LOGGER.info('withBuilder#registerRailGroupInner', railGroup)
       this.props.builder.addUserRailGroup(railGroup)
-    }
-
-
-    private onNewRailGroupDialogClose = () => {
-      this.setState({
-        newRailGroupDialogOpen: false
-      })
-    }
-
-    private onNewRailGroupDialogOK = (shouldDelete: boolean) => (name: string) => {
-      this.registerRailGroup(name)
-      if (shouldDelete) {
-        this.props.layout.deleteRails(this.props.layout.currentLayoutData.rails.map(rail => {
-          return {
-            id: rail.id
-          }
-        }))
-      } else {
-        this.deselectAllRails()
-      }
     }
 
 
@@ -613,12 +605,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
             builderToggleRail={this.toggleRail}
             builderDeselectAllRails={this.deselectAllRails}
             builderDeleteSelectedRails={this.deleteSelectedRails}
-          />
-          <NewRailGroupDialog
-            title={'New Rail Group'}
-            open={this.state.newRailGroupDialogOpen}
-            onClose={this.onNewRailGroupDialogClose}
-            onOK={this.onNewRailGroupDialogOK(this.state.deleteOnRegistered)}
+            builderRegisterRailGroup={this.registerRailGroup}
           />
         </React.Fragment>
       )
@@ -638,7 +625,9 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
   }
 
-  return WithBuilder
+  return compose<WithBuilderProps, WithBuilderProps>(
+    withSnackbar()
+  )(WithBuilder)
 }
 
 

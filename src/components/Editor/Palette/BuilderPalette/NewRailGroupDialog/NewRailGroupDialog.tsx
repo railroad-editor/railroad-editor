@@ -3,15 +3,18 @@ import getLogger from "logging";
 import AutoFocusTextValidator from "components/common/AutoFocusTextValidator";
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
+import {compose} from "recompose";
+import {withSnackbar} from 'material-ui-snackbar-provider'
 
 const LOGGER = getLogger(__filename)
 
 export interface NewRailGroupDialogProps extends FormDialogProps {
-  onOK: (name: string) => void
+  addUserRailGroup: (name: string, shouldDelete: boolean) => void
+  snackbar: any
 }
 
 
-export default class NewRailGroupDialog extends FormDialog<NewRailGroupDialogProps, FormDialogState> {
+export class NewRailGroupDialog extends FormDialog<NewRailGroupDialogProps, FormDialogState> {
 
   constructor(props: NewRailGroupDialogProps) {
     super(props)
@@ -19,7 +22,8 @@ export default class NewRailGroupDialog extends FormDialog<NewRailGroupDialogPro
   }
 
   onOK = (e) => {
-    this.props.onOK(this.state.inputs.name)
+    this.props.addUserRailGroup(this.state.inputs.name, false)
+    this.props.snackbar.showMessage(`Copied to "${this.state.inputs.name}" rail group.`)  //`
     this.onClose()
   }
 
@@ -43,5 +47,9 @@ export default class NewRailGroupDialog extends FormDialog<NewRailGroupDialogPro
       </ValidatorForm>
     )
   }
-
 }
+
+
+export default compose<NewRailGroupDialogProps, NewRailGroupDialogProps|any>(
+  withSnackbar()
+)(NewRailGroupDialog)

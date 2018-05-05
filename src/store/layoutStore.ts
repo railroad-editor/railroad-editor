@@ -99,6 +99,11 @@ export class LayoutStore {
   }
 
   @computed
+  get selectedRails() {
+    return this.currentLayoutData.rails.filter(r => r.selected)
+  }
+
+  @computed
   get isLayoutEmpty() {
     return this.currentLayoutData.rails.length === 0
   }
