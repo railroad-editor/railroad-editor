@@ -210,6 +210,17 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
               {/*</StyledIconButton>*/}
             {/*</Tooltip>*/}
 
+            <Tooltip title={Tools.PAN}>
+              <StyledIconButton
+                className={classNames({
+                  'active': this.isActive(Tools.PAN)
+                })}
+                onClick={() => this.props.builder.setActiveTool(Tools.PAN)}
+              >
+                <PanToolIcon/>
+              </StyledIconButton>
+            </Tooltip>
+
             <VerticalDivider/>
 
             <Tooltip title={'Copy'}>
@@ -255,16 +266,6 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
               </StyledIconButton>
             </Tooltip>
 
-            <Tooltip title={Tools.PAN}>
-              <StyledIconButton
-                className={classNames({
-                  'active': this.isActive(Tools.PAN)
-                })}
-                onClick={() => this.props.builder.setActiveTool(Tools.PAN)}
-              >
-                <PanToolIcon/>
-              </StyledIconButton>
-            </Tooltip>
             <Tooltip title={Tools.RESET_VIEW}>
               <StyledIconButton
                 onClick={this.props.resetViewPosition}

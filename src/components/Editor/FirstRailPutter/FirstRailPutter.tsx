@@ -11,7 +11,7 @@ import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import CirclePart from "components/rails/parts/primitives/CirclePart";
-import {RAIL_PUTTER_MARKER_RADIUS} from "constants/tools";
+import {RAIL_PUTTER_MARKER_RADIUS, Tools} from "constants/tools";
 import {JOINT_DETECTION_OPACITY_RATE, JOINT_FILL_COLORS} from "constants/parts";
 
 const LOGGER = getLogger(__filename)
@@ -133,6 +133,11 @@ export class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProp
       position = this.state.fixedPosition
     } else {
       position = this.getMarkerPosition()
+    }
+
+    // パンツール使用中は何もしない
+    if (this.props.builder.activeTool === Tools.PAN) {
+      return null
     }
 
     return (
