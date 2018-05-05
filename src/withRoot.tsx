@@ -9,7 +9,6 @@ import {createStores} from "store/createStore";
 import {Provider as MobxProvider} from "mobx-react";
 import makeInspectable from 'mobx-devtools-mst';
 
-
 // A theme with custom primary and secondary color.
 // It's optional.
 export const theme = createMuiTheme({

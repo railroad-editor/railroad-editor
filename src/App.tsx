@@ -1,82 +1,67 @@
 import * as React from 'react'
 import Editor from 'components/Editor/Editor'
-
-import './App.css'
-
 import {BrowserRouter as Router, Route} from "react-router-dom";
-import {StyleRulesCallback, WithStyles} from 'material-ui/styles'
-import withStyles from "material-ui/styles/withStyles";
-import withRoot from './withRoot';
+import {Redirect} from "react-router";
+import qs from "query-string"
 import Amplify from "aws-amplify";
+import Auth from "aws-amplify/lib/Auth";
 import aws_exports from './aws-exports';
 import TestCases from "./components/cases/TestCases";
-import 'typeface-roboto'
 import ResetPassword from "components/common/Authenticator/ResetPassword/ResetPassword";
-import qs from "query-string"
-import {Redirect} from "react-router";
+import {inject, observer} from "mobx-react";
+import {STORE_COMMON} from "constants/stores";
+import {CommonStore} from "store/commonStore";
+import withRoot from './withRoot';
+import getLogger from "logging";
+import 'typeface-roboto'
+import './App.css'
 
 const API_ENDPOINTS = {
-  dev: "https://foo866bgvk.execute-api.ap-northeast-1.amazonaws.com/dev",
   beta: "https://foo866bgvk.execute-api.ap-northeast-1.amazonaws.com/beta",
   prod: "https://foo866bgvk.execute-api.ap-northeast-1.amazonaws.com/prod",
 }
-aws_exports.aws_cloud_logic_custom[0].endpoint = API_ENDPOINTS[process.env.REACT_APP_ENV]
 
+aws_exports.aws_cloud_logic_custom[0].endpoint = API_ENDPOINTS[process.env.REACT_APP_ENV]
 Amplify.configure(aws_exports)
 
+const LOGGER = getLogger(__filename)
 
 
-const muiStyles: StyleRulesCallback<'root'> = theme => ({
-  root: {
-    textAlign: 'center',
-    paddingTop: theme.spacing.unit * 20,
-  },
-});
+export interface AppProps {
+  common?: CommonStore
+}
 
-class App extends React.Component<WithStyles<'root'>, {}> {
-  private _request: any;
+
+@inject(STORE_COMMON)
+@observer
+class App extends React.Component<AppProps, {}> {
 
   constructor(props: any) {
     super(props)
-    this.state = {
-      imageSize: 720,
-      mounted: false,
-    }
-    this._request = null
-  }
-
-  resizeWindow = () => {
-    // this._request = requestAnimationFrame(this.resizePaper)
-  }
-
-  resizePaper = () => {
-    // this.forceUpdate()
-    // this._request = null
   }
 
   componentDidMount() {
-    this.setState({ mounted: true })
-    // window.addEventListener('resize', this.resizeWindow)
+    // リロード時に警告を出す
+    window.onbeforeunload = () => {
+      return "Dude, are you sure you want to leave? Think of the kittens!";
+    }
   }
 
-  componentWillUnmount() {
-    // if (this._request) {
-    //   cancelAnimationFrame(this._request)
-    //   this._request = null
-    // }
-    // window.removeEventListener('resize', this.resizeWindow)
+  async componentWillMount() {
+    // セッションストレージからユーザー情報を取り出す
+    const session = await Auth.currentSession()
+    const userInfo = await Auth.currentUserInfo()
+    if (userInfo) {
+      LOGGER.info(`UserInfo: ${userInfo}`)
+      this.props.common.setAuthData(userInfo)
+    }
   }
 
-  // コンテキストメニュー無効
+
   render() {
     console.log(process.env)
     return (
-      <div className='App'
-           onContextMenu={(e) => {
-             e.preventDefault()
-             return false;
-           }}
-      >
+      <div className='App'>
         <Router>
           <div>
             <Route exact path="/" render={() => <Editor width={6000} height={4000} /> }/>
@@ -104,4 +89,4 @@ class App extends React.Component<WithStyles<'root'>, {}> {
   }
 }
 
-export default withRoot(withStyles(muiStyles)<{}>(App));
+export default withRoot(App);

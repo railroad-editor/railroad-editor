@@ -72,15 +72,6 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
     this.props.resetViewPosition()
   }
 
-  async componentWillMount() {
-    const session = await Auth.currentSession()
-    const userInfo = await Auth.currentUserInfo()
-    if (userInfo) {
-      LOGGER.info(`UserInfo: ${userInfo}`)
-      this.props.common.setAuthData(userInfo)
-    }
-  }
-
 
   isActive = (... tools: string[]) => {
     return tools.includes(this.props.builder.activeTool)
@@ -109,6 +100,12 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
     // this.props.moveToolMouseUp(e)
   }
 
+  // コンテキストメニュー無効化
+  noopContextMenu = (e) => {
+    e.preventDefault()
+    return false;
+  }
+
 
   render() {
 
@@ -126,7 +123,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
     return (
 
-      <StyledWrapper>
+      <StyledWrapper onContextMenu={this.noopContextMenu}>
         <StyledToolBar resetViewPosition={this.props.resetViewPosition} />
         <EditorBody>
           <StyledPalette />
