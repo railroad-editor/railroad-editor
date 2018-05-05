@@ -32,7 +32,7 @@ const DEFAULT_MATRIX = {
 
 export class GridPaper extends React.Component<GridPaperProps, {}> {
 
-  view: View|any
+  view: View
 
   constructor(props: GridPaperProps) {
     super(props)
@@ -114,31 +114,33 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
     const matrix = this.props.matrix || DEFAULT_MATRIX
 
     return (
-        <View width={viewWidth}
-              height={viewHeight}
-              matrix={matrix}
-              onWheel={onWheel}
-              settings={{
-                applyMatrix: false
-              }}
-              canvasProps={{
-                style: {
-                  backgroundColor: backgroundColor
-                }
-              }}
-              ref={(view) => {
-                this.view = view
-                if (view) window.CANVAS = view.canvas
-              }}
+      <View width={viewWidth}
+            height={viewHeight}
+            matrix={matrix}
+            onWheel={onWheel}
+            settings={{
+              applyMatrix: false
+            }}
+            canvasProps={{
+              style: {
+                backgroundColor: backgroundColor
+              }
+            }}
+            ref={(view) => {
+              this.view = view
+              if (view) window.CANVAS = view.canvas
+            }}
+      >
+        <Layer
+          name="background"
         >
-          <Layer>
-            {this.createBackground()}
-            {this.createBackgroundImage()}
-            {this.createVerticalLines()}
-            {this.createHorizontalLines()}
-          </Layer>
-          {this.props.children}
-        </View>
+          {this.createBackground()}
+          {this.createBackgroundImage()}
+          {this.createVerticalLines()}
+          {this.createHorizontalLines()}
+        </Layer>
+        {this.props.children}
+      </View>
     )
   }
 }

@@ -6,6 +6,7 @@ import CloudIcon from "material-ui-icons/Cloud";
 import OpenInNewIcon from "material-ui-icons/OpenInNew";
 import SaveIcon from "material-ui-icons/Save";
 import LogoutIcon from "material-ui-icons/Lock";
+import ArchiveIcon from "material-ui-icons/Archive";
 import OpenLayoutDialog from "components/Editor/MenuDrawer/OpenLayoutDialog/OpenLayoutDialog";
 import Auth from "aws-amplify/lib/Auth";
 import StorageAPI from "apis/storage"
@@ -17,6 +18,7 @@ import {CommonStore} from "store/commonStore";
 import {LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
 import SaveLayoutDialog from "components/Editor/MenuDrawer/SaveLayoutDialog/SaveLayoutDialog";
+import * as moment from "moment";
 
 const LOGGER = getLogger(__filename)
 
@@ -109,6 +111,18 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
     this.props.onClose()
   }
 
+  downloadAsSVG = (e) => {
+    const basename = this.props.layout.meta ? this.props.layout.meta.name : 'Untitled'
+    const fileName = `${basename}-${moment().format('YYYYMMDD')}`  //`
+
+    const svg = window.PAPER_SCOPE.project.exportSVG({asString:true})
+    const url = "data:image/svg+xml;utf8," + encodeURIComponent(svg)
+    const link = document.createElement("a");
+    link.download = fileName;
+    link.href = url;
+    link.click();
+  }
+
 
   render() {
     const { open, onClose }  = this.props
@@ -150,6 +164,12 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
                 <SaveIcon/>
               </ListItemIcon>
               <ListItemText primary="Save"/>
+            </ListItem>
+            <ListItem button onClick={this.downloadAsSVG}>
+              <ListItemIcon>
+                <ArchiveIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Export as SVG"/>
             </ListItem>
           </List>
           <SaveLayoutDialog
