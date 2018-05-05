@@ -6727,7 +6727,7 @@ pako@~1.0.5:
 
 "paper@https://github.com/kota65535/paper.js.dist#master":
   version "1.0.0"
-  resolved "https://github.com/kota65535/paper.js.dist#4b0dfc9d1fe4caddbb3d17e4064cd4583dae55f9"
+  resolved "https://github.com/kota65535/paper.js.dist#4beeb110fe267335855c24858f35ba5c6cb5f436"
 
 parallel-transform@^1.1.0:
   version "1.1.0"
@@ -7632,7 +7632,7 @@ react-material-ui-form-validator@next:
 
 "react-paper-bindings@https://github.com/kota65535/react-paper-bindings.dist#master":
   version "1.0.0"
-  resolved "https://github.com/kota65535/react-paper-bindings.dist#ebf8393001b12ef2a82a595fa5c05cd0ea92cdbd"
+  resolved "https://github.com/kota65535/react-paper-bindings.dist#617213b3d20c5e7ad1bdfb09ad592cc5deb0cda3"
 
 react-popper@^0.8.0:
   version "0.8.3"
