@@ -41,6 +41,8 @@ export const createRailComponent = (item: RailData, layer: LayerData) => {
       id={id}
       {...props}
       fillColor={layer.color}
+      opacity={layer.opacity || props.opacity}    // Layerの設定を優先する
+      visible={layer.visible || props.visible}    // 同上
       // data={{ id: id, type: Type }}
       // (activeTool === Tools.SELECT)
       // (this.props.selectedItem.id === selectedItem || layer.id === selectedItem)

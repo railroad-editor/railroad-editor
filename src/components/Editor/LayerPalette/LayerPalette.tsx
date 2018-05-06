@@ -11,10 +11,11 @@ import {ConfirmationDialog} from "components/Editor/LayerPalette/ConfirmationDia
 import Typography from "material-ui/Typography";
 import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import {inject, observer} from "mobx-react";
-import {LayoutStore} from "store/layoutStore";
+import {DEFAULT_LAYER_DATA, LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
 import {SecondaryPaletteAddButton} from "components/common/PaletteAddButton/PaletteAddButton";
 import Tooltip from "material-ui/Tooltip";
+import {DEFAULT_LAYER_TRANSLUCENT_OPACITY} from "constants/tools";
 
 const LOGGER = getLogger(__filename)
 
@@ -31,11 +32,10 @@ export interface LayerPaletteState {
   deleteDialogOpen: boolean
 }
 
-const DEFAULT_LAYER_DATA = {
-  id: 0,
-  name: '',
-  visible: true,
-  color: '#000'
+const LayerStates = {
+  VISIBLE: {visible: true, opacity: 1},
+  TRANSLUCENT: {visible: true, opacity: DEFAULT_LAYER_TRANSLUCENT_OPACITY},
+  INVISIBLE: {visible: false, opacity: 1}
 }
 
 
@@ -57,11 +57,28 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
     this.openUpdateDialog = this.openUpdateDialog.bind(this)
   }
 
+
+  toggleLayerVisibility = (visible: boolean, opacity: number) => {
+    if (visible && opacity === 1) {
+      return LayerStates.TRANSLUCENT
+    }
+    if (visible && opacity < 1) {
+      return LayerStates.INVISIBLE
+    }
+    if (!visible) {
+      return LayerStates.VISIBLE
+    }
+    // fallback
+    return LayerStates.VISIBLE
+  }
+
   onToggleVisible = (layerId: number) => (e: React.SyntheticEvent<HTMLInputElement>) => {
     const targetLayer = this.props.layout.currentLayoutData.layers.find(layer => layer.id === layerId)
+    const {visible, opacity} = this.toggleLayerVisibility(targetLayer.visible, targetLayer.opacity)
     this.props.layout.updateLayer({
       id: layerId,
-      visible: !targetLayer.visible,
+      visible,
+      opacity
     })
   }
 
@@ -160,6 +177,7 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
                   style={{
                     color: layer.color
                   }}
+                  indeterminate={layer.visible && layer.opacity < 1}
                 />
               </Grid>
               <Grid item xs={9}>

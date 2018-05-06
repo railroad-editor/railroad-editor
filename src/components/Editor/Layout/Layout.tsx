@@ -31,6 +31,13 @@ export class Layout extends React.Component<LayoutProps, {}> {
   render() {
     const {temporaryRails, temporaryRailGroup} = this.props.builder
     const {currentLayoutData, activeLayerData} = this.props.layout;
+    const temporaryLayer = {
+      id: -1,
+      name: 'Temporary',
+      color: activeLayerData.color,
+      visible: undefined,   // TemporaryRailはLayerとは無関係に状態を切り替えたいので、undefinedを入れる
+      opacity: undefined    // 同上
+    }
 
     LOGGER.debug('Layout render()')
 
@@ -42,16 +49,16 @@ export class Layout extends React.Component<LayoutProps, {}> {
         >
           {
             temporaryRails.length > 0 &&
-            createRailOrRailGroupComponent(temporaryRailGroup, temporaryRails,
-              { id: -1, name: 'Temporary', visible: true, color: activeLayerData.color})
+            createRailOrRailGroupComponent(temporaryRailGroup, temporaryRails, temporaryLayer)
           }
         </Layer>
         {
           currentLayoutData.layers.map(layer =>
             <Layer
               data={layer}
-              visible={layer.visible}
               key={layer.id}
+              visible={layer.visible}
+              opacity={layer.opacity}
               selectedWidth={DEFAULT_SELECTED_WIDTH}
               selectedColor={DEFAULT_SELECTED_COLOR}
             >

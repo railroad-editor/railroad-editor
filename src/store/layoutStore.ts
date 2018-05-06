@@ -41,20 +41,31 @@ export interface LayerData {
   name: string
   visible: boolean
   color: string
+  opacity: number
 }
 
+
+export const INITIAL_LAYER_DATA = {
+  id: 1,
+  name: 'Layer 1',
+  visible: true,
+  color: '#000',
+  opacity: 1.0,
+
+}
+
+export const DEFAULT_LAYER_DATA = {
+  id: 0,
+  name: '',
+  visible: true,
+  color: '#000',
+  opacity: 1.0,
+}
 
 export const INITIAL_STATE: LayoutStoreState = {
   histories: [
     {
-      layers: [
-        {
-          id: 1,
-          name: 'Layer 1',
-          visible: true,
-          color: '#000'
-        }
-      ],
+      layers: [INITIAL_LAYER_DATA],
       rails: [],
     }
   ],

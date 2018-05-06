@@ -144,7 +144,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
 
   protected createComponent(mainPart, detectionPart) {
     const { position, pivotJointIndex, detectionEnabled, selected, fillColors,
-      name, data, onLeftClick, onRightClick, visible
+      name, data, onLeftClick, onRightClick, visible, opacity
     } = this.props
 
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
@@ -159,6 +159,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
         pivotPartIndex={0}
         fillColors={fillColors}
         visible={visible}
+        opacity={opacity}
         detectionEnabled={detectionEnabled}
         name={name}
         data={data}

@@ -46,7 +46,8 @@ export default class LayerSettingDialog extends FormDialog<LayerSettingDialogPro
           id: 0,
           name: this.state.inputs.name,
           color: this.state.inputs.color,
-          visible: true
+          visible: true,
+          opacity: 1
         }
       )
     }

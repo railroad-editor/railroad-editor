@@ -318,8 +318,8 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
         layerId: this.props.builder.activeLayerId,  // 現在のレイヤーに置く
         enableJoints: true,                         // ジョイントを有効化
         opposingJoints: {},                         // 近傍ジョイントは後で接続する
-        opacity: 1,
-        visible: true,
+        // opacity: 1,    // Layerの設定に従う
+        // visible: true, // 同上
       })
     }
 

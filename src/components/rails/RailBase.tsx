@@ -44,17 +44,16 @@ export interface RailBaseDefaultProps {
   pivotJointChangingStride: number
   // 対向ジョイント情報
   opposingJoints: OpposingJoints
-
-  // 選択状態
-  selected: boolean
-  // 透明度
-  opacity: number
-  // 可視性
-  visible: boolean
-  // 色
-  fillColor: string
   // ジョイント表示のON/OFF
   enableJoints: boolean
+  // 選択状態
+  selected: boolean
+  // 可視性
+  visible: boolean
+  // 透明度
+  opacity: number
+  // 色
+  fillColor: string
 
   // イベントハンドラ
   onRailPartLeftClick: (e: MouseEvent) => boolean
@@ -81,10 +80,10 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
 
     selected: false,
     pivotJointIndex: 0,
-    opacity: 1,
-    visible: true,
     opposingJoints: {},
     enableJoints: true,
+    visible: true,
+    opacity: 1,
     fillColor: '#000',
 
     // 何もしないハンドラをセットしておく
