@@ -174,7 +174,7 @@ export default class DetectablePart extends React.Component<DetectablePartProps,
   render() {
     const {
       position, angle, pivot, pivotPartIndex, fillColors, selected, name, data, detectionEnabled,
-      mainPart, detectionPart, visible
+      mainPart, detectionPart, visible, opacity
     } = this.props
     const {detectionState, isError} = this.state
 
@@ -205,8 +205,9 @@ export default class DetectablePart extends React.Component<DetectablePartProps,
         angle={angle}
         pivot={pivot}
         pivotPartIndex={pivotPartIndex}
-        fillColor={undefined}
+        // fillColor={fillColor}
         visible={visible}
+        opacity={opacity}
         selected={selected}
         name={name}
         data={data}
