@@ -70,7 +70,11 @@ export const INITIAL_STATE: LayoutStoreState = {
     }
   ],
   historyIndex: 0,
-  meta: null,
+  meta: {
+    id: null,
+    name: 'Untitled',
+    lastModified: null
+  },
   config: {
     paperWidth: DEFAULT_PAPER_WIDTH,
     paperHeight: DEFAULT_PAPER_HEIGHT,

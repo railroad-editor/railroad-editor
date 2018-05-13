@@ -31,7 +31,7 @@ export const ZOOM_FACTOR = 0.002
 export const ZOOM_MIN = 0.1
 export const ZOOM_MAX = 10
 
-export const TEMPORARY_RAIL_OPACITY = 0.3
+export const TEMPORARY_RAIL_OPACITY = 0.5
 
 export const DEFAULT_SELECTION_RECT_COLOR = '#CCFF00'
 export const DEFAULT_SELECTION_RECT_OPACITY = 0.5

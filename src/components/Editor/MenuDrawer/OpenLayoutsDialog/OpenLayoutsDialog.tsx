@@ -6,7 +6,7 @@ import {S3Image} from 'aws-amplify-react';
 import LayoutAPI from "apis/layout"
 import getLogger from "logging";
 import {getLayoutImageFileName} from "apis/storage";
-import {LayoutCard} from "components/Editor/MenuDrawer/OpenLayoutDialog/LayoutCard/LayoutCard";
+import {LayoutCard} from "components/Editor/MenuDrawer/OpenLayoutsDialog/LayoutCard/LayoutCard";
 import {ConfirmationDialog} from "components/Editor/LayerPalette/ConfirmationDialog/ConfirmationDialog";
 import {LayoutMeta} from "store/layoutStore";
 
@@ -28,7 +28,7 @@ export interface OpenLayoutDialogState {
 }
 
 
-export default class OpenLayoutDialog extends React.Component<OpenLayoutDialogProps, OpenLayoutDialogState> {
+export default class OpenLayoutsDialog extends React.Component<OpenLayoutDialogProps, OpenLayoutDialogState> {
 
   constructor(props: OpenLayoutDialogProps) {
     super(props)

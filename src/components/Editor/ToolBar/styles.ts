@@ -2,6 +2,7 @@ import styled from "styled-components";
 import {theme} from "../../../withRoot";
 import IconButton from "material-ui/IconButton";
 import Button from "material-ui/Button";
+import Typography from "material-ui/Typography";
 
 
 export const StyledIconButton = styled(IconButton as any)`
@@ -42,5 +43,12 @@ export const StyledSignUpButton = styled(Button as any)`
     width: 80px;
     height: 42px;
     font-size: 1.0rem;
+  }
+`
+
+export const LayoutTitle = styled(Typography)`
+  && {
+    margin-left: 10px;
+    margin-right: 50px;
   }
 `

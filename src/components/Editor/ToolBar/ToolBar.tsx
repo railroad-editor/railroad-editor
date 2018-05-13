@@ -5,7 +5,7 @@ import TurnoutIcon from './Icon/TurnoutIcon'
 import SpecialRailIcon from "components/Editor/ToolBar/Icon/SpecialRailIcon";
 import RailGroupIcon from "components/Editor/ToolBar/Icon/RailGroupIcon";
 import {AppBar, Toolbar as MuiToolbar} from "material-ui"
-import {StyledIconButton, StyledLoginButton, StyledSignUpButton, VerticalDivider} from "./styles";
+import {StyledIconButton, VerticalDivider} from "./styles";
 import {Tools} from "constants/tools";
 import UndoIcon from 'material-ui-icons/Undo'
 import RedoIcon from 'material-ui-icons/Redo'
@@ -26,11 +26,10 @@ import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
 import {CommonStore} from "store/commonStore";
-import {MenuDrawer} from "components/Editor/MenuDrawer/MenuDrawer";
-import LoginDialog from "components/Editor/ToolBar/LoginDialog/LoginDialog";
-import SignUpDialog from "components/Editor/ToolBar/SignUpDialog/SignUpDialog";
+import MenuDrawer from "components/Editor/MenuDrawer/MenuDrawer";
 import {SettingsDialog} from "components/Editor/ToolBar/SettingsDialog/SettingsDialog";
 import {compose} from "recompose";
+import {EditableTypography} from "components/common/EditableTypography/EditableTypography";
 
 const LOGGER = getLogger(__filename)
 
@@ -41,6 +40,7 @@ export interface ToolBarProps {
   layout?: LayoutStore
 
   resetViewPosition: () => void
+  snackbar: any
 }
 
 export interface ToolBarState {
@@ -131,12 +131,36 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
     })
   }
 
+  setLayoutName = (text: string) => {
+    this.props.layout.updateLayoutMeta({
+      name: text
+    })
+  }
+
 
   render() {
     return (
       <>
         <AppBar>
           <MuiToolbar>
+            <Tooltip title={"Menu"}>
+              <StyledIconButton onClick={this.openMenu} >
+                <MenuIcon/>
+              </StyledIconButton>
+            </Tooltip>
+            <MenuDrawer open={this.state.openMenu} onClose={this.closeMenu}/>
+
+            <Tooltip title={'Layout Name'}>
+              <EditableTypography
+                variant="title"
+                color="inherit"
+                text={this.props.layout.meta.name}
+                onOK={this.setLayoutName}
+              />
+            </Tooltip>
+
+            <VerticalDivider/>
+
             <Tooltip id="tooltip-straight-rail" title={Tools.STRAIGHT_RAILS}>
               <StyledIconButton
                 className={classNames({
@@ -294,41 +318,6 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
             {/* メニューアイコンを右端に配置するための空白 */}
             <Typography variant="title" color="inherit" style={{flex: 1}} />
 
-            {/* ログイン・サインアップボタン */}
-            {! this.props.common.isAuth &&
-              <>
-                <StyledLoginButton onClick={this.openLoginDialog}>
-                  Login
-                </StyledLoginButton>
-                <StyledSignUpButton variant="raised" color="secondary" onClick={this.openSignUpDialog}>
-                  Sign Up
-                </StyledSignUpButton>
-                <LoginDialog
-                  open={this.state.openLogin}
-                  onClose={this.closeLoginDialog}
-                  setAuthData={this.props.common.setAuthData}
-                  loadLayoutList={this.props.common.loadLayoutList}
-                />
-                <SignUpDialog
-                  open={this.state.openSignUp}
-                  onClose={this.closeSignUpDialog}
-                  setAuthData={this.props.common.setAuthData}
-                  loadLayoutList={this.props.common.loadLayoutList}
-                />
-              </>
-            }
-
-            {/* メニュー */}
-            {this.props.common.isAuth &&
-              <>
-                <Tooltip id="tooltip-menu" title={"Menu"}>
-                  <StyledIconButton onClick={this.openMenu} >
-                    <MenuIcon/>
-                  </StyledIconButton>
-                </Tooltip>
-                <MenuDrawer open={this.state.openMenu} onClose={this.closeMenu}/>
-              </>
-            }
           </MuiToolbar>
         </AppBar>
       </>

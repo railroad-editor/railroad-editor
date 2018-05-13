@@ -6,7 +6,7 @@ import {S3Image} from 'aws-amplify-react';
 import getLogger from "logging";
 import * as moment from "moment";
 import Menu from "material-ui/Menu";
-import {StyledCardContent} from "components/Editor/MenuDrawer/OpenLayoutDialog/LayoutCard/style";
+import {StyledCardContent} from "components/Editor/MenuDrawer/OpenLayoutsDialog/LayoutCard/style";
 import Button from "material-ui/Button";
 
 const LOGGER = getLogger(__filename)
