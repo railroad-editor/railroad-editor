@@ -312,15 +312,31 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
      * @param {RailData} rail
      */
     private addSingleRail = (rail: RailData) => {
-      this.props.layout.addRail({
-        ..._.omit(rail, p => _.isFunction(p)),
+      const data = {
+        ..._.omitBy(rail, _.isFunction),
         name: '',
         layerId: this.props.builder.activeLayerId,  // 現在のレイヤーに置く
         enableJoints: true,                         // ジョイントを有効化
         opposingJoints: {},                         // 近傍ジョイントは後で接続する
         // opacity: 1,    // Layerの設定に従う
         // visible: true, // 同上
+      }
+      this.props.layout.addRail(data)
+    }
+
+    private addSingleRails = (rails: RailData[]) => {
+      const railDatas = rails.map(rail => {
+        return {
+          ..._.omitBy(rail, _.isFunction),
+          name: '',
+          layerId: this.props.builder.activeLayerId,  // 現在のレイヤーに置く
+          enableJoints: true,                         // ジョイントを有効化
+          opposingJoints: {},                         // 近傍ジョイントは後で接続する
+          // opacity: 1,    // Layerの設定に従う
+          // visible: true, // 同上
+        }
       })
+      this.props.layout.addRails(railDatas)
     }
 
     /**
@@ -332,18 +348,18 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       const tmpRGC = getTemporaryRailGroupComponent()
       const childComponents = tmpRGC.children
       LOGGER.info('withBuilder#addRailGroup', 'temporaryRailGroup', tmpRGC)
-      childComponents.forEach(child => {
+      const railDatas = childComponents.map(child => {
         const position = child.railPart.getGlobalJointPosition(child.props.pivotJointIndex)
         const angle = child.props.angle + tmpRGC.getAngle()
         LOGGER.info('withBuilder#addRailGroup', child.props, position, angle)
-        this.addSingleRail({
+        return {
           ...child.props,
           position,
           angle,
           pivotJointIndex: child.props.pivotJointIndex
-        } as RailData)
+        } as RailData
       })
-
+      this.addSingleRails(railDatas)
     }
 
     // /**

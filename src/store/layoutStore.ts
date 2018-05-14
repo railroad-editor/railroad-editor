@@ -157,6 +157,11 @@ export class LayoutStore {
   }
 
   @action
+  addRails = (items: RailData[]) => {
+    items.forEach(item => this.addRail(item))
+  }
+
+  @action
   updateRail = (item: Partial<RailData>) => {
     const index = this.currentLayoutData.rails.findIndex(rail => rail.id === item.id)
     const target = this.currentLayoutData.rails[index]

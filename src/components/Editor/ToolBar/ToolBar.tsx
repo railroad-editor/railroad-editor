@@ -161,7 +161,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
 
             <VerticalDivider/>
 
-            <Tooltip id="tooltip-straight-rail" title={Tools.STRAIGHT_RAILS}>
+            <Tooltip title={Tools.STRAIGHT_RAILS}>
               <StyledIconButton
                 className={classNames({
                   'active': this.isActive(Tools.STRAIGHT_RAILS)
@@ -171,7 +171,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                 <StraightRailIcon/>
               </StyledIconButton>
             </Tooltip>
-            <Tooltip id="tooltip-curve-rail" title={Tools.CURVE_RAILS}>
+            <Tooltip title={Tools.CURVE_RAILS}>
               <StyledIconButton
                 className={classNames({
                   'active': this.isActive(Tools.CURVE_RAILS)
@@ -181,7 +181,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                 <CurveRailIcon/>
               </StyledIconButton>
             </Tooltip>
-            <Tooltip id="tooltip-turnout-rail" title={Tools.TURNOUTS}>
+            <Tooltip title={Tools.TURNOUTS}>
               <StyledIconButton
                 className={classNames({
                   'active': this.isActive(Tools.TURNOUTS)
@@ -191,7 +191,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                 <TurnoutIcon/>
               </StyledIconButton>
             </Tooltip>
-            <Tooltip id="tooltip-special-rail" title={Tools.SPECIAL_RAILS}>
+            <Tooltip title={Tools.SPECIAL_RAILS}>
               <StyledIconButton
                 className={classNames({
                   'active': this.isActive(Tools.SPECIAL_RAILS)
@@ -202,7 +202,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
               </StyledIconButton>
             </Tooltip>
 
-            <Tooltip id="tooltip-rail-group" title={Tools.RAIL_GROUPS}>
+            <Tooltip title={Tools.RAIL_GROUPS}>
               <StyledIconButton
                 className={classNames({
                   'active': this.isActive(Tools.RAIL_GROUPS)
