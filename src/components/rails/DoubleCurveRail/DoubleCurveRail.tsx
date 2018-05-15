@@ -18,7 +18,7 @@ export default class DoubleCurveRail extends RailBase<DoubleCurveRailProps, Rail
     ...RailBase.defaultProps,
     type: 'DoubleCurveRail',
     numJoints: 4,
-    pivotJointChangingStride: 2,
+    pivotJointChangingStride: 1,
   }
 
   constructor(props: DoubleCurveRailProps) {

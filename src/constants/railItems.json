@@ -132,8 +132,8 @@
     {
       "type": "DoubleCurveRail",
       "name": "DC391-354-45",
-      "innerRadius": 391,
-      "outerRadius": 354,
+      "innerRadius": 354,
+      "outerRadius": 391,
       "centerAngle": 45
     },
     {
