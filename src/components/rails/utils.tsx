@@ -3,11 +3,13 @@ import RailContainers, {RailComponentClasses, RailData, RailGroupData} from "com
 import getLogger from "logging";
 import {RailBase, RailBaseProps} from "components/rails/RailBase";
 import RailGroupContainer from "components/rails/RailGroup";
-import Combinatorics from "js-combinatorics"
 import {Point} from "paper";
 import {JointPair} from "components/hoc/withBuilder";
 import {LayerData} from "store/layoutStore";
 import RailGroup from "components/rails/RailGroup/RailGroup";
+import * as _ from 'lodash';
+import 'lodash.combinations';
+import 'lodash.product';
 
 const LOGGER = getLogger(__filename)
 
@@ -158,7 +160,7 @@ export const getRailComponentsOfLayer = (layerId: number): RailBase<RailBaseProp
 
 
 export const hasOpenJoint = (rail: RailData): boolean => {
-  return _.filter(rail.opposingJoints, v => v).length !== RailComponentClasses[rail.type].defaultProps.numJoints
+  return _.filter(rail.opposingJoints, v => Boolean(v)).length !== RailComponentClasses[rail.type].defaultProps.numJoints
 }
 
 
@@ -172,7 +174,7 @@ export const intersectsBetween = (r1: number, r2: number): boolean => {
   const r1Paths = getRailComponent(r1).railPart.path.children
   const r2Paths = getRailComponent(r2).railPart.path.children
 
-  const combinations = Combinatorics.cartesianProduct(r1Paths, r2Paths).toArray()
+  const combinations = (_ as any).product(r1Paths, r2Paths)
   const result = combinations.map(cmb => cmb[0].intersects(cmb[1])).some(e => e)
   LOGGER.debug(`Rail intersection of ${r1} and {r2}: ${result}`)
   return result
@@ -201,7 +203,7 @@ export const getCloseJointsBetween = (r1: number, r2: number): JointPair[] => {
   const r1Joints = getRailComponent(r1).joints
   const r2Joints = getRailComponent(r2).joints
 
-  const combinations = Combinatorics.cartesianProduct(r1Joints, r2Joints).toArray()
+  const combinations = (_ as any).product(r1Joints, r2Joints)
   const closeJointPairs = []
   combinations.forEach(cmb => {
     // 両方が未接続でなければ抜ける
@@ -258,7 +260,7 @@ export const getAllCloseJoints = (rails: RailData[]): JointPair[] => {
   if (rails.length < 2) {
     return []
   } else {
-    const combinations = Combinatorics.combination(rails.map(r => r.id), 2).toArray()
+    const combinations = (_ as any).combinations(rails.map(r => r.id), 2)
     return _.flatMap(combinations, cmb => getCloseJointsBetween(cmb[0], cmb[1]))
   }
 }
@@ -274,7 +276,7 @@ export const getAllOpenCloseJoints = (rails: RailData[]): JointPair[]  => {
   if (railsWithOpenJoints.length < 2) {
     return []
   } else {
-    const combinations = Combinatorics.combination(railsWithOpenJoints.map(r => r.id), 2).toArray()
+    const combinations = (_ as any).combinations(railsWithOpenJoints.map(r => r.id), 2)
     LOGGER.info(combinations)
     return _.flatMap(combinations, cmb => getCloseJointsBetween(cmb[0], cmb[1]))
   }

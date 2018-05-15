@@ -41,6 +41,8 @@
     "js-combinatorics": "^0.5.3",
     "js-md5": "^0.7.3",
     "lodash": "^4.17.10",
+    "lodash.combinations": "^18.1.16",
+    "lodash.product": "^18.1.16",
     "logdown": "^3.2.3",
     "loglevel": "^1.6.1",
     "material-ui": "v1.0.0-beta.39",

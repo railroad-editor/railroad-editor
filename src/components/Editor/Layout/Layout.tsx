@@ -1,14 +1,15 @@
 import * as React from "react";
 import {Layer} from "react-paper-bindings";
-import {createRailComponent, createRailOrRailGroupComponent} from "components/rails/utils";
+import {createRailComponent, createRailOrRailGroupComponent, getAllOpenCloseJoints} from "components/rails/utils";
 import getLogger from "logging";
-import {default as withBuilder} from "components/hoc/withBuilder";
+import {default as withBuilder, WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {compose} from "recompose";
 import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import {inject, observer} from "mobx-react";
 import {LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
 import {DEFAULT_SELECTED_COLOR, DEFAULT_SELECTED_WIDTH} from "constants/tools";
+import {reaction} from "mobx";
 
 const LOGGER = getLogger(__filename)
 
@@ -18,14 +19,34 @@ export interface LayoutProps {
   builder?: BuilderStore
 }
 
+export interface LayoutState {
+  shouldConnect: boolean
+}
+
 
 @inject(STORE_BUILDER, STORE_LAYOUT)
 @observer
-export class Layout extends React.Component<LayoutProps, {}> {
+export class Layout extends React.Component<LayoutProps & WithBuilderPublicProps, LayoutState> {
 
-  constructor(props: LayoutProps) {
+  constructor(props: LayoutProps & WithBuilderPublicProps) {
     super(props)
+    // this.state = {
+    //   shouldConnect: false
+    // }
+
+    // const reaction1 = reaction(
+    //   () => this.props.layout.activeLayerRails.length,
+    //   length => this.setState({ shouldConnect: true })
+    //   )
   }
+
+  // componentDidUpdate() {
+  //   LOGGER.info('Layout update()', this.props.layout.currentLayoutData.rails.length)
+  //   if (this.state.shouldConnect) {
+  //     this.props.builderConnectJoints(this.props.layout.unconnectedCloseJoints)
+  //     this.setState({ shouldConnect: false })
+  //   }
+  // }
 
 
   render() {

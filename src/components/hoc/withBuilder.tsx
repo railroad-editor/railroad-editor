@@ -346,17 +346,17 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
      */
     private addRailGroup = (railGroup: RailGroupData, children: RailData[]) => {
       const tmpRGC = getTemporaryRailGroupComponent()
-      const childComponents = tmpRGC.children
+      // const childComponents = tmpRGC.children
       LOGGER.info('withBuilder#addRailGroup', 'temporaryRailGroup', tmpRGC)
-      const railDatas = childComponents.map(child => {
-        const position = child.railPart.getGlobalJointPosition(child.props.pivotJointIndex)
-        const angle = child.props.angle + tmpRGC.getAngle()
-        LOGGER.info('withBuilder#addRailGroup', child.props, position, angle)
+      const railDatas = children.map(child => {
+        const position = getRailComponent(child.id).railPart.getGlobalJointPosition(child.pivotJointIndex)
+        const angle = child.angle + tmpRGC.getAngle()
+        LOGGER.info('withBuilder#addRailGroup', children, position, angle)
         return {
-          ...child.props,
+          ...child,
           position,
           angle,
-          pivotJointIndex: child.props.pivotJointIndex
+          pivotJointIndex: child.pivotJointIndex
         } as RailData
       })
       this.addSingleRails(railDatas)
@@ -575,7 +575,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       // レールグループメンバー
       let newRails = rails.map((rail, idx) => {
         return {
-          ...rail,
+          ..._.omitBy(rail, _.isFunction),
           id: -2 - idx,           // 仮のレールIDを割り当て
           enableJoints: false,    // ジョイント無効
           selected: false,        // 選択状態を解除
