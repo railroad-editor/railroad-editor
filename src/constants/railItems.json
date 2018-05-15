@@ -169,6 +169,12 @@
       "branchDirection": "Left"
     },
     {
+      "type": "WyeTurnout",
+      "name": "PY280-15",
+      "radius": 280,
+      "centerAngle": 15
+    },
+    {
       "type": "ThreeWayTurnout",
       "name": "PRL541/280-15",
       "leftStart": 0,

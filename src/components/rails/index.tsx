@@ -10,6 +10,8 @@ import DoubleCrossTurnout, {DoubleCrossTurnoutProps} from "components/rails/Doub
 import DoubleCrossTurnoutContainer from "components/rails/DoubleCrossTurnout";
 import SimpleTurnout, {SimpleTurnoutProps} from "components/rails/SimpleTurnout/SimpleTurnout";
 import SimpleTurnoutContainer from "components/rails/SimpleTurnout";
+import WyeTurnout, {WyeTurnoutProps} from "components/rails/WyeTurnout/WyeTurnout";
+import WyeTurnoutContainer from "components/rails/WyeTurnout";
 import {RailBaseProps} from "components/rails/RailBase";
 import EndRailContainer from "components/rails/EndRail";
 import EndRail from "components/rails/EndRail/EndRail";
@@ -26,6 +28,7 @@ const RailContainerClasses = {
   'DoubleStraightRail': DoubleStraightRailContainer,
   'DoubleCurveRail': DoubleCurveRailContainer,
   'SimpleTurnout': SimpleTurnoutContainer,
+  'WyeTurnout': WyeTurnoutContainer,
   'DoubleCrossTurnout': DoubleCrossTurnoutContainer,
   'EndRail': EndRailContainer,
   'CrossingRail': CrossingRailContainer,
@@ -38,6 +41,7 @@ export const RailComponentClasses = {
   DoubleStraightRail,
   DoubleCurveRail,
   SimpleTurnout,
+  WyeTurnout,
   DoubleCrossTurnout,
   EndRail,
   CrossingRail
