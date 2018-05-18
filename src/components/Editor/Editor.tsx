@@ -30,6 +30,7 @@ import {
   Tools
 } from "constants/tools";
 import FirstRailPutter from "components/Editor/FirstRailPutter/FirstRailPutter";
+import {PlacingMode} from "store/builderStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -166,7 +167,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             <Layout />
 
             {/*/!* 後から書いたコンポーネントの方が前面に配置される *!/*/}
-            {this.props.layout.isLayoutEmpty &&
+            {this.props.builder.placingMode === PlacingMode.FREE &&
               <FirstRailPutter mousePosition={this.state.mousePosition}/>
             }
 

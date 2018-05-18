@@ -84,7 +84,8 @@ export class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProp
       } else if (this.props.builder.temporaryRails) {
         // 単体レールの場合
         this.props.builder.updateTemporaryRail({
-          pivotJointIndex: this.props.builder.nextPivotJointIndex
+          // pivotJointIndex: this.props.builder.nextPivotJointIndex
+          pivotJointIndex: undefined
         })
       }
     }
@@ -236,6 +237,7 @@ export class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProp
   private addRail = () => {
     // 仮レールの位置にレールを設置
     this.props.builderAddRail()
+    this.setState({phase: Phase.SET_POSITION})
   }
 }
 

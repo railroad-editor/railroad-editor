@@ -16,6 +16,8 @@ import MenuIcon from "material-ui-icons/Menu";
 import SettingsIcon from "material-ui-icons/Settings";
 import CopyIcon from "material-ui-icons/ContentCopy";
 import CutIcon from "material-ui-icons/ContentCut";
+import FreePlacingModeIcon from "material-ui-icons/LocationOn";
+import ConnectModeIcon from "material-ui-icons/CompareArrows";
 import getLogger from "logging";
 import Typography from "material-ui/Typography";
 import * as classNames from "classnames"
@@ -24,7 +26,7 @@ import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
-import {BuilderStore} from "store/builderStore";
+import {BuilderStore, PlacingMode} from "store/builderStore";
 import {CommonStore} from "store/commonStore";
 import MenuDrawer from "components/Editor/MenuDrawer/MenuDrawer";
 import {SettingsDialog} from "components/Editor/ToolBar/SettingsDialog/SettingsDialog";
@@ -137,6 +139,10 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
     })
   }
 
+  onChangePlacingMode = (mode: PlacingMode) => (e) => {
+    this.props.builder.setPlacingMode(mode)
+  }
+
 
   render() {
     return (
@@ -213,6 +219,39 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
               </StyledIconButton>
             </Tooltip>
 
+            <Tooltip title={Tools.PAN}>
+              <StyledIconButton
+                className={classNames({
+                  'active': this.isActive(Tools.PAN)
+                })}
+                onClick={() => this.props.builder.setActiveTool(Tools.PAN)}
+              >
+                <PanToolIcon/>
+              </StyledIconButton>
+            </Tooltip>
+
+            <VerticalDivider/>
+
+            <Tooltip title={PlacingMode.FREE}>
+              <StyledIconButton
+                className={classNames({
+                  'active': this.props.builder.placingMode === PlacingMode.FREE
+                })}
+                onClick={this.onChangePlacingMode(PlacingMode.FREE)}
+              >
+                <FreePlacingModeIcon/>
+              </StyledIconButton>
+            </Tooltip>
+            <Tooltip title={PlacingMode.JOINT}>
+              <StyledIconButton
+                className={classNames({
+                  'active': this.props.builder.placingMode === PlacingMode.JOINT
+                })}
+                onClick={this.onChangePlacingMode(PlacingMode.JOINT)}
+              >
+                <ConnectModeIcon/>
+              </StyledIconButton>
+            </Tooltip>
             {/*<Tooltip id="tooltip-feeders" title={Tools.FEEDERS}>*/}
               {/*<StyledIconButton*/}
                 {/*className={classNames({*/}
@@ -233,19 +272,8 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                 {/*<GapIcon/>*/}
               {/*</StyledIconButton>*/}
             {/*</Tooltip>*/}
-
-            <Tooltip title={Tools.PAN}>
-              <StyledIconButton
-                className={classNames({
-                  'active': this.isActive(Tools.PAN)
-                })}
-                onClick={() => this.props.builder.setActiveTool(Tools.PAN)}
-              >
-                <PanToolIcon/>
-              </StyledIconButton>
-            </Tooltip>
-
             <VerticalDivider/>
+
 
             <Tooltip title={'Copy'}>
               <StyledIconButton

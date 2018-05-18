@@ -1,8 +1,8 @@
 import {RailData} from "components/rails";
-import {action, computed, observable, toJS} from "mobx";
+import {action, computed, observable, reaction, toJS, when} from "mobx";
 import LayoutAPI from "apis/layout";
 import commonStore from "./commonStore";
-import builderStore from "./builderStore";
+import builderStore, {PlacingMode} from "./builderStore";
 import {DEFAULT_GRID_SIZE, DEFAULT_INITIAL_ZOOM, DEFAULT_PAPER_HEIGHT, DEFAULT_PAPER_WIDTH} from "constants/tools";
 import {getAllOpenCloseJoints} from "components/rails/utils";
 import getLogger from "logging";
@@ -96,6 +96,18 @@ export class LayoutStore {
     this.historyIndex = historyIndex
     this.meta = meta
     this.config = config
+
+    reaction(
+      () => this.currentLayoutData.rails.length,
+      () => {
+        if (this.isLayoutEmpty) {
+          builderStore.setPlacingMode(PlacingMode.FREE)
+        } else {
+          builderStore.setPlacingMode(PlacingMode.JOINT)
+        }
+      }
+
+    )
   }
 
   @computed
@@ -306,12 +318,5 @@ const removeEmpty = (obj) => {
   return obj
 }
 
-// const getAllIndexes = (arr, val) => {
-
-//   for(i = 0; i < arr.length; i++)
-//     if (arr[i] === val)
-//       indexes.push(i);
-//   return indexes;
-// }
 
 export default new LayoutStore(INITIAL_STATE)

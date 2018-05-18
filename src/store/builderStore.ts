@@ -22,6 +22,8 @@ export interface BuilderStoreState {
   paletteItem: PaletteItem
   // 直前に選択していたレール
   lastPaletteItems: LastPaletteItems
+  // Placing Mode
+  placingMode: PlacingMode
   // 現在アクティブ（編集中）のレイヤーID
   activeLayerId: number
   // PaperJSのロードが完了したか否か
@@ -40,6 +42,11 @@ export interface BuilderStoreState {
   selecting: boolean
 }
 
+export enum PlacingMode {
+  FREE = 'Free Placing Mode',
+  JOINT = 'Joint Placing Mode'
+}
+
 export const INITIAL_STATE: BuilderStoreState = {
   paletteItem: {type: 'StraightRail', name: 'S280'},
   lastPaletteItems: {
@@ -49,6 +56,7 @@ export const INITIAL_STATE: BuilderStoreState = {
     'Special Rails': {type: 'SpecialRails', name: 'End Rail'},
     'Rail Groups': {type: 'RailGroup', name: ''},
   },
+  placingMode: PlacingMode.FREE,
   activeLayerId: 1,
   paperViewLoaded: false,
   temporaryRails: [],
@@ -66,6 +74,8 @@ export class BuilderStore {
   @observable paletteItem: PaletteItem
   // 直前に選択していたレール
   @observable lastPaletteItems: LastPaletteItems
+  // Placing Mode
+  @observable placingMode: PlacingMode
   // 現在アクティブ（編集中）のレイヤーID
   @observable activeLayerId: number
   // PaperJSのロードが完了したか否か
@@ -88,10 +98,11 @@ export class BuilderStore {
   // @observable zoom
 
 
-  constructor({ paletteItem, lastPaletteItems, activeLayerId, paperViewLoaded, temporaryRails, temporaryRailGroup, userRailGroups,
+  constructor({ paletteItem, lastPaletteItems, placingMode, activeLayerId, paperViewLoaded, temporaryRails, temporaryRailGroup, userRailGroups,
                 userRails, activeTool, selecting}) {
     this.paletteItem = paletteItem
     this.lastPaletteItems = lastPaletteItems
+    this.placingMode = placingMode
     this.activeLayerId = activeLayerId
     this.paperViewLoaded = paperViewLoaded
     this.temporaryRails = temporaryRails
@@ -135,6 +146,10 @@ export class BuilderStore {
     return (pivotJointIndex + pivotJointChangingStride) % numJoints
   }
 
+  @action
+  setPlacingMode = (placingMode: PlacingMode) => {
+    this.placingMode = placingMode
+  }
 
 
   @action
