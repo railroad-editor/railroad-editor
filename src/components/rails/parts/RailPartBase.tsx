@@ -6,6 +6,7 @@ import {RAIL_PART_FILL_COLORS} from "constants/parts";
 import {RailPartMeta} from "components/rails/parts/types";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
 import getLogger from "logging";
+import {ReactElement} from "react";
 
 const logger = getLogger(__filename)
 
@@ -155,23 +156,24 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     return this.angles[jointIndex]
   }
 
-  protected createComponent(mainPart, detectionPart) {
+
+  /**
+   * パーツのJSXElementを返す。
+   */
+  abstract renderParts()
+
+
+  render() {
     const { position, pivotJointIndex, detectionEnabled, selected, fillColors,
       name, data, onLeftClick, onRightClick, visible, opacity
     } = this.props
-    let pivotPartIndex, pivot
-    if (_.isNil(pivotJointIndex)) {
-      pivot = undefined
-    } else {
-      const pivotInfo = this.getPivot(pivotJointIndex)
-      pivot = pivotInfo.pivot
-      // pivotPartIndex = pivotInfo.pivotPartIndex
-    }
+    const pivot = _.isNil(pivotJointIndex) ? undefined: this.getPivot(pivotJointIndex).pivot
+    const part = this.renderParts()
 
     return (
       <DetectablePart
-        mainPart={mainPart}
-        detectionPart={detectionPart}
+        mainPart={part}
+        detectionPart={part}
         position={position}
         angle={this.getAngle(pivotJointIndex)}
         pivot={pivot}
@@ -189,6 +191,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
       />
     )
   }
+
 
   protected getInstance(detectablePart) {
     if (detectablePart) this.detectablePart = detectablePart

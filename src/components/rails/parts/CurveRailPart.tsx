@@ -55,11 +55,11 @@ export default class CurveRailPart extends RailPartBase<CurveRailPartProps, {}> 
   }
 
 
-  render() {
+  renderParts() {
     const { radius, centerAngle, direction, pivotJointIndex, data } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 
-    const part = (
+    return (
       <PartGroup
         pivotPartIndex={pivotPartIndex}
         pivot={Pivot.LEFT}
@@ -77,7 +77,5 @@ export default class CurveRailPart extends RailPartBase<CurveRailPartProps, {}> 
         />
       </PartGroup>
     )
-
-    return this.createComponent(part, part)
   }
 }

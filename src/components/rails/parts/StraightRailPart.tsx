@@ -46,12 +46,10 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
     ]
   }
 
-
-  render() {
+  renderParts() {
     const { length, pivotJointIndex, data } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
-
-    const part = (
+    return (
       <PartGroup
         pivotPartIndex={pivotPartIndex}
         pivot={Pivot.LEFT}
@@ -67,7 +65,5 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
         />
       </PartGroup>
     )
-
-    return this.createComponent(part, part)
   }
 }

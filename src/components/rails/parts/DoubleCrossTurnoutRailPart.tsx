@@ -48,14 +48,14 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
     ]
   }
 
-  render() {
+  renderParts() {
     const { length, pivotJointIndex, data } = this.props
 
     // TODO: 方程式を解いてちゃんと値を出す
     const radius = length / (2 * Math.sin(15 / 180 * Math.PI))
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 
-    const part = (
+    return (
       <PartGroup
         pivotPartIndex={pivotPartIndex}
         pivot={pivot}
@@ -125,7 +125,5 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
         />
       </PartGroup>
     )
-
-    return this.createComponent(part, part)
   }
 }

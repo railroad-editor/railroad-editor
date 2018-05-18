@@ -49,11 +49,11 @@ export default class WyeTurnoutRailPart extends RailPartBase<WyeTurnoutRailPartP
   }
 
 
-  render() {
+  renderParts() {
     const { radius, centerAngle, pivotJointIndex, data } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 
-    const part = (
+    return (
       <PartGroup
         pivotPartIndex={pivotPartIndex}
         pivot={pivot}
@@ -81,7 +81,5 @@ export default class WyeTurnoutRailPart extends RailPartBase<WyeTurnoutRailPartP
         />
       </PartGroup>
     )
-
-    return this.createComponent(part, part)
   }
 }
