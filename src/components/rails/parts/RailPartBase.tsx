@@ -19,12 +19,13 @@ export interface RailPartBaseProps extends Partial<RailPartBaseDefaultProps> {
   data?: RailPartMeta
   onLeftClick?: (e: MouseEvent) => boolean
   onRightClick?: (e: MouseEvent) => boolean
+
+  pivotJointIndex?: number
 }
 
 export interface RailPartBaseDefaultProps {
   position?: Point
   angle?: number
-  pivotJointIndex?: number
   detectionEnabled?: boolean
   selected?: boolean
   opacity?: number
@@ -37,7 +38,6 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
   public static defaultProps: RailPartBaseDefaultProps = {
     position: new Point(0, 0),
     angle: 0,
-    pivotJointIndex: 0,
     detectionEnabled: false,
     selected: false,
     opacity: 1,
@@ -125,29 +125,48 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
   }
 
   /**
-   * 指定のジョイントのPivot情報を返す。
+   * 各ジョイントのPivot情報を返す。
    * 派生クラスに要実装。
-   * @param {number} jointIndex
-   * @returns {PivotInfo}
+   * @returns {PivotInfo[]}
    */
-  abstract getPivot(jointIndex: number): PivotInfo
+  abstract get pivots(): PivotInfo[]
 
   /**
-   * 指定のジョイントがPivotとして指定された時のRailPartの角度を返す。
+   *
+   * 各ジョイントがPivotとして指定された時のRailPartの角度を返す。
    * 派生クラスに要実装。
    * TODO: componentDidMountで角度を決定するようにすれば無くせるかも
-   * @param {number} jointIndex
-   * @returns {number}
+   * @returns {number[]}
    */
-  abstract getAngle(jointIndex: number): number
+  abstract get angles(): number[]
 
+
+  getPivot(jointIndex: number) {
+    if (jointIndex == null) {
+      return {pivotPartIndex: undefined, pivot: Pivot.CENTER}
+    }
+    return this.pivots[jointIndex]
+  }
+
+  getAngle(jointIndex: number) {
+    if (jointIndex == null) {
+      jointIndex = 0
+    }
+    return this.angles[jointIndex]
+  }
 
   protected createComponent(mainPart, detectionPart) {
     const { position, pivotJointIndex, detectionEnabled, selected, fillColors,
       name, data, onLeftClick, onRightClick, visible, opacity
     } = this.props
-
-    const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
+    let pivotPartIndex, pivot
+    if (_.isNil(pivotJointIndex)) {
+      pivot = undefined
+    } else {
+      const pivotInfo = this.getPivot(pivotJointIndex)
+      pivot = pivotInfo.pivot
+      // pivotPartIndex = pivotInfo.pivotPartIndex
+    }
 
     return (
       <DetectablePart
@@ -156,7 +175,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
         position={position}
         angle={this.getAngle(pivotJointIndex)}
         pivot={pivot}
-        pivotPartIndex={0}
+        pivotPartIndex={0}    // 常にGroupなのでこれで良い
         fillColors={fillColors}
         visible={visible}
         opacity={opacity}

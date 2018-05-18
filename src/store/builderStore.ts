@@ -139,12 +139,20 @@ export class BuilderStore {
   get nextPivotJointIndex() {
     const temporaryRails = this.temporaryRails
     if (temporaryRails.length !== 1) {
+      return undefined
+    }
+    let {type, pivotJointIndex} = temporaryRails[0]
+    if (_.isNil(pivotJointIndex)) {
       return 0
     }
-    const {type, pivotJointIndex} = temporaryRails[0]
     const {numJoints, pivotJointChangingStride} = RailComponentClasses[type].defaultProps
-    return (pivotJointIndex + pivotJointChangingStride) % numJoints
+    const nextPivotJointIndex = (pivotJointIndex + pivotJointChangingStride) % numJoints
+    if (this.placingMode === PlacingMode.FREE && nextPivotJointIndex < pivotJointIndex) {
+      return undefined
+    }
+    return nextPivotJointIndex
   }
+
 
   @action
   setPlacingMode = (placingMode: PlacingMode) => {

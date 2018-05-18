@@ -19,36 +19,33 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
   public static defaultProps: RailPartBaseDefaultProps = {
     position: new Point(0, 0),
     angle: 0,
-    pivotJointIndex: 0,
+    // pivotJointIndex: 0,
     detectionEnabled: false,
     selected: false,
     opacity: 1,
     fillColors: RAIL_PART_FILL_COLORS
   }
 
-  // Pivotにするジョイントの位置を指定するための情報
-  pivots = [
-    {pivotPartIndex: 0, pivot: Pivot.LEFT},
-    {pivotPartIndex: 0, pivot: Pivot.RIGHT}
-  ]
-
-  // Pivotジョイントに応じて変わるレールの角度
-  angles = [
-    () => this.props.angle,
-    () => this.props.angle + 180
-  ]
-
   constructor(props: StraightRailPartProps) {
     super(props)
   }
 
-  getPivot(jointIndex: number) {
-    return this.pivots[jointIndex]
+  // Pivotにするジョイントの位置を指定するための情報
+  get pivots() {
+    return [
+      {pivotPartIndex: 0, pivot: Pivot.LEFT},
+      {pivotPartIndex: 0, pivot: Pivot.RIGHT}
+    ]
   }
 
-  getAngle(jointIndex: number) {
-    return this.angles[jointIndex]()
+  // Pivotジョイントに応じて変わるレールの角度
+  get angles() {
+    return [
+      this.props.angle,
+      this.props.angle + 180
+    ]
   }
+
 
   render() {
     const { length, pivotJointIndex, data } = this.props

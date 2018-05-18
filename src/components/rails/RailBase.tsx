@@ -31,6 +31,8 @@ export interface RailBaseProps extends Partial<RailBaseDefaultProps> {
   onUnmount?: (ref: RailBase<RailBaseProps, RailBaseState>) => void
   // このレールの所属するレールグループのID
   groupId?: number
+  // ピボットとなるジョイントのIndex
+  pivotJointIndex?: number,
 }
 
 export interface RailBaseDefaultProps {
@@ -38,8 +40,6 @@ export interface RailBaseDefaultProps {
   type: string
   // ジョイント数
   numJoints: number
-  // ピボットとなるジョイントのIndex
-  pivotJointIndex: number
   // 右クリックでPivotJointIndexを加算する数
   pivotJointChangingStride: number
   // 対向ジョイント情報
@@ -79,7 +79,6 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     pivotJointChangingStride: 1,
 
     selected: false,
-    pivotJointIndex: 0,
     opposingJoints: {},
     enableJoints: true,
     visible: true,

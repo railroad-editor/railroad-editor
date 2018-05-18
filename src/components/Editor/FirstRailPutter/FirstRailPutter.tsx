@@ -84,8 +84,7 @@ export class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProp
       } else if (this.props.builder.temporaryRails) {
         // 単体レールの場合
         this.props.builder.updateTemporaryRail({
-          // pivotJointIndex: this.props.builder.nextPivotJointIndex
-          pivotJointIndex: undefined
+          pivotJointIndex: this.props.builder.nextPivotJointIndex
         })
       }
     }

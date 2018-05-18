@@ -24,43 +24,42 @@ export default class SimpleTurnoutRailPart extends RailPartBase<SimpleTurnoutRai
   public static defaultProps: RailPartBaseDefaultProps = {
     position: new Point(0, 0),
     angle: 0,
-    pivotJointIndex: 0,
     detectionEnabled: false,
     selected: false,
     opacity: 1,
     fillColors: RAIL_PART_FILL_COLORS
   }
 
-  pivots = [
-    {pivotPartIndex: 0, pivot: Pivot.LEFT},
-    {pivotPartIndex: 0, pivot: Pivot.RIGHT},
-    {pivotPartIndex: 1, pivot: Pivot.RIGHT}
-  ]
-
-  angles = [
-    () => this.props.angle,
-    () => this.props.angle + 180,
-    () => {
-      switch (this.props.direction) {
-        case ArcDirection.RIGHT:
-          return this.props.angle - this.props.centerAngle + 180
-        case ArcDirection.LEFT:
-          return this.props.angle + this.props.centerAngle - 180
-      }
-    }
-  ]
 
   constructor(props: SimpleTurnoutRailPartProps) {
     super(props)
   }
 
-  getPivot(jointIndex: number) {
-    return this.pivots[jointIndex]
+  get pivots() {
+    return [
+      {pivotPartIndex: 0, pivot: Pivot.LEFT},
+      {pivotPartIndex: 0, pivot: Pivot.RIGHT},
+      {pivotPartIndex: 1, pivot: Pivot.RIGHT}
+    ]
   }
 
-  getAngle(jointIndex: number) {
-    return this.angles[jointIndex]()
+  get angles() {
+    return [
+      this.props.angle,
+      this.props.angle + 180,
+      this.endAngle
+    ]
   }
+
+  get endAngle() {
+    switch (this.props.direction) {
+      case ArcDirection.RIGHT:
+        return this.props.angle - this.props.centerAngle + 180
+      case ArcDirection.LEFT:
+        return this.props.angle + this.props.centerAngle - 180
+    }
+  }
+
 
   render() {
     const { length, radius, centerAngle, direction, pivotJointIndex, data } = this.props

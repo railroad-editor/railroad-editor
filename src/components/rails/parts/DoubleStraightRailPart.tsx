@@ -19,38 +19,34 @@ export default class DoubleStraightRailPart extends RailPartBase<DoubleStraightR
   public static defaultProps: RailPartBaseDefaultProps = {
     position: new Point(0, 0),
     angle: 0,
-    pivotJointIndex: 0,
     detectionEnabled: false,
     selected: false,
     opacity: 1,
     fillColors: RAIL_PART_FILL_COLORS
   }
 
-  pivots = [
-    {pivotPartIndex: 0, pivot: Pivot.LEFT},
-    {pivotPartIndex: 0, pivot: Pivot.RIGHT},
-    {pivotPartIndex: 1, pivot: Pivot.LEFT},
-    {pivotPartIndex: 1, pivot: Pivot.RIGHT}
-  ]
-
-  angles = [
-    () => this.props.angle,
-    () => this.props.angle + 180,
-    () => this.props.angle,
-    () => this.props.angle + 180
-  ]
-
   constructor(props: DoubleStraightRailPartProps) {
     super(props)
   }
 
-  getPivot(jointIndex: number) {
-    return this.pivots[jointIndex]
+  get pivots() {
+    return [
+      {pivotPartIndex: 0, pivot: Pivot.LEFT},
+      {pivotPartIndex: 0, pivot: Pivot.RIGHT},
+      {pivotPartIndex: 1, pivot: Pivot.LEFT},
+      {pivotPartIndex: 1, pivot: Pivot.RIGHT}
+    ]
   }
 
-  getAngle(jointIndex: number) {
-    return this.angles[jointIndex]()
+  get angles() {
+    return [
+      this.props.angle,
+      this.props.angle + 180,
+      this.props.angle,
+      this.props.angle + 180
+    ]
   }
+
 
   render() {
     const { length, pivotJointIndex, data } = this.props
