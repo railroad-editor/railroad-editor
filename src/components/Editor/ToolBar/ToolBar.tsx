@@ -46,8 +46,6 @@ export interface ToolBarProps {
 
 export interface ToolBarState {
   openMenu: boolean
-  openLogin: boolean
-  openSignUp: boolean
   openSettings: boolean
   el: HTMLElement | undefined
 }
@@ -64,8 +62,6 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
     super(props)
     this.state = {
       openMenu: false,
-      openLogin: false,
-      openSignUp: false,
       openSettings: false,
       el: undefined,
     }
@@ -86,37 +82,13 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
   openMenu = (e) => {
     LOGGER.info(this.props.layout.meta)
     this.setState({
-      openMenu: true
+      openMenu: true,
     })
   }
 
   closeMenu = () => {
     this.setState({
-      openMenu: false
-    })
-  }
-
-  openLoginDialog = (e) => {
-    this.setState({
-      openLogin: true
-    })
-  }
-
-  closeLoginDialog = () => {
-    this.setState({
-      openLogin: false
-    })
-  }
-
-  openSignUpDialog = (e) => {
-    this.setState({
-      openSignUp: true
-    })
-  }
-
-  closeSignUpDialog = () => {
-    this.setState({
-      openSignUp: false
+      openMenu: false,
     })
   }
 
@@ -168,7 +140,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
               </Grid>
 
               <Grid xs alignItems="center" style={{display: 'flex'}}>
-                <Tooltip title={Tools.STRAIGHT_RAILS}>
+                <Tooltip title={"Straight Rails (S)"}>
                   <StyledIconButton
                     className={classNames({
                       'active': this.isActive(Tools.STRAIGHT_RAILS)
@@ -178,7 +150,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                     <StraightRailIcon/>
                   </StyledIconButton>
                 </Tooltip>
-                <Tooltip title={Tools.CURVE_RAILS}>
+                <Tooltip title={"Curve Rails (C)"}>
                   <StyledIconButton
                     className={classNames({
                       'active': this.isActive(Tools.CURVE_RAILS)
@@ -188,7 +160,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                     <CurveRailIcon/>
                   </StyledIconButton>
                 </Tooltip>
-                <Tooltip title={Tools.TURNOUTS}>
+                <Tooltip title={"Turnouts (T)"}>
                   <StyledIconButton
                     className={classNames({
                       'active': this.isActive(Tools.TURNOUTS)
@@ -198,7 +170,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                     <TurnoutIcon/>
                   </StyledIconButton>
                 </Tooltip>
-                <Tooltip title={Tools.SPECIAL_RAILS}>
+                <Tooltip title={"Special Rails (X)"}>
                   <StyledIconButton
                     className={classNames({
                       'active': this.isActive(Tools.SPECIAL_RAILS)
@@ -209,7 +181,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                   </StyledIconButton>
                 </Tooltip>
 
-                <Tooltip title={Tools.RAIL_GROUPS}>
+                <Tooltip title={"Rail Groups (G)"}>
                   <StyledIconButton
                     className={classNames({
                       'active': this.isActive(Tools.RAIL_GROUPS)
@@ -220,7 +192,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                   </StyledIconButton>
                 </Tooltip>
 
-                <Tooltip title={Tools.PAN}>
+                <Tooltip title={"PAN (Alt)"}>
                   <StyledIconButton
                     className={classNames({
                       'active': this.isActive(Tools.PAN)
@@ -275,7 +247,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                 {/*</Tooltip>*/}
                 <VerticalDivider/>
 
-                <Tooltip title={'Copy'}>
+                <Tooltip title={"Copy (Ctrl+C)"}>
                   <StyledIconButton
                     onClick={(e) => {
                       this.props.builderRegisterRailGroup('Clipboard', false)
@@ -283,7 +255,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                     <CopyIcon/>
                   </StyledIconButton>
                 </Tooltip>
-                <Tooltip title={'Cut'}>
+                <Tooltip title={"Cut (Ctrl+X)"}>
                   <StyledIconButton
                     onClick={(e) => {
                       this.props.builderRegisterRailGroup('Clipboard', true)
@@ -291,7 +263,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                     <CutIcon/>
                   </StyledIconButton>
                 </Tooltip>
-                <Tooltip title={Tools.DELETE}>
+                <Tooltip title={"Delete (Del)"}>
                   <StyledIconButton
                     onClick={this.props.builderDeleteSelectedRails}
                   >

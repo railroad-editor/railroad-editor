@@ -5,7 +5,7 @@ import List from "material-ui/List";
 import CloudIcon from "material-ui-icons/Cloud";
 import OpenInNewIcon from "material-ui-icons/OpenInNew";
 import SaveIcon from "material-ui-icons/Save";
-import SigninIcon from "material-ui-icons/Face";
+import SigninIcon from "material-ui-icons/PermIdentity";
 import LoginIcon from "material-ui-icons/LockOpen";
 import LogoutIcon from "material-ui-icons/Lock";
 import ArchiveIcon from "material-ui-icons/Archive";
@@ -15,7 +15,7 @@ import StorageAPI from "apis/storage"
 import Divider from "material-ui/Divider";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
+import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_UI} from "constants/stores";
 import {CommonStore} from "store/commonStore";
 import {LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
@@ -25,6 +25,9 @@ import {withSnackbar} from 'material-ui-snackbar-provider'
 import {compose} from "recompose";
 import LoginDialog from "components/Editor/ToolBar/LoginDialog/LoginDialog";
 import SignUpDialog from "components/Editor/ToolBar/SignUpDialog/SignUpDialog";
+import {UiStore} from "store/uiStore";
+import {KeyLabel} from "components/common/KeyLabel/KeyLabel";
+import {when} from "mobx";
 
 const LOGGER = getLogger(__filename)
 
@@ -36,34 +39,22 @@ export interface MenuDrawerProps {
   common?: CommonStore
   layout?: LayoutStore
   builder?: BuilderStore
+  ui?: UiStore
 
   snackbar: any
 }
 
 export interface MenuDrawerState {
-  openLayouts: boolean
-  openCreateNew: boolean
-  openSaveNew: boolean
-  openLogin: boolean
-  openSignUp: boolean
-  openLogout: boolean
 }
 
 
-@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT)
+@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_UI)
 @observer
 export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState> {
 
   constructor(props: MenuDrawerProps) {
     super(props)
-    this.state = {
-      openLayouts: false,
-      openCreateNew: false,
-      openSaveNew: false,
-      openLogin: false,
-      openSignUp: false,
-      openLogout: false,
-    }
+    this.state = {}
   }
 
   /**
@@ -109,61 +100,50 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
   }
 
   openLayoutsDialog = () => {
-    if (this.openLoginDialogIfNot()) {
-      return
-    }
-    this.setState({ openLayouts: true })
+    this.props.ui.setLayoutsDialog(true, this.props.snackbar.showMessage)
   }
 
   closeLayoutsDialog = () => {
-    this.setState({ openLayouts: false })
+    this.props.ui.setLayoutsDialog(false)
     this.props.onClose()
   }
 
   openCreateNewDialog = () => {
-    this.setState({ openCreateNew: true })
+    this.props.ui.setCreateNewDialog(true, this.props.snackbar.showMessage)
   }
 
   closeCreateNewDialog = () => {
-    this.setState({ openCreateNew: false })
+    this.props.ui.setCreateNewDialog(false)
     this.props.onClose()
   }
 
   openSaveNewDialog = () => {
-    this.setState({ openSaveNew: true })
+    this.props.ui.setSaveNewDialog(true, this.props.snackbar.showMessage)
   }
 
   closeSaveNewDialog = () => {
-    this.setState({ openSaveNew: false })
+    this.props.ui.setSaveNewDialog(false)
     this.props.onClose()
   }
 
   openLoginDialog = () => {
-    this.setState({ openLogin: true })
+    this.props.ui.setLoginDialog(true)
   }
 
   closeLoginDialog = () => {
-    this.setState({ openLogin: false })
+    this.props.ui.setLoginDialog(false)
     this.props.onClose()
   }
 
   openSignUpDialog = () => {
-    this.setState({ openSignUp: true })
+    this.props.ui.setSignInDialog(true)
   }
 
   closeSignUpDialog = () => {
-    this.setState({ openSignUp: false })
+    this.props.ui.setSignInDialog(false)
     this.props.onClose()
   }
 
-  openLogoutDialog = () => {
-    this.setState({ openLogout: true })
-  }
-
-  closeLogoutDialog = () => {
-    this.setState({ openLogout: false })
-    this.props.onClose()
-  }
 
   /**
    * レイアウトをSVGファイルに変換し、ダウンロードする。
@@ -183,19 +163,41 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
 
 
   render() {
-    const { open, onClose }  = this.props
+    const { open, onClose, ui }  = this.props
 
-    let authMenu
+    let authMenu, dialogs
     if (this.props.common.isAuth) {
+      // For logined users
       authMenu = (
-        <ListItem button onClick={this.openLogoutDialog}>
+        <ListItem button onClick={this.logout}>
           <ListItemIcon>
             <LogoutIcon/>
           </ListItemIcon>
           <ListItemText primary="Logout"/>
         </ListItem>
       )
+      dialogs = (
+        <>
+          <SaveLayoutDialog
+            title={"Save Layout"}
+            open={ui.saveNewDialog} onClose={this.closeSaveNewDialog}
+            authData={this.props.common.userInfo}
+            saveLayout={this.props.layout.saveLayout}
+            setLayoutMeta={this.props.layout.setLayoutMeta}
+            layoutConfig={this.props.layout.config}
+          />
+          <OpenLayoutsDialog
+            open={ui.layoutsDialog}
+            onClose={this.closeLayoutsDialog}
+            authData={this.props.common.userInfo}
+            layouts={this.props.common.layouts}
+            loadLayout={this.props.layout.loadLayout}
+            loadLayoutList={this.props.common.loadLayoutList}
+          />
+        </>
+      )
     } else {
+      // For not logined users
       authMenu = (
         <>
           <ListItem button onClick={this.openSignUpDialog}>
@@ -212,87 +214,85 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
           </ListItem>
         </>
       )
+      dialogs = (
+        <>
+          <LoginDialog
+            open={ui.loginDialog}
+            onClose={this.closeLoginDialog}
+            setAuthData={this.props.common.setAuthData}
+            loadLayoutList={this.props.common.loadLayoutList}
+          />
+          <SignUpDialog
+            open={ui.signInDialog}
+            onClose={this.closeSignUpDialog}
+            setAuthData={this.props.common.setAuthData}
+            loadLayoutList={this.props.common.loadLayoutList}
+          />
+        </>
+      )
     }
 
 
     return (
-      <Drawer
-        open={open}
-        onClose={onClose}
-        anchor="left"
-      >
-        <List>
-          {authMenu}
-          <Divider />
-          <ListItem button onClick={this.openLayoutsDialog}>
-            <ListItemIcon>
-              <CloudIcon/>
-            </ListItemIcon>
-            <ListItemText primary="My Layouts"/>
-          </ListItem>
-          <ListItem button onClick={this.openCreateNewDialog}>
-            <ListItemIcon>
-              <OpenInNewIcon/>
-            </ListItemIcon>
-            <ListItemText primary="New Layout"/>
-          </ListItem>
-          <ListItem button onClick={this.save}>
-            <ListItemIcon>
-              <SaveIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Save"/>
-          </ListItem>
-          <ListItem button onClick={this.openSaveNewDialog}>
-            <ListItemIcon>
-              <SaveIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Save As..."/>
-          </ListItem>
-          <ListItem button onClick={this.downloadAsSVG}>
-            <ListItemIcon>
-              <ArchiveIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Export as SVG"/>
-          </ListItem>
-        </List>
-        <LoginDialog
-          open={this.state.openLogin}
-          onClose={this.closeLoginDialog}
-          setAuthData={this.props.common.setAuthData}
-          loadLayoutList={this.props.common.loadLayoutList}
-        />
-        <SignUpDialog
-          open={this.state.openSignUp}
-          onClose={this.closeSignUpDialog}
-          setAuthData={this.props.common.setAuthData}
-          loadLayoutList={this.props.common.loadLayoutList}
-        />
+      <>
+        <Drawer
+          open={open}
+          onClose={onClose}
+          anchor="left"
+        >
+          <List>
+
+            {authMenu}
+
+            <Divider />
+            <ListItem button onClick={this.openLayoutsDialog}>
+              <ListItemIcon>
+                <CloudIcon/>
+              </ListItemIcon>
+              <ListItemText primary="My Layouts"/>
+              <KeyLabel text={'Ctrl + O'}/>
+            </ListItem>
+            <ListItem button onClick={this.openCreateNewDialog}>
+              <ListItemIcon>
+                <OpenInNewIcon/>
+              </ListItemIcon>
+              <ListItemText primary="New Layout"/>
+              <KeyLabel text={'Ctrl + N'}/>
+            </ListItem>
+            <ListItem button onClick={this.save}>
+              <ListItemIcon>
+                <SaveIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Save"/>
+              <KeyLabel text={'Ctrl + S'}/>
+            </ListItem>
+            <ListItem button onClick={this.openSaveNewDialog}>
+              <ListItemIcon>
+                <SaveIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Save As..."/>
+            </ListItem>
+            <ListItem button onClick={this.downloadAsSVG}>
+              <ListItemIcon>
+                <ArchiveIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Export as SVG"/>
+            </ListItem>
+          </List>
+
+        </Drawer>
+
         <SaveLayoutDialog
           title={"Create New Layout"}
-          open={this.state.openCreateNew}
+          open={ui.createNewDialog}
           onClose={this.closeCreateNewDialog}
           authData={this.props.common.userInfo}
           saveLayout={this.props.layout.saveLayout}
           setLayoutMeta={this.props.layout.setLayoutMeta}
           layoutConfig={this.props.layout.config}
         />
-        <SaveLayoutDialog
-          title={"Save Layout"}
-          open={this.state.openSaveNew} onClose={this.closeSaveNewDialog}
-          authData={this.props.common.userInfo}
-          saveLayout={this.props.layout.saveLayout}
-          setLayoutMeta={this.props.layout.setLayoutMeta}
-          layoutConfig={this.props.layout.config}
-        />
-        <OpenLayoutsDialog
-          open={this.state.openLayouts}
-          onClose={this.closeLayoutsDialog}
-          authData={this.props.common.userInfo}
-          layouts={this.props.common.layouts}
-          loadLayout={this.props.layout.loadLayout}
-          loadLayoutList={this.props.common.loadLayoutList}
-        />
-      </Drawer>
+        {dialogs}
+      </>
     )
   }
 }

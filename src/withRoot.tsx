@@ -3,6 +3,7 @@ import createMuiTheme from 'material-ui/styles/createMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import cyan from 'material-ui/colors/cyan';
 import green from 'material-ui/colors/green';
+import amber from 'material-ui/colors/amber';
 import {SnackbarProvider} from 'material-ui-snackbar-provider'
 import CssBaseline from "material-ui/CssBaseline";
 import {createStores} from "store/createStore";
@@ -30,11 +31,12 @@ const snackbarProps = {
   anchorOrigin: {
     vertical: 'bottom',
     horizontal: 'left',
-  }
-  // style: {
-  //   width: theme.spacing.unit * 4,
-  //   height: theme.spacing.unit * 4,
-  // }
+  },
+  SnackbarContentProps: {
+    style: {
+      backgroundColor: amber[800],
+    },
+  },
 }
 
 

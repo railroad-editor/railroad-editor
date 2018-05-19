@@ -9,12 +9,13 @@ import {DetectionState} from "components/rails/parts/primitives/DetectablePart";
 import railItems from "constants/railItems.json"
 import {TEMPORARY_RAIL_OPACITY} from "constants/tools";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_LAYOUT} from 'constants/stores';
+import {STORE_BUILDER, STORE_LAYOUT, STORE_UI} from 'constants/stores';
 import {BuilderStore, UserRailGroupData} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import * as $ from "jquery";
 import {compose} from "recompose";
 import {withSnackbar} from 'material-ui-snackbar-provider'
+import {UiStore} from "store/uiStore";
 
 
 const LOGGER = getLogger(__filename)
@@ -47,6 +48,7 @@ export interface WithBuilderPublicProps {
 interface WithBuilderPrivateProps {
   builder?: BuilderStore
   layout?: LayoutStore
+  ui?: UiStore
 }
 
 export type WithBuilderProps = WithBuilderPublicProps & WithBuilderPrivateProps
@@ -70,7 +72,7 @@ export interface WithBuilderState {
  */
 export default function withBuilder(WrappedComponent: React.ComponentClass<WithBuilderPublicProps>) {
 
-  @inject(STORE_BUILDER, STORE_LAYOUT)
+  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_UI)
   @observer
   class WithBuilder extends React.Component<WithBuilderProps, WithBuilderState> {
 
@@ -155,9 +157,20 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       this.props.snackbar.showMessage('Copied to "Clipboard" rail group.')
     }
 
-
     keyDown_CtrlA = (e) => {
       this.selectRails(this.props.layout.currentLayoutData.rails.map(rail => rail.id))
+    }
+
+    keyDown_CtrlO = (e) => {
+      this.props.ui.setLayoutsDialog(true)
+    }
+
+    keyDown_CtrlN = (e) => {
+      this.props.ui.setCreateNewDialog(true)
+    }
+
+    keyDown_CtrlS = (e) => {
+      this.props.ui.setSaveNewDialog(true)
     }
 
     /**
