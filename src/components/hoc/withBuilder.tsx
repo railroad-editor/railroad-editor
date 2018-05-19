@@ -7,7 +7,7 @@ import {getCloseJointsOf, getRailComponent, getTemporaryRailGroupComponent, inte
 import RailGroup from "components/rails/RailGroup/RailGroup";
 import {DetectionState} from "components/rails/parts/primitives/DetectablePart";
 import railItems from "constants/railItems.json"
-import {TEMPORARY_RAIL_OPACITY} from "constants/tools";
+import {TEMPORARY_RAIL_OPACITY, Tools} from "constants/tools";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_LAYOUT, STORE_UI} from 'constants/stores';
 import {BuilderStore, UserRailGroupData} from "store/builderStore";
@@ -25,6 +25,7 @@ export interface WithBuilderPublicProps {
   builderMouseDown: (e: ToolEvent|any) => void
   builderMouseMove: (e: ToolEvent|any) => void
   builderKeyDown: (e: ToolEvent|any) => void
+  builderKeyUp: (e: ToolEvent|any) => void
   builderConnectJoints: (pairs: JointPair[]) => void
   builderDisconnectJoint: (railId: number) => void
   builderChangeJointState: (pairs: JointPair[], state: DetectionState, isError?: boolean) => void
@@ -76,6 +77,9 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
   @observer
   class WithBuilder extends React.Component<WithBuilderProps, WithBuilderState> {
 
+    _prevTool: Tools
+    _prevPaletteItem: PaletteItem
+
     constructor(props: WithBuilderProps) {
       super(props)
 
@@ -89,6 +93,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       this.mouseRightDown = this.mouseRightDown.bind(this)
       this.mouseMove = this.mouseMove.bind(this)
       this.keyDown = this.keyDown.bind(this)
+      this.keyUp = this.keyUp.bind(this)
       this.connectJoints = this.connectJoints.bind(this)
       this.disconnectJoint = this.disconnectJoint.bind(this)
       this.selectRail = this.selectRail.bind(this)
@@ -122,7 +127,28 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       // noop
     }
 
-    keyDown(e: ToolEvent | any) {
+    keyUp = (e: ToolEvent | any) => {
+      if (this.dialogExists()) return
+
+      let methodName = 'keyUp_'
+      if (e.modifiers.control) {
+        methodName = methodName.concat('Ctrl')
+      }
+      if (e.modifiers.alt) {
+        methodName = methodName.concat('Alt')
+      }
+      if (e.modifiers.shift) {
+        methodName = methodName.concat('Shift')
+      }
+      methodName = methodName.concat(_.startCase(e.key))
+
+      LOGGER.debug(methodName)
+      if (this[methodName]) {
+        this[methodName](e)
+      }
+    }
+
+    keyDown = (e: ToolEvent | any) => {
       if (this.dialogExists()) return
 
       let methodName = 'keyDown_'
@@ -149,12 +175,33 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
 
     keyDown_CtrlC = (e) => {
       this.registerRailGroup('Clipboard', false)
-      this.props.snackbar.showMessage('Copied to "Clipboard" rail group.')
+      this.props.snackbar.showMessage('Copied rails to "Clipboard" rail group.')
     }
 
     keyDown_CtrlX = (e) => {
       this.registerRailGroup('Clipboard', true)
-      this.props.snackbar.showMessage('Copied to "Clipboard" rail group.')
+      this.props.snackbar.showMessage('Copied rails to "Clipboard" rail group.')
+    }
+
+    keyDown_CtrlV = (e) => {
+      if (this.getUserRailGroupItemData('Clipboard')
+        && this._prevTool == null && this._prevPaletteItem == null) {
+        LOGGER.info('CTRL V Down')
+        this._prevTool = this.props.builder.activeTool
+        this._prevPaletteItem = this.props.builder.paletteItem
+        this.props.builder.setActiveTool(Tools.RAIL_GROUPS)
+        this.props.builder.setPaletteItem({type: 'RailGroup', name: 'Clipboard'})
+      }
+    }
+
+    keyUp_CtrlV = (e) => {
+      if (this.getUserRailGroupItemData('Clipboard')
+        && this._prevTool != null && this._prevPaletteItem != null) {
+        LOGGER.info('CTRL V Up')
+        this.props.builder.setActiveTool(this._prevTool)
+        this.props.builder.setPaletteItem(this._prevPaletteItem)
+        this._prevTool = this._prevPaletteItem = null
+      }
     }
 
     keyDown_CtrlA = (e) => {
@@ -620,6 +667,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
             builderMouseDown={this.mouseDown}
             builderMouseMove={this.mouseMove}
             builderKeyDown={this.keyDown}
+            builderKeyUp={this.keyUp}
             builderGetRailItemData={this.getRailItemData}
             builderGetRailGroupItemData={this.getUserRailGroupItemData}
             builderSetTemporaryRail={this.setTemporaryRail}

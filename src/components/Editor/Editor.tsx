@@ -101,6 +101,10 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
     this.props.builderKeyDown(e)
   }
 
+  builderModeKeyUp = (e) => {
+    this.props.builderKeyUp(e)
+  }
+
   panModeMouseDown = (e) => {
     this.props.moveToolMouseDown(e)
   }
@@ -181,6 +185,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
               onMouseDrag={this.buildModeMouseDrag}
               onMouseUp={this.buildModeMouseUp}
               onKeyDown={this.buildModeKeyDown}
+              onKeyUp={this.builderModeKeyUp}
             />
             <Tool
               active={this.isActive(Tools.PAN)}
