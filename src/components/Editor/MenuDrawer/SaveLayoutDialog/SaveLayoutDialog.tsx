@@ -11,11 +11,10 @@ import {LayoutConfig, LayoutMeta} from "store/layoutStore";
 const LOGGER = getLogger(__filename)
 
 export interface SaveLayoutDialogProps extends FormDialogProps {
+  onOK: (meta: LayoutMeta) => void
   layoutMeta?: LayoutMeta
   layoutConfig: LayoutConfig
   authData: any
-  saveLayout: () => void
-  setLayoutMeta: (meta: LayoutMeta) => void
 }
 
 export interface SaveLayoutDialogState extends FormDialogState {
@@ -41,8 +40,8 @@ export default class SaveLayoutDialog extends FormDialog<SaveLayoutDialogProps, 
   }
 
   onOK = (e) => {
-    const meta = this.setLayoutMeta()
-    this.saveLayout(meta)
+    const meta = this.createLayoutMeta()
+    this.props.onOK(meta)
     this.onClose()
   }
 
@@ -52,7 +51,7 @@ export default class SaveLayoutDialog extends FormDialog<SaveLayoutDialogProps, 
     return md5(`${userId}.${time}`)
   }
 
-  setLayoutMeta = () => {
+  createLayoutMeta = () => {
     let layoutId
     if (this.props.layoutMeta) {
       layoutId = this.props.layoutMeta.id
@@ -65,17 +64,16 @@ export default class SaveLayoutDialog extends FormDialog<SaveLayoutDialogProps, 
       name: this.state.inputs.name,
       lastModified: timestamp
     }
-    this.props.setLayoutMeta(meta)
     return meta
   }
 
-  saveLayout = async (meta) => {
-    this.props.saveLayout()
-    await StorageAPI.saveCurrentLayoutImage(this.props.authData.username, meta.id)
-    if (this.props.layoutConfig.backgroundImageUrl) {
-      StorageAPI.saveBackgroundImage(this.props.authData.username, meta.id, this.props.layoutConfig.backgroundImageUrl)
-    }
-  }
+  // saveLayout = async (meta) => {
+  //   this.props.saveLayout()
+  //   await StorageAPI.saveCurrentLayoutImage(this.props.authData.username, meta.id)
+  //   if (this.props.layoutConfig.backgroundImageUrl) {
+  //     StorageAPI.saveBackgroundImage(this.props.authData.username, meta.id, this.props.layoutConfig.backgroundImageUrl)
+  //   }
+  // }
 
 
   renderContent = () => {

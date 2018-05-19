@@ -17,7 +17,7 @@ import getLogger from "logging";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_UI} from "constants/stores";
 import {CommonStore} from "store/commonStore";
-import {LayoutStore} from "store/layoutStore";
+import {LayoutConfig, LayoutData, LayoutMeta, LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
 import SaveLayoutDialog from "components/Editor/MenuDrawer/SaveLayoutDialog/SaveLayoutDialog";
 import * as moment from "moment";
@@ -57,32 +57,29 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
     this.state = {}
   }
 
+
   /**
-   * レイアウトを上書き保存する。
+   * レイアウトを上書き保存するロジック
    * @returns {Promise<void>}
    */
-  save = async () => {
-    if (this.openLoginDialogIfNot()) {
-      return
-    }
-
-    const {meta, currentLayoutData, saveLayout} = this.props.layout
+  save = async (meta: LayoutMeta, config: LayoutConfig, layoutData: LayoutData) => {
     const {userRailGroups, userRails} = this.props.builder
-    const {loadLayoutList, isAuth, userInfo} = this.props.common
-    const userId = userInfo.username
+    const userId = this.props.common.userInfo.username
     const savedData = {
-      layout: currentLayoutData,
+      layout: layoutData,
       meta: meta,
       userRailGroups: userRailGroups,
       userCustomRails: userRails,
     }
     LOGGER.info(savedData)
-    await saveLayout()
+    // レイアウトをセーブ
+    await this.props.layout.saveLayout()
+    // レイアウト画像をセーブ
     await StorageAPI.saveCurrentLayoutImage(userId, meta.id)
-    // レイアウトリストをロードし直す
-    await loadLayoutList()
-    this.props.snackbar.showMessage("Saved successfully.")
-    this.props.onClose()
+    // 背景画像が設定されていたらセーブ
+    if (config.backgroundImageUrl) {
+      await StorageAPI.saveBackgroundImage(userId, meta.id, config.backgroundImageUrl)
+    }
   }
 
   logout = async () => {
@@ -145,6 +142,29 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
     this.props.onClose()
   }
 
+  onSave = async () => {
+    if (this.openLoginDialogIfNot()) {
+      return
+    }
+    // 現在のストアのデータを保存する
+    const {meta, config, currentLayoutData} = this.props.layout
+    await this.save(meta, config, currentLayoutData)
+    this.props.snackbar.showMessage("Saved successfully.")
+    await this.props.common.loadLayoutList()
+    this.props.onClose()
+  }
+
+  onSaveAs = async (meta: LayoutMeta) => {
+    if (this.openLoginDialogIfNot()) {
+      return
+    }
+    // metaだけダイアログで生成したものを使う
+    const {config, currentLayoutData} = this.props.layout
+    await this.save(meta, config, currentLayoutData)
+    this.props.snackbar.showMessage(`Saved successfully as "${meta.name}".`)  //`
+    await this.props.common.loadLayoutList()
+    this.props.onClose()
+  }
 
   /**
    * レイアウトをSVGファイルに変換し、ダウンロードする。
@@ -182,9 +202,8 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
           <SaveLayoutDialog
             title={"Save Layout"}
             open={ui.saveNewDialog} onClose={this.closeSaveNewDialog}
+            onOK={this.onSaveAs}
             authData={this.props.common.userInfo}
-            saveLayout={this.props.layout.saveLayout}
-            setLayoutMeta={this.props.layout.setLayoutMeta}
             layoutConfig={this.props.layout.config}
           />
           <OpenLayoutsDialog
@@ -260,7 +279,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
               <ListItemText primary="New Layout"/>
               <KeyLabel text={'Ctrl + N'}/>
             </ListItem>
-            <ListItem button onClick={this.save}>
+            <ListItem button onClick={this.onSave}>
               <ListItemIcon>
                 <SaveIcon/>
               </ListItemIcon>
@@ -287,9 +306,8 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
           title={"Create New Layout"}
           open={ui.createNewDialog}
           onClose={this.closeCreateNewDialog}
+          onOK={this.onSaveAs}
           authData={this.props.common.userInfo}
-          saveLayout={this.props.layout.saveLayout}
-          setLayoutMeta={this.props.layout.setLayoutMeta}
           layoutConfig={this.props.layout.config}
         />
         {dialogs}
