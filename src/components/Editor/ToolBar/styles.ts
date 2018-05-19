@@ -22,7 +22,7 @@ export const VerticalDivider = styled.div`
   width: 0px;
   height:40px;
   //padding: 0px 0px 0px 0px;
-  margin: 0px 15px 0px 15px;
+  margin: 0px 18px 0px 18px;
   //overflow: auto2
 `
 

@@ -4,7 +4,7 @@ import StraightRailIcon from './Icon/StraightRailIcon'
 import TurnoutIcon from './Icon/TurnoutIcon'
 import SpecialRailIcon from "components/Editor/ToolBar/Icon/SpecialRailIcon";
 import RailGroupIcon from "components/Editor/ToolBar/Icon/RailGroupIcon";
-import {AppBar, Toolbar as MuiToolbar} from "material-ui"
+import {AppBar, Grid, Toolbar as MuiToolbar} from "material-ui"
 import {StyledIconButton, VerticalDivider} from "./styles";
 import {Tools} from "constants/tools";
 import UndoIcon from 'material-ui-icons/Undo'
@@ -19,7 +19,6 @@ import CutIcon from "material-ui-icons/ContentCut";
 import FreePlacingModeIcon from "material-ui-icons/LocationOn";
 import ConnectModeIcon from "material-ui-icons/CompareArrows";
 import getLogger from "logging";
-import Typography from "material-ui/Typography";
 import * as classNames from "classnames"
 import Tooltip from "material-ui/Tooltip";
 import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
@@ -149,203 +148,204 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
       <>
         <AppBar>
           <MuiToolbar>
-            <Tooltip title={"Menu"}>
-              <StyledIconButton onClick={this.openMenu} >
-                <MenuIcon/>
-              </StyledIconButton>
-            </Tooltip>
-            <MenuDrawer open={this.state.openMenu} onClose={this.closeMenu}/>
+            <Grid container justify="center" spacing={0} style={{display: 'flex'}}>
+              <Grid xs alignItems="center" style={{display: 'flex'}}>
+                <Tooltip title={"Menu"}>
+                  <StyledIconButton onClick={this.openMenu} >
+                    <MenuIcon/>
+                  </StyledIconButton>
+                </Tooltip>
+                <MenuDrawer open={this.state.openMenu} onClose={this.closeMenu}/>
 
-            <Tooltip title={'Layout Name'}>
-              <EditableTypography
-                variant="title"
-                color="inherit"
-                text={this.props.layout.meta.name}
-                onOK={this.setLayoutName}
-              />
-            </Tooltip>
+                <Tooltip title={'Layout Name'}>
+                  <EditableTypography
+                    variant="title"
+                    color="inherit"
+                    text={this.props.layout.meta.name}
+                    onOK={this.setLayoutName}
+                  />
+                </Tooltip>
+              </Grid>
 
-            <VerticalDivider/>
+              <Grid xs alignItems="center" style={{display: 'flex'}}>
+                <Tooltip title={Tools.STRAIGHT_RAILS}>
+                  <StyledIconButton
+                    className={classNames({
+                      'active': this.isActive(Tools.STRAIGHT_RAILS)
+                    })}
+                    onClick={this.onClickBuilderItem(Tools.STRAIGHT_RAILS)}
+                  >
+                    <StraightRailIcon/>
+                  </StyledIconButton>
+                </Tooltip>
+                <Tooltip title={Tools.CURVE_RAILS}>
+                  <StyledIconButton
+                    className={classNames({
+                      'active': this.isActive(Tools.CURVE_RAILS)
+                    })}
+                    onClick={this.onClickBuilderItem(Tools.CURVE_RAILS)}
+                  >
+                    <CurveRailIcon/>
+                  </StyledIconButton>
+                </Tooltip>
+                <Tooltip title={Tools.TURNOUTS}>
+                  <StyledIconButton
+                    className={classNames({
+                      'active': this.isActive(Tools.TURNOUTS)
+                    })}
+                    onClick={this.onClickBuilderItem(Tools.TURNOUTS)}
+                  >
+                    <TurnoutIcon/>
+                  </StyledIconButton>
+                </Tooltip>
+                <Tooltip title={Tools.SPECIAL_RAILS}>
+                  <StyledIconButton
+                    className={classNames({
+                      'active': this.isActive(Tools.SPECIAL_RAILS)
+                    })}
+                    onClick={this.onClickBuilderItem(Tools.SPECIAL_RAILS)}
+                  >
+                    <SpecialRailIcon/>
+                  </StyledIconButton>
+                </Tooltip>
 
-            <Tooltip title={Tools.STRAIGHT_RAILS}>
-              <StyledIconButton
-                className={classNames({
-                  'active': this.isActive(Tools.STRAIGHT_RAILS)
-                })}
-                onClick={this.onClickBuilderItem(Tools.STRAIGHT_RAILS)}
-              >
-                <StraightRailIcon/>
-              </StyledIconButton>
-            </Tooltip>
-            <Tooltip title={Tools.CURVE_RAILS}>
-              <StyledIconButton
-                className={classNames({
-                  'active': this.isActive(Tools.CURVE_RAILS)
-                })}
-                onClick={this.onClickBuilderItem(Tools.CURVE_RAILS)}
-              >
-                <CurveRailIcon/>
-              </StyledIconButton>
-            </Tooltip>
-            <Tooltip title={Tools.TURNOUTS}>
-              <StyledIconButton
-                className={classNames({
-                  'active': this.isActive(Tools.TURNOUTS)
-                })}
-                onClick={this.onClickBuilderItem(Tools.TURNOUTS)}
-              >
-                <TurnoutIcon/>
-              </StyledIconButton>
-            </Tooltip>
-            <Tooltip title={Tools.SPECIAL_RAILS}>
-              <StyledIconButton
-                className={classNames({
-                  'active': this.isActive(Tools.SPECIAL_RAILS)
-                })}
-                onClick={this.onClickBuilderItem(Tools.SPECIAL_RAILS)}
-              >
-                <SpecialRailIcon/>
-              </StyledIconButton>
-            </Tooltip>
+                <Tooltip title={Tools.RAIL_GROUPS}>
+                  <StyledIconButton
+                    className={classNames({
+                      'active': this.isActive(Tools.RAIL_GROUPS)
+                    })}
+                    onClick={this.onClickBuilderItem(Tools.RAIL_GROUPS)}
+                  >
+                    <RailGroupIcon/>
+                  </StyledIconButton>
+                </Tooltip>
 
-            <Tooltip title={Tools.RAIL_GROUPS}>
-              <StyledIconButton
-                className={classNames({
-                  'active': this.isActive(Tools.RAIL_GROUPS)
-                })}
-                onClick={this.onClickBuilderItem(Tools.RAIL_GROUPS)}
-              >
-                <RailGroupIcon/>
-              </StyledIconButton>
-            </Tooltip>
+                <Tooltip title={Tools.PAN}>
+                  <StyledIconButton
+                    className={classNames({
+                      'active': this.isActive(Tools.PAN)
+                    })}
+                    onClick={() => this.props.builder.setActiveTool(Tools.PAN)}
+                  >
+                    <PanToolIcon/>
+                  </StyledIconButton>
+                </Tooltip>
 
-            <Tooltip title={Tools.PAN}>
-              <StyledIconButton
-                className={classNames({
-                  'active': this.isActive(Tools.PAN)
-                })}
-                onClick={() => this.props.builder.setActiveTool(Tools.PAN)}
-              >
-                <PanToolIcon/>
-              </StyledIconButton>
-            </Tooltip>
+                <VerticalDivider/>
 
-            <VerticalDivider/>
-
-            <Tooltip title={PlacingMode.FREE}>
-              <StyledIconButton
-                className={classNames({
-                  'active': this.props.builder.placingMode === PlacingMode.FREE
-                })}
-                onClick={this.onChangePlacingMode(PlacingMode.FREE)}
-              >
-                <FreePlacingModeIcon/>
-              </StyledIconButton>
-            </Tooltip>
-            <Tooltip title={PlacingMode.JOINT}>
-              <StyledIconButton
-                className={classNames({
-                  'active': this.props.builder.placingMode === PlacingMode.JOINT
-                })}
-                onClick={this.onChangePlacingMode(PlacingMode.JOINT)}
-              >
-                <ConnectModeIcon/>
-              </StyledIconButton>
-            </Tooltip>
-            {/*<Tooltip id="tooltip-feeders" title={Tools.FEEDERS}>*/}
-              {/*<StyledIconButton*/}
+                <Tooltip title={PlacingMode.FREE}>
+                  <StyledIconButton
+                    className={classNames({
+                      'active': this.props.builder.placingMode === PlacingMode.FREE
+                    })}
+                    onClick={this.onChangePlacingMode(PlacingMode.FREE)}
+                  >
+                    <FreePlacingModeIcon/>
+                  </StyledIconButton>
+                </Tooltip>
+                <Tooltip title={PlacingMode.JOINT}>
+                  <StyledIconButton
+                    className={classNames({
+                      'active': this.props.builder.placingMode === PlacingMode.JOINT
+                    })}
+                    onClick={this.onChangePlacingMode(PlacingMode.JOINT)}
+                  >
+                    <ConnectModeIcon/>
+                  </StyledIconButton>
+                </Tooltip>
+                {/*<Tooltip id="tooltip-feeders" title={Tools.FEEDERS}>*/}
+                {/*<StyledIconButton*/}
                 {/*className={classNames({*/}
-                  {/*'active': this.isActive(Tools.FEEDERS)*/}
+                {/*'active': this.isActive(Tools.FEEDERS)*/}
                 {/*})}*/}
                 {/*onClick={this.onClickBuilderItem(Tools.FEEDERS)}*/}
-              {/*>*/}
+                {/*>*/}
                 {/*<FeederIcon/>*/}
-              {/*</StyledIconButton>*/}
-            {/*</Tooltip>*/}
-            {/*<Tooltip id="tooltip-gap" title={Tools.GAP}>*/}
-              {/*<StyledIconButton*/}
+                {/*</StyledIconButton>*/}
+                {/*</Tooltip>*/}
+                {/*<Tooltip id="tooltip-gap" title={Tools.GAP}>*/}
+                {/*<StyledIconButton*/}
                 {/*className={classNames({*/}
-                  {/*'active': this.isActive(Tools.GAP)*/}
+                {/*'active': this.isActive(Tools.GAP)*/}
                 {/*})}*/}
                 {/*onClick={this.onClickBuilderItem(Tools.GAP)}*/}
-              {/*>*/}
+                {/*>*/}
                 {/*<GapIcon/>*/}
-              {/*</StyledIconButton>*/}
-            {/*</Tooltip>*/}
-            <VerticalDivider/>
+                {/*</StyledIconButton>*/}
+                {/*</Tooltip>*/}
+                <VerticalDivider/>
 
+                <Tooltip title={'Copy'}>
+                  <StyledIconButton
+                    onClick={(e) => {
+                      this.props.builderRegisterRailGroup('Clipboard', false)
+                    }}>
+                    <CopyIcon/>
+                  </StyledIconButton>
+                </Tooltip>
+                <Tooltip title={'Cut'}>
+                  <StyledIconButton
+                    onClick={(e) => {
+                      this.props.builderRegisterRailGroup('Clipboard', true)
+                    }}>
+                    <CutIcon/>
+                  </StyledIconButton>
+                </Tooltip>
+                <Tooltip title={Tools.DELETE}>
+                  <StyledIconButton
+                    onClick={this.props.builderDeleteSelectedRails}
+                  >
+                    <DeleteIcon/>
+                  </StyledIconButton>
+                </Tooltip>
 
-            <Tooltip title={'Copy'}>
-              <StyledIconButton
-                onClick={(e) => {
-                  this.props.builderRegisterRailGroup('Clipboard', false)
-                }}>
-                <CopyIcon/>
-              </StyledIconButton>
-            </Tooltip>
-            <Tooltip title={'Cut'}>
-              <StyledIconButton
-                onClick={(e) => {
-                this.props.builderRegisterRailGroup('Clipboard', true)
-              }}>
-                <CutIcon/>
-              </StyledIconButton>
-            </Tooltip>
-            <Tooltip title={Tools.DELETE}>
-              <StyledIconButton
-                onClick={this.props.builderDeleteSelectedRails}
-              >
-                <DeleteIcon/>
-              </StyledIconButton>
-            </Tooltip>
+                <Tooltip title={Tools.UNDO}>
+                  <StyledIconButton
+                    className={classNames({
+                      'disabled': ! this.props.layout.canUndo
+                    })}
+                    onClick={this.props.layout.undo}>
+                    <UndoIcon/>
+                  </StyledIconButton>
+                </Tooltip>
+                <Tooltip title={Tools.REDO}>
+                  <StyledIconButton
+                    className={classNames({
+                      'disabled': ! this.props.layout.canRedo
+                    })}
+                    onClick={this.props.layout.redo}>
+                    <RedoIcon/>
+                  </StyledIconButton>
+                </Tooltip>
 
-            <Tooltip title={Tools.UNDO}>
-              <StyledIconButton
-                className={classNames({
-                  'disabled': ! this.props.layout.canUndo
-                })}
-                onClick={this.props.layout.undo}>
-                <UndoIcon/>
-              </StyledIconButton>
-            </Tooltip>
-            <Tooltip title={Tools.REDO}>
-              <StyledIconButton
-                className={classNames({
-                  'disabled': ! this.props.layout.canRedo
-                })}
-                onClick={this.props.layout.redo}>
-                <RedoIcon/>
-              </StyledIconButton>
-            </Tooltip>
+                <Tooltip title={Tools.RESET_VIEW}>
+                  <StyledIconButton
+                    onClick={this.props.resetViewPosition}
+                  >
+                    <AspectRatioIcon/>
+                  </StyledIconButton>
+                </Tooltip>
 
-            <Tooltip title={Tools.RESET_VIEW}>
-              <StyledIconButton
-                onClick={this.props.resetViewPosition}
-              >
-                <AspectRatioIcon/>
-              </StyledIconButton>
-            </Tooltip>
+                <Tooltip title={'Settings'}>
+                  <StyledIconButton
+                    onClick={this.openSettingsDialog}
+                  >
+                    <SettingsIcon/>
+                  </StyledIconButton>
+                </Tooltip>
+                <SettingsDialog
+                  title={'Settings'}
+                  open={this.state.openSettings}
+                  onClose={this.closeSettingsDialog}
+                  config={this.props.layout.config}
+                  setConfig={this.props.layout.setConfig}
+                  userInfo={this.props.common.userInfo}
+                  layoutMeta={this.props.layout.meta}
+                />
+              </Grid>
 
-            <Tooltip title={'Settings'}>
-              <StyledIconButton
-                onClick={this.openSettingsDialog}
-              >
-                <SettingsIcon/>
-              </StyledIconButton>
-            </Tooltip>
-            <SettingsDialog
-              title={'Settings'}
-              open={this.state.openSettings}
-              onClose={this.closeSettingsDialog}
-              config={this.props.layout.config}
-              setConfig={this.props.layout.setConfig}
-              userInfo={this.props.common.userInfo}
-              layoutMeta={this.props.layout.meta}
-            />
-
-            {/* メニューアイコンを右端に配置するための空白 */}
-            <Typography variant="title" color="inherit" style={{flex: 1}} />
-
+              <Grid xs style={{display: 'flex'}}/>
+            </Grid>
           </MuiToolbar>
         </AppBar>
       </>
