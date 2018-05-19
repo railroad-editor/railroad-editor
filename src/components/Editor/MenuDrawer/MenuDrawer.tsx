@@ -168,6 +168,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
 
   /**
    * レイアウトをSVGファイルに変換し、ダウンロードする。
+   * 現在、実行後に画面に何も表示されなくなる問題を調査中。
    * @param e
    */
   downloadAsSVG = (e) => {
@@ -292,12 +293,12 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
               </ListItemIcon>
               <ListItemText primary="Save As..."/>
             </ListItem>
-            <ListItem button onClick={this.downloadAsSVG}>
-              <ListItemIcon>
-                <ArchiveIcon/>
-              </ListItemIcon>
-              <ListItemText primary="Export as SVG"/>
-            </ListItem>
+            {/*<ListItem button onClick={this.downloadAsSVG}>*/}
+              {/*<ListItemIcon>*/}
+                {/*<ArchiveIcon/>*/}
+              {/*</ListItemIcon>*/}
+              {/*<ListItemText primary="Export as SVG"/>*/}
+            {/*</ListItem>*/}
           </List>
 
         </Drawer>

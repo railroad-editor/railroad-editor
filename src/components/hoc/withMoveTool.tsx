@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-  DEFAULT_INITIAL_ZOOM,
-  DEFAULT_PAPER_HEIGHT,
-  DEFAULT_PAPER_WIDTH,
-  ZOOM_FACTOR,
-  ZOOM_MAX,
-  ZOOM_MIN
-} from "constants/tools";
+import {DEFAULT_INITIAL_ZOOM, ZOOM_FACTOR, ZOOM_MAX, ZOOM_MIN} from "constants/tools";
 import {PaperScope, Point, ToolEvent, View} from 'paper'
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
@@ -45,18 +38,6 @@ export type WithMoveToolProps = WithMoveToolPublicProps
  * キャンバスのパニング・ズーム機能を提供するHOC。
  */
 export default function withMoveTool(WrappedComponent: React.ComponentClass<WithMoveToolPublicProps>) {
-
-  // const mapStateToProps = (state: RootState) => {
-  //   return {
-  //     paperViewLoaded: state.builder.paperViewLoaded
-  //   }
-  // }
-  //
-  // const mapDispatchToProps = (dispatch: any) => {
-  //   return {
-  //     setMousePosition: (point: Point) => dispatch(setMousePosition(point))
-  //   }
-  // }
 
 
   @inject(STORE_BUILDER, STORE_LAYOUT)
@@ -232,8 +213,10 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
 
     resetViewPosition = () => {
       if (window.PAPER_SCOPE) {
-        const windowCenter = window.PAPER_SCOPE.view.viewToProject(new Point(window.innerWidth /2, window.innerHeight/2))
-        const boardCenter = new Point(DEFAULT_PAPER_WIDTH/2, DEFAULT_PAPER_HEIGHT/2)
+        // TODO: 何故か縦方向の位置が少し低い。ひとまず固定値で補正して調査中。
+        const {paperWidth, paperHeight} = this.props.layout.config
+        const windowCenter = window.PAPER_SCOPE.view.viewToProject(new Point(window.innerWidth /2, window.innerHeight/2 - 30))
+        const boardCenter = new Point(paperWidth / 2, paperHeight / 2)
         const diff = windowCenter.subtract(boardCenter)
         window.PAPER_SCOPE.view.translate(diff.x, diff.y)
       }
