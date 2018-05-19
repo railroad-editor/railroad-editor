@@ -19,7 +19,6 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
   public static defaultProps: RailPartBaseDefaultProps = {
     position: new Point(0, 0),
     angle: 0,
-    // pivotJointIndex: 0,
     detectionEnabled: false,
     selected: false,
     opacity: 1,

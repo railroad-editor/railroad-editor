@@ -132,6 +132,9 @@ export class BuilderStore {
     }
     const currentIndex = _.indexOf(userRailGroupData.openJoints, temporaryRailGroup.pivotJointInfo)
     const nextIndex = (currentIndex + 1) % userRailGroupData.openJoints.length
+    if (this.placingMode === PlacingMode.FREE && nextIndex <= currentIndex) {
+      return undefined
+    }
     return userRailGroupData.openJoints[nextIndex]
   }
 
@@ -147,7 +150,7 @@ export class BuilderStore {
     }
     const {numJoints, pivotJointChangingStride} = RailComponentClasses[type].defaultProps
     const nextPivotJointIndex = (pivotJointIndex + pivotJointChangingStride) % numJoints
-    if (this.placingMode === PlacingMode.FREE && nextPivotJointIndex < pivotJointIndex) {
+    if (this.placingMode === PlacingMode.FREE && nextPivotJointIndex <= pivotJointIndex) {
       return undefined
     }
     return nextPivotJointIndex

@@ -23,26 +23,26 @@ enum Phase {
   SET_ANGLE
 }
 
-export interface FirstRailPutterProps {
+export interface FreeRailPlacerProps {
   mousePosition: Point
   builder?: BuilderStore
   layout?: LayoutStore
 }
 
-export interface FirstRailPutterState {
+export interface FreeRailPlacerState {
   fixedPosition: Point
   phase: Phase
 
 }
 
-type FirstRailPutterEnhancedProps = FirstRailPutterProps & WithBuilderPublicProps
+type FreeRailPlacerEnhancedProps = FreeRailPlacerProps & WithBuilderPublicProps
 
 
 @inject(STORE_BUILDER, STORE_LAYOUT)
 @observer
-export class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProps, FirstRailPutterState> {
+export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps, FreeRailPlacerState> {
 
-  constructor(props: FirstRailPutterEnhancedProps) {
+  constructor(props: FreeRailPlacerEnhancedProps) {
     super(props)
     this.state = {
       fixedPosition: null,
@@ -194,7 +194,7 @@ export class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProp
         position: this.state.fixedPosition,
         angle: angle,
       }
-      LOGGER.info('[FirstRailPutter] TemporaryRailGroup', tempRailGroup)
+      LOGGER.info('[FreeRailPlacer] TemporaryRailGroup', tempRailGroup)
       this.props.builderSetTemporaryRailGroup(tempRailGroup, rails)
     } else if (this.props.builder.temporaryRailGroup.angle !== angle) {
       const tempRailGroup = {
@@ -202,7 +202,7 @@ export class FirstRailPutter extends React.Component<FirstRailPutterEnhancedProp
         position: this.state.fixedPosition,
         angle: angle,
       }
-      LOGGER.info('[FirstRailPutter] TemporaryRailGroup', tempRailGroup)
+      LOGGER.info('[FreeRailPlacer] TemporaryRailGroup', tempRailGroup)
       this.props.builderSetTemporaryRailGroup(tempRailGroup, rails)
     }
   }
@@ -261,6 +261,6 @@ const getFirstRailAngle = (anchor: Point, cursor: Point, step: number = 45) => {
 }
 
 
-export default compose<FirstRailPutterProps, FirstRailPutterProps|any>(
+export default compose<FreeRailPlacerProps, FreeRailPlacerProps|any>(
   withBuilder,
-)(FirstRailPutter)
+)(FreeRailPlacer)

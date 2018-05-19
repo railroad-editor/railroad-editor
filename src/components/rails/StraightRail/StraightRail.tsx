@@ -14,7 +14,7 @@ export default class StraightRail extends RailBase<StraightRailProps, RailBaseSt
     ...RailBase.defaultProps,
     type: 'StraightRail',
     numJoints: 2,
-    pivotJointChangingStride: 1,
+    pivotJointChangingStride: 2,
   }
 
   constructor(props: StraightRailProps) {
