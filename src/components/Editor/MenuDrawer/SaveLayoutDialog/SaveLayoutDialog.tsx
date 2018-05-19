@@ -71,7 +71,7 @@ export default class SaveLayoutDialog extends FormDialog<SaveLayoutDialogProps, 
 
   saveLayout = async (meta) => {
     this.props.saveLayout()
-    StorageAPI.saveCurrentLayoutImage(this.props.authData.username, meta.id)
+    await StorageAPI.saveCurrentLayoutImage(this.props.authData.username, meta.id)
     if (this.props.layoutConfig.backgroundImageUrl) {
       StorageAPI.saveBackgroundImage(this.props.authData.username, meta.id, this.props.layoutConfig.backgroundImageUrl)
     }

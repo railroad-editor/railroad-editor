@@ -77,10 +77,11 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
       userCustomRails: userRails,
     }
     LOGGER.info(savedData)
-    saveLayout()
-    StorageAPI.saveCurrentLayoutImage(userId, meta.id)
+    await saveLayout()
+    await StorageAPI.saveCurrentLayoutImage(userId, meta.id)
     // レイアウトリストをロードし直す
-    loadLayoutList()
+    await loadLayoutList()
+    this.props.snackbar.showMessage("Saved successfully.")
     this.props.onClose()
   }
 
