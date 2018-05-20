@@ -1,6 +1,5 @@
 import * as React from 'react'
-import {ListItemProps} from "material-ui/List";
-import Typography, {TypographyProps} from "material-ui/Typography";
+import {TypographyProps} from "material-ui/Typography";
 import {inject, observer} from "mobx-react";
 import {STORE_COMMON, STORE_LAYOUT} from "constants/stores";
 import {CommonStore} from "store/commonStore";
@@ -57,7 +56,7 @@ export class EditableTypography extends React.Component<EditableTitleProps, Edit
     return (
       <>
         <StyledTypography onClick={this.openDialog} {...restProps}>
-          {this.state.text}
+          {this.props.text}
         </StyledTypography>
         <EditDialog
           open={this.state.openDialog}
