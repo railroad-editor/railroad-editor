@@ -1,27 +1,28 @@
 import * as React from 'react'
 import LayersIcon from 'material-ui-icons/Layers';
-import {Checkbox, Grid, ListItemText, Paper} from 'material-ui'
+import {Checkbox, Grid} from 'material-ui'
 import {ScrollablePaper, TitleDiv} from "./styles";
 import Rnd from 'react-rnd'
 import {LayerListItem} from "components/Editor/LayerPalette/LayerListItem/LayerListItem";
 import getLogger from "logging";
-import {getClosest} from "constants/utils";
 import LayerSettingDialog from "components/Editor/LayerPalette/LayerSettingDialog/LayerSettingDialog";
 import {ConfirmationDialog} from "components/Editor/LayerPalette/ConfirmationDialog/ConfirmationDialog";
 import Typography from "material-ui/Typography";
-import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
+import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {inject, observer} from "mobx-react";
 import {DEFAULT_LAYER_DATA, LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
 import {SecondaryPaletteAddButton} from "components/common/PaletteAddButton/PaletteAddButton";
 import Tooltip from "material-ui/Tooltip";
 import {DEFAULT_LAYER_TRANSLUCENT_OPACITY} from "constants/tools";
+import {LayoutLogicStore} from "store/layoutLogicStore";
 
 const LOGGER = getLogger(__filename)
 
 export interface LayerPaletteProps {
   className?: string
   layout?: LayoutStore
+  layoutLogic?: LayoutLogicStore
   builder?: BuilderStore
 }
 
@@ -39,7 +40,7 @@ const LayerStates = {
 }
 
 
-@inject(STORE_BUILDER, STORE_LAYOUT)
+@inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
 @observer
 export default class LayerPalette extends React.Component<LayerPaletteProps, LayerPaletteState> {
 
@@ -133,12 +134,7 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
 
   deleteLayer = () => {
     const layerId = this.state.targetLayerId
-    const restLayerIds = this.props.layout.currentLayoutData.layers
-      .map(layer => layer.id)
-      .filter(id => id !== layerId)
-
-    this.props.layout.deleteLayer({id: layerId})
-    this.props.builder.setActiveLayer(getClosest(layerId, restLayerIds))
+    this.props.layoutLogic.deleteLayer(layerId)
   }
 
 

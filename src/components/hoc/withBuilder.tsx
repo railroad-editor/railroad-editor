@@ -9,13 +9,14 @@ import {DetectionState} from "components/rails/parts/primitives/DetectablePart";
 import railItems from "constants/railItems.json"
 import {TEMPORARY_RAIL_OPACITY, Tools} from "constants/tools";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_LAYOUT, STORE_UI} from 'constants/stores';
+import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI} from 'constants/stores';
 import {BuilderStore, UserRailGroupData} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import * as $ from "jquery";
 import {compose} from "recompose";
 import {withSnackbar} from 'material-ui-snackbar-provider'
 import {UiStore} from "store/uiStore";
+import {LayoutLogicStore} from "store/layoutLogicStore";
 
 
 const LOGGER = getLogger(__filename)
@@ -49,6 +50,7 @@ export interface WithBuilderPublicProps {
 interface WithBuilderPrivateProps {
   builder?: BuilderStore
   layout?: LayoutStore
+  layoutLogic?: LayoutLogicStore
   ui?: UiStore
 }
 
@@ -73,7 +75,7 @@ export interface WithBuilderState {
  */
 export default function withBuilder(WrappedComponent: React.ComponentClass<WithBuilderPublicProps>) {
 
-  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_UI)
+  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI)
   @observer
   class WithBuilder extends React.Component<WithBuilderProps, WithBuilderState> {
 
@@ -451,14 +453,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     deleteSelectedRails() {
       // いったんセーブ
       this.props.layout.commit()
-
-      const selectedRails = this.getSelectedRails()
-      LOGGER.info('withBuilder#deleteSelectedRails', selectedRails)
-
-      selectedRails.forEach(item => {
-        this.disconnectJoint(item.id)
-        this.props.layout.deleteRail(item)
-      })
+      this.props.layoutLogic.deleteSelectedRails()
     }
 
 
@@ -466,51 +461,53 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
      * 指定のレールの全てのジョイント接続を解除する。
      */
     disconnectJoint = (railId: number) => {
-      const target = this.getRailDataById(railId)
-      if (target == null) {
-        return
-      }
-      // 指定のレールに接続されている全てのレールのジョイントを開放
-      const updatedData = _.values(target.opposingJoints).map(joint => {
-        return {
-          id: joint.railId,
-          opposingJoints: {
-            [joint.jointId]: null
-          }
-        }
-      })
-
-      // 指定のレールのジョイントを全て開放
-      updatedData.push({
-        id: railId,
-        opposingJoints: null
-      })
-
-      this.props.layout.updateRails(updatedData)
+      this.props.layoutLogic.disconnectJoint(railId)
+      // const target = this.getRailDataById(railId)
+      // if (target == null) {
+      //   return
+      // }
+      // // 指定のレールに接続されている全てのレールのジョイントを開放
+      // const updatedData = _.values(target.opposingJoints).map(joint => {
+      //   return {
+      //     id: joint.railId,
+      //     opposingJoints: {
+      //       [joint.jointId]: null
+      //     }
+      //   }
+      // })
+      //
+      // // 指定のレールのジョイントを全て開放
+      // updatedData.push({
+      //   id: railId,
+      //   opposingJoints: null
+      // })
+      //
+      // this.props.layout.updateRails(updatedData)
     }
 
     /**
      * ジョイントを接続する。
      */
     connectJoints = (pairs: JointPair[]) => {
-      const target =_.flatMap(pairs, pair => {
-        return [
-          {
-            id: pair.from.railId,
-            opposingJoints: {
-              [pair.from.jointId]: pair.to
-            }
-          },
-          {
-            id: pair.to.railId,
-            opposingJoints: {
-              [pair.to.jointId]: pair.from
-            }
-          }
-        ]
-      })
-
-      this.props.layout.updateRails(target)
+      this.props.layoutLogic.connectJoints(pairs)
+      // const target =_.flatMap(pairs, pair => {
+      //   return [
+      //     {
+      //       id: pair.from.railId,
+      //       opposingJoints: {
+      //         [pair.from.jointId]: pair.to
+      //       }
+      //     },
+      //     {
+      //       id: pair.to.railId,
+      //       opposingJoints: {
+      //         [pair.to.jointId]: pair.from
+      //       }
+      //     }
+      //   ]
+      // })
+      //
+      // this.props.layout.updateRails(target)
     }
 
 
