@@ -4,11 +4,14 @@ import {
   ActiveListItemProps,
   SecondaryColorActiveListItem
 } from "components/common/ActiveListItem";
-import {MenuItem} from "material-ui";
+import {ListItemText, MenuItem} from "material-ui";
 import Menu from "material-ui/Menu";
+import IconButton from "material-ui/IconButton";
+import MoreVertIcon from 'material-ui-icons/MoreVert';
 
 
 export interface LayerListItemProps extends ActiveListItemProps {
+  text: string
   onRename: ReactEventHandler<HTMLElement>
   onDelete: ReactEventHandler<HTMLElement>
   isDeletable: boolean
@@ -26,11 +29,10 @@ export class LayerListItem extends React.Component<LayerListItemProps, LayerList
       anchorEl: null
     }
 
-    this.onMenuOpen = this.onMenuOpen.bind(this)
     this.onMenuClose = this.onMenuClose.bind(this)
   }
 
-  onMenuOpen = (e: React.MouseEvent<HTMLElement>) => {
+  openMenu = (e: React.MouseEvent<HTMLElement>) => {
     this.setState({ anchorEl: e.currentTarget });
   }
 
@@ -49,18 +51,30 @@ export class LayerListItem extends React.Component<LayerListItemProps, LayerList
   }
 
   render () {
-    const {children, onRename, onDelete, isDeletable, ...otherProps} = this.props
+    const {text, onRename, onDelete, isDeletable, ...otherProps} = this.props
 
     return (
       <>
         <SecondaryColorActiveListItem
           {...otherProps as any}
-          onContextMenu={this.onMenuOpen}
         >
-          {children}
+          <ListItemText primary={text}/>
+          <IconButton
+            style={{
+              width: '20px',
+              height: '20px',
+              fontSize: '20px'
+            }}
+            onClick={this.openMenu}
+          >
+            <MoreVertIcon
+              style={{
+                fontSize: '20px'
+              }}
+            />
+          </IconButton>
         </SecondaryColorActiveListItem>
         <Menu
-          id="simple-menu"
           anchorEl={this.state.anchorEl}
           open={Boolean(this.state.anchorEl)}
           onClose={this.onMenuClose}

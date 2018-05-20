@@ -17,7 +17,7 @@ export const TitleDiv = styled.div`
 
 export const ScrollablePaper = styled(Paper as any)`
   && {
-    min-width: 180px;
+    min-width: 200px;
     overflow: auto;
   }
 `

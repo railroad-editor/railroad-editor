@@ -189,8 +189,8 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
                   onDelete={this.openDeleteDialog(layer.id)}
                   onRename={this.openUpdateDialog(layer.id)}
                   isDeletable={layers.length >= 2}
+                  text={layer.name}
                 >
-                  <ListItemText primary={layer.name}/>
                 </LayerListItem>
               </Grid>
             </Grid>
