@@ -10,6 +10,7 @@ import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 
 export interface CustomCurveRailDialogProps extends FormDialogProps {
   addUserRail: (item: RailItemData) => void
+  definedItems: PaletteItem[]
 }
 
 export interface CustomCurveRailDialogState extends FormDialogState {
@@ -18,25 +19,6 @@ export interface CustomCurveRailDialogState extends FormDialogState {
 
 
 export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDialogProps, CustomCurveRailDialogState> {
-
-  static INITIAL_STATE = {
-    name: '',
-    radius: '',
-    centerAngle: '',
-    innerRadius: '',
-    outerRadius: '',
-    errors: {
-      name: false,
-      radius: false,
-      centerAngle: false,
-    },
-    errorTexts: {
-      name: '',
-      radius: '',
-      centerAngle: '',
-    },
-    isDouble: false,
-  }
 
   constructor(props: CustomCurveRailDialogProps) {
     super(props)
@@ -51,6 +33,12 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
       isDouble: false,
       disabled: true,
     }
+  }
+
+  componentWillMount() {
+    ValidatorForm.addValidationRule('isUniqueName', (value) => {
+      return ! this.props.definedItems.map(i => i.name).includes(value);
+    });
   }
 
   onOK = (e) => {
@@ -188,8 +176,8 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
           onChange={this.onChange('name')}
           onKeyPress={this.onKeyPress}
           validatorListener={this.handleValidation}
-          validators={['required']}
-          errorMessages={['this field is required']}
+          validators={['required', 'isUniqueName']}
+          errorMessages={['this field is required', 'The name already exists.']}
         />
       </ValidatorForm>
     )

@@ -9,6 +9,7 @@ import AutoFocusTextValidator from "components/common/AutoFocusTextValidator";
 
 export interface CustomStraightRailDialogProps extends FormDialogProps {
   addUserRail: (item: RailItemData) => void
+  definedItems: PaletteItem[]
 }
 
 export interface CustomStraightRailDialogState extends FormDialogState {
@@ -32,6 +33,12 @@ export default class CustomStraightRailDialog extends FormDialog<CustomStraightR
       isDouble: false,
       disabled: true,
     }
+  }
+
+  componentWillMount() {
+    ValidatorForm.addValidationRule('isUniqueName', (value) => {
+      return ! this.props.definedItems.map(i => i.name).includes(value);
+    });
   }
 
   onOK = (e) => {
@@ -91,8 +98,8 @@ export default class CustomStraightRailDialog extends FormDialog<CustomStraightR
             onChange={this.onChange('name')}
             onKeyPress={this.onKeyPress}
             validatorListener={this.handleValidation}
-            validators={['required']}
-            errorMessages={['this field is required']}
+            validators={['required', 'isUniqueName']}
+            errorMessages={['this field is required', 'The name already exists.']}
           />
         </ValidatorForm>
     )

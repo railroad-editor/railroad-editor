@@ -10,6 +10,7 @@ const LOGGER = getLogger(__filename)
 
 export interface NewRailGroupDialogProps extends FormDialogProps {
   addUserRailGroup: (name: string, shouldDelete: boolean) => void
+  definedItems: PaletteItem[]
   snackbar: any
 }
 
@@ -19,6 +20,19 @@ export class NewRailGroupDialog extends FormDialog<NewRailGroupDialogProps, Form
   constructor(props: NewRailGroupDialogProps) {
     super(props)
     this.state = this.getInitialState()
+  }
+
+  componentWillMount() {
+    ValidatorForm.addValidationRule('isUniqueName', (value) => {
+      return ! this.props.definedItems.map(i => i.name).includes(value);
+    });
+    ValidatorForm.addValidationRule('isNameNotAllowed', (value) => {
+      if (value) {
+        return value.toUpperCase() !== 'CLIPBOARD'
+      } else {
+        return true
+      }
+    });
   }
 
   onOK = (e) => {
@@ -41,8 +55,8 @@ export class NewRailGroupDialog extends FormDialog<NewRailGroupDialogProps, Form
           onChange={this.onChange('name')}
           onKeyPress={this.onKeyPress}
           validatorListener={this.handleValidation}
-          validators={['required']}
-          errorMessages={['this field is required']}
+          validators={['required', 'isUniqueName', 'isNameNotAllowed']}
+          errorMessages={['this field is required', 'The name already exists.', 'The name cannot be used.']}
         />
       </ValidatorForm>
     )

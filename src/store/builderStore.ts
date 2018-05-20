@@ -3,7 +3,11 @@ import {JointInfo} from "components/rails/RailBase";
 import {RailGroupProps} from "components/rails/RailGroup/RailGroup";
 import {action, computed, observable, reaction} from "mobx";
 import {Tools} from "constants/tools";
+import builderPaletteData from "constants/builderPaletteItems.json"
 
+export interface PresetPaletteItems {
+  [key: string]: PaletteItem[]
+}
 
 export interface LastPaletteItems {
   [key: string]: PaletteItem
@@ -18,6 +22,7 @@ export interface UserRailGroupData extends RailGroupProps {
 
 
 export interface BuilderStoreState {
+  presetPaletteItems: PresetPaletteItems
   // パレットで選択中のレール
   paletteItem: PaletteItem
   // 直前に選択していたレール
@@ -46,6 +51,7 @@ export enum PlacingMode {
 }
 
 export const INITIAL_STATE: BuilderStoreState = {
+  presetPaletteItems: builderPaletteData,
   paletteItem: {type: 'StraightRail', name: 'S280'},
   lastPaletteItems: {
     'Straight Rails': {type: 'StraightRail', name: 'S280'},
@@ -67,6 +73,7 @@ export const INITIAL_STATE: BuilderStoreState = {
 
 
 export class BuilderStore {
+  @observable presetPaletteItems: PresetPaletteItems
   // パレットで選択中のレール
   @observable paletteItem: PaletteItem
   // 直前に選択していたレール
@@ -93,8 +100,9 @@ export class BuilderStore {
   // @observable zoom
 
 
-  constructor({ paletteItem, lastPaletteItems, placingMode, activeLayerId, temporaryRails, temporaryRailGroup, userRailGroups,
+  constructor({ presetPaletteItems, paletteItem, lastPaletteItems, placingMode, activeLayerId, temporaryRails, temporaryRailGroup, userRailGroups,
                 userRails, activeTool, selecting}) {
+    this.presetPaletteItems = presetPaletteItems
     this.paletteItem = paletteItem
     this.lastPaletteItems = lastPaletteItems
     this.placingMode = placingMode

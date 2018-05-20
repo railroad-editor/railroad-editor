@@ -1,5 +1,4 @@
 import * as React from 'react'
-import builderPaletteData from "constants/builderPaletteItems.json"
 import {Tools} from "constants/tools";
 import StraightRailIcon from '../ToolBar/Icon/StraightRailIcon'
 import CurveRailIcon from '../ToolBar/Icon/CurveRailIcon'
@@ -20,7 +19,6 @@ import {compose} from "recompose";
 import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {LayoutStore} from "store/layoutStore";
 import {withSnackbar} from 'material-ui-snackbar-provider'
-import Tooltip from "material-ui/Tooltip";
 
 
 
@@ -92,7 +90,7 @@ export class Palette extends React.Component<EnhancedPaletteProps, PaletteState>
           active={this.isActive(Tools.STRAIGHT_RAILS)}
           icon={<StraightRailIcon/>}
           title={Tools.STRAIGHT_RAILS}
-          items={builderPaletteData[Tools.STRAIGHT_RAILS]}
+          items={this.props.builder.presetPaletteItems[Tools.STRAIGHT_RAILS]}
           customItems={customStraightRails}
           customDialog={
             <CustomStraightRailDialog
@@ -100,6 +98,7 @@ export class Palette extends React.Component<EnhancedPaletteProps, PaletteState>
               open={this.isActive(Tools.STRAIGHT_RAILS) && this.state.customDialogOpen}
               onClose={this.closeCustomDialog}
               addUserRail={this.props.builder.addUserRail}
+              definedItems={this.props.builder.presetPaletteItems[Tools.STRAIGHT_RAILS].concat(customStraightRails)}
             />
           }
           openCustomDialog={this.openCustomDialog}
@@ -110,7 +109,7 @@ export class Palette extends React.Component<EnhancedPaletteProps, PaletteState>
           active={this.isActive(Tools.CURVE_RAILS)}
           icon={<CurveRailIcon/>}
           title={Tools.CURVE_RAILS}
-          items={builderPaletteData[Tools.CURVE_RAILS]}
+          items={this.props.builder.presetPaletteItems[Tools.CURVE_RAILS]}
           customItems={customCurveRails}
           customDialog={
             <CustomCurveRailDialog
@@ -118,6 +117,7 @@ export class Palette extends React.Component<EnhancedPaletteProps, PaletteState>
               open={this.isActive(Tools.CURVE_RAILS) && this.state.customDialogOpen}
               onClose={this.closeCustomDialog}
               addUserRail={this.props.builder.addUserRail}
+              definedItems={this.props.builder.presetPaletteItems[Tools.CURVE_RAILS].concat(customStraightRails)}
             />
           }
           openCustomDialog={this.openCustomDialog}
@@ -128,13 +128,13 @@ export class Palette extends React.Component<EnhancedPaletteProps, PaletteState>
           active={this.isActive(Tools.TURNOUTS)}
           icon={<TurnoutIcon/>}
           title={Tools.TURNOUTS}
-          items={builderPaletteData[Tools.TURNOUTS]}
+          items={this.props.builder.presetPaletteItems[Tools.TURNOUTS]}
         />
         <BuilderPalette
           active={this.isActive(Tools.SPECIAL_RAILS)}
           icon={<SpecialRailIcon/>}
           title={Tools.SPECIAL_RAILS}
-          items={builderPaletteData[Tools.SPECIAL_RAILS]}
+          items={this.props.builder.presetPaletteItems[Tools.SPECIAL_RAILS]}
         />
         <BuilderPalette
           active={this.isActive(Tools.RAIL_GROUPS)}
@@ -148,6 +148,7 @@ export class Palette extends React.Component<EnhancedPaletteProps, PaletteState>
               open={this.isActive(Tools.RAIL_GROUPS) && this.state.customDialogOpen}
               onClose={this.closeCustomDialog}
               addUserRailGroup={this.props.builderRegisterRailGroup}
+              definedItems={customRailGroups}
             />
           }
           openCustomDialog={this.openCustomDialog}
