@@ -114,10 +114,10 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
 
   onMouseMove = (e: MouseEvent|any) => {
     // Ctrlキーを押している間はグリッド設置モードに移行する
-    if (! e.modifiers.control && this.state.phase === Phase.SET_POSITION_GRID) {
+    if (! e.modifiers.shift && this.state.phase === Phase.SET_POSITION_GRID) {
       this.setState({phase: Phase.SET_POSITION})
     }
-    if (e.modifiers.control && this.state.phase === Phase.SET_POSITION) {
+    if (e.modifiers.shift && this.state.phase === Phase.SET_POSITION) {
       this.setState({phase: Phase.SET_POSITION_GRID})
     }
     if (this.state.phase === Phase.SET_ANGLE) {
