@@ -26,8 +26,6 @@ export interface BuilderStoreState {
   placingMode: PlacingMode
   // 現在アクティブ（編集中）のレイヤーID
   activeLayerId: number
-  // PaperJSのロードが完了したか否か
-  paperViewLoaded: boolean
   // 仮レール（レールグループの場合は複数）
   temporaryRails: RailData[]
   // 仮レールグループ
@@ -58,7 +56,6 @@ export const INITIAL_STATE: BuilderStoreState = {
   },
   placingMode: PlacingMode.FREE,
   activeLayerId: 1,
-  paperViewLoaded: false,
   temporaryRails: [],
   temporaryRailGroup: null,
   userRailGroups: [],
@@ -78,8 +75,6 @@ export class BuilderStore {
   @observable placingMode: PlacingMode
   // 現在アクティブ（編集中）のレイヤーID
   @observable activeLayerId: number
-  // PaperJSのロードが完了したか否か
-  @observable paperViewLoaded: boolean
   // 仮レール（レールグループの場合は複数）
   @observable temporaryRails: RailData[]
   // 仮レールグループ
@@ -98,13 +93,12 @@ export class BuilderStore {
   // @observable zoom
 
 
-  constructor({ paletteItem, lastPaletteItems, placingMode, activeLayerId, paperViewLoaded, temporaryRails, temporaryRailGroup, userRailGroups,
+  constructor({ paletteItem, lastPaletteItems, placingMode, activeLayerId, temporaryRails, temporaryRailGroup, userRailGroups,
                 userRails, activeTool, selecting}) {
     this.paletteItem = paletteItem
     this.lastPaletteItems = lastPaletteItems
     this.placingMode = placingMode
     this.activeLayerId = activeLayerId
-    this.paperViewLoaded = paperViewLoaded
     this.temporaryRails = temporaryRails
     this.temporaryRailGroup = temporaryRailGroup
     this.userRailGroups = userRailGroups
@@ -186,11 +180,6 @@ export class BuilderStore {
   @action
   setActiveLayer = (layerId: number) => {
     this.activeLayerId = layerId
-  }
-
-  @action
-  setPaperViewLoaded = (value: boolean) => {
-    this.paperViewLoaded = value
   }
 
   @action

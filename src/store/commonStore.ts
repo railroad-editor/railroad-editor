@@ -2,8 +2,8 @@ import {action, computed, observable} from "mobx";
 import {AuthData} from "components/common/Authenticator/AuthPiece/AuthPiece";
 import {LayoutMeta} from "store/layoutStore";
 import LayoutAPI from "apis/layout";
-import {create, persist} from "mobx-persist";
-import Auth from "aws-amplify/lib/Auth";
+import {create} from "mobx-persist";
+import {DEFAULT_INITIAL_ZOOM} from "constants/tools";
 
 
 const INITIAL_STATE = {
@@ -16,10 +16,14 @@ export class CommonStore {
   @observable layouts: LayoutMeta[]
   @observable userInfo: AuthData
   @observable isPaperLoaded: boolean
+  @observable initialZoom: number
+
 
   constructor({layouts, authData}) {
     this.layouts = layouts
     this.userInfo = authData
+    this.isPaperLoaded = false
+    this.initialZoom = DEFAULT_INITIAL_ZOOM
   }
 
 
@@ -51,6 +55,11 @@ export class CommonStore {
   @action
   setPaperLoaded = (loaded: boolean) => {
     this.isPaperLoaded = loaded
+  }
+
+  @action
+  setInitialZoom = (zoom: number) => {
+    this.initialZoom = zoom
   }
 }
 

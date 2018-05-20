@@ -30,6 +30,7 @@ export const DEFAULT_INITIAL_ZOOM = 1
 export const ZOOM_FACTOR = 0.002
 export const ZOOM_MIN = 0.1
 export const ZOOM_MAX = 10
+export const ZOOM_CORRECTION = 0.08
 
 export const TEMPORARY_RAIL_OPACITY = 0.5
 

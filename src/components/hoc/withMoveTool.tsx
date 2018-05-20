@@ -1,11 +1,13 @@
 import * as React from 'react';
-import {DEFAULT_INITIAL_ZOOM, ZOOM_FACTOR, ZOOM_MAX, ZOOM_MIN} from "constants/tools";
+import {DEFAULT_INITIAL_ZOOM, ZOOM_CORRECTION, ZOOM_FACTOR, ZOOM_MAX, ZOOM_MIN} from "constants/tools";
 import {PaperScope, Point, ToolEvent, View} from 'paper'
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
+import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
+import {reaction} from "mobx";
+import {CommonStore} from "store/commonStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -19,6 +21,7 @@ export interface WithMoveToolPublicProps {
   resetViewPosition: () => void
   builder?: BuilderStore
   layout?: LayoutStore
+  common?: CommonStore
 }
 
 
@@ -40,7 +43,7 @@ export type WithMoveToolProps = WithMoveToolPublicProps
 export default function withMoveTool(WrappedComponent: React.ComponentClass<WithMoveToolPublicProps>) {
 
 
-  @inject(STORE_BUILDER, STORE_LAYOUT)
+  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_COMMON)
   @observer
   class WithMoveTool extends React.Component<WithMoveToolProps, WithMoveToolState> {
 
@@ -70,21 +73,31 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
       this.mouseDown = this.mouseDown.bind(this)
       this.mouseUp = this.mouseUp.bind(this)
       this.resetViewPosition = this.resetViewPosition.bind(this)
+
+      reaction(
+        () => this.props.common.isPaperLoaded,
+        () => this.setInitialZoom()
+      )
+      reaction(
+        () => this.props.layout.config.paperWidth,
+        () => this.setInitialZoom()
+      )
+      reaction(
+        () => this.props.layout.config.paperHeight,
+        () => this.setInitialZoom()
+      )
     }
 
     componentDidMount() {
+      window.addEventListener("resize", (e) => {
+        this.setInitialZoom()
+      })
       window.addEventListener("focus", (e) => {
         this.isFocused = true
       }, true);
       window.addEventListener("blur", (e) => {
         this.isFocused = false
       }, true);
-    }
-
-    componentWillReceiveProps(props: WithMoveToolProps) {
-      if (this.props.builder.paperViewLoaded === false && props.builder.paperViewLoaded === true) {
-        this.resetViewPosition()
-      }
     }
 
     /**
@@ -213,14 +226,27 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
 
     resetViewPosition = () => {
       if (window.PAPER_SCOPE) {
-        // TODO: 何故か縦方向の位置が少し低い。ひとまず固定値で補正して調査中。
         const {paperWidth, paperHeight} = this.props.layout.config
+        // 初期ズームをセットする
+        window.PAPER_SCOPE.view.zoom = this.props.common.initialZoom
+
+        // TODO: 何故か縦方向の位置が少し低い。ひとまず固定値で補正して調査中。
         const windowCenter = window.PAPER_SCOPE.view.viewToProject(new Point(window.innerWidth /2, window.innerHeight/2 - 30))
         const boardCenter = new Point(paperWidth / 2, paperHeight / 2)
         const diff = windowCenter.subtract(boardCenter)
         window.PAPER_SCOPE.view.translate(diff.x, diff.y)
       }
     }
+
+    setInitialZoom = () => {
+      const {paperWidth, paperHeight} = this.props.layout.config
+      const zoom = Math.min(window.innerWidth / paperWidth , window.innerHeight / paperHeight)
+      const correctedZoom =  zoom - ZOOM_CORRECTION
+      this.props.common.setInitialZoom(correctedZoom)
+      LOGGER.info('Corrected Zoom', correctedZoom)
+      return zoom
+    }
+
 
     render() {
       return (

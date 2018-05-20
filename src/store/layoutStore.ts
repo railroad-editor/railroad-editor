@@ -14,7 +14,6 @@ export interface LayoutConfig {
   paperWidth: number
   paperHeight: number
   gridSize: number
-  initialZoom: number
   backgroundImageUrl: string
 }
 
@@ -79,7 +78,6 @@ export const INITIAL_STATE: LayoutStoreState = {
     paperWidth: DEFAULT_PAPER_WIDTH,
     paperHeight: DEFAULT_PAPER_HEIGHT,
     gridSize: DEFAULT_GRID_SIZE,
-    initialZoom: DEFAULT_INITIAL_ZOOM,
     backgroundImageUrl: ''
   }
 }

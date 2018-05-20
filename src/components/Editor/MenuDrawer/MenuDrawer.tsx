@@ -91,7 +91,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
   openLoginDialogIfNot = () => {
     if (! this.props.common.isAuth) {
       this.props.snackbar.showMessage('Please login.')
-      this.setState({ openLogin: true })
+      this.props.ui.setLoginDialog(true)
       return true
     }
     return false
