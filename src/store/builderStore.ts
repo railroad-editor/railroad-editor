@@ -169,16 +169,14 @@ export class BuilderStore {
     this.placingMode = placingMode
   }
 
-
   @action
   setActiveTool = (tool: Tools) => {
+    this.lastPaletteItems[this.activeTool] = this.paletteItem
     this.activeTool = tool
   }
 
-
   @action
   setPaletteItem = (paletteItem: PaletteItem) => {
-    this.lastPaletteItems[paletteItem.type] = this.paletteItem
     this.paletteItem = paletteItem
   }
 

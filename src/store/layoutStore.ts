@@ -6,6 +6,8 @@ import builderStore, {PlacingMode} from "./builderStore";
 import {DEFAULT_GRID_SIZE, DEFAULT_INITIAL_ZOOM, DEFAULT_PAPER_HEIGHT, DEFAULT_PAPER_WIDTH} from "constants/tools";
 import {getAllOpenCloseJoints} from "components/rails/utils";
 import getLogger from "logging";
+import * as uuidv1 from "uuid/v1";
+import * as moment from "moment";
 
 const LOGGER = getLogger(__filename)
 
@@ -70,9 +72,9 @@ export const INITIAL_STATE: LayoutStoreState = {
   ],
   historyIndex: 0,
   meta: {
-    id: null,
+    id: uuidv1(),
     name: 'Untitled',
-    lastModified: null
+    lastModified: moment().valueOf()
   },
   config: {
     paperWidth: DEFAULT_PAPER_WIDTH,

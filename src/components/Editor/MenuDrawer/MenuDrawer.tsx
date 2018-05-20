@@ -82,6 +82,13 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
     }
   }
 
+  updateLastModified = (meta: LayoutMeta) => {
+    return {
+      ...meta,
+      lastModified: moment().valueOf()
+    }
+  }
+
   logout = async () => {
     await Auth.signOut()
     this.props.common.setAuthData(null)
@@ -147,7 +154,8 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
       return
     }
     // 現在のストアのデータを保存する
-    const {meta, config, currentLayoutData} = this.props.layout
+    const meta = this.updateLastModified(this.props.layout.meta)
+    const {config, currentLayoutData} = this.props.layout
     await this.save(meta, config, currentLayoutData)
     this.props.snackbar.showMessage("Saved successfully.")
     await this.props.common.loadLayoutList()
