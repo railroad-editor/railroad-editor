@@ -28,7 +28,7 @@ export class EditDialog extends FormDialog<EditDialogProps, FormDialogState> {
       inputs: {
         text: this.props.text
       },
-      disabled: false
+      disabled: true
     }
   }
 
