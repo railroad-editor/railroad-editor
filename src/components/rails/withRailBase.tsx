@@ -156,11 +156,13 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
 
     /**
      * レールパーツを左クリックしたら、レールの選択状態をトグルする。
+     * Shiftを押していない場合: それ以外のレールの選択状態を解除する
+     * Shiftを押している場合: それ以外のレールの選択状態を解除しない
      * @param {MouseEvent} e
      */
-    onRailPartLeftClick(e: MouseEvent) {
+    onRailPartLeftClick(e: MouseEvent|any) {
       // レールの選択状態をトグルする
-      this.props.builderToggleRail(this.props)
+      this.props.builderToggleRail(this.props, !e.modifiers.shift)
       LOGGER.info(`${this.props.id} clicked.`)
       return true
     }

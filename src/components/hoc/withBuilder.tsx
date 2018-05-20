@@ -32,7 +32,7 @@ export interface WithBuilderPublicProps {
   builderSelectRail: (railId: number) => void
   builderSelectRails: (railIds: number[]) => void
   builderDeselectRail: (railData: RailData) => void
-  builderToggleRail: (railData: RailData) => void
+  builderToggleRail: (railData: RailData, deselectOthers: boolean) => void
   builderDeselectAllRails: () => void
   builderDeleteSelectedRails: () => void
   builderGetRailItemData: (name?: string) => any
@@ -569,7 +569,10 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
      * レールの選択状態をトグルする。
      * @param {RailData} railData
      */
-    toggleRail = (railData: RailData) => {
+    toggleRail = (railData: RailData, deselectOthers: boolean) => {
+      if (deselectOthers) {
+        this.deselectAllRails()
+      }
       this.props.layout.updateRail({
         id: railData.id,
         selected: ! railData.selected,

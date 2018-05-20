@@ -18,7 +18,7 @@ import {Point} from "paper";
 import {inject, observer} from "mobx-react";
 import {CommonStore} from "store/commonStore";
 import {LayoutStore} from "store/layoutStore";
-import {STORE_COMMON, STORE_LAYOUT} from "constants/stores";
+import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
 import {GridPaper} from "components/Editor/GridPaper/GridPaper";
 import Layout from "components/Editor/Layout/Layout";
 import {
@@ -30,7 +30,7 @@ import {
   Tools
 } from "constants/tools";
 import FreeRailPlacer from "components/Editor/FreeRailPlacer/FreeRailPlacer";
-import {PlacingMode} from "store/builderStore";
+import {BuilderStore, PlacingMode} from "store/builderStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -38,6 +38,7 @@ const LOGGER = getLogger(__filename)
 export interface EditorProps {
   width: number
   height: number
+  builder?: BuilderStore
   common?: CommonStore
   layout?: LayoutStore
 }
@@ -57,7 +58,7 @@ export interface EditorState {
 }
 
 
-@inject(STORE_COMMON, STORE_LAYOUT)
+@inject(STORE_COMMON, STORE_LAYOUT, STORE_BUILDER)
 @observer
 class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
@@ -70,6 +71,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
   async componentDidMount() {
     this.props.resetViewPosition()
+    this.props.builder.setActiveTool(Tools.STRAIGHT_RAILS)
   }
 
 

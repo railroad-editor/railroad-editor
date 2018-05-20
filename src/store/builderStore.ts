@@ -1,7 +1,7 @@
 import {RailComponentClasses, RailData, RailGroupData, RailItemData} from "components/rails";
 import {JointInfo} from "components/rails/RailBase";
 import {RailGroupProps} from "components/rails/RailGroup/RailGroup";
-import {action, computed, observable} from "mobx";
+import {action, computed, observable, reaction} from "mobx";
 import {Tools} from "constants/tools";
 
 
@@ -61,7 +61,7 @@ export const INITIAL_STATE: BuilderStoreState = {
   userRailGroups: [],
   intersects: false,
   userRails: [],
-  activeTool: Tools.STRAIGHT_RAILS,
+  activeTool: null,   // 後でreactionを起こさせるためにここではnullにしておく
   selecting: false,
 }
 
@@ -106,6 +106,11 @@ export class BuilderStore {
     this.intersects = false
     this.activeTool = activeTool
     this.selecting = selecting
+
+    reaction(
+      () => this.activeTool,
+      (tool) => this.setCursorShape(tool)
+    )
   }
 
   @computed
@@ -159,14 +164,6 @@ export class BuilderStore {
 
   @action
   setActiveTool = (tool: Tools) => {
-    // カーソル形状を変更する
-    switch (tool) {
-      case Tools.PAN:
-        document.body.style.cursor = 'move'
-        break
-      default:
-        document.body.style.cursor = ''
-    }
     this.activeTool = tool
   }
 
@@ -283,6 +280,17 @@ export class BuilderStore {
   @action
   setSelecting = (selecting: boolean) => {
     this.selecting = selecting
+  }
+
+  private setCursorShape = (tool: Tools) => {
+    // カーソル形状を変更する
+    switch (tool) {
+      case Tools.PAN:
+        document.body.style.cursor = 'move'
+        break
+      default:
+        document.body.style.cursor = 'crosshair'
+    }
   }
 }
 
