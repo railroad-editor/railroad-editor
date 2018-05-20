@@ -1,7 +1,6 @@
 import * as React from 'react'
 import {ReactNode} from 'react'
-import {HideableDiv, ScrollablePaper,} from "./style";
-import Selector from "./Selector/Selector"
+import {CenteredDiv, HideableDiv, PaletteBodyPaper, ScrollablePaper, StyledSelector,} from "./style";
 import {TitleDiv} from "../../LayerPalette/styles";
 import Typography from "material-ui/Typography";
 import Divider from "material-ui/Divider";
@@ -11,6 +10,9 @@ import {BuilderStore} from "store/builderStore";
 import * as classNames from "classnames"
 import {PrimaryPaletteAddButton} from "components/common/PaletteAddButton/PaletteAddButton";
 import Tooltip from "material-ui/Tooltip";
+import AddBoxIcon from "material-ui-icons/AddBox";
+import {Scrollbars} from 'react-custom-scrollbars';
+
 
 export interface BuilderPaletteProps {
   className?: string
@@ -23,6 +25,7 @@ export interface BuilderPaletteProps {
   openCustomDialog?: (e: React.SyntheticEvent<HTMLElement>) => void
   tooltipTitle?: string
   builder?: BuilderStore
+  helpMessage?: string
 }
 
 
@@ -38,6 +41,43 @@ export default class BuilderPalette extends React.Component<BuilderPaletteProps,
   }
 
   render() {
+    let presetItems, customItems, helpMessage
+    if (! _.isEmpty(this.props.items)) {
+      presetItems = (
+        <StyledSelector
+          items={this.props.items}
+          selectItem={this.props.builder.setPaletteItem}
+          paletteItem={this.props.builder.paletteItem}
+        />
+      )
+    }
+    if (! _.isEmpty(this.props.customItems)) {
+      customItems = (
+        <>
+          <Divider/>
+          <StyledSelector
+            items={this.props.customItems}
+            selectItem={this.props.builder.setPaletteItem}
+            paletteItem={this.props.builder.paletteItem}
+          />
+        </>
+      )
+    }
+
+    if (this.props.customDialog && _.isEmpty(this.props.customItems)) {
+      const splitMessages = this.props.helpMessage.split('+')
+      helpMessage = (
+        <>
+          <Divider/>
+          <CenteredDiv>
+            <Typography align="left">
+              {splitMessages[0]} <AddBoxIcon color="primary" style={{fontSize: '16px', marginBottom: '-3px'}}/> {splitMessages[1]}
+            </Typography>
+          </CenteredDiv>
+        </>
+      )
+    }
+
     return (
       // styleを上書きするために必要
       <div className={this.props.className}>
@@ -45,34 +85,24 @@ export default class BuilderPalette extends React.Component<BuilderPaletteProps,
           'hidden': ! this.props.active
         })}
         >
-          <ScrollablePaper>
+          <PaletteBodyPaper>
             <TitleDiv className='Palette__title'>
               {this.props.icon}
               <Typography variant="subheading" color="inherit" style={{flex: 1}}>
                 {this.props.title}
               </Typography>
               {this.props.customDialog &&
-                <Tooltip title={this.props.tooltipTitle}>
-                  <PrimaryPaletteAddButton onClick={this.props.openCustomDialog}/>
-                </Tooltip>
+              <Tooltip title={this.props.tooltipTitle}>
+                <PrimaryPaletteAddButton onClick={this.props.openCustomDialog}/>
+              </Tooltip>
               }
             </TitleDiv>
-            <Selector
-              items={this.props.items}
-              selectItem={this.props.builder.setPaletteItem}
-              paletteItem={this.props.builder.paletteItem}
-            />
-            {! _.isEmpty(this.props.customItems) &&
-              <>
-                <Divider />
-                <Selector
-                  items={this.props.customItems}
-                  selectItem={this.props.builder.setPaletteItem}
-                  paletteItem={this.props.builder.paletteItem}
-                />
-              </>
-            }
-          </ScrollablePaper>
+            <ScrollablePaper>
+              {presetItems}
+              {customItems}
+              {helpMessage}
+            </ScrollablePaper>
+          </PaletteBodyPaper>
         </HideableDiv>
         {this.props.customDialog}
       </div>

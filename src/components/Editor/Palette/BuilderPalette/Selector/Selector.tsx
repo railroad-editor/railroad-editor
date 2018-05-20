@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {List, ListItemText} from 'material-ui'
-import {PrimaryColorActiveListItem, SecondaryColorActiveListItem} from "components/common/ActiveListItem";
+import {PrimaryColorActiveListItem} from "components/common/ActiveListItem";
 
 export interface SelectorProps {
   items: PaletteItem[]

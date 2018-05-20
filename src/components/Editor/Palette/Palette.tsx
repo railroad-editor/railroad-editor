@@ -104,6 +104,7 @@ export class Palette extends React.Component<EnhancedPaletteProps, PaletteState>
           }
           openCustomDialog={this.openCustomDialog}
           tooltipTitle={'Add Custom Straight Rail'}
+          helpMessage={'Click + to add a custom straight rail.'}
         />
         <BuilderPalette
           active={this.isActive(Tools.CURVE_RAILS)}
@@ -121,6 +122,7 @@ export class Palette extends React.Component<EnhancedPaletteProps, PaletteState>
           }
           openCustomDialog={this.openCustomDialog}
           tooltipTitle={'Add Custom Curve Rail'}
+          helpMessage={'Click + to add a custom curve rail.'}
         />
         <BuilderPalette
           active={this.isActive(Tools.TURNOUTS)}
@@ -150,6 +152,7 @@ export class Palette extends React.Component<EnhancedPaletteProps, PaletteState>
           }
           openCustomDialog={this.openCustomDialog}
           tooltipTitle={'Add Rail Group'}
+          helpMessage={'To add a new rail group, select rails and click + button.'}
         />
       </Rnd>
     )

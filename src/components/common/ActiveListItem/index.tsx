@@ -26,6 +26,7 @@ export const PrimaryColorActiveListItem = styled(ActiveListItem)`
     :hover {
       background-color: ${props => props.active ? theme.palette.primary[500] : theme.palette.grey[200]};
     }
+    padding-right: 18px;
   }
 `
 
@@ -35,5 +36,6 @@ export const SecondaryColorActiveListItem = styled(ActiveListItem)`
     :hover {
       background-color: ${props => props.active ? theme.palette.secondary[500] : theme.palette.grey[200]};
     }
+    padding-right: 18px;
   }
 `
