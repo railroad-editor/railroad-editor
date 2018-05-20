@@ -9,6 +9,7 @@ import {getLayoutImageFileName} from "apis/storage";
 import {LayoutCard} from "components/Editor/MenuDrawer/OpenLayoutsDialog/LayoutCard/LayoutCard";
 import {ConfirmationDialog} from "components/Editor/LayerPalette/ConfirmationDialog/ConfirmationDialog";
 import {LayoutMeta} from "store/layoutStore";
+import Grid from "material-ui/Grid";
 
 const LOGGER = getLogger(__filename)
 
@@ -91,20 +92,24 @@ export default class OpenLayoutsDialog extends React.Component<OpenLayoutDialogP
           <Typography>
             You have {this.props.layouts.length} layouts.
           </Typography>
+          <Grid container spacing={24}>
           {sortedLayouts.map((meta, idx) => {
             const layoutImageFile = getLayoutImageFileName(this.props.authData.username, meta.id)
             return (
-              <LayoutCard
-                key={`card-${idx}`}
-                imgKey={layoutImageFile}
-                title={meta.name}
-                lastModified={meta.lastModified}
-                onClick={this.onClick(meta)}
-                onDelete={this.openDeleteDialog(meta.id)}
-                onRename={this.openDeleteDialog(meta.id)}
-              />
+              <Grid item xs={4}>
+                <LayoutCard
+                  key={`card-${idx}`}
+                  imgKey={layoutImageFile}
+                  title={meta.name}
+                  lastModified={meta.lastModified}
+                  onClick={this.onClick(meta)}
+                  onDelete={this.openDeleteDialog(meta.id)}
+                  onRename={this.openDeleteDialog(meta.id)}
+                />
+              </Grid>
             )
           })}
+          </Grid>
         </DialogContent>
         <ConfirmationDialog
           title={'Delete Layout'}
