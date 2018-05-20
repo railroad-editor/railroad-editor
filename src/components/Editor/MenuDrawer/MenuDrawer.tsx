@@ -57,38 +57,6 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
     this.state = {}
   }
 
-
-  /**
-   * レイアウトを上書き保存するロジック
-   * @returns {Promise<void>}
-   */
-  save = async (meta: LayoutMeta, config: LayoutConfig, layoutData: LayoutData) => {
-    const {userRailGroups, userRails} = this.props.builder
-    const userId = this.props.common.userInfo.username
-    const savedData = {
-      layout: layoutData,
-      meta: meta,
-      userRailGroups: userRailGroups,
-      userCustomRails: userRails,
-    }
-    LOGGER.info(savedData)
-    // レイアウトをセーブ
-    await this.props.layout.saveLayout()
-    // レイアウト画像をセーブ
-    await StorageAPI.saveCurrentLayoutImage(userId, meta.id)
-    // 背景画像が設定されていたらセーブ
-    if (config.backgroundImageUrl) {
-      await StorageAPI.saveBackgroundImage(userId, meta.id, config.backgroundImageUrl)
-    }
-  }
-
-  updateLastModified = (meta: LayoutMeta) => {
-    return {
-      ...meta,
-      lastModified: moment().valueOf()
-    }
-  }
-
   logout = async () => {
     await Auth.signOut()
     this.props.common.setAuthData(null)
@@ -154,11 +122,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
       return
     }
     // 現在のストアのデータを保存する
-    const meta = this.updateLastModified(this.props.layout.meta)
-    const {config, currentLayoutData} = this.props.layout
-    await this.save(meta, config, currentLayoutData)
-    this.props.snackbar.showMessage("Saved successfully.")
-    await this.props.common.loadLayoutList()
+    this.props.layout.saveLayout(this.props.snackbar.showMessage)
     this.props.onClose()
   }
 
@@ -166,11 +130,9 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
     if (this.openLoginDialogIfNot()) {
       return
     }
-    // metaだけダイアログで生成したものを使う
-    const {config, currentLayoutData} = this.props.layout
-    await this.save(meta, config, currentLayoutData)
-    this.props.snackbar.showMessage(`Saved successfully as "${meta.name}".`)  //`
-    await this.props.common.loadLayoutList()
+    // metaを更新してから保存する
+    this.props.layout.setLayoutMeta(meta)
+    this.props.layout.saveLayout(this.props.snackbar.showMessage)
     this.props.onClose()
   }
 

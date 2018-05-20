@@ -6,8 +6,9 @@ import builderStore, {PlacingMode} from "./builderStore";
 import {DEFAULT_GRID_SIZE, DEFAULT_INITIAL_ZOOM, DEFAULT_PAPER_HEIGHT, DEFAULT_PAPER_WIDTH} from "constants/tools";
 import {getAllOpenCloseJoints} from "components/rails/utils";
 import getLogger from "logging";
-import * as uuidv1 from "uuid/v1";
+import * as uuidv4 from "uuid/v4";
 import * as moment from "moment";
+import StorageAPI from "apis/storage"
 
 const LOGGER = getLogger(__filename)
 
@@ -72,7 +73,7 @@ export const INITIAL_STATE: LayoutStoreState = {
   ],
   historyIndex: 0,
   meta: {
-    id: uuidv1(),
+    id: uuidv4(),
     name: 'Untitled',
     lastModified: moment().valueOf()
   },
@@ -268,7 +269,14 @@ export class LayoutStore {
   }
 
   @action
-  saveLayout = async () => {
+  saveLayout = async (showMessage?: any) => {
+    const userId = commonStore.userInfo.username
+    // メタデータを更新
+    this.setLayoutMeta({
+      ...this.meta,
+      lastModified: moment().valueOf()
+    })
+    // レイアウトデータをセーブ
     LayoutAPI.saveLayoutData(
       commonStore.currentUser,
       this.currentLayoutData,
@@ -277,6 +285,15 @@ export class LayoutStore {
       builderStore.userRailGroups,
       builderStore.userRails
     )
+    // レイアウト画像をセーブ
+    await StorageAPI.saveCurrentLayoutImage(userId, this.meta.id)
+    // 背景画像が設定されていたらセーブ
+    if (this.config.backgroundImageUrl) {
+      await StorageAPI.saveBackgroundImage(userId, this.meta.id, this.config.backgroundImageUrl)
+    }
+
+    await commonStore.loadLayoutList()
+    if (showMessage) showMessage("Saved successfully.")
   }
 
   @action

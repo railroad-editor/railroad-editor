@@ -7,6 +7,8 @@ import {default as AutoFocusTextValidator} from "components/common/AutoFocusText
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {LayoutConfig, LayoutMeta} from "store/layoutStore";
+import * as uuidv4 from "uuid/v4";
+
 
 const LOGGER = getLogger(__filename)
 
@@ -56,7 +58,7 @@ export default class SaveLayoutDialog extends FormDialog<SaveLayoutDialogProps, 
     if (this.props.layoutMeta) {
       layoutId = this.props.layoutMeta.id
     } else {
-      layoutId = this.createLayoutId()
+      layoutId = uuidv4()
     }
     const timestamp = moment().valueOf()
     const meta = {
@@ -66,14 +68,6 @@ export default class SaveLayoutDialog extends FormDialog<SaveLayoutDialogProps, 
     }
     return meta
   }
-
-  // saveLayout = async (meta) => {
-  //   this.props.saveLayout()
-  //   await StorageAPI.saveCurrentLayoutImage(this.props.authData.username, meta.id)
-  //   if (this.props.layoutConfig.backgroundImageUrl) {
-  //     StorageAPI.saveBackgroundImage(this.props.authData.username, meta.id, this.props.layoutConfig.backgroundImageUrl)
-  //   }
-  // }
 
 
   renderContent = () => {

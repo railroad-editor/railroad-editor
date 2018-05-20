@@ -61,7 +61,7 @@ export class EditableTypography extends React.Component<EditableTitleProps, Edit
         <EditDialog
           open={this.state.openDialog}
           title={'Layout Name'}
-          text={this.state.text}
+          text={this.props.text}
           onOK={this.onOK}
           onClose={this.closeDialog}
         />

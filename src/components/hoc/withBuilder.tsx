@@ -217,7 +217,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
 
     keyDown_CtrlS = (e) => {
-      this.props.ui.setSaveNewDialog(true)
+      this.props.layout.saveLayout(this.props.snackbar.showMessage)
     }
 
     /**
