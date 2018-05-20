@@ -45,6 +45,7 @@ class App extends React.Component<AppProps, {}> {
     window.onbeforeunload = () => {
       return "Dude, are you sure you want to leave? Think of the kittens!";
     }
+    document.title = "Railroad Editor (Beta)"
   }
 
   async componentWillMount() {

@@ -106,8 +106,8 @@
   "scripts": {
     "start": "REACT_APP_ENV=beta node scripts/start.js",
     "build-beta": "REACT_APP_ENV=beta node scripts/build.js",
-    "build": "REACT_APP_ENV=prod node scripts/build.js",
     "publish-beta": "npm run build-beta && awsmobile publish --test",
+    "build": "REACT_APP_ENV=prod node scripts/build.js",
     "publish": "npm run build && awsmobile publish",
     "test": "node scripts/test.js --env=jsdom"
   },
