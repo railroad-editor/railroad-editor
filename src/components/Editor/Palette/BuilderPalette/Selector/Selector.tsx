@@ -1,39 +1,51 @@
 import * as React from 'react'
-import {List, ListItemText} from 'material-ui'
-import {PrimaryColorActiveListItem} from "components/common/ActiveListItem";
+import {List} from 'material-ui'
+import PaletteListItem from "components/Editor/Palette/BuilderPalette/PaletteListItem/PaletteListItem";
+import {inject, observer} from "mobx-react";
+import {STORE_BUILDER} from "constants/stores";
+import {BuilderStore} from "store/builderStore";
 
 export interface SelectorProps {
   items: PaletteItem[]
   paletteItem: PaletteItem
   selectItem: (item: PaletteItem) => void
+  hasMenu?: boolean
+  builder?: BuilderStore
 }
 
 
+@inject(STORE_BUILDER)
+@observer
 export default class Selector extends React.Component<SelectorProps, {}> {
 
   constructor(props: SelectorProps) {
     super(props)
   }
 
-  handleClick = (value: PaletteItem, e: React.MouseEvent<HTMLInputElement>) => {
-    this.props.selectItem(value)
+  onDelete = (item: PaletteItem) => {
+    if (item.type === 'RailGroup') {
+      this.props.builder.deleteUserRailGroup(item)
+    } else {
+      this.props.builder.deleteUserRail(item)
+    }
   }
 
   render() {
+    const {items, paletteItem, selectItem, hasMenu} = this.props
+    const onDelete = hasMenu ? this.onDelete : undefined
     return (
       <List>
-        {this.props.items.map((value, index) => {
-          return [
-              <PrimaryColorActiveListItem
-                button
-                active={this.props.paletteItem.name === value.name}
-                // TODO: Performance issue?
-                onClick={this.handleClick.bind(this, value)}
-                key={index}
-              >
-                <ListItemText primary={value.name}/>
-              </PrimaryColorActiveListItem>
-          ]
+        {items.map((value, index) => {
+          return (
+            <PaletteListItem
+              item={value}
+              selectItem={selectItem}
+              paletteItem={paletteItem}
+              hasMenu={hasMenu}
+              onDelete={onDelete}
+              key={index}
+            />
+          )
         })}
       </List>
     )

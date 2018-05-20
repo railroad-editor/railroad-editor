@@ -254,11 +254,6 @@ export class BuilderStore {
   }
 
   @action
-  setUserRails = (items: RailItemData[]) => {
-    this.userRails = items
-  }
-
-  @action
   addUserRailGroup = (item: UserRailGroupData) => {
     // 同じ名前のレールグループが居たら上書きする
     const idx = this.userRailGroups.findIndex(rg => rg.name === item.name)
@@ -274,8 +269,23 @@ export class BuilderStore {
   }
 
   @action
+  deleteUserRailGroup = (item: PaletteItem) => {
+    this.userRailGroups = _.reject(this.userRailGroups, r => item.name)
+  }
+
+  @action
+  setUserRails = (items: RailItemData[]) => {
+    this.userRails = items
+  }
+
+  @action
   addUserRail = (item: RailItemData) => {
     this.userRails.push(item)
+  }
+
+  @action
+  deleteUserRail = (item: RailItemData) => {
+    this.userRails = _.reject(this.userRails, r => item.name === r.name && item.type === r.type)
   }
 
   @action

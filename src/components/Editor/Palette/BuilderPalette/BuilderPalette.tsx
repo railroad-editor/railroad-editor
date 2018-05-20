@@ -59,6 +59,7 @@ export default class BuilderPalette extends React.Component<BuilderPaletteProps,
             items={this.props.customItems}
             selectItem={this.props.builder.setPaletteItem}
             paletteItem={this.props.builder.paletteItem}
+            hasMenu
           />
         </>
       )

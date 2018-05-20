@@ -227,6 +227,10 @@ export class LayoutStore {
     this.currentLayoutData.layers = this.currentLayoutData.layers.filter(layer => layer.id !== item.id)
     // レイヤーに所属するレールを削除
     this.currentLayoutData.rails = this.currentLayoutData.rails.filter(rail => rail.layerId !== item.id)
+    // アクティブレイヤーを消した場合、Builderのアクティブレイヤーをセットする
+    if (builderStore.activeLayerId === item.id) {
+      builderStore.setActiveLayer(this.currentLayoutData.layers[0].id)
+    }
   }
 
   @action
