@@ -262,10 +262,13 @@ export class BuilderStore {
     } else {
       this.userRailGroups.push(item)
     }
-    this.lastPaletteItems[Tools.RAIL_GROUPS] = {
+    // レールグループ作成後はパレットレールとして選択する
+    const paletteItem = {
       type: 'RailGroup',
       name: item.name
     }
+    this.setPaletteItem(paletteItem)
+    this.setActiveTool(Tools.RAIL_GROUPS)
   }
 
   @action
