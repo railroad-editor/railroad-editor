@@ -408,7 +408,6 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
      */
     private addRailGroup = (railGroup: RailGroupData, children: RailData[]) => {
       const tmpRGC = getTemporaryRailGroupComponent()
-      // const childComponents = tmpRGC.children
       LOGGER.info('withBuilder#addRailGroup', 'temporaryRailGroup', tmpRGC)
       const railDatas = children.map(child => {
         const position = getRailComponent(child.id).railPart.getGlobalJointPosition(child.pivotJointIndex)
@@ -624,10 +623,15 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
 
     private registerRailGroupInner = (rails: RailData[], name: string) => {
-      // このレールグループの未接続ジョイントリストを作成
+      // このレールグループメンバーのレールID
+      const memberRailIds = rails.map(r => r.id)
       const openJoints = []
       rails.map((rail, idx) => {
-        const opposingJointIds = _.keys(rail.opposingJoints).map(k => Number(k))
+        // 他のメンバーに接続されているジョイントだけをリストアップする
+        const opposingJointIds = _.toPairs(rail.opposingJoints)
+          .filter(([k, v]) => memberRailIds.includes(v.railId))
+          .map(([k, v]) => Number(k))
+        // このレールのジョイント数を取得し、未接続ジョイントのIDをリストアップする
         const numJoints = getRailComponent(rail.id).props.numJoints
         const openJointIds = _.without(_.range(numJoints), ...opposingJointIds)
         openJointIds.forEach(id => openJoints.push({ railId: idx, jointId: id }))
