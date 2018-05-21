@@ -62,6 +62,12 @@ export class ResetPassword extends AuthPiece<ResetPasswordProps & RouteComponent
       .catch(err => this.error(err));
   }
 
+  onKeyPress = (e) => {
+    if ( (! this.state.disabled) && e.key === 'Enter') {
+      this.submit()
+      e.preventDefault()
+    }
+  }
 
   successView = () => {
     return (
@@ -92,6 +98,7 @@ export class ResetPassword extends AuthPiece<ResetPasswordProps & RouteComponent
                 type="password"
                 value={this.state.inputs.password}
                 onChange={this.handleInputChange}
+                onKeyPress={this.onKeyPress}
                 validatorListener={this.handleValidation}
                 validators={['required']}
                 errorMessages={['this field is required']}
@@ -105,6 +112,7 @@ export class ResetPassword extends AuthPiece<ResetPasswordProps & RouteComponent
                 type="password"
                 value={this.state.inputs.confirmPassword}
                 onChange={this.handleInputChange}
+                onKeyPress={this.onKeyPress}
                 validatorListener={this.handleValidation}
                 validators={['isPasswordMatch', 'required']}
                 errorMessages={['password mismatch', 'this field is required']}

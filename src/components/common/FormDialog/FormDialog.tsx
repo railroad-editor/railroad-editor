@@ -73,7 +73,7 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
   }
 
   onKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if ( (! this.state.disabled) && e.key === 'Enter') {
       this.onOK()
       e.preventDefault()
     }

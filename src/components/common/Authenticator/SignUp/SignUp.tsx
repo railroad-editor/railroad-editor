@@ -53,6 +53,13 @@ export default class SignUp extends AuthPiece<AuthPieceProps, SignUpState> {
       .catch(err => this.error(err));
   }
 
+  onKeyPress = (e) => {
+    if ( (! this.state.disabled) && e.key === 'Enter') {
+      this.signUp()
+      e.preventDefault()
+    }
+  }
+
 
   showComponent() {
     return (
@@ -71,6 +78,7 @@ export default class SignUp extends AuthPiece<AuthPieceProps, SignUpState> {
                   key="email"
                   value={this.state.inputs.email}
                   onChange={this.handleInputChange}
+                  onKeyPress={this.onKeyPress}
                   validatorListener={this.handleValidation}
                   validators={['required', 'isEmail']}
                   errorMessages={['this field is required', 'email is not valid']}
@@ -84,6 +92,7 @@ export default class SignUp extends AuthPiece<AuthPieceProps, SignUpState> {
                   type="password"
                   value={this.state.inputs.password}
                   onChange={this.handleInputChange}
+                  onKeyPress={this.onKeyPress}
                   validatorListener={this.handleValidation}
                   validators={['required']}
                   errorMessages={['this field is required']}
@@ -97,6 +106,7 @@ export default class SignUp extends AuthPiece<AuthPieceProps, SignUpState> {
                   type="password"
                   value={this.state.inputs.confirmPassword}
                   onChange={this.handleInputChange}
+                  onKeyPress={this.onKeyPress}
                   validatorListener={this.handleValidation}
                   validators={['isPasswordMatch', 'required']}
                   errorMessages={['password mismatch', 'this field is required']}

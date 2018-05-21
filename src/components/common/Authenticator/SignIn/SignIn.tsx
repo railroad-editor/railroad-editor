@@ -70,6 +70,12 @@ export default class SignIn extends AuthPiece<SignInProps, AuthPieceState> {
       });
   }
 
+  onKeyPress = (e) => {
+    if ( (! this.state.disabled) && e.key === 'Enter') {
+      this.signIn()
+      e.preventDefault()
+    }
+  }
 
   showComponent() {
     const { authState, federated, onStateChange } = this.props;
@@ -90,6 +96,7 @@ export default class SignIn extends AuthPiece<SignInProps, AuthPieceState> {
                   key="email"
                   value={this.state.inputs.email}
                   onChange={this.handleInputChange}
+                  onKeyPress={this.onKeyPress}
                   validatorListener={this.handleValidation}
                   validators={['required', 'isEmail']}
                   errorMessages={['this field is required', 'email is not valid']}
@@ -103,6 +110,7 @@ export default class SignIn extends AuthPiece<SignInProps, AuthPieceState> {
                   type="password"
                   value={this.state.inputs.password}
                   onChange={this.handleInputChange}
+                  onKeyPress={this.onKeyPress}
                   validatorListener={this.handleValidation}
                   validators={['required']}
                   errorMessages={['this field is required']}
