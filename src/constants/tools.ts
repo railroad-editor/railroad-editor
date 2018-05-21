@@ -27,8 +27,9 @@ export const DEFAULT_PAPER_LINE_COLOR = '#ff6666'
 export const DEFAULT_GRID_SIZE = 70
 export const DEFAULT_INITIAL_ZOOM = 1
 
+// TODO: 環境によって適切な値は異なる？要調査
 export const ZOOM_FACTOR = 0.002
-export const ZOOM_MIN = 0.1
+export const ZOOM_MIN = 0.05
 export const ZOOM_MAX = 10
 export const ZOOM_CORRECTION = 0.08
 
