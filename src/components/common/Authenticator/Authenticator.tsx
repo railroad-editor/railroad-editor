@@ -88,8 +88,14 @@ export default class Authenticator extends React.Component<AuthenticatorProps, A
       <SignIn federated={federated}/>,
       <SignUp />,
       <ForgotPassword />,
-      <ConfirmEmail />
-
+      <ConfirmEmail
+        title="Sign Up"
+        validAuthStates={[AuthState.CONFIRM_SIGN_UP]}
+      />,
+      <ConfirmEmail
+        title="Password Reset"
+        validAuthStates={[AuthState.CONFIRM_FORGOT_PASSWORD]}
+      />
     ];
 
     const render_props_children = React.Children.map(props_children, (child, index) => {

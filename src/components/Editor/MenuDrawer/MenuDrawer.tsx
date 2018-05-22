@@ -205,22 +205,6 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
           </ListItem>
         </>
       )
-      dialogs = (
-        <>
-          <LoginDialog
-            open={ui.loginDialog}
-            onClose={this.closeLoginDialog}
-            setAuthData={this.props.common.setAuthData}
-            loadLayoutList={this.props.common.loadLayoutList}
-          />
-          <SignUpDialog
-            open={ui.signInDialog}
-            onClose={this.closeSignUpDialog}
-            setAuthData={this.props.common.setAuthData}
-            loadLayoutList={this.props.common.loadLayoutList}
-          />
-        </>
-      )
     }
 
 
@@ -280,6 +264,18 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
           onOK={this.onSaveAs}
           authData={this.props.common.userInfo}
           layoutConfig={this.props.layout.config}
+        />
+        <LoginDialog
+          open={ui.loginDialog}
+          onClose={this.closeLoginDialog}
+          setAuthData={this.props.common.setAuthData}
+          loadLayoutList={this.props.common.loadLayoutList}
+        />
+        <SignUpDialog
+          open={ui.signInDialog}
+          onClose={this.closeSignUpDialog}
+          setAuthData={this.props.common.setAuthData}
+          loadLayoutList={this.props.common.loadLayoutList}
         />
         {dialogs}
       </>

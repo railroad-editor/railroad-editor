@@ -23,7 +23,7 @@ interface InputData {
 
 export enum AuthState {
   SIGN_UP = 'signUp',
-  CONFIRM_EMAIL = 'confirmSignUp',
+  CONFIRM_SIGN_UP = 'confirmSignUp',
   SIGNED_UP = 'signedUp',
   SIGN_IN = 'signIn',
   CONFIRM_SIGNIN = 'confirmSignIn',
@@ -31,6 +31,7 @@ export enum AuthState {
   SIGNED_OUT = 'signedOut',
   VERIFY_CONTACT = 'verifyContact',
   FORGOT_PASSWORD = 'forgotPassword',
+  CONFIRM_FORGOT_PASSWORD = 'confirmForgotPassword',
   REQUIRE_NEW_PASSWORD = 'requireNewPassword',
   TOTP_SETUP = 'TOTPSetup',
 }

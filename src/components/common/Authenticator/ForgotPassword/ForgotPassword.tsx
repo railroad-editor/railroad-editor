@@ -27,7 +27,7 @@ export default class ForgotPassword extends AuthPiece<any, any> {
   sendEmail = () => {
     const { email } = this.state.inputs;
     Auth.forgotPassword(email)
-      .then(data => this.changeState(AuthState.CONFIRM_EMAIL, null))
+      .then(data => this.changeState(AuthState.CONFIRM_FORGOT_PASSWORD, null))
       .catch(err => this.error(err));
   }
 
