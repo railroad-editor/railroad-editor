@@ -1,12 +1,15 @@
 import * as React from 'react'
 import {Tools} from "constants/tools";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER} from "constants/stores";
+import {STORE_BUILDER, STORE_COMMON} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
 import * as $ from "jquery";
+import {CommonStore} from "store/commonStore";
+import {when} from "mobx";
 
 export interface WithToolsPrivateProps {
   builder?: BuilderStore
+  common?: CommonStore
 }
 
 export interface WithToolsPublicProps {
@@ -21,7 +24,7 @@ type WithToolsProps =  WithToolsPublicProps & WithToolsPrivateProps
  */
 export default function withTools(WrappedComponent: React.ComponentClass<WithToolsProps>) {
 
-  @inject(STORE_BUILDER)
+  @inject(STORE_BUILDER, STORE_COMMON)
   @observer
   class WithTools extends React.Component<WithToolsProps, {}> {
     private _prevTool: Tools
@@ -32,6 +35,13 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
         activeTool: 'select',
       }
       this._prevTool = null
+
+      // Paperがマウントされて、ToolsのEventListenerが登録されてから
+      // このHOCのEventListenerを登録する
+      when(
+        () => this.props.common.isPaperLoaded,
+        () => this.setKeyEventListener()
+      )
     }
 
 
@@ -43,8 +53,11 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
 
     keyDown = (e: KeyboardEvent|any) => {
       if (this.dialogExists()) return
-      // CtrlキーのショートカットはWithBuilderで扱う
-      if (e.ctrlKey) return
+
+      // これらのModifierのショートカットキーは現状扱わない
+      if (e.ctrlKey || e.altKey || e.metaKey) {
+        return
+      }
 
       switch (e.key) {
         case 'Alt':
@@ -73,6 +86,8 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
           this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[Tools.RAIL_GROUPS])
           break
       }
+      e.preventDefault()
+      e.stopPropagation()
     }
 
     keyUp = (e: KeyboardEvent) => {
@@ -83,7 +98,7 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
       }
     }
 
-    componentDidMount() {
+    setKeyEventListener = () => {
       document.addEventListener('keydown', this.keyDown)
       document.addEventListener('keyup', this.keyUp)
     }

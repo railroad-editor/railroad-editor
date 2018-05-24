@@ -37,13 +37,8 @@ export class UiStore {
   }
 
   @action
-  setCreateNewDialog = (open: boolean, showMessage?) => {
-    if (commonStore.isAuth) {
-      this.createNewDialog = open
-    } else {
-      if (open) showMessage("Please login.")
-      this.setLoginDialog(open)
-    }
+  setCreateNewDialog = (open: boolean) => {
+    this.createNewDialog = open
   }
 
   @action

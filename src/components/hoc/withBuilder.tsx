@@ -9,7 +9,7 @@ import {DetectionState} from "components/rails/parts/primitives/DetectablePart";
 import railItems from "constants/railItems.json"
 import {TEMPORARY_RAIL_OPACITY, Tools} from "constants/tools";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI} from 'constants/stores';
+import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI} from 'constants/stores';
 import {BuilderStore, UserRailGroupData} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import * as $ from "jquery";
@@ -17,6 +17,7 @@ import {compose} from "recompose";
 import {withSnackbar} from 'material-ui-snackbar-provider'
 import {UiStore} from "store/uiStore";
 import {LayoutLogicStore} from "store/layoutLogicStore";
+import {CommonStore} from "store/commonStore";
 
 
 const LOGGER = getLogger(__filename)
@@ -48,6 +49,7 @@ export interface WithBuilderPublicProps {
 
 
 interface WithBuilderPrivateProps {
+  common?: CommonStore
   builder?: BuilderStore
   layout?: LayoutStore
   layoutLogic?: LayoutLogicStore
@@ -75,7 +77,7 @@ export interface WithBuilderState {
  */
 export default function withBuilder(WrappedComponent: React.ComponentClass<WithBuilderPublicProps>) {
 
-  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI)
+  @inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI)
   @observer
   class WithBuilder extends React.Component<WithBuilderProps, WithBuilderState> {
 
@@ -168,6 +170,8 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       LOGGER.debug(methodName)
       if (this[methodName]) {
         this[methodName](e)
+        e.preventDefault()
+        e.stopPropagation()
       }
     }
 
@@ -211,7 +215,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
 
     keyDown_CtrlO = (e) => {
-      this.props.ui.setLayoutsDialog(true)
+      this.props.ui.setLayoutsDialog(true, this.props.snackbar.showMessage)
     }
 
     keyDown_CtrlN = (e) => {
@@ -219,7 +223,12 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
 
     keyDown_CtrlS = (e) => {
-      this.props.layout.saveLayout(this.props.snackbar.showMessage)
+      if (this.props.common.userInfo) {
+        this.props.layout.saveLayout(this.props.snackbar.showMessage)
+      } else {
+        this.props.snackbar.showMessage("Please login.")
+        this.props.ui.setLoginDialog(true)
+      }
     }
 
     /**

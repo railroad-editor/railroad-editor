@@ -82,7 +82,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
   }
 
   openCreateNewDialog = () => {
-    this.props.ui.setCreateNewDialog(true, this.props.snackbar.showMessage)
+    this.props.ui.setCreateNewDialog(true)
   }
 
   closeCreateNewDialog = () => {
