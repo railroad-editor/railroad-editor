@@ -1,5 +1,6 @@
 import * as React from "react";
 import {Group, Item, Path, Point} from "paper";
+import {ANIMATION_FLOW_COLOR_1, ANIMATION_FLOW_COLOR_2} from "constants/tools";
 
 export enum Pivot {
   CENTER = 'Center',
@@ -7,6 +8,13 @@ export enum Pivot {
   TOP = 'Top',
   RIGHT = 'Right',
   BOTTOM = 'Bottom',
+}
+
+export enum FlowDirection {
+  NONE,
+  START_TO_END,
+  END_TO_START,
+  ILLEGAL
 }
 
 export interface PartBaseProps extends Partial<PartBaseDefaultProps> {
@@ -19,7 +27,6 @@ export interface PartBaseProps extends Partial<PartBaseDefaultProps> {
   selected?: boolean
   name?: string
   data?: any
-  onFrame?: any
   onMouseDown?: any
   onMouseDrag?: any
   onMouseUp?: any
@@ -38,6 +45,7 @@ export interface PartBaseDefaultProps {
   visible?: boolean
   opacity?: number
   selected?: boolean
+  flowDirection?: FlowDirection
 }
 
 
@@ -50,6 +58,7 @@ export default abstract class PartBase<P extends PartBaseProps, S> extends React
     visible: true,
     opacity: 1,
     selected: false,
+    flowDirection: FlowDirection.START_TO_END,
   }
 
   constructor(props: P) {
@@ -141,12 +150,6 @@ export default abstract class PartBase<P extends PartBaseProps, S> extends React
     return this.path.localToGlobal(this.getInternalPivotPosition(pivot))
   }
 
-  componentDidMount() {
-  }
-
-  componentWillReceiveProps(nextProps: PartBaseProps) {
-  }
-
   /**
    * Path内部における指定のPivotの位置を返す。
    * 派生クラスで要実装。
@@ -158,33 +161,42 @@ export default abstract class PartBase<P extends PartBaseProps, S> extends React
     if (path) this._path = path
   }
 
-  // shouldComponentUpdate(nextProps) {
-  //   if (this.props.position.x === nextProps.position.x && this.props.position.y === nextProps.position.y) {
-  //     return false
-  //   }
-  //   if (this.props.angle === nextProps.angle) {
-  //     return false
-  //   }
-  //   return true
-  // }
+  /**
+   * 電流アニメーションをする
+   * @param event
+   */
+  onFrame = (event) => {
+    let ratio = event.count % 60 / 60;
+    let currentOrigin;
+    let currentDestination
 
-  // moveRelatively(difference: Point) {
-  //   this._path.position = this._path.position.add(difference);
-  // }
-  //
-  // move(position: Point, pivot: Point = this.position): void {
-  //   let difference = position.subtract(pivot);
-  //   this.moveRelatively(difference);
-  // }
-  //
-  // rotateRelatively(difference: number, pivot: Point = this.position) {
-  //   this._angle += difference
-  //   this.path.rotate(difference, pivot);
-  // }
-  //
-  // rotate(angle: number, pivot: Point = this.position) {
-  //   let relAngle = angle - this.angle
-  //   this.rotateRelatively(relAngle, pivot);
-  // }
+    switch (this.props.flowDirection) {
+      case FlowDirection.NONE:
+        // アニメーションしない
+        this.path.fillColor = "black";
+        return;
+      case FlowDirection.START_TO_END:
+        currentOrigin = this.getPosition(Pivot.LEFT).multiply(2 - ratio).add(this.getPosition(Pivot.RIGHT).multiply(ratio - 1))
+        currentDestination = currentOrigin.add(this.getPosition(Pivot.RIGHT).subtract(this.getPosition(Pivot.LEFT)).multiply(2))
+        // log.debug("S to E : ", currentOrigin, "=>", currentDestination);
+        break;
+      case FlowDirection.END_TO_START:
+        currentOrigin = this.getPosition(Pivot.LEFT).multiply(ratio + 1).add(this.getPosition(Pivot.RIGHT).multiply(-ratio))
+        currentDestination = currentOrigin.add(this.getPosition(Pivot.RIGHT).subtract(this.getPosition(Pivot.LEFT)).multiply(2))
+        // log.debug("E to S : ", currentOrigin, "=>", currentDestination);
+        break;
+      case FlowDirection.ILLEGAL:
+        this.path.fillColor = "red";
+        return;
+    }
+
+    this.path.fillColor = {
+      gradient: {
+        stops: [ANIMATION_FLOW_COLOR_1, ANIMATION_FLOW_COLOR_2, ANIMATION_FLOW_COLOR_1, ANIMATION_FLOW_COLOR_2, ANIMATION_FLOW_COLOR_1]
+      },
+      origin: currentDestination,
+      destination: currentOrigin,
+    } as any
+  }
 }
 

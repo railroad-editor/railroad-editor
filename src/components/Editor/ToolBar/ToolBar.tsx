@@ -18,6 +18,7 @@ import CopyIcon from "material-ui-icons/ContentCopy";
 import CutIcon from "material-ui-icons/ContentCut";
 import FreePlacingModeIcon from "material-ui-icons/LocationOn";
 import ConnectModeIcon from "material-ui-icons/CompareArrows";
+import PlayArrowIcon from "material-ui-icons/PlayArrow";
 import getLogger from "logging";
 import * as classNames from "classnames"
 import Tooltip from "material-ui/Tooltip";
@@ -31,6 +32,7 @@ import MenuDrawer from "components/Editor/MenuDrawer/MenuDrawer";
 import {SettingsDialog} from "components/Editor/ToolBar/SettingsDialog/SettingsDialog";
 import {compose} from "recompose";
 import {EditableTypography} from "components/common/EditableTypography/EditableTypography";
+import Peer from 'skyway-js';
 
 const LOGGER = getLogger(__filename)
 
@@ -58,6 +60,11 @@ type EnhancedToolBarProps = ToolBarProps & WithBuilderPublicProps
 @observer
 export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState> {
 
+  myPeerId: string
+  peer: Peer
+  targetPeerId: string
+  conn: any
+
   constructor(props: EnhancedToolBarProps) {
     super(props)
     this.state = {
@@ -65,6 +72,18 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
       openSettings: false,
       el: undefined,
     }
+  }
+
+  componentDidMount() {
+    this.peer = new Peer({
+      key: '423ec210-715b-4916-971f-bd800a835414',
+      debug: 3,
+    });
+    // Show this peer's ID.
+    this.peer.on('open', id => {
+      this.myPeerId = id
+      console.log('open', this.myPeerId)
+    });
 
   }
 
@@ -112,6 +131,32 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
 
   onChangePlacingMode = (mode: PlacingMode) => (e) => {
     this.props.builder.setPlacingMode(mode)
+  }
+
+  connectWebRTC = () => {
+    const connectedPeers = {};
+    const requestedPeer = "C1yv3nGCQGzgdcFs"
+    if (!connectedPeers[requestedPeer]) {
+      this.conn = this.peer.connect(requestedPeer, {
+        label:    'chat',
+        metadata: {message: 'hi i want to chat with you!'},
+      });
+      this.conn.on('open', (id) => {
+        console.log('open', id)
+      });
+      this.conn.on('error', err => alert(err));
+
+      this.conn.on('data', data => {
+        console.log('data', data)
+      });
+
+      this.conn.on('close', () => {
+      });
+    }
+  }
+
+  sendSomething = () => {
+    this.conn.send('hello!')
   }
 
 
@@ -263,7 +308,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                     <CutIcon/>
                   </StyledIconButton>
                 </Tooltip>
-                <Tooltip title={"Delete (Del)"}>
+                <Tooltip title={"Delete (BS)"}>
                   <StyledIconButton
                     onClick={this.props.builderDeleteSelectedRails}
                   >
@@ -314,6 +359,20 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                   userInfo={this.props.common.userInfo}
                   layoutMeta={this.props.layout.meta}
                 />
+                <Tooltip title={'Connect'}>
+                  <StyledIconButton
+                    onClick={this.connectWebRTC}
+                  >
+                    <PlayArrowIcon/>
+                  </StyledIconButton>
+                </Tooltip>
+                <Tooltip title={'Connect'}>
+                  <StyledIconButton
+                    onClick={this.sendSomething}
+                  >
+                    <PlayArrowIcon/>
+                  </StyledIconButton>
+                </Tooltip>
               </Grid>
 
               <Grid xs style={{display: 'flex'}}/>

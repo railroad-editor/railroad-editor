@@ -48,7 +48,7 @@ export default class CrossingRailPart extends RailPartBase<CrossingRailPartProps
     ]
   }
 
-  renderParts() {
+  renderParts = () => {
     const { length, crossAngle, pivotJointIndex, data } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 

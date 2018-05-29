@@ -48,7 +48,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
     ]
   }
 
-  renderParts() {
+  renderParts = () => {
     const { length, pivotJointIndex, data } = this.props
 
     // TODO: 方程式を解いてちゃんと値を出す

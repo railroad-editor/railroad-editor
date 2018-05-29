@@ -3,7 +3,7 @@ import {Point} from "paper";
 import {Rectangle} from "react-paper-bindings";
 import RectPart from "./primitives/RectPart";
 import {RAIL_PART_FILL_COLORS, RAIL_PART_WIDTH} from "constants/parts";
-import {Pivot} from "components/rails/parts/primitives/PartBase";
+import {default as PartBase, Pivot} from "components/rails/parts/primitives/PartBase";
 import PartGroup from "components/rails/parts/primitives/PartGroup";
 import RailPartBase, {RailPartBaseDefaultProps, RailPartBaseProps} from "components/rails/parts/RailPartBase";
 import getLogger from "logging";
@@ -27,6 +27,8 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
 
   constructor(props: StraightRailPartProps) {
     super(props)
+
+    this.parts = new Array(1)
   }
 
   // Pivotにするジョイントの位置を指定するための情報
@@ -45,7 +47,7 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
     ]
   }
 
-  renderParts() {
+  renderParts = () => {
     const { length, pivotJointIndex, data } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
     return (

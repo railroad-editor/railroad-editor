@@ -31,6 +31,7 @@ import {
 } from "constants/tools";
 import FreeRailPlacer from "components/Editor/FreeRailPlacer/FreeRailPlacer";
 import {BuilderStore, PlacingMode} from "store/builderStore";
+import {getAllRailComponents} from "components/rails/utils";
 
 const LOGGER = getLogger(__filename)
 
@@ -127,6 +128,10 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
   }
 
+  onFrame = (e) => {
+    getAllRailComponents().forEach(r => r.onFrame(e))
+  }
+
 
   // コンテキストメニュー無効化
   noopContextMenu = (e) => {
@@ -167,6 +172,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             lineColor={DEFAULT_PAPER_LINE_COLOR}
             gridSize={gridSize}
             onWheel={this.props.moveToolMouseWheel}
+            onFrame={this.onFrame}
             matrix={matrix}
             setPaperLoaded={this.props.common.setPaperLoaded}
           >

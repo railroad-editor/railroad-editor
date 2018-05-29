@@ -48,7 +48,7 @@ export default class DoubleStraightRailPart extends RailPartBase<DoubleStraightR
   }
 
 
-  renderParts() {
+  renderParts = () => {
     const { length, pivotJointIndex, data } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 

@@ -195,5 +195,9 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
   protected getInstance(railPart) {
     if (railPart) this.railPart = railPart
   }
+
+  onFrame = (e) => {
+    this.railPart.onFrame(e)
+  }
 }
 

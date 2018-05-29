@@ -38,7 +38,7 @@ export default class ArcPart extends PartBase<ArcPartProps, {}> {
     const {
       width, radius, centerAngle, direction, pivot,
       position, angle, fillColor, visible, opacity, selected, name, data,
-      onFrame, onMouseDown, onMouseDrag, onMouseUp, onClick, onDoubleClick, onMouseMove, onMouseEnter, onMouseLeave
+      onMouseDown, onMouseDrag, onMouseUp, onClick, onDoubleClick, onMouseMove, onMouseEnter, onMouseLeave
     } = this.props
 
     const pivotPosition = this.getInternalPivotPosition(pivot)
@@ -54,7 +54,6 @@ export default class ArcPart extends PartBase<ArcPartProps, {}> {
       selected={selected}
       name={name}
       data={data}
-      onFrame={onFrame}
       onMouseDown={onMouseDown}
       onMouseDrag={onMouseDrag}
       onMouseUp={onMouseUp}

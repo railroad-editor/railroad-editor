@@ -14,6 +14,7 @@ export interface GridPaperProps {
   backgroundColor: string
   backgroundImageUrl: string
   onWheel: any
+  onFrame: any
   setPaperLoaded: (loaded: boolean) => void
   matrix?: any
 }
@@ -110,7 +111,7 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
 
 
   render() {
-    const {viewWidth, viewHeight, backgroundColor, onWheel} = this.props
+    const {viewWidth, viewHeight, backgroundColor, onWheel, onFrame} = this.props
     const matrix = this.props.matrix || DEFAULT_MATRIX
 
     return (
@@ -118,6 +119,7 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
             height={viewHeight}
             matrix={matrix}
             onWheel={onWheel}
+            onFrame={onFrame}
             settings={{
               applyMatrix: false
             }}

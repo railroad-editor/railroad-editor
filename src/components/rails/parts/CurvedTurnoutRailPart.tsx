@@ -60,7 +60,7 @@ export default class CurvedTurnoutRailPart extends RailPartBase<CurvedTurnoutRai
   }
 
 
-  renderParts() {
+  renderParts = () => {
     const { innerRadius, outerRadius, innerCenterAngle, outerCenterAngle, direction, pivotJointIndex, data } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 

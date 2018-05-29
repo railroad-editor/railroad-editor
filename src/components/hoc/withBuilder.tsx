@@ -218,7 +218,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       this.props.ui.setLayoutsDialog(true, this.props.snackbar.showMessage)
     }
 
-    keyDown_CtrlN = (e) => {
+    keyDown_CtrlF = (e) => {
       this.props.ui.setCreateNewDialog(true)
     }
 

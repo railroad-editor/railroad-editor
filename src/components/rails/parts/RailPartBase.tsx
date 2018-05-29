@@ -49,6 +49,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
   public static RAIL_SPACE = 38
 
   detectablePart: DetectablePart
+  parts: any[]
 
   constructor(props: P) {
     super(props)
@@ -160,7 +161,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
   /**
    * パーツのJSXElementを返す。
    */
-  abstract renderParts()
+  abstract renderParts: () => any
 
 
   render() {
@@ -197,4 +198,8 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     if (detectablePart) this.detectablePart = detectablePart
   }
 
+
+  onFrame = (e) => {
+    this.detectablePart.mainPart._children.forEach(c => c.onFrame(e))
+  }
 }

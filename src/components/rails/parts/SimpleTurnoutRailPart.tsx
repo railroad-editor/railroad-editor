@@ -61,7 +61,7 @@ export default class SimpleTurnoutRailPart extends RailPartBase<SimpleTurnoutRai
   }
 
 
-  renderParts() {
+  renderParts = () => {
     const { length, radius, centerAngle, direction, pivotJointIndex, data } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 

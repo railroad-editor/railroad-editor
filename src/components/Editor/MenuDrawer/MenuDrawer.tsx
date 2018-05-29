@@ -232,7 +232,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
                 <OpenInNewIcon/>
               </ListItemIcon>
               <ListItemText primary="New Layout"/>
-              <KeyLabel text={'Ctrl + N'}/>
+              <KeyLabel text={'Ctrl + F'}/>
             </ListItem>
             <ListItem button onClick={this.onSave}>
               <ListItemIcon>
