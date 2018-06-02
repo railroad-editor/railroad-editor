@@ -234,7 +234,7 @@ export default abstract class PartBase<P extends PartBaseProps, S> extends React
     />
   }
 
-  protected readonly getRef = (ref) => {
+  protected getRef = (ref) => {
     if (ref) this._path = ref
   }
 

@@ -38,23 +38,6 @@ export default class CurveRailPart extends RailPartBase<CurveRailPartProps, {}> 
     ]
   }
 
-  get angles() {
-    return [
-      this.props.angle,
-      this.endAngle
-    ]
-  }
-
-  get endAngle() {
-    switch (this.props.direction) {
-      case ArcDirection.RIGHT:
-        return this.props.angle - this.props.centerAngle + 180
-      case ArcDirection.LEFT:
-        return this.props.angle + this.props.centerAngle - 180
-    }
-  }
-
-
   renderParts = () => {
     const { radius, centerAngle, direction, pivotJointIndex, data } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)

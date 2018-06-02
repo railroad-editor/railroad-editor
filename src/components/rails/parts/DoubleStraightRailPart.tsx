@@ -2,7 +2,7 @@ import * as React from "react";
 import {Point} from "paper";
 import {Rectangle} from "react-paper-bindings";
 import RectPart from "./primitives/RectPart";
-import {RAIL_PART_FILL_COLORS, RAIL_PART_WIDTH} from "constants/parts";
+import {RAIL_PART_FILL_COLORS, RAIL_PART_WIDTH, RAIL_SPACE} from "constants/parts";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
 import PartGroup from "components/rails/parts/primitives/PartGroup";
 import RailPartBase, {RailPartBaseDefaultProps, RailPartBaseProps} from "components/rails/parts/RailPartBase";
@@ -38,16 +38,6 @@ export default class DoubleStraightRailPart extends RailPartBase<DoubleStraightR
     ]
   }
 
-  get angles() {
-    return [
-      this.props.angle,
-      this.props.angle + 180,
-      this.props.angle,
-      this.props.angle + 180
-    ]
-  }
-
-
   renderParts = () => {
     const { length, pivotJointIndex, data } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
@@ -67,7 +57,7 @@ export default class DoubleStraightRailPart extends RailPartBase<DoubleStraightR
           }}
         />
         <RectPart
-          position={new Point(0, RailPartBase.RAIL_SPACE)}
+          position={new Point(0, RAIL_SPACE)}
           width={length}
           height={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}

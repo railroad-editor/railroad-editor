@@ -27,8 +27,6 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
 
   constructor(props: StraightRailPartProps) {
     super(props)
-
-    this.parts = new Array(1)
   }
 
   // Pivotにするジョイントの位置を指定するための情報
@@ -36,14 +34,6 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
     return [
       {pivotPartIndex: 0, pivot: Pivot.LEFT},
       {pivotPartIndex: 0, pivot: Pivot.RIGHT}
-    ]
-  }
-
-  // Pivotジョイントに応じて変わるレールの角度
-  get angles() {
-    return [
-      this.props.angle,
-      this.props.angle + 180
     ]
   }
 

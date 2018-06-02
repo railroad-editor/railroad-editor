@@ -3,7 +3,7 @@ import {Point} from "paper";
 import {Rectangle} from "react-paper-bindings";
 import RectPart from "./primitives/RectPart";
 import ArcPart, {ArcDirection} from "./primitives/ArcPart";
-import {RAIL_PART_FILL_COLORS, RAIL_PART_WIDTH} from "constants/parts";
+import {RAIL_PART_FILL_COLORS, RAIL_PART_WIDTH, RAIL_SPACE} from "constants/parts";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
 import PartGroup from "components/rails/parts/primitives/PartGroup";
 import RailPartBase, {RailPartBaseDefaultProps, RailPartBaseProps} from "components/rails/parts/RailPartBase";
@@ -39,15 +39,6 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
     ]
   }
 
-  get angles() {
-    return [
-      this.props.angle,
-      this.props.angle + 180,
-      this.props.angle,
-      this.props.angle + 180
-    ]
-  }
-
   renderParts = () => {
     const { length, pivotJointIndex, data } = this.props
 
@@ -70,7 +61,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           }}
         />
         <RectPart
-          position={new Point(0, RailPartBase.RAIL_SPACE)}
+          position={new Point(0, RAIL_SPACE)}
           width={length}
           height={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
@@ -101,7 +92,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           }}
         />
         <ArcPart
-          position={new Point(0, RailPartBase.RAIL_SPACE)}
+          position={new Point(0, RAIL_SPACE)}
           direction={ArcDirection.LEFT}
           radius={radius}
           centerAngle={15}
@@ -112,7 +103,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           }}
         />
         <ArcPart
-          position={new Point(length, RailPartBase.RAIL_SPACE)}
+          position={new Point(length, RAIL_SPACE)}
           direction={ArcDirection.LEFT}
           angle={15}
           radius={radius}

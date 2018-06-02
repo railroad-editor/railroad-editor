@@ -40,15 +40,6 @@ export default class WyeTurnoutRailPart extends RailPartBase<WyeTurnoutRailPartP
     ]
   }
 
-  get angles() {
-    return [
-      this.props.angle,
-      this.props.angle - this.props.centerAngle - 180,
-      this.props.angle + this.props.centerAngle - 180,
-    ]
-  }
-
-
   renderParts = () => {
     const { radius, centerAngle, pivotJointIndex, data } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)

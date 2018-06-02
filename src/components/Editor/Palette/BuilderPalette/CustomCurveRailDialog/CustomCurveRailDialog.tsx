@@ -3,10 +3,10 @@ import {FormControlLabel} from "material-ui";
 import Checkbox from "material-ui/Checkbox";
 import {Tools} from "constants/tools";
 import AutoFocusTextValidator from "components/common/AutoFocusTextValidator";
-import RailPartBase from "components/rails/parts/RailPartBase";
 import {RailItemData} from "components/rails";
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
+import {RAIL_SPACE} from "constants/parts";
 
 export interface CustomCurveRailDialogProps extends FormDialogProps {
   addUserRail: (item: RailItemData) => void
@@ -79,7 +79,7 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
   onInnterRadiusBlur = () => {
     const {innerRadius, outerRadius} = this.state.inputs
     if (innerRadius && ! outerRadius) {
-      this.setInput('outerRadius', String(Number(innerRadius) + RailPartBase.RAIL_SPACE))
+      this.setInput('outerRadius', String(Number(innerRadius) + RAIL_SPACE))
     }
   }
 
@@ -89,7 +89,7 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
   onOuterRadiusBlur = () => {
     const {innerRadius, outerRadius} = this.state.inputs
     if (outerRadius && ! innerRadius) {
-      this.setInput('innerRadius', String(Number(outerRadius) - RailPartBase.RAIL_SPACE))
+      this.setInput('innerRadius', String(Number(outerRadius) - RAIL_SPACE))
     }
   }
 

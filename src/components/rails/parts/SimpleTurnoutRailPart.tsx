@@ -43,23 +43,6 @@ export default class SimpleTurnoutRailPart extends RailPartBase<SimpleTurnoutRai
     ]
   }
 
-  get angles() {
-    return [
-      this.props.angle,
-      this.props.angle + 180,
-      this.endAngle
-    ]
-  }
-
-  get endAngle() {
-    switch (this.props.direction) {
-      case ArcDirection.RIGHT:
-        return this.props.angle - this.props.centerAngle + 180
-      case ArcDirection.LEFT:
-        return this.props.angle + this.props.centerAngle - 180
-    }
-  }
-
 
   renderParts = () => {
     const { length, radius, centerAngle, direction, pivotJointIndex, data } = this.props

@@ -281,3 +281,7 @@ export const getAllOpenCloseJoints = (rails: RailData[]): JointPair[]  => {
     return _.flatMap(combinations, cmb => getCloseJointsBetween(cmb[0], cmb[1]))
   }
 }
+
+export const normAngle = (angle: number) => {
+  return (angle + 360) % 360
+}

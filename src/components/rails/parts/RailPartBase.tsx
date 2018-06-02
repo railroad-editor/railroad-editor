@@ -7,6 +7,7 @@ import {RailPartMeta} from "components/rails/parts/types";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
 import getLogger from "logging";
 import {ReactElement} from "react";
+import {normAngle} from "components/rails/utils";
 
 const logger = getLogger(__filename)
 
@@ -46,14 +47,10 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     fillColors: RAIL_PART_FILL_COLORS
   }
 
-  public static RAIL_SPACE = 38
-
   detectablePart: DetectablePart
-  parts: any[]
 
-  constructor(props: P) {
+  protected constructor(props: P) {
     super(props)
-    this.getInstance = this.getInstance.bind(this)
   }
 
   get path() { return this.detectablePart.mainPart.path }
@@ -62,13 +59,36 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     logger.trace('updated')
     logger.trace(`[RailPart][${this.props.name}] j0: ${this.getGlobalJointPosition(0)}, ${this.getGlobalJointAngle(0)}`);
     logger.trace(`[RailPart][${this.props.name}] j1: ${this.getGlobalJointPosition(1)}, ${this.getGlobalJointAngle(1)}`);
+    this.fixRotationByPivot()
   }
 
   componentDidMount() {
     logger.trace('mounted')
     logger.trace(`[RailPart][${this.props.name}] j0: ${this.getGlobalJointPosition(0)}, ${this.getGlobalJointAngle(0)}`);
     logger.trace(`[RailPart][${this.props.name}] j1: ${this.getGlobalJointPosition(1)}, ${this.getGlobalJointAngle(1)}`);
+    this.fixRotationByPivot()
   }
+
+
+  fixRotationByPivot = () => {
+    const {pivotPartIndex, pivot} = this.getPivot(this.props.pivotJointIndex)
+    if (pivotPartIndex != null) {
+      const pivotAngle = this.detectablePart.mainPart.children[pivotPartIndex].getAngle(pivot)
+      let rotation
+      switch (pivot) {
+        case Pivot.LEFT:
+          rotation = normAngle(360 - pivotAngle)
+          break
+        case Pivot.RIGHT:
+          rotation = normAngle(360 - (pivotAngle + 180))
+          break
+        default:
+          throw Error(`Invalid pivot ${pivot} for ${this.constructor.name}`)
+      }
+      this.path.rotation = rotation
+    }
+  }
+
 
   /**
    * このパーツの親の座標系における指定のジョイントの位置を返す。
@@ -133,16 +153,6 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
    */
   abstract get pivots(): PivotInfo[]
 
-  /**
-   *
-   * 各ジョイントがPivotとして指定された時のRailPartの角度を返す。
-   * 派生クラスに要実装。
-   * TODO: componentDidMountで角度を決定するようにすれば無くせるかも
-   * @returns {number[]}
-   */
-  abstract get angles(): number[]
-
-
   getPivot(jointIndex: number) {
     if (jointIndex == null) {
       return {pivotPartIndex: undefined, pivot: Pivot.CENTER}
@@ -150,18 +160,10 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     return this.pivots[jointIndex]
   }
 
-  getAngle(jointIndex: number) {
-    if (jointIndex == null) {
-      jointIndex = 0
-    }
-    return this.angles[jointIndex]
-  }
-
-
   /**
    * パーツのJSXElementを返す。
    */
-  abstract renderParts: () => any
+  abstract renderParts: () => React.ReactElement<any>
 
 
   render() {
@@ -176,7 +178,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
         mainPart={part}
         detectionPart={part}
         position={position}
-        angle={this.getAngle(pivotJointIndex)}
+        angle={this.props.angle}
         pivot={pivot}
         pivotPartIndex={0}    // 常にGroupなのでこれで良い
         fillColors={fillColors}
@@ -188,13 +190,13 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
         onLeftClick={onLeftClick}
         onRightClick={onRightClick}
         selected={selected}
-        ref={this.getInstance}
+        ref={this.getRef}
       />
     )
   }
 
 
-  protected getInstance(detectablePart) {
+  protected getRef = (detectablePart) => {
     if (detectablePart) this.detectablePart = detectablePart
   }
 
