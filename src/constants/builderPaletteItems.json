@@ -151,5 +151,17 @@
       "type": "CrossingRail"
     }
   ],
-  "Rail Groups": []
+  "Rail Groups": [],
+  "Feeders": [
+    {
+      "name": "Feeder",
+      "type": "Feeder"
+    }
+  ],
+  "Gaps": [
+    {
+      "name": "Gap",
+      "type": "Gap"
+    }
+  ]
 }

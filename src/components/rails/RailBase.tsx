@@ -8,16 +8,31 @@ import RailPartBase from "components/rails/parts/RailPartBase";
 import getLogger from "logging";
 import Gap from "components/rails/parts/Gap";
 import FeederSocket from "components/rails/parts/FeederSocket";
+import {FlowDirection, Pivot} from "components/rails/parts/primitives/PartBase";
 
 const LOGGER = getLogger(__filename)
+
 
 export interface JointInfo {
   railId: number
   jointId: number
 }
 
+export interface FeederInfo {
+  railId: number
+  partId: number
+  pivot: Pivot
+  feederId: number
+  selected: boolean
+  direction: FlowDirection
+}
+
 export interface OpposingJoints {
   [key: number]: JointInfo
+}
+
+export interface ConnectedFeeder {
+  [key: number]: FeederInfo
 }
 
 export interface RailBaseProps extends Partial<RailBaseDefaultProps> {
@@ -50,6 +65,9 @@ export interface RailBaseDefaultProps {
   numFeederSockets: number
   // 対向ジョイント情報
   opposingJoints: OpposingJoints
+  // フィーダー
+  feeders: ConnectedFeeder
+
   // ジョイント表示のON/OFF
   enableJoints: boolean
   // 選択状態
@@ -69,6 +87,11 @@ export interface RailBaseDefaultProps {
   onJointMouseMove: (jointId: number, e: MouseEvent) => void
   onJointMouseEnter: (jointId: number, e: MouseEvent) => void
   onJointMouseLeave: (jointId: number, e: MouseEvent) => void
+  onFeederSocketLeftClick: (feederId: number, e: MouseEvent) => void
+  onFeederSocketRightClick: (feederId: number, e: MouseEvent) => void
+  onFeederSocketMouseEnter: (feederId: number, e: MouseEvent) => void
+  onFeederSocketMouseLeave: (feederId: number, e: MouseEvent) => void
+
 }
 
 export interface RailBaseState {
@@ -89,6 +112,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     pivotJointChangingStride: 1,
     numGaps: 0,
     numFeederSockets: 0,
+    feeders: {},
 
     selected: false,
     opposingJoints: {},
@@ -105,6 +129,10 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     onJointMouseMove: (jointId: number, e: MouseEvent) => {},
     onJointMouseEnter: (jointId: number, e: MouseEvent) => {},
     onJointMouseLeave: (jointId: number, e: MouseEvent) => {},
+    onFeederSocketLeftClick: (feederId: number, e: MouseEvent) => {},
+    onFeederSocketRightClick: (feederId: number, e: MouseEvent) => {},
+    onFeederSocketMouseEnter: (feederId: number, e: MouseEvent) => {},
+    onFeederSocketMouseLeave: (feederId: number, e: MouseEvent) => {},
   }
 
   railPart: RailPartBase<any, any>
@@ -214,8 +242,8 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     })
   }
 
-  protected renderFeederSockets = (props) => {
-    const {id, opacity, visible} = props
+  protected renderFeederSockets = (props: RailBaseProps) => {
+    const {id, opacity, visible, feeders} = props
     const {feederSocketPositions, feederSocketAngles} = this.state
 
     return _.range(this.feederSockets.length).map(i => {
@@ -231,6 +259,13 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
             partId: i,
             railId: id,
           }}
+          hasFeeder={!!feeders[i]}
+          selected={feeders[i] && feeders[i].selected}
+          direction={feeders[i] && feeders[i].direction}
+          onLeftClick={this.props.onFeederSocketLeftClick.bind(this, i)}
+          onRightClick={this.props.onFeederSocketRightClick.bind(this, i)}
+          onMouseEnter={this.props.onFeederSocketMouseEnter.bind(this, i)}
+          onMouseLeave={this.props.onFeederSocketMouseLeave.bind(this, i)}
           ref={(fs) => {if (fs) this.feederSockets[i] = fs}}
         />
       )

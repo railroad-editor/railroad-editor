@@ -3,22 +3,28 @@ import {Point} from "paper";
 import {Rectangle} from "react-paper-bindings";
 import DetectablePart from "./primitives/DetectablePart";
 import CirclePart from "./primitives/CirclePart";
-import {Pivot} from "components/rails/parts/primitives/PartBase";
+import {FlowDirection, Pivot} from "components/rails/parts/primitives/PartBase";
 import {
+  FEEDER_HEIGHT,
   FEEDER_SOCKET_DETECTION_OPACITY_RATE,
   FEEDER_SOCKET_FILL_COLORS,
   FEEDER_SOCKET_HEIGHT,
   FEEDER_SOCKET_HIT_RADIUS,
-  FEEDER_SOCKET_WIDTH
+  FEEDER_SOCKET_WIDTH, FEEDER_WIDTH
 } from "constants/parts";
 import RectPart from "components/rails/parts/primitives/RectPart";
 import getLogger from "logging";
+import TrianglePart from "components/rails/parts/primitives/TrianglePart";
+import PartGroup from "components/rails/parts/primitives/PartGroup";
+import Feeder from "components/rails/parts/Feeder";
 
 const LOGGER = getLogger(__filename)
 
 interface FeederSocketProps extends Partial<DefaultProps> {
   name?: string
   data?: any
+  hasFeeder: boolean
+  direction: FlowDirection
   onMouseMove?: (e: MouseEvent) => void
   onLeftClick?: (e: MouseEvent) => boolean
   onRightClick?: (e: MouseEvent) => boolean
@@ -81,31 +87,46 @@ export default class FeederSocket extends React.Component<FeederSocketProps, {}>
 
   render() {
     const {
-      position, angle, detectionEnabled, hasFeeder, pivot, selected, fillColors, opacity, visible,
+      position, angle, detectionEnabled, hasFeeder, direction, pivot, selected, fillColors, opacity, visible,
       name, data, onLeftClick, onRightClick, onMouseMove, onMouseEnter, onMouseLeave
     } = this.props
 
     return (
       <DetectablePart
         mainPart={
-          <RectPart
-            width={FEEDER_SOCKET_WIDTH}
-            height={FEEDER_SOCKET_HEIGHT}
-            opacity={opacity}
-          />
+          <PartGroup
+            pivotPartIndex={0}
+          >
+            <RectPart
+              width={FEEDER_SOCKET_WIDTH}
+              height={FEEDER_SOCKET_HEIGHT}
+              opacity={opacity}
+              pivot={Pivot.CENTER}
+            />
+            <Feeder
+              direction={direction}
+              visible={hasFeeder}
+            />
+          </PartGroup>
         }
         detectionPart={
-          <CirclePart
-            radius={FEEDER_SOCKET_HIT_RADIUS}
-            opacity={opacity * FEEDER_SOCKET_DETECTION_OPACITY_RATE}
-          />
+          <PartGroup
+            pivotPartIndex={0}
+          >
+            <CirclePart
+              radius={FEEDER_SOCKET_HIT_RADIUS}
+              opacity={opacity * FEEDER_SOCKET_DETECTION_OPACITY_RATE}
+            />
+          </PartGroup>
         }
         position={position}
         angle={angle}
         pivot={pivot}
         fillColors={fillColors}
         visible={visible}
+        selected={selected}
         detectionEnabled={detectionEnabled && !hasFeeder}
+        pivotPartIndex={0}
         name={name}
         data={data}
         onLeftClick={onLeftClick}

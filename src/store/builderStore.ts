@@ -1,5 +1,5 @@
 import {RailComponentClasses, RailData, RailGroupData, RailItemData} from "components/rails";
-import {JointInfo} from "components/rails/RailBase";
+import {FeederInfo, JointInfo} from "components/rails/RailBase";
 import {RailGroupProps} from "components/rails/RailGroup/RailGroup";
 import {action, computed, observable, reaction} from "mobx";
 import {Tools} from "constants/tools";
@@ -43,6 +43,7 @@ export interface BuilderStoreState {
   intersects: boolean
   activeTool: string
   selecting: boolean
+  temporaryFeeder: FeederInfo
 }
 
 export enum PlacingMode {
@@ -59,6 +60,8 @@ export const INITIAL_STATE: BuilderStoreState = {
     'Turnouts': {type: 'Turnout', name: 'PR541-15'},
     'Special Rails': {type: 'SpecialRails', name: 'End Rail'},
     'Rail Groups': {type: 'RailGroup', name: ''},
+    'Feeders': {type: 'Feeder', name: 'Feeder'},
+    'Gaps': {type: 'Gap', name: 'Gap'},
   },
   placingMode: PlacingMode.FREE,
   activeLayerId: 1,
@@ -69,6 +72,7 @@ export const INITIAL_STATE: BuilderStoreState = {
   userRails: [],
   activeTool: null,   // 後でreactionを起こさせるためにここではnullにしておく
   selecting: false,
+  temporaryFeeder: null
 }
 
 
@@ -97,11 +101,12 @@ export class BuilderStore {
 
   @observable selecting: boolean
 
+  @observable temporaryFeeder: FeederInfo
   // @observable zoom
 
 
   constructor({ presetPaletteItems, paletteItem, lastPaletteItems, placingMode, activeLayerId, temporaryRails, temporaryRailGroup, userRailGroups,
-                userRails, activeTool, selecting}) {
+                userRails, activeTool, selecting, temporaryFeeder}) {
     this.presetPaletteItems = presetPaletteItems
     this.paletteItem = paletteItem
     this.lastPaletteItems = lastPaletteItems
@@ -114,6 +119,7 @@ export class BuilderStore {
     this.intersects = false
     this.activeTool = activeTool
     this.selecting = selecting
+    this.temporaryFeeder = temporaryFeeder
 
     reaction(
       () => this.activeTool,
@@ -225,6 +231,24 @@ export class BuilderStore {
     })
 
     this.temporaryRails = newTemporaryRails
+  }
+
+  @action
+  setTemporaryFeeder = (feederInfo: FeederInfo) => {
+    this.temporaryFeeder = feederInfo
+  }
+
+  @action
+  deleteTemporaryFeeder = () => {
+    this.temporaryFeeder = null
+  }
+
+  @action
+  updateTemporaryFeeder = (feederInfo: Partial<FeederInfo>) => {
+    this.temporaryFeeder = {
+      ...this.temporaryFeeder,
+      ...feederInfo
+    }
   }
 
   @action

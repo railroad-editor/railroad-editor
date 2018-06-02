@@ -1,7 +1,7 @@
 import * as React from "react";
 import RailContainers, {RailComponentClasses, RailData, RailGroupData} from "components/rails/index";
 import getLogger from "logging";
-import {RailBase, RailBaseProps} from "components/rails/RailBase";
+import {FeederInfo, RailBase, RailBaseProps} from "components/rails/RailBase";
 import RailGroupContainer from "components/rails/RailGroup";
 import {Point} from "paper";
 import {JointPair} from "components/hoc/withBuilder";
@@ -10,8 +10,25 @@ import RailGroup from "components/rails/RailGroup/RailGroup";
 import * as _ from 'lodash';
 import 'lodash.combinations';
 import 'lodash.product';
+import {FEEDER_SOCKET_FILL_COLORS} from "constants/parts";
+import Feeder from "components/rails/parts/Feeder";
 
 const LOGGER = getLogger(__filename)
+
+
+export const createFeederComponent = (feeder: FeederInfo) => {
+  const rail = getRailComponent(feeder.railId)
+  const pivotInfo = {pivotPartIndex: feeder.partId, pivot: feeder.pivot}
+  return (
+    <Feeder
+      position={rail.railPart.getPivotPositionToParent(pivotInfo)}
+      angle={rail.railPart.getPivotAngleToParent(pivotInfo)}
+      fillColor={FEEDER_SOCKET_FILL_COLORS[2]}
+      direction={feeder.direction}
+      opacity={0.8}
+    />
+  )
+}
 
 
 export const createRailOrRailGroupComponent = (railGroup: RailGroupData, rails: RailData[], layer: LayerData) => {

@@ -19,6 +19,8 @@ import CutIcon from "material-ui-icons/ContentCut";
 import FreePlacingModeIcon from "material-ui-icons/LocationOn";
 import ConnectModeIcon from "material-ui-icons/CompareArrows";
 import PlayArrowIcon from "material-ui-icons/PlayArrow";
+import FeederIcon from "./Icon/Feeder";
+import GapIcon from "./Icon/Gap";
 import getLogger from "logging";
 import * as classNames from "classnames"
 import Tooltip from "material-ui/Tooltip";
@@ -237,6 +239,27 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                   </StyledIconButton>
                 </Tooltip>
 
+                <Tooltip title={Tools.FEEDERS}>
+                  <StyledIconButton
+                    className={classNames({
+                      'active': this.isActive(Tools.FEEDERS)
+                    })}
+                    onClick={this.onClickBuilderItem(Tools.FEEDERS)}
+                  >
+                    <FeederIcon/>
+                  </StyledIconButton>
+                </Tooltip>
+                <Tooltip title={Tools.GAP}>
+                  <StyledIconButton
+                    className={classNames({
+                      'active': this.isActive(Tools.GAP)
+                    })}
+                    onClick={this.onClickBuilderItem(Tools.GAP)}
+                  >
+                    <GapIcon/>
+                  </StyledIconButton>
+                </Tooltip>
+
                 <Tooltip title={"PAN (Alt)"}>
                   <StyledIconButton
                     className={classNames({
@@ -270,26 +293,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                     <ConnectModeIcon/>
                   </StyledIconButton>
                 </Tooltip>
-                {/*<Tooltip id="tooltip-feeders" title={Tools.FEEDERS}>*/}
-                {/*<StyledIconButton*/}
-                {/*className={classNames({*/}
-                {/*'active': this.isActive(Tools.FEEDERS)*/}
-                {/*})}*/}
-                {/*onClick={this.onClickBuilderItem(Tools.FEEDERS)}*/}
-                {/*>*/}
-                {/*<FeederIcon/>*/}
-                {/*</StyledIconButton>*/}
-                {/*</Tooltip>*/}
-                {/*<Tooltip id="tooltip-gap" title={Tools.GAP}>*/}
-                {/*<StyledIconButton*/}
-                {/*className={classNames({*/}
-                {/*'active': this.isActive(Tools.GAP)*/}
-                {/*})}*/}
-                {/*onClick={this.onClickBuilderItem(Tools.GAP)}*/}
-                {/*>*/}
-                {/*<GapIcon/>*/}
-                {/*</StyledIconButton>*/}
-                {/*</Tooltip>*/}
+
                 <VerticalDivider/>
 
                 <Tooltip title={"Copy (Ctrl+C)"}>
@@ -359,20 +363,22 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                   userInfo={this.props.common.userInfo}
                   layoutMeta={this.props.layout.meta}
                 />
-                <Tooltip title={'Connect'}>
-                  <StyledIconButton
-                    onClick={this.connectWebRTC}
-                  >
-                    <PlayArrowIcon/>
-                  </StyledIconButton>
-                </Tooltip>
-                <Tooltip title={'Connect'}>
-                  <StyledIconButton
-                    onClick={this.sendSomething}
-                  >
-                    <PlayArrowIcon/>
-                  </StyledIconButton>
-                </Tooltip>
+
+                {/*<Tooltip title={'Connect'}>*/}
+                  {/*<StyledIconButton*/}
+                    {/*onClick={this.connectWebRTC}*/}
+                  {/*>*/}
+                    {/*<PlayArrowIcon/>*/}
+                  {/*</StyledIconButton>*/}
+                {/*</Tooltip>*/}
+                {/*<Tooltip title={'Connect'}>*/}
+                  {/*<StyledIconButton*/}
+                    {/*onClick={this.sendSomething}*/}
+                  {/*>*/}
+                    {/*<PlayArrowIcon/>*/}
+                  {/*</StyledIconButton>*/}
+                {/*</Tooltip>*/}
+
               </Grid>
 
               <Grid xs style={{display: 'flex'}}/>

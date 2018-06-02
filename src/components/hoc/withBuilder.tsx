@@ -470,27 +470,6 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
      */
     disconnectJoint = (railId: number) => {
       this.props.layoutLogic.disconnectJoint(railId)
-      // const target = this.getRailDataById(railId)
-      // if (target == null) {
-      //   return
-      // }
-      // // 指定のレールに接続されている全てのレールのジョイントを開放
-      // const updatedData = _.values(target.opposingJoints).map(joint => {
-      //   return {
-      //     id: joint.railId,
-      //     opposingJoints: {
-      //       [joint.jointId]: null
-      //     }
-      //   }
-      // })
-      //
-      // // 指定のレールのジョイントを全て開放
-      // updatedData.push({
-      //   id: railId,
-      //   opposingJoints: null
-      // })
-      //
-      // this.props.layout.updateRails(updatedData)
     }
 
     /**
@@ -498,24 +477,6 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
      */
     connectJoints = (pairs: JointPair[]) => {
       this.props.layoutLogic.connectJoints(pairs)
-      // const target =_.flatMap(pairs, pair => {
-      //   return [
-      //     {
-      //       id: pair.from.railId,
-      //       opposingJoints: {
-      //         [pair.from.jointId]: pair.to
-      //       }
-      //     },
-      //     {
-      //       id: pair.to.railId,
-      //       opposingJoints: {
-      //         [pair.to.jointId]: pair.from
-      //       }
-      //     }
-      //   ]
-      // })
-      //
-      // this.props.layout.updateRails(target)
     }
 
 

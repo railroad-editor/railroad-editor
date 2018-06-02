@@ -1,6 +1,11 @@
 import * as React from "react";
 import {Layer} from "react-paper-bindings";
-import {createRailComponent, createRailOrRailGroupComponent, getAllOpenCloseJoints} from "components/rails/utils";
+import {
+  createFeederComponent,
+  createRailComponent,
+  createRailOrRailGroupComponent,
+  getAllOpenCloseJoints
+} from "components/rails/utils";
 import getLogger from "logging";
 import {default as withBuilder, WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {compose} from "recompose";
@@ -30,27 +35,11 @@ export class Layout extends React.Component<LayoutProps & WithBuilderPublicProps
 
   constructor(props: LayoutProps & WithBuilderPublicProps) {
     super(props)
-    // this.state = {
-    //   shouldConnect: false
-    // }
-
-    // const reaction1 = reaction(
-    //   () => this.props.layout.activeLayerRails.length,
-    //   length => this.setState({ shouldConnect: true })
-    //   )
   }
-
-  // componentDidUpdate() {
-  //   LOGGER.info('Layout update()', this.props.layout.currentLayoutData.rails.length)
-  //   if (this.state.shouldConnect) {
-  //     this.props.builderConnectJoints(this.props.layout.unconnectedCloseJoints)
-  //     this.setState({ shouldConnect: false })
-  //   }
-  // }
 
 
   render() {
-    const {temporaryRails, temporaryRailGroup} = this.props.builder
+    const {temporaryRails, temporaryRailGroup, temporaryFeeder} = this.props.builder
     const {currentLayoutData, activeLayerData} = this.props.layout;
     const temporaryLayer = {
       id: -1,
@@ -72,7 +61,12 @@ export class Layout extends React.Component<LayoutProps & WithBuilderPublicProps
             temporaryRails.length > 0 &&
             createRailOrRailGroupComponent(temporaryRailGroup, temporaryRails, temporaryLayer)
           }
+          {
+            temporaryFeeder &&
+            createFeederComponent(temporaryFeeder)
+          }
         </Layer>
+
         {
           currentLayoutData.layers.map(layer =>
             <Layer
