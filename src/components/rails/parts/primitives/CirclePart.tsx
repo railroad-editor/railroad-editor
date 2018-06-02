@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Path as PathComponent} from "react-paper-bindings";
 import PartBase, {PartBaseProps, Pivot} from "components/rails/parts/primitives/PartBase";
 import {Point} from "paper";
 
@@ -13,36 +12,9 @@ export default class CirclePart extends PartBase<CirclePartProps, {}> {
     super(props)
   }
 
-  render() {
-    const {
-      radius,
-      position, angle, pivot, fillColor, visible, opacity, selected, name, data,
-      onMouseDown, onMouseDrag, onMouseUp, onClick, onDoubleClick, onMouseMove, onMouseEnter, onMouseLeave
-    } = this.props
-
-    const pivotPosition = this.getInternalPivotPosition(pivot)
-
-    return <PathComponent
-      pathData={createCirclePath(radius)}
-      pivot={pivotPosition}     // pivot parameter MUST proceed to position
-      position={position}
-      rotation={angle}
-      fillColor={fillColor}
-      visible={visible}
-      opacity={opacity}
-      selected={selected}
-      name={name}
-      data={data}
-      onMouseDown={onMouseDown}
-      onMouseDrag={onMouseDrag}
-      onMouseUp={onMouseUp}
-      onClick={onClick}
-      onDoubleClick={onDoubleClick}
-      onMouseMove={onMouseMove}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      ref={this.getInstance}
-    />
+  createPathData = (props: CirclePartProps) => {
+    const {radius} = props
+    return createCirclePath(radius)
   }
 
   protected getInternalPivotPosition(pivot: Pivot) {

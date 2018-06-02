@@ -45,6 +45,3 @@ export const RAIL_PUTTER_MARKER_OPACITY = 0.5
 
 export const DEFAULT_LAYER_TRANSLUCENT_OPACITY = 0.5
 
-export const ANIMATION_FLOW_COLOR_1 = "royalblue"
-export const ANIMATION_FLOW_COLOR_2 = "greenyellow"
-

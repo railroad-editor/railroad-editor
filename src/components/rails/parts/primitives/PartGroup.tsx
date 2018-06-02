@@ -64,6 +64,8 @@ export default class PartGroup extends PartBase<PartGroupProps, PartGroupState> 
       position=${this.group.position}, pivot=${this.group.pivot}, bounds=${this.group.bounds}`)
   }
 
+  createPathData = (props) => { return null }
+
   render() {
     const {
       pivot, fillColor, visible, opacity, selected, name, data,
@@ -117,7 +119,7 @@ export default class PartGroup extends PartBase<PartGroupProps, PartGroupState> 
         onMouseLeave={onMouseLeave}
         // refには一瞬だけ引数にnullが入ってくることがある。(https://github.com/facebook/react/issues/4533)
         // 直後に再度呼ばれて本物が入ってくるが、あまり凝ったことはせずにシンプルに保つべき
-        ref={this.getInstance}
+        ref={this.getRef}
       >
         {children}
       </GroupComponent>

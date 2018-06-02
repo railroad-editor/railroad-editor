@@ -39,9 +39,9 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
     }
   }
 
-  abstract onOK
+  abstract onOK: (e: any) => void
 
-  abstract renderContent
+  abstract renderContent: () => React.ReactNode
 
   onEnter = () => {
     this.setState(this.getInitialState())
@@ -74,7 +74,7 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
 
   onKeyPress = (e) => {
     if ( (! this.state.disabled) && e.key === 'Enter') {
-      this.onOK()
+      this.onOK(e)
       e.preventDefault()
     }
   }

@@ -16,3 +16,6 @@ export const JOINT_ANIMATION_MIN = 60
 
 export const RAIL_SPACE = 38
 
+export const ANIMATION_FLOW_COLOR_1 = "royalblue"
+export const ANIMATION_FLOW_COLOR_2 = "greenyellow"
+

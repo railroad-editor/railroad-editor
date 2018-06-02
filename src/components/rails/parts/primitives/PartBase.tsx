@@ -1,6 +1,8 @@
 import * as React from "react";
 import {Group, Item, Path, Point} from "paper";
-import {ANIMATION_FLOW_COLOR_1, ANIMATION_FLOW_COLOR_2} from "constants/tools";
+import {Path as PathComponent} from "react-paper-bindings";
+import {ANIMATION_FLOW_COLOR_1, ANIMATION_FLOW_COLOR_2} from "constants/parts";
+import {RefObject} from "react";
 
 export enum Pivot {
   CENTER = 'Center',
@@ -61,10 +63,9 @@ export default abstract class PartBase<P extends PartBaseProps, S> extends React
     flowDirection: FlowDirection.START_TO_END,
   }
 
-  constructor(props: P) {
-    super(props)
 
-    this.getInstance = this.getInstance.bind(this)
+  protected constructor(props: P) {
+    super(props)
   }
 
   protected _path: Path | Group
@@ -157,9 +158,11 @@ export default abstract class PartBase<P extends PartBaseProps, S> extends React
    */
   protected abstract getInternalPivotPosition(pivot: Pivot)
 
-  protected getInstance(path) {
-    if (path) this._path = path
-  }
+  /**
+   * PathDataを返す。
+   * 派生クラスで要実装。
+   */
+  protected abstract createPathData: (props: P) => string
 
   /**
    * 電流アニメーションをする
@@ -198,5 +201,42 @@ export default abstract class PartBase<P extends PartBaseProps, S> extends React
       destination: currentOrigin,
     } as any
   }
+
+
+  render() {
+    const { position, angle, pivot, fillColor, visible, opacity, selected, name, data,
+      onMouseDown, onMouseDrag, onMouseUp, onClick, onDoubleClick, onMouseMove, onMouseEnter, onMouseLeave
+    } = this.props
+
+    const pathData = this.createPathData(this.props)
+    const pivotPosition = this.getInternalPivotPosition(pivot)
+
+    return <PathComponent
+      pathData={pathData}
+      pivot={pivotPosition}     // pivot parameter MUST proceed to position
+      position={position}
+      rotation={angle}
+      fillColor={fillColor}
+      visible={visible}
+      opacity={opacity}
+      selected={selected}
+      name={name}
+      data={data}
+      onMouseDown={onMouseDown}
+      onMouseDrag={onMouseDrag}
+      onMouseUp={onMouseUp}
+      onClick={onClick}
+      onDoubleClick={onDoubleClick}
+      onMouseMove={onMouseMove}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      ref={this.getRef}
+    />
+  }
+
+  protected readonly getRef = (ref) => {
+    if (ref) this._path = ref
+  }
+
 }
 

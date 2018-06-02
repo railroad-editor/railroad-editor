@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Point} from "paper";
-import {Path as PathComponent} from "react-paper-bindings";
 import PartBase, {PartBaseProps, Pivot} from "components/rails/parts/primitives/PartBase";
 
 export interface RectPartProps extends PartBaseProps {
@@ -14,36 +13,9 @@ export default class RectPart extends PartBase<RectPartProps, {}> {
     super(props)
   }
 
-  render() {
-    const {
-      width, height,
-      position, angle, pivot, fillColor, visible, opacity, selected, name, data,
-      onMouseDown, onMouseDrag, onMouseUp, onClick, onDoubleClick, onMouseMove, onMouseEnter, onMouseLeave
-    } = this.props
-
-    const pivotPosition = this.getInternalPivotPosition(pivot)
-
-    return <PathComponent
-      pathData={createRectPath(width, height)}
-      pivot={pivotPosition}     // pivot parameter MUST proceed to position
-      position={position}
-      rotation={angle}
-      fillColor={fillColor}
-      visible={visible}
-      opacity={opacity}
-      selected={selected}
-      name={name}
-      data={data}
-      onMouseDown={onMouseDown}
-      onMouseDrag={onMouseDrag}
-      onMouseUp={onMouseUp}
-      onClick={onClick}
-      onDoubleClick={onDoubleClick}
-      onMouseMove={onMouseMove}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      ref={this.getInstance}
-    />
+  createPathData = (props) => {
+    const { width, height } = props
+    return createRectPath(width, height)
   }
 
   protected getInternalPivotPosition(pivot: Pivot) {

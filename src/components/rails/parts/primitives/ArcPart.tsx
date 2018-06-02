@@ -34,37 +34,11 @@ export default class ArcPart extends PartBase<ArcPartProps, {}> {
     return super.getAngleTo(item, pivot) + this.getInternalPivotAngle(pivot)
   }
 
-  render() {
-    const {
-      width, radius, centerAngle, direction, pivot,
-      position, angle, fillColor, visible, opacity, selected, name, data,
-      onMouseDown, onMouseDrag, onMouseUp, onClick, onDoubleClick, onMouseMove, onMouseEnter, onMouseLeave
-    } = this.props
-
-    const pivotPosition = this.getInternalPivotPosition(pivot)
-
-    return <PathComponent
-      pathData={createArcPath(width, radius, centerAngle, direction)}
-      pivot={pivotPosition}
-      position={position}
-      rotation={angle}
-      fillColor={fillColor}
-      visible={visible}
-      opacity={opacity}
-      selected={selected}
-      name={name}
-      data={data}
-      onMouseDown={onMouseDown}
-      onMouseDrag={onMouseDrag}
-      onMouseUp={onMouseUp}
-      onClick={onClick}
-      onDoubleClick={onDoubleClick}
-      onMouseMove={onMouseMove}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      ref={this.getInstance}
-    />
+  createPathData = (props: ArcPartProps) => {
+    const {width, radius, centerAngle, direction} = props
+    return createArcPath(width, radius, centerAngle, direction)
   }
+
 
   protected getInternalPivotPosition(pivot: Pivot) {
     switch (this.props.direction) {
