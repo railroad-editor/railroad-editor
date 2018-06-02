@@ -6,6 +6,7 @@ import {pointsEqual} from "components/rails/utils";
 import * as _ from "lodash";
 import RailPartBase from "components/rails/parts/RailPartBase";
 import getLogger from "logging";
+import Gap from "components/rails/parts/Gap";
 
 const LOGGER = getLogger(__filename)
 
@@ -42,6 +43,8 @@ export interface RailBaseDefaultProps {
   numJoints: number
   // 右クリックでPivotJointIndexを加算する数
   pivotJointChangingStride: number
+  // ギャップ数
+  numGaps: number
   // 対向ジョイント情報
   opposingJoints: OpposingJoints
   // ジョイント表示のON/OFF
@@ -68,6 +71,8 @@ export interface RailBaseDefaultProps {
 export interface RailBaseState {
   jointPositions: Point[]
   jointAngles: number[]
+  gapPositions: Point[]
+  gapAngles: number[]
 }
 
 
@@ -77,6 +82,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     type: 'RailBase',
     numJoints: 2,
     pivotJointChangingStride: 1,
+    numGaps: 0,
 
     selected: false,
     opposingJoints: {},
@@ -97,12 +103,24 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
 
   railPart: RailPartBase<any, any>
   joints: Joint[]
+  gaps: Gap[]
 
 
-  constructor(props: P) {
+  protected constructor(props: P) {
     super(props)
     this.joints = new Array(this.props.numJoints).fill(null)
+    this.gaps = new Array(this.props.numGaps).fill(null)
+
     this.getInstance = this.getInstance.bind(this)
+  }
+
+  getInitialState = (props) => {
+    return {
+      jointPositions: new Array(this.props.numJoints).fill(props.position),
+      jointAngles: new Array(this.props.numJoints).fill(props.angle),
+      gapPositions: new Array(this.props.numGaps).fill(props.position),
+      gapAngles: new Array(this.props.numGaps).fill(props.angle),
+    }
   }
 
   componentWillUnmount() {
@@ -112,11 +130,13 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
   }
 
   componentDidUpdate() {
-    this.setJointPositionsAndAngles()
+    this.fixJoints()
+    this.fixGaps()
   }
 
   componentDidMount() {
-    this.setJointPositionsAndAngles()
+    this.fixJoints()
+    this.fixGaps()
     // HOCを用いる場合、refではラップされたコンテナを取得することになってしまう
     // そのためonMountコールバックでコンポーネントインスタンスを取得する手段を与える
     if (this.props.onMount) {
@@ -129,20 +149,20 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
    * ジョイントコンポーネントを生成する
    * @returns {any[]}
    */
-  protected createJointComponents() {
-    const {id, opacity, opposingJoints, enableJoints, visible} = this.props
+  protected renderJoints = (props) => {
+    const {id, opacity, opposingJoints, enableJoints, visible} = props
     const {jointPositions, jointAngles} = this.state
 
     return _.range(this.joints.length).map(i => {
       return (
         <Joint
-          key={`j-${i}`}
+          key={`j-${i}`}  //`
           position={jointPositions[i]}
           angle={jointAngles[i]}
           opacity={opacity}
           visible={visible}
           data={{
-            type: 'Joint',
+            type: 'Gap',
             partId: i,
             railId: id,
           }}
@@ -159,25 +179,41 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     })
   }
 
+  protected renderGaps = (props) => {
+    const {id, opacity, visible} = props
+    const {gapPositions, gapAngles} = this.state
+
+    return _.range(this.gaps.length).map(i => {
+      return (
+        <Gap
+          key={`g-${i}`} //`
+          position={gapPositions[i]}
+          angle={gapAngles[i]}
+          opacity={opacity}
+          visible={visible}
+          data={{
+            type: 'Gap',
+            partId: i,
+            railId: id,
+          }}
+          ref={(gap) => {if (gap) this.gaps[i] = gap}}
+        />
+      )
+    })
+  }
+
   /**
    * レールパーツの位置・角度に合わせてジョイントの位置・角度を変更する
    */
-  private setJointPositionsAndAngles() {
+  private fixJoints() {
     // 注意: オブジェクトをStateにセットする場合はきちんとCloneすること
-    const jointPositions = _.range(this.joints.length).map(i => _.clone(this.railPart.getJointPositionToParent(i)))
-    const jointAngles = _.range(this.joints.length).map(i => _.clone(this.railPart.getJointAngleToParent(i)))
+    const jointPositions = _.range(this.joints.length).map(i => _.clone(this.railPart.getPivotPositionToParent(this.railPart.joints[i])))
+    const jointAngles = _.range(this.joints.length).map(i => _.clone(this.railPart.getPivotAngleToParent(this.railPart.joints[i])))
 
     // _.range(this.joints.length).forEach(i => {
     //   LOGGER.debug(`[Rail][${this.props.id}] Joint${i} position: ${this.state.jointPositions[i]} -> ${jointPositions[i]}`)
     //   LOGGER.debug(`[Rail][${this.props.id}] Joint${i} angle: ${this.state.jointAngles[i]} -> ${jointAngles[i]}`)
     // })
-
-    jointPositions.forEach((position, idx) => {
-      this.joints[idx].part._partGroup.path.position = position
-    })
-    jointAngles.forEach((angle, idx) => {
-      this.joints[idx].part._partGroup.path.rotation = angle
-    })
 
     // レールパーツから取得したジョイントの位置・角度が現在のものと異なれば再描画
     if (_.range(this.joints.length).every(i =>
@@ -192,6 +228,22 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     }
   }
 
+  private fixGaps() {
+    const gapPositions = _.range(this.gaps.length).map(i => _.clone(this.railPart.getPivotPositionToParent(this.railPart.gaps[i])))
+    const gapAngles = _.range(this.gaps.length).map(i => _.clone(this.railPart.getPivotAngleToParent(this.railPart.gaps[i])))
+
+    if (_.range(this.gaps.length).every(i =>
+      pointsEqual(this.state.gapPositions[i], gapPositions[i])
+      && this.state.gapAngles[i] === gapAngles[i])) {
+      // noop
+    } else {
+      this.setState({
+        gapPositions,
+        gapAngles
+      })
+    }
+  }
+
   protected getInstance(railPart) {
     if (railPart) this.railPart = railPart
   }
@@ -199,5 +251,17 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
   onFrame = (e) => {
     this.railPart.onFrame(e)
   }
+
+  render() {
+    return (
+      <>
+        {this.renderRailPart(this.props)}
+        {this.renderJoints(this.props)}
+        {this.renderGaps(this.props)}
+      </>
+    )
+  }
+
+  abstract renderRailPart: (props) => React.ReactNode
 }
 

@@ -44,7 +44,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     selected: false,
     opacity: 1,
     visible: true,
-    fillColors: RAIL_PART_FILL_COLORS
+    fillColors: RAIL_PART_FILL_COLORS,
   }
 
   detectablePart: DetectablePart
@@ -89,6 +89,20 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     }
   }
 
+  getPivotPositionToParent(pivotInfo: PivotInfo) {
+    let parent = this.detectablePart.partGroup.path.parent
+    return this.detectablePart.mainPart.children[pivotInfo.pivotPartIndex].getPositionTo(parent, pivotInfo.pivot)
+  }
+
+  getPivotAngleToParent(pivotInfo: PivotInfo) {
+    let parent = this.detectablePart.partGroup.path.parent
+    let globalRotation = this.detectablePart.mainPart.children[pivotInfo.pivotPartIndex].getAngleTo(parent, pivotInfo.pivot)
+    if (pivotInfo.pivot === Pivot.LEFT) {
+      return (globalRotation + 180) % 360
+    } else {
+      return globalRotation
+    }
+  }
 
   /**
    * このパーツの親の座標系における指定のジョイントの位置を返す。
@@ -151,13 +165,20 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
    * 派生クラスに要実装。
    * @returns {PivotInfo[]}
    */
-  abstract get pivots(): PivotInfo[]
+  abstract get joints(): PivotInfo[]
+
+  abstract get glues(): PivotInfo[][]
+
+  abstract get gaps(): PivotInfo[]
+
+  abstract get conductives(): number[][]
+
 
   getPivot(jointIndex: number) {
     if (jointIndex == null) {
       return {pivotPartIndex: undefined, pivot: Pivot.CENTER}
     }
-    return this.pivots[jointIndex]
+    return this.joints[jointIndex]
   }
 
   /**
@@ -202,6 +223,6 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
 
 
   onFrame = (e) => {
-    this.detectablePart.mainPart._children.forEach(c => c.onFrame(e))
+    // this.detectablePart.mainPart._children.forEach(c => c.onFrame(e))
   }
 }

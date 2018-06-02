@@ -34,12 +34,24 @@ export default class CurvedTurnoutRailPart extends RailPartBase<CurvedTurnoutRai
     super(props)
   }
 
-  get pivots() {
+  get joints() {
     return [
       {pivotPartIndex: 0, pivot: Pivot.LEFT},
       {pivotPartIndex: 0, pivot: Pivot.RIGHT},
       {pivotPartIndex: 1, pivot: Pivot.RIGHT}
     ]
+  }
+
+  get glues() {
+    return [[]]
+  }
+
+  get gaps() {
+    return []
+  }
+
+  get conductives() {
+    return [[0], [1]]
   }
 
   renderParts = () => {

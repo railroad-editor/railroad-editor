@@ -21,40 +21,34 @@ export default class CrossingRail extends RailBase<CrossingRailProps, RailBaseSt
 
   constructor(props: CrossingRailProps) {
     super(props)
-    this.state = {
-      jointPositions: new Array(this.props.numJoints).fill(props.position),
-      jointAngles: new Array(this.props.numJoints).fill(props.angle),
-    }
+    this.state = this.getInitialState(props)
   }
 
 
-  render() {
+  renderRailPart = () => {
     const {
       position, angle, crossAngle, length, id, selected, pivotJointIndex, opacity, visible, fillColor
     } = this.props
 
     return (
-      <>
-        <CrossingRailPart
-          length={length}
-          position={position}
-          angle={angle}
-          crossAngle={crossAngle}
-          pivotJointIndex={pivotJointIndex}
-          selected={selected}
-          opacity={opacity}
-          visible={visible}
-          fillColors={_.fill(Array(4),  fillColor)}
-          data={{
-            type: 'RailPart',
-            railId: id,
-            partId: 0,
-          }}
-          onLeftClick={this.props.onRailPartLeftClick}
-          ref={this.getInstance}
-        />
-        {this.createJointComponents()}
-      </>
+      <CrossingRailPart
+        length={length}
+        position={position}
+        angle={angle}
+        crossAngle={crossAngle}
+        pivotJointIndex={pivotJointIndex}
+        selected={selected}
+        opacity={opacity}
+        visible={visible}
+        fillColors={_.fill(Array(4),  fillColor)}
+        data={{
+          type: 'RailPart',
+          railId: id,
+          partId: 0,
+        }}
+        onLeftClick={this.props.onRailPartLeftClick}
+        ref={this.getInstance}
+      />
     )
   }
 }

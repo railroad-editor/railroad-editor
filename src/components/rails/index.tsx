@@ -4,6 +4,8 @@ import CurveRail, {CurveRailProps} from "components/rails/CurveRail/CurveRail";
 import CurveRailContainer from "components/rails/CurveRail";
 import DoubleStraightRail, {DoubleStraightRailProps} from "components/rails/DoubleStraightRail/DoubleStraightRail";
 import DoubleStraightRailContainer from "components/rails/DoubleStraightRail";
+import GappedStraightRail, {GappedStraightRailProps} from "./GappedStraightRail/GappedStraightRail";
+import GappedStraightRailContainer from "components/rails/GappedStraightRail";
 import DoubleCurveRail from "components/rails/DoubleCurveRail/DoubleCurveRail";
 import DoubleCurveRailContainer from "components/rails/DoubleCurveRail";
 import DoubleCrossTurnout, {DoubleCrossTurnoutProps} from "components/rails/DoubleCrossTurnout/DoubleCrossTurnout";
@@ -31,6 +33,7 @@ const RailContainerClasses = {
   'WyeTurnout': WyeTurnoutContainer,
   'DoubleCrossTurnout': DoubleCrossTurnoutContainer,
   'EndRail': EndRailContainer,
+  'GappedStraightRail': GappedStraightRailContainer,
   'CrossingRail': CrossingRailContainer,
   'RailGroup': RailGroup
 }
@@ -39,6 +42,7 @@ export const RailComponentClasses = {
   StraightRail,
   CurveRail,
   DoubleStraightRail,
+  GappedStraightRail,
   DoubleCurveRail,
   SimpleTurnout,
   WyeTurnout,

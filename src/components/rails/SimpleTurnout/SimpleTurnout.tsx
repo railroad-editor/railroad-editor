@@ -23,42 +23,36 @@ export default class SimpleTurnout extends RailBase<SimpleTurnoutProps, RailBase
 
   constructor(props: SimpleTurnoutProps) {
     super(props)
-    this.state = {
-      jointPositions: new Array(this.props.numJoints).fill(props.position),
-      jointAngles: new Array(this.props.numJoints).fill(props.angle),
-    }
+    this.state = this.getInitialState(props)
   }
 
 
-  render() {
+  renderRailPart = () => {
     const {
       position, angle, length, radius, centerAngle, branchDirection, id, selected, pivotJointIndex, opacity, visible, fillColor
     } = this.props
 
     return (
-      <>
-        <SimpleTurnoutRailPart
-          length={length}
-          radius={radius}
-          centerAngle={centerAngle}
-          direction={branchDirection}
-          position={position}
-          angle={angle}
-          pivotJointIndex={pivotJointIndex}
-          selected={selected}
-          opacity={opacity}
-          visible={visible}
-          fillColors={_.fill(Array(4),  fillColor)}
-          data={{
-            type: 'RailPart',
-            railId: id,
-            partId: 0
-          }}
-          onLeftClick={this.props.onRailPartLeftClick}
-          ref={this.getInstance}
-        />
-        {this.createJointComponents()}
-      </>
+      <SimpleTurnoutRailPart
+        length={length}
+        radius={radius}
+        centerAngle={centerAngle}
+        direction={branchDirection}
+        position={position}
+        angle={angle}
+        pivotJointIndex={pivotJointIndex}
+        selected={selected}
+        opacity={opacity}
+        visible={visible}
+        fillColors={_.fill(Array(4),  fillColor)}
+        data={{
+          type: 'RailPart',
+          railId: id,
+          partId: 0
+        }}
+        onLeftClick={this.props.onRailPartLeftClick}
+        ref={this.getInstance}
+      />
     )
   }
 }

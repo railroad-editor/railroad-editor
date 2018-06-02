@@ -21,41 +21,35 @@ export default class CurveRail extends RailBase<CurveRailProps, RailBaseState> {
 
   constructor(props: CurveRailProps) {
     super(props)
-    this.state = {
-      jointPositions: new Array(this.props.numJoints).fill(props.position),
-      jointAngles: new Array(this.props.numJoints).fill(props.angle),
-    }
+    this.state = this.getInitialState(props)
   }
 
 
-  render() {
+  renderRailPart = () => {
     const {
       position, angle, radius, centerAngle, id, selected, pivotJointIndex, opacity, visible, fillColor
     } = this.props
 
     return (
-      <>
-        <CurveRailPart
-          radius={radius}
-          centerAngle={centerAngle}
-          direction={ArcDirection.RIGHT}
-          position={position}
-          angle={angle}
-          pivotJointIndex={pivotJointIndex}
-          selected={selected}
-          opacity={opacity}
-          visible={visible}
-          fillColors={_.fill(Array(4),  fillColor)}
-          data={{
-            type: 'RailPart',
-            railId: id,
-            partId: 0,
-          }}
-          onLeftClick={this.props.onRailPartLeftClick}
-          ref={this.getInstance}
-        />
-        {this.createJointComponents()}
-      </>
+      <CurveRailPart
+        radius={radius}
+        centerAngle={centerAngle}
+        direction={ArcDirection.RIGHT}
+        position={position}
+        angle={angle}
+        pivotJointIndex={pivotJointIndex}
+        selected={selected}
+        opacity={opacity}
+        visible={visible}
+        fillColors={_.fill(Array(4),  fillColor)}
+        data={{
+          type: 'RailPart',
+          railId: id,
+          partId: 0,
+        }}
+        onLeftClick={this.props.onRailPartLeftClick}
+        ref={this.getInstance}
+      />
     )
   }
 }

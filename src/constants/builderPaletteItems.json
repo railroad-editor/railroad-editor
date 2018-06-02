@@ -131,6 +131,10 @@
   ],
   "Special Rails": [
     {
+      "name": "G-70-W",
+      "type": "GappedStraightRail"
+    },
+    {
       "name": "End Rail",
       "type": "EndRail"
     },

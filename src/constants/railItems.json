@@ -51,6 +51,11 @@
       "length": 140
     },
     {
+      "type": "GappedStraightRail",
+      "name": "G-70-W",
+      "length": 70
+    },
+    {
       "type": "CurveRail",
       "name": "C243-45",
       "radius": 243,

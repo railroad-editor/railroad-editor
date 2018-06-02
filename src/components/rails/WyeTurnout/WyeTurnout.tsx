@@ -21,40 +21,34 @@ export default class WyeTurnout extends RailBase<WyeTurnoutProps, RailBaseState>
 
   constructor(props: WyeTurnoutProps) {
     super(props)
-    this.state = {
-      jointPositions: new Array(this.props.numJoints).fill(props.position),
-      jointAngles: new Array(this.props.numJoints).fill(props.angle),
-    }
+    this.state = this.getInitialState(props)
   }
 
 
-  render() {
+  renderRailPart = () => {
     const {
       position, angle, radius, centerAngle, id, selected, pivotJointIndex, opacity, visible, fillColor
     } = this.props
 
     return (
-      <>
-        <WyeTurnoutRailPart
-          radius={radius}
-          centerAngle={centerAngle}
-          position={position}
-          angle={angle}
-          pivotJointIndex={pivotJointIndex}
-          selected={selected}
-          opacity={opacity}
-          visible={visible}
-          fillColors={_.fill(Array(4),  fillColor)}
-          data={{
-            type: 'RailPart',
-            railId: id,
-            partId: 0
-          }}
-          onLeftClick={this.props.onRailPartLeftClick}
-          ref={this.getInstance}
-        />
-        {this.createJointComponents()}
-      </>
+      <WyeTurnoutRailPart
+        radius={radius}
+        centerAngle={centerAngle}
+        position={position}
+        angle={angle}
+        pivotJointIndex={pivotJointIndex}
+        selected={selected}
+        opacity={opacity}
+        visible={visible}
+        fillColors={_.fill(Array(4),  fillColor)}
+        data={{
+          type: 'RailPart',
+          railId: id,
+          partId: 0
+        }}
+        onLeftClick={this.props.onRailPartLeftClick}
+        ref={this.getInstance}
+      />
     )
   }
 }

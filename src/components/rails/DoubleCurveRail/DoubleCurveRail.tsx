@@ -23,42 +23,36 @@ export default class DoubleCurveRail extends RailBase<DoubleCurveRailProps, Rail
 
   constructor(props: DoubleCurveRailProps) {
     super(props)
-    this.state = {
-      jointPositions: new Array(this.props.numJoints).fill(props.position),
-      jointAngles: new Array(this.props.numJoints).fill(props.angle),
-    }
+    this.state = this.getInitialState(props)
   }
 
 
-  render() {
+  renderRailPart = () => {
     const {
       position, angle, innerRadius, outerRadius, centerAngle, id, selected, pivotJointIndex, opacity, visible, fillColor
     } = this.props
 
     return (
-      <>
-        <DoubleCurveRailPart
-          innerRadius={innerRadius}
-          outerRadius={outerRadius}
-          centerAngle={centerAngle}
-          direction={ArcDirection.RIGHT}
-          position={position}
-          angle={angle}
-          pivotJointIndex={pivotJointIndex}
-          selected={selected}
-          opacity={opacity}
-          visible={visible}
-          fillColors={_.fill(Array(4),  fillColor)}
-          data={{
-            type: 'RailPart',
-            railId: id,
-            partId: 0,
-          }}
-          onLeftClick={this.props.onRailPartLeftClick}
-          ref={this.getInstance}
-        />
-        {this.createJointComponents()}
-      </>
+      <DoubleCurveRailPart
+        innerRadius={innerRadius}
+        outerRadius={outerRadius}
+        centerAngle={centerAngle}
+        direction={ArcDirection.RIGHT}
+        position={position}
+        angle={angle}
+        pivotJointIndex={pivotJointIndex}
+        selected={selected}
+        opacity={opacity}
+        visible={visible}
+        fillColors={_.fill(Array(4),  fillColor)}
+        data={{
+          type: 'RailPart',
+          railId: id,
+          partId: 0,
+        }}
+        onLeftClick={this.props.onRailPartLeftClick}
+        ref={this.getInstance}
+      />
     )
   }
 }

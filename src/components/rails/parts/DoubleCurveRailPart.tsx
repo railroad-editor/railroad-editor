@@ -32,7 +32,7 @@ export default class DoubleCurveRailPart extends RailPartBase<DoubleCurveRailPar
     super(props)
   }
 
-  get pivots() {
+  get joints() {
     return [
       {pivotPartIndex: 0, pivot: Pivot.LEFT},
       {pivotPartIndex: 0, pivot: Pivot.RIGHT},
@@ -40,6 +40,19 @@ export default class DoubleCurveRailPart extends RailPartBase<DoubleCurveRailPar
       {pivotPartIndex: 1, pivot: Pivot.RIGHT}
     ]
   }
+
+  get glues() {
+    return [[]]
+  }
+
+  get gaps() {
+    return []
+  }
+
+  get conductives() {
+    return [[0, 1]]
+  }
+
 
   renderParts = () => {
     const { innerRadius, outerRadius, centerAngle, direction, pivotJointIndex, data } = this.props

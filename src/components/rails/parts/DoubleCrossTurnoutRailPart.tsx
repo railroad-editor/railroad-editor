@@ -23,21 +23,39 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
     detectionEnabled: false,
     selected: false,
     opacity: 1,
-    fillColors: RAIL_PART_FILL_COLORS
+    fillColors: RAIL_PART_FILL_COLORS,
   }
 
   constructor(props: DoubleCrossTurnoutRailPartProps) {
     super(props)
   }
 
-  get pivots() {
+  get joints() {
     return [
       {pivotPartIndex: 0, pivot: Pivot.LEFT},
-      {pivotPartIndex: 0, pivot: Pivot.RIGHT},
-      {pivotPartIndex: 1, pivot: Pivot.LEFT},
-      {pivotPartIndex: 1, pivot: Pivot.RIGHT}
+      {pivotPartIndex: 1, pivot: Pivot.RIGHT},
+      {pivotPartIndex: 2, pivot: Pivot.LEFT},
+      {pivotPartIndex: 3, pivot: Pivot.RIGHT}
     ]
   }
+
+  get glues() {
+    return [[]]
+  }
+
+  get gaps() {
+    return [
+      {pivotPartIndex: 0, pivot: Pivot.RIGHT},
+      {pivotPartIndex: 2, pivot: Pivot.RIGHT},
+      {pivotPartIndex: 4, pivot: Pivot.RIGHT},
+      {pivotPartIndex: 5, pivot: Pivot.LEFT},
+    ]
+  }
+
+  get conductives() {
+    return [[0]]
+  }
+
 
   renderParts = () => {
     const { length, pivotJointIndex, data } = this.props
@@ -53,7 +71,16 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
         data={data}
       >
         <RectPart
-          width={length}
+          width={length/2}
+          height={RAIL_PART_WIDTH}
+          pivot={Pivot.LEFT}
+          data={{
+            type: 'Part'
+          }}
+        />
+        <RectPart
+          position={new Point(length/2, 0)}
+          width={length/2}
           height={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
           data={{
@@ -62,7 +89,16 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
         />
         <RectPart
           position={new Point(0, RAIL_SPACE)}
-          width={length}
+          width={length/2}
+          height={RAIL_PART_WIDTH}
+          pivot={Pivot.LEFT}
+          data={{
+            type: 'Part'
+          }}
+        />
+        <RectPart
+          position={new Point(length/2, RAIL_SPACE)}
+          width={length/2}
           height={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
           data={{
