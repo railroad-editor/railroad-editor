@@ -51,6 +51,10 @@ export default class CrossingRailPart extends RailPartBase<CrossingRailPartProps
     return [[0, 1]]
   }
 
+  get feederSockets() {
+    return []
+  }
+
 
   renderParts = () => {
     const { length, crossAngle, pivotJointIndex, data } = this.props

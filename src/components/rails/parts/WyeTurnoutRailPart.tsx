@@ -48,6 +48,10 @@ export default class WyeTurnoutRailPart extends RailPartBase<WyeTurnoutRailPartP
     return []
   }
 
+  get feederSockets() {
+    return []
+  }
+
   get conductives() {
     return [[0], [1]]
   }

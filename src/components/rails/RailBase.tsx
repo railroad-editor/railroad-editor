@@ -7,6 +7,7 @@ import * as _ from "lodash";
 import RailPartBase from "components/rails/parts/RailPartBase";
 import getLogger from "logging";
 import Gap from "components/rails/parts/Gap";
+import FeederSocket from "components/rails/parts/FeederSocket";
 
 const LOGGER = getLogger(__filename)
 
@@ -45,6 +46,8 @@ export interface RailBaseDefaultProps {
   pivotJointChangingStride: number
   // ギャップ数
   numGaps: number
+  // フィーダー差し込み口
+  numFeederSockets: number
   // 対向ジョイント情報
   opposingJoints: OpposingJoints
   // ジョイント表示のON/OFF
@@ -73,6 +76,8 @@ export interface RailBaseState {
   jointAngles: number[]
   gapPositions: Point[]
   gapAngles: number[]
+  feederSocketPositions: Point[]
+  feederSocketAngles: number[]
 }
 
 
@@ -83,6 +88,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     numJoints: 2,
     pivotJointChangingStride: 1,
     numGaps: 0,
+    numFeederSockets: 0,
 
     selected: false,
     opposingJoints: {},
@@ -104,12 +110,14 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
   railPart: RailPartBase<any, any>
   joints: Joint[]
   gaps: Gap[]
+  feederSockets: FeederSocket[]
 
 
   protected constructor(props: P) {
     super(props)
     this.joints = new Array(this.props.numJoints).fill(null)
     this.gaps = new Array(this.props.numGaps).fill(null)
+    this.feederSockets = new Array(this.props.numFeederSockets).fill(null)
 
     this.getInstance = this.getInstance.bind(this)
   }
@@ -120,6 +128,8 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
       jointAngles: new Array(this.props.numJoints).fill(props.angle),
       gapPositions: new Array(this.props.numGaps).fill(props.position),
       gapAngles: new Array(this.props.numGaps).fill(props.angle),
+      feederSocketPositions: new Array(this.props.numFeederSockets).fill(props.position),
+      feederSocketAngles: new Array(this.props.numFeederSockets).fill(props.angle),
     }
   }
 
@@ -132,11 +142,13 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
   componentDidUpdate() {
     this.fixJoints()
     this.fixGaps()
+    this.fixFeederSockets()
   }
 
   componentDidMount() {
     this.fixJoints()
     this.fixGaps()
+    this.fixFeederSockets()
     // HOCを用いる場合、refではラップされたコンテナを取得することになってしまう
     // そのためonMountコールバックでコンポーネントインスタンスを取得する手段を与える
     if (this.props.onMount) {
@@ -202,6 +214,29 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     })
   }
 
+  protected renderFeederSockets = (props) => {
+    const {id, opacity, visible} = props
+    const {feederSocketPositions, feederSocketAngles} = this.state
+
+    return _.range(this.feederSockets.length).map(i => {
+      return (
+        <FeederSocket
+          key={`fs-${i}`} //`
+          position={feederSocketPositions[i]}
+          angle={feederSocketAngles[i]}
+          opacity={opacity}
+          visible={visible}
+          data={{
+            type: 'FeederSocket',
+            partId: i,
+            railId: id,
+          }}
+          ref={(fs) => {if (fs) this.feederSockets[i] = fs}}
+        />
+      )
+    })
+  }
+
   /**
    * レールパーツの位置・角度に合わせてジョイントの位置・角度を変更する
    */
@@ -244,6 +279,22 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     }
   }
 
+  private fixFeederSockets() {
+    const feederSocketPositions = _.range(this.feederSockets.length).map(i => _.clone(this.railPart.getPivotPositionToParent(this.railPart.feederSockets[i])))
+    const feederSocketAngles = _.range(this.feederSockets.length).map(i => _.clone(this.railPart.getPivotAngleToParent(this.railPart.feederSockets[i])))
+
+    if (_.range(this.feederSockets.length).every(i =>
+      pointsEqual(this.state.feederSocketPositions[i], feederSocketPositions[i])
+      && this.state.feederSocketAngles[i] === feederSocketAngles[i])) {
+      // noop
+    } else {
+      this.setState({
+        feederSocketPositions,
+        feederSocketAngles
+      })
+    }
+  }
+
   protected getInstance(railPart) {
     if (railPart) this.railPart = railPart
   }
@@ -258,6 +309,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
         {this.renderRailPart(this.props)}
         {this.renderJoints(this.props)}
         {this.renderGaps(this.props)}
+        {this.renderFeederSockets(this.props)}
       </>
     )
   }

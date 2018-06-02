@@ -46,6 +46,13 @@ export default class DoubleStraightRailPart extends RailPartBase<DoubleStraightR
     return []
   }
 
+  get feederSockets() {
+    return [
+      {pivotPartIndex: 0, pivot: Pivot.CENTER},
+      {pivotPartIndex: 1, pivot: Pivot.CENTER},
+    ]
+  }
+
   get conductives() {
     return [[0, 1]]
   }

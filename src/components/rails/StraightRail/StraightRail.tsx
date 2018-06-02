@@ -14,6 +14,7 @@ export default class StraightRail extends RailBase<StraightRailProps, RailBaseSt
     type: 'StraightRail',
     numJoints: 2,
     pivotJointChangingStride: 2,
+    numFeederSockets: 1,
   }
 
   constructor(props: StraightRailProps) {
@@ -40,6 +41,7 @@ export default class StraightRail extends RailBase<StraightRailProps, RailBaseSt
           railId: id,
           partId: 0,
         }}
+        hasGap={false}
         onLeftClick={this.props.onRailPartLeftClick}
         ref={this.getInstance}
       />

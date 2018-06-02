@@ -17,6 +17,7 @@ export default class CurveRail extends RailBase<CurveRailProps, RailBaseState> {
     type: 'CurveRail',
     numJoints: 2,
     pivotJointChangingStride: 1,
+    numFeederSockets: 1,
   }
 
   constructor(props: CurveRailProps) {

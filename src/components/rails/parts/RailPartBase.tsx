@@ -173,6 +173,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
 
   abstract get conductives(): number[][]
 
+  abstract get feederSockets(): PivotInfo[]
 
   getPivot(jointIndex: number) {
     if (jointIndex == null) {

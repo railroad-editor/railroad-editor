@@ -52,6 +52,11 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
     ]
   }
 
+  get feederSockets() {
+    return []
+  }
+
+
   get conductives() {
     return [[0]]
   }

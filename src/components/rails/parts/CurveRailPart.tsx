@@ -46,6 +46,12 @@ export default class CurveRailPart extends RailPartBase<CurveRailPartProps, {}> 
     return []
   }
 
+  get feederSockets() {
+    return [
+      {pivotPartIndex: 0, pivot: Pivot.CENTER},
+    ]
+  }
+
   get conductives() {
     return [[0]]
   }

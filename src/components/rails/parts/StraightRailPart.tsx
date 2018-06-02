@@ -61,6 +61,10 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
     }
   }
 
+  get feederSockets() {
+    return [{pivotPartIndex: 0, pivot: Pivot.RIGHT}]
+  }
+
   get conductives() {
     return [
       [0, 1]

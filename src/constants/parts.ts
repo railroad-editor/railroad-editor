@@ -23,3 +23,9 @@ export const GAP_HEIGHT = RAIL_PART_WIDTH
 export const GAP_HIT_RADIUS = 16
 export const GAP_DETECTION_OPACITY_RATE = 0.5
 export const GAP_FILL_COLOR = 'red'
+
+export const FEEDER_SOCKET_WIDTH = 4
+export const FEEDER_SOCKET_HEIGHT = RAIL_PART_WIDTH
+export const FEEDER_SOCKET_HIT_RADIUS = 16
+export const FEEDER_SOCKET_DETECTION_OPACITY_RATE = 0.5
+export const FEEDER_SOCKET_FILL_COLORS = ['green', 'green', 'deepskyblue', 'green']

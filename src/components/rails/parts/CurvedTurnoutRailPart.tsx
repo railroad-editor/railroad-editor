@@ -50,6 +50,10 @@ export default class CurvedTurnoutRailPart extends RailPartBase<CurvedTurnoutRai
     return []
   }
 
+  get feederSockets() {
+    return []
+  }
+
   get conductives() {
     return [[0], [1]]
   }
