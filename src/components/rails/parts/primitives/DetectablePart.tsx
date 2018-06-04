@@ -193,7 +193,7 @@ export default class DetectablePart extends React.Component<DetectablePartProps,
       const color = detectionState === DetectionState.DETECTING && isError ? 'red' : fillColors[detectionState]
       clonedDetectionPart = React.cloneElement(detectionPart as any, {
         ...detectionPart.props,
-        visible: detectionEnabled ? this.state.detectionState : false,
+        visible: detectionEnabled ? this.isDetecting() || this.isBeforeDetect(): false,
         fillColor: color,
         name: 'detect',
       })

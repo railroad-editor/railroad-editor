@@ -3,23 +3,21 @@ import {Point} from "paper";
 import {Rectangle} from "react-paper-bindings";
 import DetectablePart from "./primitives/DetectablePart";
 import CirclePart from "./primitives/CirclePart";
-import {FlowDirection, Pivot} from "components/rails/parts/primitives/PartBase";
+import {Pivot} from "components/rails/parts/primitives/PartBase";
 import {
-  FEEDER_SOCKET_DETECTION_OPACITY_RATE,
-  FEEDER_SOCKET_FILL_COLORS,
-  FEEDER_SOCKET_HEIGHT,
-  FEEDER_SOCKET_HIT_RADIUS,
-  FEEDER_SOCKET_WIDTH
+  GAP_JOINER_SOCKET_DETECTION_OPACITY_RATE,
+  GAP_JOINER_SOCKET_FILL_COLORS,
+  GAP_JOINER_SOCKET_HIT_RADIUS
 } from "constants/parts";
-import RectPart from "components/rails/parts/primitives/RectPart";
 import getLogger from "logging";
 import PartGroup from "components/rails/parts/primitives/PartGroup";
 
 const LOGGER = getLogger(__filename)
 
-interface FeederSocketProps extends Partial<DefaultProps> {
+interface GapJoinerSocketProps extends Partial<DefaultProps> {
   name?: string
   data?: any
+  hasGapJoiner: boolean
   onMouseMove?: (e: MouseEvent) => void
   onLeftClick?: (e: MouseEvent) => boolean
   onRightClick?: (e: MouseEvent) => boolean
@@ -35,12 +33,12 @@ interface DefaultProps {
   opacity?: number
   visible?: boolean
   fillColors?: string[]
-  hasFeeder?: boolean
+  hasGapJoiner?: boolean
   detectionEnabled?: boolean
 }
 
 
-export default class FeederSocket extends React.Component<FeederSocketProps, {}> {
+export default class GapJoinerSocket extends React.Component<GapJoinerSocketProps, {}> {
   public static defaultProps: DefaultProps = {
     position: new Point(0, 0),
     angle: 0,
@@ -48,14 +46,14 @@ export default class FeederSocket extends React.Component<FeederSocketProps, {}>
     selected: false,
     opacity: 1,
     visible: true,
-    fillColors: FEEDER_SOCKET_FILL_COLORS,
-    hasFeeder: false,
+    fillColors: GAP_JOINER_SOCKET_FILL_COLORS,
+    hasGapJoiner: false,
     detectionEnabled: true
   }
 
   part: DetectablePart
 
-  constructor(props: FeederSocketProps) {
+  constructor(props: GapJoinerSocketProps) {
     super(props)
   }
 
@@ -82,31 +80,24 @@ export default class FeederSocket extends React.Component<FeederSocketProps, {}>
 
   render() {
     const {
-      position, angle, detectionEnabled, hasFeeder, pivot, selected, fillColors, opacity, visible,
+      position, angle, detectionEnabled, hasGapJoiner, pivot, selected, fillColors, opacity, visible,
       name, data, onLeftClick, onRightClick, onMouseMove, onMouseEnter, onMouseLeave
     } = this.props
 
     return (
       <DetectablePart
         mainPart={
-          <PartGroup
-            pivotPartIndex={0}
-          >
-            <RectPart
-              width={FEEDER_SOCKET_WIDTH}
-              height={FEEDER_SOCKET_HEIGHT}
-              opacity={opacity}
-              pivot={Pivot.CENTER}
+            <CirclePart
+              radius={0}
             />
-          </PartGroup>
         }
         detectionPart={
           <PartGroup
             pivotPartIndex={0}
           >
             <CirclePart
-              radius={FEEDER_SOCKET_HIT_RADIUS}
-              opacity={opacity * FEEDER_SOCKET_DETECTION_OPACITY_RATE}
+              radius={GAP_JOINER_SOCKET_HIT_RADIUS}
+              opacity={opacity * GAP_JOINER_SOCKET_DETECTION_OPACITY_RATE}
             />
           </PartGroup>
         }
@@ -116,7 +107,7 @@ export default class FeederSocket extends React.Component<FeederSocketProps, {}>
         fillColors={fillColors}
         visible={visible}
         selected={selected}
-        detectionEnabled={detectionEnabled && !hasFeeder}
+        detectionEnabled={detectionEnabled && !hasGapJoiner}
         pivotPartIndex={0}
         name={name}
         data={data}

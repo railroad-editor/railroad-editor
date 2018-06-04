@@ -80,7 +80,7 @@ export class Layout extends React.Component<LayoutProps & WithBuilderPublicProps
               {
                 currentLayoutData.rails
                   .filter(r => r.layerId === layer.id)
-                  .map(item => createRailComponent(item, layer))
+                  .map(item => createRailComponent(item, layer, currentLayoutData.feeders, currentLayoutData.gapJoiners))
               }
             </Layer>
           )

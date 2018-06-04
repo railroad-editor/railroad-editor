@@ -9,6 +9,7 @@ import getLogger from "logging";
 import * as uuidv4 from "uuid/v4";
 import * as moment from "moment";
 import StorageAPI from "apis/storage"
+import {FeederInfo, GapJoinerInfo} from "components/rails/RailBase";
 
 const LOGGER = getLogger(__filename)
 
@@ -36,6 +37,8 @@ export interface LayoutStoreState {
 export interface LayoutData {
   layers: LayerData[]
   rails: RailData[]
+  feeders: FeederInfo[]
+  gapJoiners: GapJoinerInfo[]
 }
 
 export interface LayerData {
@@ -69,6 +72,8 @@ export const INITIAL_STATE: LayoutStoreState = {
     {
       layers: [INITIAL_LAYER_DATA],
       rails: [],
+      feeders: [],
+      gapJoiners: [],
     }
   ],
   historyIndex: 0,
@@ -163,6 +168,22 @@ export class LayoutStore {
     return getAllOpenCloseJoints(this.currentLayoutData.rails)
   }
 
+  @computed
+  get nextFeederId() {
+    let ids = this.currentLayoutData.feeders.map(r => r.id)
+    return ids.length > 0 ? Math.max(...ids) + 1 : 1
+  }
+
+  @computed
+  get nextGapJoinerId() {
+    let ids = this.currentLayoutData.gapJoiners.map(r => r.id)
+    return ids.length > 0 ? Math.max(...ids) + 1 : 1
+  }
+
+  /**
+   * レール系 Add/Update/Delete
+   */
+
   @action
   addRail = (item: RailData) => {
     item.id = this.nextRailId
@@ -205,6 +226,10 @@ export class LayoutStore {
     items.forEach(item => this.deleteRail(item))
   }
 
+  /**
+   * レイヤー系 Add/Update/Delete
+   */
+
   @action
   addLayer = (item: LayerData) => {
     item.id = this.nextLayerId
@@ -229,6 +254,18 @@ export class LayoutStore {
     this.currentLayoutData.rails = this.currentLayoutData.rails.filter(rail => rail.layerId !== item.id)
   }
 
+  /**
+   * ヒストリ操作系
+   */
+
+  @action
+  commit = () => {
+    const layout = toJS(this.currentLayoutData)
+    LOGGER.info('LayoutStore#commit', layout)
+    this.histories[this.historyIndex+1] = layout
+    this.historyIndex += 1
+  }
+
   @action
   undo = () => {
     if (this.historyIndex > 0) {
@@ -248,6 +285,10 @@ export class LayoutStore {
     // TODO: implement
   }
 
+  /**
+   * レイアウトメタ情報 Set/Update
+   */
+
   @action
   setLayoutMeta = (meta: LayoutMeta) => {
     this.meta = meta
@@ -262,11 +303,9 @@ export class LayoutStore {
     }
   }
 
-  @action
-  setLayoutData = (layoutData: LayoutData) => {
-    this.histories = [layoutData]
-    this.historyIndex = 0
-  }
+  /**
+   * レイアウト Save/Load
+   */
 
   @action
   saveLayout = async (showMessage?: any) => {
@@ -307,6 +346,16 @@ export class LayoutStore {
   }
 
   @action
+  setLayoutData = (layoutData: LayoutData) => {
+    this.histories = [layoutData]
+    this.historyIndex = 0
+  }
+
+  /**
+   * 設定系 Set/Update
+   */
+
+  @action
   setConfig = (config: LayoutConfig) => {
     this.config = config
   }
@@ -319,12 +368,62 @@ export class LayoutStore {
     }
   }
 
+  /**
+   * フィーダー系 Add/Update/Delete
+   */
+
   @action
-  commit = () => {
-    const layout = toJS(this.currentLayoutData)
-    LOGGER.info('LayoutStore#commit', layout)
-    this.histories[this.historyIndex+1] = layout
-    this.historyIndex += 1
+  addFeeder = (item: FeederInfo) => {
+    // IDはここで発行
+    this.currentLayoutData.feeders.push({
+      ...item,
+      id: this.nextFeederId,
+    })
+  }
+
+  @action
+  updateFeeder = (item: Partial<FeederInfo>) => {
+    const index = this.currentLayoutData.feeders.findIndex(feeder => feeder.id === item.id)
+    const target = this.currentLayoutData.feeders[index]
+
+    this.currentLayoutData.feeders[index] = {
+      ...target,
+      ...item
+    }
+  }
+
+  @action
+  deleteFeeder = (item: FeederInfo) => {
+    this.currentLayoutData.feeders = this.currentLayoutData.feeders.filter(feeder => feeder.id !== item.id)
+  }
+
+  /**
+   * ギャップジョイナー系 Add/Update/Delete
+   */
+
+  @action
+  addGapJoiner = (item: GapJoinerInfo) => {
+    // IDはここで発行
+    this.currentLayoutData.gapJoiners.push({
+      ...item,
+      id: this.nextGapJoinerId,
+    })
+  }
+
+  @action
+  updateGapJoiner = (item: Partial<GapJoinerInfo>) => {
+    const index = this.currentLayoutData.gapJoiners.findIndex(gapJoiner => gapJoiner.id === item.id)
+    const target = this.currentLayoutData.gapJoiners[index]
+
+    this.currentLayoutData.gapJoiners[index] = {
+      ...target,
+      ...item
+    }
+  }
+
+  @action
+  deleteGapJoiner = (item: Partial<GapJoinerInfo>) => {
+    this.currentLayoutData.gapJoiners = this.currentLayoutData.gapJoiners.filter(gapJoiner => gapJoiner.id !== item.id)
   }
 
 }

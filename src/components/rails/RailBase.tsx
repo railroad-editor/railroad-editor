@@ -9,6 +9,10 @@ import getLogger from "logging";
 import Gap from "components/rails/parts/Gap";
 import FeederSocket from "components/rails/parts/FeederSocket";
 import {FlowDirection, Pivot} from "components/rails/parts/primitives/PartBase";
+import GapJoiner from "components/rails/parts/GapJoiner";
+import Feeder from "components/rails/parts/Feeder";
+import GapJoinerSocket from "components/rails/parts/GapJoinerSocket";
+import {WithRailBaseProps} from "components/rails/withRailBase";
 
 const LOGGER = getLogger(__filename)
 
@@ -19,21 +23,26 @@ export interface JointInfo {
 }
 
 export interface FeederInfo {
+  // フィーダー自体のID
+  id: number
   railId: number
-  partId: number
+  socketId: number
   pivot: Pivot
-  feederId: number
   selected: boolean
   direction: FlowDirection
+}
+
+export interface GapJoinerInfo {
+  id: number
+  railId: number
+  jointId: number
+  selected: boolean
 }
 
 export interface OpposingJoints {
   [key: number]: JointInfo
 }
 
-export interface ConnectedFeeder {
-  [key: number]: FeederInfo
-}
 
 export interface RailBaseProps extends Partial<RailBaseDefaultProps> {
   position: Point
@@ -59,17 +68,20 @@ export interface RailBaseDefaultProps {
   numJoints: number
   // 右クリックでPivotJointIndexを加算する数
   pivotJointChangingStride: number
-  // ギャップ数
-  numGaps: number
   // フィーダー差し込み口
   numFeederSockets: number
   // 対向ジョイント情報
   opposingJoints: OpposingJoints
   // フィーダー
-  feeders: ConnectedFeeder
-
+  feeders: FeederInfo[]
+  // ギャップ
+  gapJoiners: GapJoinerInfo[]
   // ジョイント表示のON/OFF
   enableJoints: boolean
+  // フィーダーソケット表示のON/OFF
+  enableFeederSockets: boolean
+  // ギャップジョイナー表示のON/OFF
+  enableGapJoinerSockets: boolean
   // 選択状態
   selected: boolean
   // 可視性
@@ -78,6 +90,7 @@ export interface RailBaseDefaultProps {
   opacity: number
   // 色
   fillColor: string
+
 
   // イベントハンドラ
   onRailPartLeftClick: (e: MouseEvent) => boolean
@@ -91,14 +104,17 @@ export interface RailBaseDefaultProps {
   onFeederSocketRightClick: (feederId: number, e: MouseEvent) => void
   onFeederSocketMouseEnter: (feederId: number, e: MouseEvent) => void
   onFeederSocketMouseLeave: (feederId: number, e: MouseEvent) => void
+  onFeederLeftClick: (id: number, e: MouseEvent) => void
+  onGapJoinerSocketLeftClick: (jointId: number, e: MouseEvent) => void
+  onGapJoinerSocketMouseEnter: (jointId: number, e: MouseEvent) => void
+  onGapJoinerSocketMouseLeave: (jointId: number, e: MouseEvent) => void
+  onGapJoinerLeftClick: (id: number, e: MouseEvent) => void
 
 }
 
 export interface RailBaseState {
   jointPositions: Point[]
   jointAngles: number[]
-  gapPositions: Point[]
-  gapAngles: number[]
   feederSocketPositions: Point[]
   feederSocketAngles: number[]
 }
@@ -110,9 +126,9 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     type: 'RailBase',
     numJoints: 2,
     pivotJointChangingStride: 1,
-    numGaps: 0,
     numFeederSockets: 0,
-    feeders: {},
+    feeders: [],
+    gapJoiners: [],
 
     selected: false,
     opposingJoints: {},
@@ -120,6 +136,9 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     visible: true,
     opacity: 1,
     fillColor: '#000',
+
+    enableFeederSockets: false,
+    enableGapJoinerSockets: false,
 
     // 何もしないハンドラをセットしておく
     onRailPartLeftClick: (e: MouseEvent) => false,
@@ -133,19 +152,24 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     onFeederSocketRightClick: (feederId: number, e: MouseEvent) => {},
     onFeederSocketMouseEnter: (feederId: number, e: MouseEvent) => {},
     onFeederSocketMouseLeave: (feederId: number, e: MouseEvent) => {},
+    onGapJoinerSocketLeftClick: (feederId: number, e: MouseEvent) => {},
+    onGapJoinerSocketMouseEnter: (feederId: number, e: MouseEvent) => {},
+    onGapJoinerSocketMouseLeave: (feederId: number, e: MouseEvent) => {},
+    onFeederLeftClick: (id: number, e: MouseEvent) => {},
+    onGapJoinerLeftClick: (id: number, e: MouseEvent) => {},
   }
 
   railPart: RailPartBase<any, any>
   joints: Joint[]
-  gaps: Gap[]
   feederSockets: FeederSocket[]
+  gapJoiners: GapJoiner[]
 
 
   protected constructor(props: P) {
     super(props)
     this.joints = new Array(this.props.numJoints).fill(null)
-    this.gaps = new Array(this.props.numGaps).fill(null)
     this.feederSockets = new Array(this.props.numFeederSockets).fill(null)
+    this.gapJoiners = new Array(this.props.numJoints).fill(null)
 
     this.getInstance = this.getInstance.bind(this)
   }
@@ -154,8 +178,6 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     return {
       jointPositions: new Array(this.props.numJoints).fill(props.position),
       jointAngles: new Array(this.props.numJoints).fill(props.angle),
-      gapPositions: new Array(this.props.numGaps).fill(props.position),
-      gapAngles: new Array(this.props.numGaps).fill(props.angle),
       feederSocketPositions: new Array(this.props.numFeederSockets).fill(props.position),
       feederSocketAngles: new Array(this.props.numFeederSockets).fill(props.angle),
     }
@@ -169,13 +191,11 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
 
   componentDidUpdate() {
     this.fixJoints()
-    this.fixGaps()
     this.fixFeederSockets()
   }
 
   componentDidMount() {
     this.fixJoints()
-    this.fixGaps()
     this.fixFeederSockets()
     // HOCを用いる場合、refではラップされたコンテナを取得することになってしまう
     // そのためonMountコールバックでコンポーネントインスタンスを取得する手段を与える
@@ -189,7 +209,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
    * ジョイントコンポーネントを生成する
    * @returns {any[]}
    */
-  protected renderJoints = (props) => {
+  protected renderJoints = (props: P) => {
     const {id, opacity, opposingJoints, enableJoints, visible} = props
     const {jointPositions, jointAngles} = this.state
 
@@ -219,58 +239,113 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     })
   }
 
-  protected renderGaps = (props) => {
-    const {id, opacity, visible} = props
-    const {gapPositions, gapAngles} = this.state
-
-    return _.range(this.gaps.length).map(i => {
-      return (
-        <Gap
-          key={`g-${i}`} //`
-          position={gapPositions[i]}
-          angle={gapAngles[i]}
-          opacity={opacity}
-          visible={visible}
-          data={{
-            type: 'Gap',
-            partId: i,
-            railId: id,
-          }}
-          ref={(gap) => {if (gap) this.gaps[i] = gap}}
-        />
-      )
-    })
-  }
-
+  /**
+   * フィーダーソケット・フィーダーを生成
+   */
   protected renderFeederSockets = (props: RailBaseProps) => {
-    const {id, opacity, visible, feeders} = props
+    const {id, opacity, visible, feeders, enableFeederSockets} = props
     const {feederSocketPositions, feederSocketAngles} = this.state
 
-    return _.range(this.feederSockets.length).map(i => {
+    const feederSocketComponents = _.range(this.feederSockets.length).map(i => {
       return (
-        <FeederSocket
-          key={`fs-${i}`} //`
-          position={feederSocketPositions[i]}
-          angle={feederSocketAngles[i]}
-          opacity={opacity}
+          <FeederSocket
+            key={`fs-${i}`} //`
+            position={feederSocketPositions[i]}
+            angle={feederSocketAngles[i]}
+            opacity={opacity}
+            visible={visible && enableFeederSockets}
+            detectionEnabled={enableFeederSockets && !feeders.map(feeder => feeder.socketId).includes(i)}
+            data={{
+              type: 'FeederSocket',
+              partId: i,
+              railId: id,
+            }}
+            onLeftClick={this.props.onFeederSocketLeftClick.bind(this, i)}
+            onRightClick={this.props.onFeederSocketRightClick.bind(this, i)}
+            onMouseEnter={this.props.onFeederSocketMouseEnter.bind(this, i)}
+            onMouseLeave={this.props.onFeederSocketMouseLeave.bind(this, i)}
+            ref={(fs) => {if (fs) this.feederSockets[i] = fs}}
+          />
+      )
+    })
+
+    const feederComponents = feeders.map(feeder => {
+      return (
+        <Feeder
+          position={feederSocketPositions[feeder.socketId]}
+          angle={feederSocketAngles[feeder.socketId]}
+          direction={feeder.direction}
           visible={visible}
-          data={{
-            type: 'FeederSocket',
-            partId: i,
-            railId: id,
-          }}
-          hasFeeder={!!feeders[i]}
-          selected={feeders[i] && feeders[i].selected}
-          direction={feeders[i] && feeders[i].direction}
-          onLeftClick={this.props.onFeederSocketLeftClick.bind(this, i)}
-          onRightClick={this.props.onFeederSocketRightClick.bind(this, i)}
-          onMouseEnter={this.props.onFeederSocketMouseEnter.bind(this, i)}
-          onMouseLeave={this.props.onFeederSocketMouseLeave.bind(this, i)}
-          ref={(fs) => {if (fs) this.feederSockets[i] = fs}}
+          selected={feeder.selected}
+          onLeftClick={this.props.onFeederLeftClick.bind(this, feeder.id)}
         />
       )
     })
+
+    return (
+      <>
+        {feederSocketComponents}
+        {feederComponents}
+      </>
+    )
   }
+
+  /**
+   * ギャップジョイナーソケット・ギャップジョイナーを生成
+   */
+  protected renderGapJoiners = (props: P) => {
+    const {id, opacity, visible, enableGapJoinerSockets, gapJoiners, opposingJoints} = props
+    const {jointPositions, jointAngles} = this.state
+
+    const gapJoinerSocketComponents = _.range(this.gapJoiners.length).map(i => {
+      if (opposingJoints[i] && id < opposingJoints[i].railId) {
+        return (
+            <GapJoinerSocket
+              key={`gj-${i}`}  //`
+              position={jointPositions[i]}
+              angle={jointAngles[i]}
+              opacity={opacity}
+              visible={visible && enableGapJoinerSockets}
+              detectionEnabled={enableGapJoinerSockets && !gapJoiners.map(gapJoiner => gapJoiner.jointId).includes(i)}
+              hasGapJoiner={!!gapJoiners[i]}
+              selected={gapJoiners[i] && gapJoiners[i].selected}
+              data={{
+                type: 'GapJoiner',
+                partId: i,
+                railId: id,
+              }}
+              onLeftClick={this.props.onGapJoinerSocketLeftClick.bind(this, i)}
+              onMouseEnter={this.props.onGapJoinerSocketMouseEnter.bind(this, i)}
+              onMouseLeave={this.props.onGapJoinerSocketMouseLeave.bind(this, i)}
+              ref={(gapJoiner) => {if (gapJoiner) this.gapJoiners[i] = gapJoiner}}
+            />
+        )
+      } else {
+        return <></>
+      }
+    })
+
+    const gapJoinerComponents = gapJoiners.map(gapJoiner => {
+      return (
+        <GapJoiner
+          position={jointPositions[gapJoiner.jointId]}
+          angle={jointAngles[gapJoiner.jointId]}
+          visible={visible}
+          selected={gapJoiner.selected}
+          onLeftClick={this.props.onGapJoinerLeftClick.bind(this, gapJoiner.id)}
+        />
+      )
+    })
+
+    return (
+      <>
+        {gapJoinerSocketComponents}
+        {gapJoinerComponents}
+      </>
+    )
+  }
+
+
 
   /**
    * レールパーツの位置・角度に合わせてジョイントの位置・角度を変更する
@@ -287,8 +362,8 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
 
     // レールパーツから取得したジョイントの位置・角度が現在のものと異なれば再描画
     if (_.range(this.joints.length).every(i =>
-        pointsEqual(this.state.jointPositions[i], jointPositions[i])
-        && this.state.jointAngles[i] === jointAngles[i])) {
+      pointsEqual(this.state.jointPositions[i], jointPositions[i])
+      && this.state.jointAngles[i] === jointAngles[i])) {
       // noop
     } else {
       this.setState({
@@ -298,21 +373,6 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     }
   }
 
-  private fixGaps() {
-    const gapPositions = _.range(this.gaps.length).map(i => _.clone(this.railPart.getPivotPositionToParent(this.railPart.gaps[i])))
-    const gapAngles = _.range(this.gaps.length).map(i => _.clone(this.railPart.getPivotAngleToParent(this.railPart.gaps[i])))
-
-    if (_.range(this.gaps.length).every(i =>
-      pointsEqual(this.state.gapPositions[i], gapPositions[i])
-      && this.state.gapAngles[i] === gapAngles[i])) {
-      // noop
-    } else {
-      this.setState({
-        gapPositions,
-        gapAngles
-      })
-    }
-  }
 
   private fixFeederSockets() {
     const feederSocketPositions = _.range(this.feederSockets.length).map(i => _.clone(this.railPart.getPivotPositionToParent(this.railPart.feederSockets[i])))
@@ -343,8 +403,8 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
       <>
         {this.renderRailPart(this.props)}
         {this.renderJoints(this.props)}
-        {this.renderGaps(this.props)}
         {this.renderFeederSockets(this.props)}
+        {this.renderGapJoiners(this.props)}
       </>
     )
   }

@@ -432,28 +432,6 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       this.addSingleRails(railDatas)
     }
 
-    // /**
-    //  * レールグループを設置する。
-    //  * @param {RailGroupData} railGroup
-    //  * @param {RailData[]} children
-    //  */
-    // private addRailGroup = (railGroup: RailGroupData, children: RailData[]) => {
-    //   const newChildren = children.map((temporaryRail, idx) => {
-    //     return {
-    //       ..._.omit(temporaryRail, p => _.isFunction(p)),
-    //       // id: nextRailId + idx,    // 仮のレールIDを割り振る
-    //       name: '',
-    //       layerId: this.props.builder.activeLayerId,  // 現在のレイヤーに置く
-    //       enableJoints: true,                         // ジョイントを有効化
-    //       opposingJoints: {},                         // 近傍ジョイントは後で接続する
-    //       opacity: 1,
-    //       visible: true,
-    //     }
-    //   })
-    //   // レールグループを追加
-    //   this.props.layout.addRailGroup({ ...railGroup, name: '' }, newChildren)
-    // }
-
 
     /**
      * 選択中のレールを削除する。

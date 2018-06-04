@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Rectangle} from "react-paper-bindings";
-import StraightRailPart from "../parts/StraightRailPart";
+import GappedStraightRailPart from "components/rails/parts/GappedStraightRailPart";
 import {RailBase, RailBaseDefaultProps, RailBaseProps, RailBaseState} from "components/rails/RailBase";
 
 
@@ -14,7 +14,6 @@ export default class GappedStraightRail extends RailBase<GappedStraightRailProps
     type: 'StraightRail',
     numJoints: 2,
     pivotJointChangingStride: 2,
-    numGaps: 1
   }
 
   constructor(props: GappedStraightRailProps) {
@@ -27,7 +26,7 @@ export default class GappedStraightRail extends RailBase<GappedStraightRailProps
     const { position, angle, length, id, selected, pivotJointIndex, opacity, visible, fillColor} = this.props
 
     return (
-      <StraightRailPart
+      <GappedStraightRailPart
         length={length}
         position={position}
         angle={angle}
@@ -42,7 +41,6 @@ export default class GappedStraightRail extends RailBase<GappedStraightRailProps
           partId: 0,
         }}
         onLeftClick={this.props.onRailPartLeftClick}
-        hasGap={true}
         ref={this.getInstance}
       />
     )

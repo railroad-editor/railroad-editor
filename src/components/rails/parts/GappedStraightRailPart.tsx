@@ -9,15 +9,16 @@ import RailPartBase, {RailPartBaseDefaultProps, RailPartBaseProps} from "compone
 import getLogger from "logging";
 import 'lodash.combinations';
 import 'lodash.product';
+import Gap from "components/rails/parts/Gap";
 
 const LOGGER = getLogger(__filename)
 
-interface StraightRailPartProps extends RailPartBaseProps {
+interface GappedStraightRailPartProps extends RailPartBaseProps {
   length: number
 }
 
 
-export default class StraightRailPart extends RailPartBase<StraightRailPartProps, {}> {
+export default class GappedStraightRailPart extends RailPartBase<GappedStraightRailPartProps, {}> {
   public static defaultProps: RailPartBaseDefaultProps = {
     position: new Point(0, 0),
     angle: 0,
@@ -27,7 +28,7 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
     fillColors: RAIL_PART_FILL_COLORS
   }
 
-  constructor(props: StraightRailPartProps) {
+  constructor(props: GappedStraightRailPartProps) {
     super(props)
   }
 
@@ -35,7 +36,7 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
   get joints() {
     return [
       {pivotPartIndex: 0, pivot: Pivot.LEFT},
-      {pivotPartIndex: 0, pivot: Pivot.RIGHT}
+      {pivotPartIndex: 1, pivot: Pivot.RIGHT}
     ]
   }
 
@@ -44,11 +45,11 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
   }
 
   get gaps() {
-    return []
+    return [{pivotPartIndex: 0, pivot: Pivot.RIGHT}]
   }
 
   get feederSockets() {
-    return [{pivotPartIndex: 0, pivot: Pivot.CENTER}]
+    return []
   }
 
   get conductives() {
@@ -68,11 +69,26 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
         data={data}
       >
         <RectPart
-          width={length}
+          width={length/2}
           height={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
           data={{
             type: 'Part'
+          }}
+        />
+        <RectPart
+          position={new Point(length/2, 0)}
+          width={length/2}
+          height={RAIL_PART_WIDTH}
+          pivot={Pivot.LEFT}
+          data={{
+            type: 'Part'
+          }}
+        />
+        <Gap
+          position={new Point(length/2, 0)}
+          data={{
+            type: 'Gap',
           }}
         />
       </PartGroup>

@@ -28,6 +28,11 @@ export class LayoutLogicStore {
 
   @action
   deleteRail = (railId: number) => {
+    // フィーダーを削除
+    this.layoutStore.currentLayoutData.feeders
+      .filter(feeder => feeder.railId === railId)
+      .forEach(feeder => this.layoutStore.deleteFeeder(feeder))
+    // ジョイントを解除
     this.disconnectJoint(railId)
     this.layoutStore.deleteRail({id: railId})
   }
@@ -77,6 +82,10 @@ export class LayoutLogicStore {
     if (target == null) {
       return
     }
+
+    // ギャップジョイナーを削除
+    this.disconnectGapJoiner(railId)
+
     // 指定のレールに接続されている全てのレールのジョイントを開放
     const updatedData = _.values(target.opposingJoints).map(joint => {
       return {
@@ -100,6 +109,26 @@ export class LayoutLogicStore {
   disconnectJoints = (railIds: number[]) => {
     railIds.forEach(id => this.disconnectJoint(id))
   }
+
+  @action
+  disconnectGapJoiner = (railId: number) => {
+    const target = this.getRailDataById(railId)
+
+    // 自分のギャップジョイナーを削除する
+    this.layoutStore.currentLayoutData.gapJoiners
+      .filter(gapJoiner => gapJoiner.railId === railId)
+      .forEach(gapJoiner => this.layoutStore.deleteGapJoiner(gapJoiner))
+
+    // 対向ジョイントにギャップジョイナーが存在したら削除する
+    _.values(target.opposingJoints).map(joint => {
+      const opposingGapJoiner = this.layoutStore.currentLayoutData.gapJoiners
+        .find(gapJoiner => gapJoiner.railId === joint.railId && gapJoiner.jointId === joint.jointId)
+      if (opposingGapJoiner) {
+        this.layoutStore.deleteGapJoiner(opposingGapJoiner)
+      }
+    })
+  }
+
 
 
   private getRailDataById = (id: number) => {

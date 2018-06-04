@@ -1,7 +1,7 @@
 import * as React from "react";
 import RailContainers, {RailComponentClasses, RailData, RailGroupData} from "components/rails/index";
 import getLogger from "logging";
-import {FeederInfo, RailBase, RailBaseProps} from "components/rails/RailBase";
+import {FeederInfo, GapJoinerInfo, RailBase, RailBaseProps} from "components/rails/RailBase";
 import RailGroupContainer from "components/rails/RailGroup";
 import {Point} from "paper";
 import {JointPair} from "components/hoc/withBuilder";
@@ -18,7 +18,7 @@ const LOGGER = getLogger(__filename)
 
 export const createFeederComponent = (feeder: FeederInfo) => {
   const rail = getRailComponent(feeder.railId)
-  const pivotInfo = {pivotPartIndex: feeder.partId, pivot: feeder.pivot}
+  const pivotInfo = {pivotPartIndex: feeder.socketId, pivot: feeder.pivot}
   return (
     <Feeder
       position={rail.railPart.getPivotPositionToParent(pivotInfo)}
@@ -45,10 +45,11 @@ export const createRailOrRailGroupComponent = (railGroup: RailGroupData, rails: 
 
 /**
  * レールコンポーネントを生成する。
+ * TODO: パフォーマンス
  * @param {RailData} item
  * @param {LayerData} layer
  */
-export const createRailComponent = (item: RailData, layer: LayerData) => {
+export const createRailComponent = (item: RailData, layer: LayerData, feeders?: FeederInfo[], gapJoiners?: GapJoinerInfo[]) => {
   const {id: id, type: type, ...props} = item
   let RailContainer = RailContainers[type]
   if (RailContainer == null) {
@@ -74,6 +75,8 @@ export const createRailComponent = (item: RailData, layer: LayerData) => {
         LOGGER.info(`Rail deleted. id=${id}, ${ref.props.type}`)  //`
         delete window.RAIL_COMPONENTS[id]
       }}
+      feeders={feeders && feeders.filter(feeder => feeder.railId === id)}
+      gapJoiners={gapJoiners && gapJoiners.filter(gapJoiner => gapJoiner.railId === id)}
     />)
 }
 

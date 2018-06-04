@@ -10,6 +10,7 @@ import {FlowDirection, Pivot} from "components/rails/parts/primitives/PartBase";
 const LOGGER = getLogger(__filename)
 
 interface FeederProps extends Partial<DefaultProps> {
+  onLeftClick?: (e: MouseEvent) => boolean
 }
 
 interface DefaultProps {
@@ -34,28 +35,8 @@ export default class Feeder extends React.Component<FeederProps, {}> {
     fillColor: FEEDER_SOCKET_FILL_COLORS[0]
   }
 
-  part: DetectablePart
-
   constructor(props: FeederProps) {
     super(props)
-  }
-
-  // ========== Public APIs ==========
-
-  get position() {
-    return this.part.position
-  }
-
-  get globalPosition() {
-    return this.part.globalPosition
-  }
-
-  get angle() {
-    return this.part.angle
-  }
-
-  get globalAngle() {
-    return this.part.globalAngle
   }
 
   getAngle = () => {
@@ -70,11 +51,10 @@ export default class Feeder extends React.Component<FeederProps, {}> {
     }
   }
 
-
   render() {
-    const { position, opacity, fillColor, visible } = this.props
-
+    const { position, opacity, fillColor, visible, selected, onLeftClick } = this.props
     const angle = this.getAngle()
+
     return (
       <TrianglePart
         position={position}
@@ -85,6 +65,8 @@ export default class Feeder extends React.Component<FeederProps, {}> {
         opacity={opacity}
         pivot={Pivot.TOP}
         visible={visible}
+        selected={selected}
+        onClick={onLeftClick}
       />
     )
   }

@@ -1,9 +1,10 @@
 import {RailComponentClasses, RailData, RailGroupData, RailItemData} from "components/rails";
 import {FeederInfo, JointInfo} from "components/rails/RailBase";
 import {RailGroupProps} from "components/rails/RailGroup/RailGroup";
-import {action, computed, observable, reaction} from "mobx";
+import {action, computed, observable, reaction, when} from "mobx";
 import {Tools} from "constants/tools";
 import builderPaletteData from "constants/builderPaletteItems.json"
+import layoutStore from "store/layoutStore";
 
 export interface PresetPaletteItems {
   [key: string]: PaletteItem[]
@@ -102,7 +103,6 @@ export class BuilderStore {
   @observable selecting: boolean
 
   @observable temporaryFeeder: FeederInfo
-  // @observable zoom
 
 
   constructor({ presetPaletteItems, paletteItem, lastPaletteItems, placingMode, activeLayerId, temporaryRails, temporaryRailGroup, userRailGroups,
@@ -123,7 +123,47 @@ export class BuilderStore {
 
     reaction(
       () => this.activeTool,
-      (tool) => this.setCursorShape(tool)
+      (tool) => {
+
+        this.setCursorShape(tool)
+
+        // TODO: モード切り替え。もっとスマートな方法を考える
+        const currentLayout = layoutStore.currentLayoutData
+        let nextLayout
+        switch (tool) {
+          case Tools.FEEDERS:
+            nextLayout = currentLayout.rails.map(rail => {
+              return {
+                ...rail,
+                enableJoints: false,
+                enableFeederSockets: true,
+                enableGapJoinerSockets: false,
+              }
+            })
+            break
+          case Tools.GAP:
+            nextLayout = currentLayout.rails.map(rail => {
+              return {
+                ...rail,
+                enableJoints: false,
+                enableFeederSockets: false,
+                enableGapJoinerSockets: true,
+              }
+            })
+            break
+          default:
+            nextLayout = currentLayout.rails.map(rail => {
+              return {
+                ...rail,
+                enableJoints: true,
+                enableFeederSockets: false,
+                enableGapJoinerSockets: false,
+              }
+            })
+            break
+        }
+        layoutStore.updateRails(nextLayout)
+      }
     )
   }
 

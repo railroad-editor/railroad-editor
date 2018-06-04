@@ -30,5 +30,14 @@ export const FEEDER_SOCKET_HIT_RADIUS = 16
 export const FEEDER_SOCKET_DETECTION_OPACITY_RATE = 0.5
 export const FEEDER_SOCKET_FILL_COLORS = ['green', 'green', 'deepskyblue', 'green']
 
-export const FEEDER_WIDTH = 24
-export const FEEDER_HEIGHT = 30
+export const FEEDER_WIDTH = 26
+export const FEEDER_HEIGHT = 26
+
+export const GAP_JOINER_SOCKET_WIDTH = 8
+export const GAP_JOINER_SOCKET_HEIGHT = 18
+export const GAP_JOINER_SOCKET_HIT_RADIUS = 16
+export const GAP_JOINER_SOCKET_DETECTION_OPACITY_RATE = 0.5
+export const GAP_JOINER_SOCKET_FILL_COLORS = ['red', 'red', 'deepskyblue', 'red']
+
+export const GAP_JOINER_WIDTH = 12
+export const GAP_JOINER_HEIGHT = 28
