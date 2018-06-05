@@ -27,7 +27,7 @@ import Tooltip from "material-ui/Tooltip";
 import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
+import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {CommonStore} from "store/commonStore";
 import MenuDrawer from "components/Editor/MenuDrawer/MenuDrawer";
@@ -35,6 +35,7 @@ import {SettingsDialog} from "components/Editor/ToolBar/SettingsDialog/SettingsD
 import {compose} from "recompose";
 import {EditableTypography} from "components/common/EditableTypography/EditableTypography";
 import Peer from 'skyway-js';
+import {LayoutLogicStore} from "store/layoutLogicStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -43,6 +44,7 @@ export interface ToolBarProps {
   common?: CommonStore
   builder?: BuilderStore
   layout?: LayoutStore
+  layoutLogic?: LayoutLogicStore
 
   resetViewPosition: () => void
   snackbar: any
@@ -58,7 +60,7 @@ type EnhancedToolBarProps = ToolBarProps & WithBuilderPublicProps
 
 
 
-@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT)
+@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
 @observer
 export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState> {
 
@@ -314,7 +316,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                 </Tooltip>
                 <Tooltip title={"Delete (BS)"}>
                   <StyledIconButton
-                    onClick={this.props.builderDeleteSelectedRails}
+                    onClick={this.props.layoutLogic.deleteSelected}
                   >
                     <DeleteIcon/>
                   </StyledIconButton>

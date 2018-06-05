@@ -16,6 +16,7 @@ interface GapJoinerProps extends Partial<DefaultProps> {
 interface DefaultProps {
   position?: Point
   angle?: number
+  data?: any
   pivot?: Pivot
   selected?: boolean
   opacity?: number
@@ -46,7 +47,7 @@ export default class GapJoiner extends React.Component<GapJoinerProps, {}> {
   }
 
   render() {
-    const { position, angle, pivot, selected, fillColor, opacity, visible, onLeftClick } = this.props
+    const { position, angle, pivot, fillColor, opacity, visible, selected, data, onLeftClick } = this.props
 
     return (
       <RectPart
@@ -59,6 +60,7 @@ export default class GapJoiner extends React.Component<GapJoinerProps, {}> {
         pivot={Pivot.CENTER}
         visible={visible}
         selected={selected}
+        data={data}
         onClick={onLeftClick}
         ref={(r) => {if (r) this.part = r}}
       />

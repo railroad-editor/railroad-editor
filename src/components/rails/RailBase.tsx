@@ -226,7 +226,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
           opacity={opacity}
           visible={visible}
           data={{
-            type: 'Gap',
+            type: 'Joint',
             partId: i,
             railId: id,
           }}
@@ -284,6 +284,9 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
           direction={feeder.direction}
           visible={visible}
           selected={feeder.selected}
+          data={{
+            type: 'Feeder',
+          }}
           onLeftClick={this.props.onFeederLeftClick.bind(this, feeder.id)}
           ref={(r) => {if (r) this.feeders[feeder.socketId] = r}}
         />
@@ -341,6 +344,9 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
           angle={jointAngles[gapJoiner.jointId]}
           visible={visible}
           selected={gapJoiner.selected}
+          data={{
+            type: 'GapJoiner'
+          }}
           onLeftClick={this.props.onGapJoinerLeftClick.bind(this, gapJoiner.id)}
           ref={(r) => {if (r) this.gapJoiners[gapJoiner.jointId] = r}}
         />

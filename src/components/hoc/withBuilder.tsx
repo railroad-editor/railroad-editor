@@ -176,7 +176,8 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
 
     keyDown_Backspace = (e) => {
-      this.deleteSelectedRails()
+      // this.deleteSelectedRails()
+      this.props.layoutLogic.deleteSelected()
     }
 
     keyDown_CtrlC = (e) => {

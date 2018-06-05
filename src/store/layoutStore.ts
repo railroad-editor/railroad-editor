@@ -393,7 +393,7 @@ export class LayoutStore {
   }
 
   @action
-  deleteFeeder = (item: FeederInfo) => {
+  deleteFeeder = (item: Partial<FeederInfo>) => {
     this.currentLayoutData.feeders = this.currentLayoutData.feeders.filter(feeder => feeder.id !== item.id)
   }
 

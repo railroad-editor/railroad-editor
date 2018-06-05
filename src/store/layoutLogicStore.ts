@@ -14,11 +14,6 @@ export class LayoutLogicStore {
   }
 
   @action
-  deleteSelectedRails = () => {
-    this.deleteRails(layoutStore.selectedRails.map(rail => rail.id))
-  }
-
-  @action
   deleteRails = (railIds: number[]) => {
     railIds.forEach(id => this.deleteRail(id))
   }
@@ -220,6 +215,42 @@ export class LayoutLogicStore {
         break
       default:
         this.selectAllRails(selected)
+        break
+    }
+  }
+
+  @action
+  deleteSelectedRails = () => {
+    this.deleteRails(layoutStore.selectedRails.map(rail => rail.id))
+  }
+
+  @action
+  deleteSelectedFeeders = () => {
+    const feederIds = layoutStore.currentLayoutData.feeders
+      .filter(feeder => feeder.selected)
+      .map(feeder => feeder.id)
+    feederIds.forEach(id => layoutStore.deleteFeeder({id}))
+  }
+
+  @action
+  deleteSelectedGapJoiners = () => {
+    const gapJoinerIds = layoutStore.currentLayoutData.gapJoiners
+      .filter(gapJoiner => gapJoiner.selected)
+      .map(gapJoiner => gapJoiner.id)
+    gapJoinerIds.forEach(id => layoutStore.deleteGapJoiner({id}))
+  }
+
+  @action
+  deleteSelected = () => {
+    switch (builderStore.activeTool) {
+      case Tools.FEEDERS:
+        this.deleteSelectedFeeders()
+        break
+      case Tools.GAP:
+        this.deleteSelectedGapJoiners()
+        break
+      default:
+        this.deleteSelectedRails()
         break
     }
   }

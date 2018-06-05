@@ -59,7 +59,7 @@ export default class Feeder extends React.Component<FeederProps, {}> {
   }
 
   render() {
-    const { position, opacity, fillColor, visible, selected, onLeftClick } = this.props
+    const { position, opacity, fillColor, visible, selected, data, onLeftClick } = this.props
     const angle = this.getAngle()
 
     return (
@@ -73,6 +73,7 @@ export default class Feeder extends React.Component<FeederProps, {}> {
         pivot={Pivot.TOP}
         visible={visible}
         selected={selected}
+        data={data}
         onClick={onLeftClick}
         ref={(r) => {if (r) this.part = r}}
       />

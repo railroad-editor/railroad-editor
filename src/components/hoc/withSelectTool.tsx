@@ -81,7 +81,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
      */
     mouseDown = (e: ToolEvent|any) => {
       // Shiftが押されておらず、RailPart上で無ければ選択状態をリセットする
-      const isNotOnRailPart = (! e.item) || (e.item.data.type !== 'RailPart')
+      const isNotOnRailPart = (! e.item) || ! (['RailPart', 'Feeder', 'GapJoiner'].includes(e.item.data.type))
       if ((! e.modifiers.shift) && isNotOnRailPart) {
         this.props.layoutLogic.selectAll(false)
       }
