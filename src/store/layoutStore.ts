@@ -426,6 +426,45 @@ export class LayoutStore {
     this.currentLayoutData.gapJoiners = this.currentLayoutData.gapJoiners.filter(gapJoiner => gapJoiner.id !== item.id)
   }
 
+  @action
+  enableJoints = () => {
+    const nextRails = this.currentLayoutData.rails.map(rail => {
+      return {
+        ...rail,
+        enableJoints: false,
+        enableFeederSockets: true,
+        enableGapJoinerSockets: false,
+      }
+    })
+    this.updateRails(nextRails)
+  }
+
+  @action
+  enableFeederSockets = () => {
+    const nextRails = this.currentLayoutData.rails.map(rail => {
+      return {
+        ...rail,
+        enableJoints: false,
+        enableFeederSockets: true,
+        enableGapJoinerSockets: false,
+      }
+    })
+    this.updateRails(nextRails)
+  }
+
+  @action
+  enableGapsJoinerSockets = () => {
+    const nextRails = this.currentLayoutData.rails.map(rail => {
+      return {
+        ...rail,
+        enableJoints: false,
+        enableFeederSockets: false,
+        enableGapJoinerSockets: true,
+      }
+    })
+    this.updateRails(nextRails)
+  }
+
 }
 
 

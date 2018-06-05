@@ -5,6 +5,7 @@ import {action, computed, observable, reaction, when} from "mobx";
 import {Tools} from "constants/tools";
 import builderPaletteData from "constants/builderPaletteItems.json"
 import layoutStore from "store/layoutStore";
+import layoutLogicStore from "store/layoutLogicStore";
 
 export interface PresetPaletteItems {
   [key: string]: PaletteItem[]
@@ -127,42 +128,17 @@ export class BuilderStore {
 
         this.setCursorShape(tool)
 
-        // TODO: モード切り替え。もっとスマートな方法を考える
-        const currentLayout = layoutStore.currentLayoutData
-        let nextLayout
         switch (tool) {
           case Tools.FEEDERS:
-            nextLayout = currentLayout.rails.map(rail => {
-              return {
-                ...rail,
-                enableJoints: false,
-                enableFeederSockets: true,
-                enableGapJoinerSockets: false,
-              }
-            })
+            layoutLogicStore.changeToFeederMode()
             break
           case Tools.GAP:
-            nextLayout = currentLayout.rails.map(rail => {
-              return {
-                ...rail,
-                enableJoints: false,
-                enableFeederSockets: false,
-                enableGapJoinerSockets: true,
-              }
-            })
+            layoutLogicStore.changeToGapJoinerMode()
             break
           default:
-            nextLayout = currentLayout.rails.map(rail => {
-              return {
-                ...rail,
-                enableJoints: true,
-                enableFeederSockets: false,
-                enableGapJoinerSockets: false,
-              }
-            })
+            layoutLogicStore.changeToRailMode()
             break
         }
-        layoutStore.updateRails(nextLayout)
       }
     )
   }

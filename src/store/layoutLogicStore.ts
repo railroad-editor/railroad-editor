@@ -129,10 +129,123 @@ export class LayoutLogicStore {
     })
   }
 
+  @action
+  toggleRail = (railId: number) => {
+    const target = this.getRailDataById(railId)
+    if (target == null) {
+      return
+    }
+
+    this.layoutStore.updateRail({
+      id: target.id,
+      selected: !target.selected,
+    })
+  }
+
+  @action
+  selectRail = (railId: number, selected: boolean) => {
+    const target = this.getRailDataById(railId)
+    if (target == null) {
+      return
+    }
+
+    this.layoutStore.updateRail({
+      id: target.id,
+      selected: selected
+    })
+  }
+
+  @action
+  selectRails = (railIds: number[], selected: boolean) => {
+    railIds.forEach(railId => this.selectRail(railId, selected))
+  }
+
+  @action
+  selectAllRails = (selected: boolean) => {
+    const railIds = this.layoutStore.currentLayoutData.rails.map(rail => rail.id)
+    this.selectRails(railIds, selected)
+  }
+
+  @action
+  selectFeeder = (feederId: number, selected: boolean) => {
+    const target = this.getFeederDataById(feederId)
+    if (target == null) {
+      return
+    }
+    this.layoutStore.updateFeeder({
+      id: target.id,
+      selected: selected
+    })
+  }
+
+  @action
+  selectFeeders = (feederIds: number[], selected: boolean) => {
+    feederIds.forEach(feederId => this.selectFeeder(feederId, selected))
+  }
+
+  @action
+  selectAllFeeders = (selected: boolean) => {
+    const feederIds = this.layoutStore.currentLayoutData.feeders.map(rail => rail.id)
+    this.selectFeeders(feederIds, selected)
+  }
+
+  @action
+  selectGapJoiner = (gapJoinerId: number, selected: boolean) => {
+    const target = this.getGapJoinerDataById(gapJoinerId)
+    if (target == null) {
+      return
+    }
+    this.layoutStore.updateGapJoiner({
+      id: target.id,
+      selected: selected
+    })
+  }
+
+  @action
+  selectGapJoiners = (gapJoinerIds: number[], selected: boolean) => {
+    gapJoinerIds.forEach(gapJoinerId => this.selectGapJoiner(gapJoinerId, selected))
+  }
+
+  @action
+  selectAllGapJoiners = (selected: boolean) => {
+    const gapJoinerIds = this.layoutStore.currentLayoutData.gapJoiners.map(rail => rail.id)
+    this.selectGapJoiners(gapJoinerIds, selected)
+  }
+
+
+
+  @action
+  changeToFeederMode = () => {
+    this.layoutStore.enableFeederSockets()
+    this.selectAllRails(false)
+    this.selectAllGapJoiners(false)
+  }
+
+  @action
+  changeToGapJoinerMode = () => {
+    this.layoutStore.enableGapsJoinerSockets()
+    this.selectAllRails(false)
+    this.selectAllFeeders(false)
+  }
+
+  @action
+  changeToRailMode = () => {
+    this.layoutStore.enableJoints()
+    this.selectAllFeeders(false)
+    this.selectAllGapJoiners(false)
+  }
 
 
   private getRailDataById = (id: number) => {
     return this.layoutStore.currentLayoutData.rails.find(item => item.id === id)
+  }
+
+  private getFeederDataById = (id: number) => {
+    return this.layoutStore.currentLayoutData.feeders.find(item => item.id === id)
+  }
+
+  private getGapJoinerDataById = (id: number) => {
+    return this.layoutStore.currentLayoutData.gapJoiners.find(item => item.id === id)
   }
 }
 
