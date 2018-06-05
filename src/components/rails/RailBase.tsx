@@ -162,6 +162,8 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
   railPart: RailPartBase<any, any>
   joints: Joint[]
   feederSockets: FeederSocket[]
+  feeders: Feeder[]
+  gapJoinerSockets: GapJoinerSocket[]
   gapJoiners: GapJoiner[]
 
 
@@ -169,6 +171,8 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     super(props)
     this.joints = new Array(this.props.numJoints).fill(null)
     this.feederSockets = new Array(this.props.numFeederSockets).fill(null)
+    this.feeders = new Array(this.props.numFeederSockets).fill(null)
+    this.gapJoinerSockets = new Array(this.props.numJoints).fill(null)
     this.gapJoiners = new Array(this.props.numJoints).fill(null)
 
     this.getInstance = this.getInstance.bind(this)
@@ -247,6 +251,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     const {feederSocketPositions, feederSocketAngles} = this.state
 
     const feederSocketComponents = _.range(this.feederSockets.length).map(i => {
+      const hasFeeder = feeders.map(feeder => feeder.socketId).includes(i)
       return (
           <FeederSocket
             key={`fs-${i}`} //`
@@ -254,7 +259,8 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
             angle={feederSocketAngles[i]}
             opacity={opacity}
             visible={visible && enableFeederSockets}
-            detectionEnabled={enableFeederSockets && !feeders.map(feeder => feeder.socketId).includes(i)}
+            detectionEnabled={enableFeederSockets && !hasFeeder}
+            hasFeeder={hasFeeder}
             data={{
               type: 'FeederSocket',
               partId: i,
@@ -272,12 +278,14 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     const feederComponents = feeders.map(feeder => {
       return (
         <Feeder
+          id={feeder.id}
           position={feederSocketPositions[feeder.socketId]}
           angle={feederSocketAngles[feeder.socketId]}
           direction={feeder.direction}
           visible={visible}
           selected={feeder.selected}
           onLeftClick={this.props.onFeederLeftClick.bind(this, feeder.id)}
+          ref={(r) => {if (r) this.feeders[feeder.socketId] = r}}
         />
       )
     })
@@ -297,8 +305,9 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     const {id, opacity, visible, enableGapJoinerSockets, gapJoiners, opposingJoints} = props
     const {jointPositions, jointAngles} = this.state
 
-    const gapJoinerSocketComponents = _.range(this.gapJoiners.length).map(i => {
+    const gapJoinerSocketComponents = _.range(this.gapJoinerSockets.length).map(i => {
       if (opposingJoints[i] && id < opposingJoints[i].railId) {
+        const hasGapJoiner = gapJoiners.map(gapJoiner => gapJoiner.jointId).includes(i)
         return (
             <GapJoinerSocket
               key={`gj-${i}`}  //`
@@ -306,18 +315,17 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
               angle={jointAngles[i]}
               opacity={opacity}
               visible={visible && enableGapJoinerSockets}
-              detectionEnabled={enableGapJoinerSockets && !gapJoiners.map(gapJoiner => gapJoiner.jointId).includes(i)}
-              hasGapJoiner={!!gapJoiners[i]}
-              selected={gapJoiners[i] && gapJoiners[i].selected}
+              detectionEnabled={enableGapJoinerSockets && !hasGapJoiner}
+              hasGapJoiner={hasGapJoiner}
               data={{
-                type: 'GapJoiner',
+                type: 'GapJoinerSocket',
                 partId: i,
                 railId: id,
               }}
               onLeftClick={this.props.onGapJoinerSocketLeftClick.bind(this, i)}
               onMouseEnter={this.props.onGapJoinerSocketMouseEnter.bind(this, i)}
               onMouseLeave={this.props.onGapJoinerSocketMouseLeave.bind(this, i)}
-              ref={(gapJoiner) => {if (gapJoiner) this.gapJoiners[i] = gapJoiner}}
+              ref={(r) => {if (r) this.gapJoinerSockets[i] = r}}
             />
         )
       } else {
@@ -328,11 +336,13 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     const gapJoinerComponents = gapJoiners.map(gapJoiner => {
       return (
         <GapJoiner
+          id={gapJoiner.id}
           position={jointPositions[gapJoiner.jointId]}
           angle={jointAngles[gapJoiner.jointId]}
           visible={visible}
           selected={gapJoiner.selected}
           onLeftClick={this.props.onGapJoinerLeftClick.bind(this, gapJoiner.id)}
+          ref={(r) => {if (r) this.gapJoiners[gapJoiner.jointId] = r}}
         />
       )
     })

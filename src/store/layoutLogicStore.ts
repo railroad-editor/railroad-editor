@@ -3,22 +3,19 @@ import getLogger from "logging";
 import layoutStore, {LayoutStore} from "store/layoutStore";
 import builderStore, {BuilderStore} from "store/builderStore";
 import {JointPair} from "components/hoc/withBuilder";
+import {Tools} from "constants/tools";
 
 const LOGGER = getLogger(__filename)
 
 
 export class LayoutLogicStore {
-  layoutStore: LayoutStore
-  builderStore: BuilderStore
   
   constructor() {
-    this.layoutStore = layoutStore
-    this.builderStore = builderStore
   }
 
   @action
   deleteSelectedRails = () => {
-    this.deleteRails(this.layoutStore.selectedRails.map(rail => rail.id))
+    this.deleteRails(layoutStore.selectedRails.map(rail => rail.id))
   }
 
   @action
@@ -29,41 +26,41 @@ export class LayoutLogicStore {
   @action
   deleteRail = (railId: number) => {
     // フィーダーを削除
-    this.layoutStore.currentLayoutData.feeders
+    layoutStore.currentLayoutData.feeders
       .filter(feeder => feeder.railId === railId)
-      .forEach(feeder => this.layoutStore.deleteFeeder(feeder))
+      .forEach(feeder => layoutStore.deleteFeeder(feeder))
     // ジョイントを解除
     this.disconnectJoint(railId)
-    this.layoutStore.deleteRail({id: railId})
+    layoutStore.deleteRail({id: railId})
   }
 
   @action
   deleteLayer = (layerId: number) => {
     // レイヤー上のレールを全て接続解除してから削除する
-    const layerRailIds = this.layoutStore.currentLayoutData.rails
+    const layerRailIds = layoutStore.currentLayoutData.rails
       .filter(rail => rail.layerId === layerId)
       .map(rail => rail.id)
     this.disconnectJoints(layerRailIds)
-    this.layoutStore.deleteLayer({id: layerId})
+    layoutStore.deleteLayer({id: layerId})
 
     // アクティブレイヤーを消した場合
-    if (this.builderStore.activeLayerId === layerId) {
-      const restLayerIds = this.layoutStore.currentLayoutData.layers
+    if (builderStore.activeLayerId === layerId) {
+      const restLayerIds = layoutStore.currentLayoutData.layers
         .filter(layer => layer.id !== layerId)
         .map(layer => layer.id)
-      this.builderStore.setActiveLayer(restLayerIds[0])
+      builderStore.setActiveLayer(restLayerIds[0])
     }
   }
 
   @action
   connectJoint = (pair: JointPair) => {
-    this.layoutStore.updateRail({
+    layoutStore.updateRail({
       id: pair.from.railId,
       opposingJoints: {
         [pair.from.jointId]: pair.to
       }
     })
-    this.layoutStore.updateRail({
+    layoutStore.updateRail({
       id: pair.to.railId,
       opposingJoints: {
         [pair.to.jointId]: pair.from
@@ -102,7 +99,7 @@ export class LayoutLogicStore {
       opposingJoints: null
     })
 
-    this.layoutStore.updateRails(updatedData)
+    layoutStore.updateRails(updatedData)
   }
 
   @action
@@ -115,16 +112,16 @@ export class LayoutLogicStore {
     const target = this.getRailDataById(railId)
 
     // 自分のギャップジョイナーを削除する
-    this.layoutStore.currentLayoutData.gapJoiners
+    layoutStore.currentLayoutData.gapJoiners
       .filter(gapJoiner => gapJoiner.railId === railId)
-      .forEach(gapJoiner => this.layoutStore.deleteGapJoiner(gapJoiner))
+      .forEach(gapJoiner => layoutStore.deleteGapJoiner(gapJoiner))
 
     // 対向ジョイントにギャップジョイナーが存在したら削除する
     _.values(target.opposingJoints).map(joint => {
-      const opposingGapJoiner = this.layoutStore.currentLayoutData.gapJoiners
+      const opposingGapJoiner = layoutStore.currentLayoutData.gapJoiners
         .find(gapJoiner => gapJoiner.railId === joint.railId && gapJoiner.jointId === joint.jointId)
       if (opposingGapJoiner) {
-        this.layoutStore.deleteGapJoiner(opposingGapJoiner)
+        layoutStore.deleteGapJoiner(opposingGapJoiner)
       }
     })
   }
@@ -136,7 +133,7 @@ export class LayoutLogicStore {
       return
     }
 
-    this.layoutStore.updateRail({
+    layoutStore.updateRail({
       id: target.id,
       selected: !target.selected,
     })
@@ -149,7 +146,7 @@ export class LayoutLogicStore {
       return
     }
 
-    this.layoutStore.updateRail({
+    layoutStore.updateRail({
       id: target.id,
       selected: selected
     })
@@ -162,7 +159,7 @@ export class LayoutLogicStore {
 
   @action
   selectAllRails = (selected: boolean) => {
-    const railIds = this.layoutStore.currentLayoutData.rails.map(rail => rail.id)
+    const railIds = layoutStore.currentLayoutData.rails.map(rail => rail.id)
     this.selectRails(railIds, selected)
   }
 
@@ -172,7 +169,7 @@ export class LayoutLogicStore {
     if (target == null) {
       return
     }
-    this.layoutStore.updateFeeder({
+    layoutStore.updateFeeder({
       id: target.id,
       selected: selected
     })
@@ -185,7 +182,7 @@ export class LayoutLogicStore {
 
   @action
   selectAllFeeders = (selected: boolean) => {
-    const feederIds = this.layoutStore.currentLayoutData.feeders.map(rail => rail.id)
+    const feederIds = layoutStore.currentLayoutData.feeders.map(rail => rail.id)
     this.selectFeeders(feederIds, selected)
   }
 
@@ -195,7 +192,7 @@ export class LayoutLogicStore {
     if (target == null) {
       return
     }
-    this.layoutStore.updateGapJoiner({
+    layoutStore.updateGapJoiner({
       id: target.id,
       selected: selected
     })
@@ -208,44 +205,58 @@ export class LayoutLogicStore {
 
   @action
   selectAllGapJoiners = (selected: boolean) => {
-    const gapJoinerIds = this.layoutStore.currentLayoutData.gapJoiners.map(rail => rail.id)
+    const gapJoinerIds = layoutStore.currentLayoutData.gapJoiners.map(rail => rail.id)
     this.selectGapJoiners(gapJoinerIds, selected)
   }
 
+  @action
+  selectAll = (selected: boolean) => {
+    switch (builderStore.activeTool) {
+      case Tools.FEEDERS:
+        this.selectAllFeeders(selected)
+        break
+      case Tools.GAP:
+        this.selectAllGapJoiners(selected)
+        break
+      default:
+        this.selectAllRails(selected)
+        break
+    }
+  }
 
 
   @action
   changeToFeederMode = () => {
-    this.layoutStore.enableFeederSockets()
+    layoutStore.enableFeederSockets()
     this.selectAllRails(false)
     this.selectAllGapJoiners(false)
   }
 
   @action
   changeToGapJoinerMode = () => {
-    this.layoutStore.enableGapsJoinerSockets()
+    layoutStore.enableGapsJoinerSockets()
     this.selectAllRails(false)
     this.selectAllFeeders(false)
   }
 
   @action
   changeToRailMode = () => {
-    this.layoutStore.enableJoints()
+    layoutStore.enableJoints()
     this.selectAllFeeders(false)
     this.selectAllGapJoiners(false)
   }
 
 
   private getRailDataById = (id: number) => {
-    return this.layoutStore.currentLayoutData.rails.find(item => item.id === id)
+    return layoutStore.currentLayoutData.rails.find(item => item.id === id)
   }
 
   private getFeederDataById = (id: number) => {
-    return this.layoutStore.currentLayoutData.feeders.find(item => item.id === id)
+    return layoutStore.currentLayoutData.feeders.find(item => item.id === id)
   }
 
   private getGapJoinerDataById = (id: number) => {
-    return this.layoutStore.currentLayoutData.gapJoiners.find(item => item.id === id)
+    return layoutStore.currentLayoutData.gapJoiners.find(item => item.id === id)
   }
 }
 

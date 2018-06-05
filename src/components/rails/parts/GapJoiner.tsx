@@ -9,6 +9,7 @@ import getLogger from "logging";
 const LOGGER = getLogger(__filename)
 
 interface GapJoinerProps extends Partial<DefaultProps> {
+  id: number
   onLeftClick?: (e: MouseEvent) => boolean
 }
 
@@ -34,9 +35,14 @@ export default class GapJoiner extends React.Component<GapJoinerProps, {}> {
     fillColor: GAP_JOINER_SOCKET_FILL_COLORS[0],
   }
 
+  part: RectPart
 
   constructor(props: GapJoinerProps) {
     super(props)
+  }
+
+  get path() {
+    return this.part.path
   }
 
   render() {
@@ -54,6 +60,7 @@ export default class GapJoiner extends React.Component<GapJoinerProps, {}> {
         visible={visible}
         selected={selected}
         onClick={onLeftClick}
+        ref={(r) => {if (r) this.part = r}}
       />
     )
   }

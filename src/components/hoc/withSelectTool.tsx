@@ -3,13 +3,14 @@ import {Path, Point, ToolEvent} from 'paper'
 import {Rectangle} from "react-paper-bindings";
 import getLogger from "logging";
 import {WithBuilderPublicProps} from "components/hoc/withBuilder";
-import {DEFAULT_SELECTION_RECT_COLOR, DEFAULT_SELECTION_RECT_OPACITY} from "constants/tools";
+import {DEFAULT_SELECTION_RECT_COLOR, DEFAULT_SELECTION_RECT_OPACITY, Tools} from "constants/tools";
 import {getAllRailComponents, getRailComponent} from "components/rails/utils";
 import {BuilderStore} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
+import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {RailBase} from "components/rails/RailBase";
+import {LayoutLogicStore} from "store/layoutLogicStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -23,6 +24,7 @@ export interface WithSelectToolPublicProps {
 
   builder?: BuilderStore
   layout?: LayoutStore
+  layoutLogic?: LayoutLogicStore
 
 }
 
@@ -46,20 +48,7 @@ type WithSelectToolProps = WithSelectToolPublicProps & WithBuilderPublicProps
  */
 export default function withSelectTool(WrappedComponent: React.ComponentClass<WithSelectToolProps>) {
 
-  // const mapStateToProps = (state: RootState) => {
-  //   return {
-  //     layout: currentLayoutData(state),
-  //     activeLayerId: state.builder.activeLayerId,
-  //   }
-  // }
-  //
-  // const mapDispatchToProps = (dispatch: any) => {
-  //   return {
-  //     setMousePosition: (point: Point) => dispatch(setMousePosition(point))
-  //   }
-  // }
-
-  @inject(STORE_BUILDER, STORE_LAYOUT)
+  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
   @observer
   class WithSelectTool extends React.Component<WithSelectToolProps, WithSelectToolState> {
 
@@ -94,7 +83,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
       // Shiftが押されておらず、RailPart上で無ければ選択状態をリセットする
       const isNotOnRailPart = (! e.item) || (e.item.data.type !== 'RailPart')
       if ((! e.modifiers.shift) && isNotOnRailPart) {
-        this.props.builderDeselectAllRails()
+        this.props.layoutLogic.selectAll(false)
       }
       // 矩形の始点を保存する
       this.selectionRectFrom = e.point
@@ -138,6 +127,25 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
         return
       }
 
+      switch (this.props.builder.activeTool) {
+        case Tools.FEEDERS:
+          this.selectFeeders()
+          break
+        case Tools.GAP:
+          this.selectGapJoiners()
+          break
+        default:
+          this.selectRails()
+          break
+      }
+
+      // 矩形を削除する
+      this.selectionRect.remove()
+      this.selectionRect = null
+      this.debounceCount = 0
+    }
+
+    selectRails = () => {
       // 選択対象は現在のレイヤーのレールとする
       const rails = this.props.layout.activeLayerRails.map(r => getRailComponent(r.id))
 
@@ -158,12 +166,57 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
         }
       })
 
-      this.props.builderSelectRails(selected)
+      this.props.layoutLogic.selectRails(selected, true)
+    }
 
-      // 矩形を削除する
-      this.selectionRect.remove()
-      this.selectionRect = null
-      this.debounceCount = 0
+    selectFeeders = () => {
+      // 選択対象は現在のレイヤーのレールとする
+      const rails = this.props.layout.currentLayoutData.rails.map(r => getRailComponent(r.id))
+      const feeders = _.flatMap(rails, rail => rail.feeders).filter(feeder => feeder)
+
+      const selected = []
+      feeders.forEach((feeder) => {
+        // 矩形がRailPartを構成するPathを含むか、交わっているか確認する
+        const targetPaths = [feeder.path]
+        let result = targetPaths.map(path => {
+          let isIntersected = this.selectionRect.intersects(path)
+          let isContained = this.selectionRect.contains(path.position)
+          return isIntersected || isContained
+        }).every((e) => e)
+
+        // 上記の条件を満たしていれば選択状態にする
+        if (result) {
+          selected.push(feeder.props.id)
+          LOGGER.info('selected', feeder.props.id)
+        }
+      })
+
+      this.props.layoutLogic.selectFeeders(selected, true)
+    }
+
+    selectGapJoiners = () => {
+      // 選択対象は現在のレイヤーのレールとする
+      const rails = this.props.layout.currentLayoutData.rails.map(r => getRailComponent(r.id))
+      const gapJoiners = _.flatMap(rails, rail => rail.gapJoiners).filter(g => g)
+
+      const selected = []
+      gapJoiners.forEach((gapJoiner) => {
+        // 矩形がRailPartを構成するPathを含むか、交わっているか確認する
+        const targetPaths = [gapJoiner.path]
+        let result = targetPaths.map(path => {
+          let isIntersected = this.selectionRect.intersects(path)
+          let isContained = this.selectionRect.contains(path.position)
+          return isIntersected || isContained
+        }).every((e) => e)
+
+        // 上記の条件を満たしていれば選択状態にする
+        if (result) {
+          selected.push(gapJoiner.props.id)
+          LOGGER.info('selected', gapJoiner.props.id)
+        }
+      })
+
+      this.props.layoutLogic.selectGapJoiners(selected, true)
     }
 
 

@@ -431,8 +431,8 @@ export class LayoutStore {
     const nextRails = this.currentLayoutData.rails.map(rail => {
       return {
         ...rail,
-        enableJoints: false,
-        enableFeederSockets: true,
+        enableJoints: true,
+        enableFeederSockets: false,
         enableGapJoinerSockets: false,
       }
     })
