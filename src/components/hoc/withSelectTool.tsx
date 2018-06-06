@@ -134,7 +134,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
         case Tools.FEEDERS:
           this.selectFeeders()
           break
-        case Tools.GAP:
+        case Tools.GAP_JOINERS:
           this.selectGapJoiners()
           break
         default:

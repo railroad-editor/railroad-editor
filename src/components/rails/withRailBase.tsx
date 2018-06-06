@@ -111,7 +111,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * @param {MouseEvent} e
      */
     onGapJoinerMouseEnter = (id: number, e: MouseEvent) => {
-      if (this.props.builder.activeTool === Tools.GAP) {
+      if (this.props.builder.activeTool === Tools.GAP_JOINERS) {
         document.body.style.cursor = 'pointer'
       }
     }
@@ -131,7 +131,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * @param {MouseEvent} e
      */
     onGapJoinerLeftClick = (id: number, e: MouseEvent) => {
-      if (this.props.builder.activeTool === Tools.GAP) {
+      if (this.props.builder.activeTool === Tools.GAP_JOINERS) {
         this.props.layoutLogic.toggleSelectGapJoiner(id)
       }
     }

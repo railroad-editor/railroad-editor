@@ -158,10 +158,10 @@
       "type": "Feeder"
     }
   ],
-  "Gaps": [
+  "GapJoiners": [
     {
-      "name": "Gap",
-      "type": "Gap"
+      "name": "GapJoiner",
+      "type": "GapJoiner"
     }
   ]
 }

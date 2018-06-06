@@ -57,13 +57,13 @@ export const INITIAL_STATE: BuilderStoreState = {
   presetPaletteItems: builderPaletteData,
   paletteItem: {type: 'StraightRail', name: 'S280'},
   lastPaletteItems: {
-    'Straight Rails': {type: 'StraightRail', name: 'S280'},
-    'Curve Rails': {type: 'CurveRail', name: 'C280-45'},
-    'Turnouts': {type: 'Turnout', name: 'PR541-15'},
-    'Special Rails': {type: 'SpecialRails', name: 'End Rail'},
-    'Rail Groups': {type: 'RailGroup', name: ''},
-    'Feeders': {type: 'Feeder', name: 'Feeder'},
-    'Gaps': {type: 'Gap', name: 'Gap'},
+    [Tools.STRAIGHT_RAILS]: {type: 'StraightRail', name: 'S280'},
+    [Tools.CURVE_RAILS]: {type: 'CurveRail', name: 'C280-45'},
+    [Tools.TURNOUTS]: {type: 'Turnout', name: 'PR541-15'},
+    [Tools.SPECIAL_RAILS]: {type: 'SpecialRails', name: 'End Rail'},
+    [Tools.RAIL_GROUPS]: {type: 'RailGroup', name: ''},
+    [Tools.FEEDERS]: {type: 'Feeder', name: 'Feeder'},
+    [Tools.GAP_JOINERS]: {type: 'GapJoiner', name: 'GapJoiner'},
   },
   placingMode: PlacingMode.FREE,
   activeLayerId: 1,
@@ -132,7 +132,7 @@ export class BuilderStore {
           case Tools.FEEDERS:
             layoutLogicStore.changeToFeederMode()
             break
-          case Tools.GAP:
+          case Tools.GAP_JOINERS:
             layoutLogicStore.changeToGapJoinerMode()
             break
           default:
@@ -145,7 +145,7 @@ export class BuilderStore {
 
   @computed
   get isRailMode() {
-    return ![Tools.FEEDERS, Tools.GAP].includes(this.activeTool)
+    return ![Tools.FEEDERS, Tools.GAP_JOINERS].includes(this.activeTool)
   }
 
   @computed

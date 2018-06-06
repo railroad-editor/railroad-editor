@@ -5,7 +5,7 @@ export enum Tools {
   SPECIAL_RAILS = 'Special Rails',
   RAIL_GROUPS = 'Rail Groups',
   FEEDERS = 'Feeders',
-  GAP = 'Gaps',
+  GAP_JOINERS = 'Gap Joiners',
   SELECT = 'Select',
   PAN = 'Pan',
   UNDO = 'Undo',

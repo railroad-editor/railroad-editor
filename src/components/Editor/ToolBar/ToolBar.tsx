@@ -241,7 +241,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                   </StyledIconButton>
                 </Tooltip>
 
-                <Tooltip title={Tools.FEEDERS}>
+                <Tooltip title={"Feeders (F)"}>
                   <StyledIconButton
                     className={classNames({
                       'active': this.isActive(Tools.FEEDERS)
@@ -251,12 +251,12 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                     <FeederIcon/>
                   </StyledIconButton>
                 </Tooltip>
-                <Tooltip title={Tools.GAP}>
+                <Tooltip title={"Gap Joiners (J)"}>
                   <StyledIconButton
                     className={classNames({
-                      'active': this.isActive(Tools.GAP)
+                      'active': this.isActive(Tools.GAP_JOINERS)
                     })}
-                    onClick={this.onClickBuilderItem(Tools.GAP)}
+                    onClick={this.onClickBuilderItem(Tools.GAP_JOINERS)}
                   >
                     <GapIcon/>
                   </StyledIconButton>

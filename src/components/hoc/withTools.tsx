@@ -84,6 +84,11 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
         case 'g':
           this.props.builder.setActiveTool(Tools.RAIL_GROUPS)
           this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[Tools.RAIL_GROUPS])
+        case 'f':
+          this.props.builder.setActiveTool(Tools.FEEDERS)
+          break
+        case 'j':
+          this.props.builder.setActiveTool(Tools.GAP_JOINERS)
           break
       }
       e.preventDefault()

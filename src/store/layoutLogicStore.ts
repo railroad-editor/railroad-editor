@@ -238,7 +238,7 @@ export class LayoutLogicStore {
       case Tools.FEEDERS:
         this.selectAllFeeders(selected)
         break
-      case Tools.GAP:
+      case Tools.GAP_JOINERS:
         this.selectAllGapJoiners(selected)
         break
       default:
@@ -274,7 +274,7 @@ export class LayoutLogicStore {
       case Tools.FEEDERS:
         this.deleteSelectedFeeders()
         break
-      case Tools.GAP:
+      case Tools.GAP_JOINERS:
         this.deleteSelectedGapJoiners()
         break
       default:
