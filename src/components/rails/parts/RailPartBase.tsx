@@ -200,7 +200,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     return (
       <DetectablePart
         mainPart={part}
-        detectionPart={part}
+        detectionPart={<></>}
         position={position}
         angle={this.props.angle}
         pivot={pivot}
