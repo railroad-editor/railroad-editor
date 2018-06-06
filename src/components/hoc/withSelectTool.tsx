@@ -1,15 +1,14 @@
 import * as React from 'react';
-import {Path, Point, ToolEvent} from 'paper'
+import {Layer, Path, Point, ToolEvent} from 'paper'
 import {Rectangle} from "react-paper-bindings";
 import getLogger from "logging";
 import {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {DEFAULT_SELECTION_RECT_COLOR, DEFAULT_SELECTION_RECT_OPACITY, Tools} from "constants/tools";
-import {getAllRailComponents, getRailComponent} from "components/rails/utils";
+import {getRailComponent} from "components/rails/utils";
 import {BuilderStore} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
-import {RailBase} from "components/rails/RailBase";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 
 const LOGGER = getLogger(__filename)
@@ -56,6 +55,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
 
     selectionRect: Path.Rectangle
     selectionRectFrom: Point
+    selectionLayer: Layer
     debounceCount: number
 
     constructor(props: WithSelectToolProps) {
@@ -107,6 +107,9 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
       if (this.selectionRect) {
         this.selectionRect.remove()
       }
+      if (! this.selectionLayer) {
+        this.selectionLayer = new Layer()
+      }
       this.selectionRect = new Path.Rectangle({
           from: this.selectionRectFrom,
           to: e.point,
@@ -142,12 +145,14 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
       // 矩形を削除する
       this.selectionRect.remove()
       this.selectionRect = null
+      this.selectionLayer.remove()
+      this.selectionLayer = null
       this.debounceCount = 0
     }
 
     selectRails = () => {
       // 選択対象は現在のレイヤーのレールとする
-      const rails = this.props.layout.activeLayerRails.map(r => getRailComponent(r.id))
+      const rails = this.props.layout.currentLayoutData.rails.map(r => getRailComponent(r.id))
 
       const selected = []
       rails.forEach((rail) => {
