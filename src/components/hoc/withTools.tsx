@@ -55,7 +55,7 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
       if (this.dialogExists()) return
 
       // これらのModifierのショートカットキーは現状扱わない
-      if (e.ctrlKey || e.altKey || e.metaKey) {
+      if (e.ctrlKey || e.metaKey) {
         return
       }
 
