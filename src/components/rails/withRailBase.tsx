@@ -362,7 +362,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
         this.props.layoutLogic.toggleSelectRail(this.props.id)
         LOGGER.info(`${this.props.id} clicked.`)
       }
-      return true
+      return false
     }
 
 
@@ -372,7 +372,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * @param {MouseEvent} e
      */
     onRailPartRightClick(e: MouseEvent) {
-      return true
+      return false
     }
 
 

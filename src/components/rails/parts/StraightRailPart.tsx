@@ -21,7 +21,7 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
   public static defaultProps: RailPartBaseDefaultProps = {
     position: new Point(0, 0),
     angle: 0,
-    detectionEnabled: false,
+    // detectionEnabled: false,
     selected: false,
     opacity: 1,
     fillColors: RAIL_PART_FILL_COLORS

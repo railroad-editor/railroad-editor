@@ -13,6 +13,7 @@ export interface DetectablePartProps extends PartBaseProps {
   onRightClick?: (e: MouseEvent) => boolean
   detectionEnabled: boolean
   pivotPartIndex?: number
+  preventBringToFront?: boolean
 }
 
 export interface DetectablePartState {
@@ -37,7 +38,9 @@ export default class DetectablePart extends React.Component<DetectablePartProps,
   onMouseMove = (e: MouseEvent) => {
     // 検出中状態を他のPathに邪魔されないよう、前面に出し続ける
     if (this.isDetecting()) {
-      this._partGroup.group.bringToFront()
+      if (! this.props.preventBringToFront) {
+        this._partGroup.group.bringToFront()
+      }
       // TODO: 位置はここでいいか？
       if (this.props.onMouseMove) {
         this.props.onMouseMove(e)
@@ -70,6 +73,7 @@ export default class DetectablePart extends React.Component<DetectablePartProps,
       }
     }
   }
+
   onClick = (e: MouseEvent | any) => {
     let shouldChangeState = false
     switch (e.event.button) {

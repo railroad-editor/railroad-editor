@@ -42,7 +42,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
   public static defaultProps: RailPartBaseDefaultProps = {
     position: new Point(0, 0),
     angle: 0,
-    detectionEnabled: false,
+    detectionEnabled: true,
     selected: false,
     opacity: 1,
     visible: true,
@@ -208,7 +208,8 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
         fillColors={fillColors}
         visible={visible}
         opacity={opacity}
-        detectionEnabled={detectionEnabled}
+        detectionEnabled={true}
+        preventBringToFront={true}
         name={name}
         data={data}
         onLeftClick={onLeftClick}
