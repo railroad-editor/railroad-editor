@@ -48,7 +48,6 @@ export default class CurveRail extends RailBase<CurveRailProps, RailBaseState> {
           railId: id,
           partId: 0,
         }}
-        onLeftClick={this.props.onRailPartLeftClick}
         ref={this.getInstance}
       />
     )

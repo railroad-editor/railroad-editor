@@ -2,15 +2,16 @@ import * as React from "react";
 import {Rectangle} from "react-paper-bindings";
 import getLogger from "logging";
 import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
-import {FeederInfo, RailBase, RailBaseProps, RailBaseState} from "components/rails/RailBase";
+import {RailBase, RailBaseProps, RailBaseState} from "components/rails/RailBase";
 import {RailData} from "components/rails/index";
 import {compose} from "recompose";
 import {BuilderStore} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
+import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {FlowDirection} from "components/rails/parts/primitives/PartBase";
-import {PivotInfo} from "components/rails/parts/RailPartBase";
+import {LayoutLogicStore} from "store/layoutLogicStore";
+import {Tools} from "constants/tools";
 
 const LOGGER = getLogger(__filename)
 
@@ -19,26 +20,36 @@ export interface WithRailBaseProps {
   // Injected Props
   onRailPartLeftClick: (e: MouseEvent) => boolean
   onRailPartRightClick: (e: MouseEvent) => boolean
+  onRailPartMouseEnter: (e: MouseEvent) => boolean
+  onRailPartMouseLeave: (e: MouseEvent) => boolean
+
   onJointLeftClick: (jointId: number, e: MouseEvent) => boolean
   onJointRightClick: (jointId: number, e: MouseEvent) => boolean
   onJointMouseMove: (jointId: number, e: MouseEvent) => void
   onJointMouseEnter: (jointId: number, e: MouseEvent) => void
   onJointMouseLeave: (jointId: number, e: MouseEvent) => void
-  onFeederSocketMouseEnter: (feederIndex: number, e: MouseEvent) => void
-  onFeederSocketMouseLeave: (feederIndex: number, e: MouseEvent) => void
-  onFeederSocketLeftClick: (feederIndex: number, e: MouseEvent) => void
-  onFeederSocketRightClick: (feederIndex: number, e: MouseEvent) => void
+
+  onFeederSocketMouseEnter: (socketId: number, e: MouseEvent) => void
+  onFeederSocketMouseLeave: (socketId: number, e: MouseEvent) => void
+  onFeederSocketLeftClick: (socketId: number, e: MouseEvent) => void
+  onFeederSocketRightClick: (socketId: number, e: MouseEvent) => void
   onFeederLeftClick: (id: number, e: MouseEvent) => void
+  onFeederMouseEnter: (id: number, e: MouseEvent) => void
+  onFeederMouseLeave: (id: number, e: MouseEvent) => void
+
   onGapJoinerSocketMouseEnter: (jointId: number, e: MouseEvent) => void
   onGapJoinerSocketMouseLeave:(jointId: number, e: MouseEvent) => void
   onGapJoinerSocketLeftClick: (jointId: number, e: MouseEvent) => void
   onGapJoinerLeftClick: (id: number, e: MouseEvent) => void
+  onGapJoinerMouseEnter: (id: number, e: MouseEvent) => void
+  onGapJoinerMouseLeave: (id: number, e: MouseEvent) => void
 
   onMount?: (ref: RailBase<any, RailBaseState>) => void
   onUnmount?: (ref: RailBase<any, RailBaseState>) => void
 
   builder?: BuilderStore
   layout?: LayoutStore
+  layoutLogic?: LayoutLogicStore
 }
 
 export type RailBaseEnhancedProps = RailBaseProps & WithRailBaseProps & WithBuilderPublicProps
@@ -51,7 +62,7 @@ export type RailBaseEnhancedProps = RailBaseProps & WithRailBaseProps & WithBuil
 export default function withRailBase(WrappedComponent: React.ComponentClass<RailBaseProps>) {
 
 
-  @inject(STORE_BUILDER, STORE_LAYOUT)
+  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
   @observer
   class WithRailBase extends React.Component<RailBaseEnhancedProps, {}> {
 
@@ -95,20 +106,37 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
     }
 
     /**
+     * ギャップジョイナーにマウスが乗ると、カーソルの形状を変更する。
+     * @param {number} id
+     * @param {MouseEvent} e
+     */
+    onGapJoinerMouseEnter = (id: number, e: MouseEvent) => {
+      if (this.props.builder.activeTool === Tools.GAP) {
+        document.body.style.cursor = 'pointer'
+      }
+    }
+
+    /**
+     * ギャップジョイナーからマウスが離れたら、カーソルの形状を戻す。
+     * @param {number} id
+     * @param {MouseEvent} e
+     */
+    onGapJoinerMouseLeave = (id: number, e: MouseEvent) => {
+      this.props.builder.setCursorShape(this.props.builder.activeTool)
+    }
+
+    /**
      * ギャップジョイナー上でマウスを左クリックすると、ギャップジョイナーの選択状態をトグルする。
      * @param {number} id
      * @param {MouseEvent} e
      */
     onGapJoinerLeftClick = (id: number, e: MouseEvent) => {
-      const target = this.props.layout.currentLayoutData.gapJoiners.find(gapJoiner => gapJoiner.id === id)
-      this.props.layout.updateGapJoiner({
-          id: target.id,
-          selected: !target.selected
-        }
-      )
+      if (this.props.builder.activeTool === Tools.GAP) {
+        this.props.layoutLogic.toggleSelectGapJoiner(id)
+      }
     }
 
-    addGapJoiner = (jointId: number) => {
+    private addGapJoiner = (jointId: number) => {
       this.props.layout.addGapJoiner({
         id: 0,
         railId: this.rail.props.id,
@@ -119,42 +147,62 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
 
 
     /**
-     * フィーダーソケット上にマウスが乗ったら、仮フィーダーを表示する。
-     * @param {number} feederIndex
+     * フィーダーソケットにマウスが乗ったら、仮フィーダーを表示する。
+     * @param {number} socketId
      * @param {MouseEvent} e
      */
-    onFeederSocketMouseEnter = (feederIndex: number, e: MouseEvent) => {
-      this.showTemporaryFeeder(feederIndex)
+    onFeederSocketMouseEnter = (socketId: number, e: MouseEvent) => {
+      this.showTemporaryFeeder(socketId)
     }
 
     /**
-     * フィーダーソケット上からマウスが離れたら、仮フィーダーを削除する。
-     * @param {number} feederIndex
+     * フィーダーソケットからマウスが離れたら、仮フィーダーを削除する。
+     * @param {number} socketId
      * @param {MouseEvent} e
      */
-    onFeederSocketMouseLeave = (feederIndex: number, e: MouseEvent) => {
+    onFeederSocketMouseLeave = (socketId: number, e: MouseEvent) => {
       this.props.builder.deleteTemporaryFeeder()
     }
 
     /**
      * フィーダーソケット上でマウスを右クリックすると、フィーダーの差し込み方向を変える。
-     * @param {number} feederIndex
+     * @param {number} socketId
      * @param {MouseEvent} e
      */
-    onFeederSocketRightClick = (feederIndex: number, e: MouseEvent) => {
-      this.toggleTemporaryFeederDirection(feederIndex)
+    onFeederSocketRightClick = (socketId: number, e: MouseEvent) => {
+      this.toggleTemporaryFeederDirection(socketId)
     }
 
     /**
      * フィーダーソケット上でマウスを左クリックすると、フィーダーをレイアウトに追加する。
-     * @param {number} feederIndex
+     * @param {number} socketId
      * @param {MouseEvent} e
      * @returns {boolean}
      */
-    onFeederSocketLeftClick = (feederIndex: number, e: MouseEvent) => {
-      this.addFeeder(feederIndex)
+    onFeederSocketLeftClick = (socketId: number, e: MouseEvent) => {
+      this.addFeeder(socketId)
       this.props.builder.deleteTemporaryFeeder()
       return true
+    }
+
+    /**
+     * フィーダーにマウスが乗ったら、カーソルの形状を変更する。
+     * @param {number} id
+     * @param {MouseEvent} e
+     */
+    onFeederMouseEnter = (id: number, e: MouseEvent) => {
+      if (this.props.builder.activeTool === Tools.FEEDERS) {
+        document.body.style.cursor = 'pointer'
+      }
+    }
+
+    /**
+     * フィーダーからマウスが離れたら、カーソルの形状を戻す。
+     * @param {number} id
+     * @param {MouseEvent} e
+     */
+    onFeederMouseLeave = (id: number, e: MouseEvent) => {
+        this.props.builder.setCursorShape(this.props.builder.activeTool)
     }
 
     /**
@@ -163,21 +211,19 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * @param {MouseEvent} e
      */
     onFeederLeftClick = (id: number, e: MouseEvent) => {
-      const target = this.props.layout.currentLayoutData.feeders.find(feeder => feeder.id === id)
-      this.props.layout.updateFeeder({
-          id: target.id,
-          selected: !target.selected
-        }
-      )
+      if (this.props.builder.activeTool === Tools.FEEDERS) {
+        this.props.layoutLogic.toggleSelectFeeder(id)
+      }
     }
 
-    addFeeder = (feederIndex: number) => {
+
+    private addFeeder = (socketId: number) => {
       this.props.layout.addFeeder(this.props.builder.temporaryFeeder)
     }
 
-    showTemporaryFeeder = (feederIndex: number) => {
+    private showTemporaryFeeder = (socketId: number) => {
       // このフィーダーソケットのPivotInfoからフィーダーデータを作成
-      const pivotInfo = this.rail.railPart.feederSockets[feederIndex]
+      const pivotInfo = this.rail.railPart.feederSockets[socketId]
       this.props.builder.setTemporaryFeeder({
         id: -1,
         railId: this.rail.props.id,
@@ -188,7 +234,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
       })
     }
 
-    toggleTemporaryFeederDirection = (feederIndex: number) => {
+    private toggleTemporaryFeederDirection = (socketId: number) => {
       let direction
       switch (this.props.builder.temporaryFeeder.direction) {
         case FlowDirection.START_TO_END:
@@ -294,6 +340,16 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
     }
 
 
+    onRailPartMouseEnter = () => {
+      if (this.props.builder.isRailMode) {
+        document.body.style.cursor = 'pointer'
+      }
+    }
+
+    onRailPartMouseLeave = () => {
+      this.props.builder.setCursorShape(this.props.builder.activeTool)
+    }
+
     /**
      * レールパーツを左クリックしたら、レールの選択状態をトグルする。
      * Shiftを押していない場合: それ以外のレールの選択状態を解除する
@@ -302,8 +358,10 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      */
     onRailPartLeftClick(e: MouseEvent|any) {
       // レールの選択状態をトグルする
-      this.props.builderToggleRail(this.props, !e.modifiers.shift)
-      LOGGER.info(`${this.props.id} clicked.`)
+      if (this.props.builder.isRailMode) {
+        this.props.layoutLogic.toggleSelectRail(this.props.id)
+        LOGGER.info(`${this.props.id} clicked.`)
+      }
       return true
     }
 
@@ -357,12 +415,18 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
           onFeederSocketLeftClick={this.onFeederSocketLeftClick}
           onFeederSocketRightClick={this.onFeederSocketRightClick}
           onFeederLeftClick={this.onFeederLeftClick}
+          onFeederMouseEnter={this.onFeederMouseEnter}
+          onFeederMouseLeave={this.onFeederMouseLeave}
           onGapJoinerSocketMouseEnter={this.onGapJoinerSocketMouseEnter}
           onGapJoinerSocketMouseLeave={this.onGapJoinerSocketMouseLeave}
           onGapJoinerSocketLeftClick={this.onGapJoinerSocketLeftClick}
           onGapJoinerLeftClick={this.onGapJoinerLeftClick}
+          onGapJoinerMouseEnter={this.onGapJoinerMouseEnter}
+          onGapJoinerMouseLeave={this.onGapJoinerMouseLeave}
           onRailPartLeftClick={this.onRailPartLeftClick}
           onRailPartRightClick={this.onRailPartRightClick}
+          onRailPartMouseEnter={this.onRailPartMouseEnter}
+          onRailPartMouseLeave={this.onRailPartMouseLeave}
           onMount={(instance) => this.onMount(instance)}
           onUnmount={(instance) => this.onUnmount(instance)}
         />

@@ -51,7 +51,6 @@ export default class DoubleCurveRail extends RailBase<DoubleCurveRailProps, Rail
           railId: id,
           partId: 0,
         }}
-        onLeftClick={this.props.onRailPartLeftClick}
         ref={this.getInstance}
       />
     )

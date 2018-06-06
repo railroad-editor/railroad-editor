@@ -44,7 +44,6 @@ export default class DoubleCrossTurnout extends RailBase<DoubleCrossTurnoutProps
           railId: id,
           partId: 0,
         }}
-        onLeftClick={this.props.onRailPartLeftClick}
         ref={this.getInstance}
       />
     )

@@ -46,7 +46,6 @@ export default class CrossingRail extends RailBase<CrossingRailProps, RailBaseSt
           railId: id,
           partId: 0,
         }}
-        onLeftClick={this.props.onRailPartLeftClick}
         ref={this.getInstance}
       />
     )

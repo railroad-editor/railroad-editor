@@ -159,6 +159,16 @@ export class LayoutLogicStore {
   }
 
   @action
+  toggleSelectRail = (railId: number) => {
+    const target = this.getRailDataById(railId)
+    if (target == null) {
+      return
+    }
+    this.selectRail(railId, !target.selected)
+  }
+
+
+  @action
   selectFeeder = (feederId: number, selected: boolean) => {
     const target = this.getFeederDataById(feederId)
     if (target == null) {
@@ -182,6 +192,15 @@ export class LayoutLogicStore {
   }
 
   @action
+  toggleSelectFeeder = (feederId: number) => {
+    const target = this.getFeederDataById(feederId)
+    if (target == null) {
+      return
+    }
+    this.selectFeeder(feederId, !target.selected)
+  }
+
+  @action
   selectGapJoiner = (gapJoinerId: number, selected: boolean) => {
     const target = this.getGapJoinerDataById(gapJoinerId)
     if (target == null) {
@@ -202,6 +221,15 @@ export class LayoutLogicStore {
   selectAllGapJoiners = (selected: boolean) => {
     const gapJoinerIds = layoutStore.currentLayoutData.gapJoiners.map(rail => rail.id)
     this.selectGapJoiners(gapJoinerIds, selected)
+  }
+
+  @action
+  toggleSelectGapJoiner = (gapJoinerId: number) => {
+    const target = this.getGapJoinerDataById(gapJoinerId)
+    if (target == null) {
+      return
+    }
+    this.selectGapJoiner(gapJoinerId, !target.selected)
   }
 
   @action

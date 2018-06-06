@@ -43,7 +43,6 @@ export default class EndRail extends RailBase<EndRailProps, RailBaseState> {
           railId: id,
           partId: 0,
         }}
-        onLeftClick={this.props.onRailPartLeftClick}
         ref={this.getInstance}
       />
     )

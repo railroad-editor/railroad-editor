@@ -11,7 +11,6 @@ const LOGGER = getLogger(__filename)
 
 interface FeederProps extends Partial<DefaultProps> {
   id: number
-  onLeftClick?: (e: MouseEvent) => boolean
 }
 
 interface DefaultProps {
@@ -23,6 +22,9 @@ interface DefaultProps {
   visible?: boolean
   fillColor?: string
   direction?: FlowDirection
+  onLeftClick?: (e: MouseEvent) => boolean
+  onMouseEnter?: (e: MouseEvent) => void
+  onMouseLeave?: (e: MouseEvent) => void
 }
 
 
@@ -59,7 +61,7 @@ export default class Feeder extends React.Component<FeederProps, {}> {
   }
 
   render() {
-    const { position, opacity, fillColor, visible, selected, data, onLeftClick } = this.props
+    const { position, opacity, fillColor, visible, selected, data, onLeftClick, onMouseEnter, onMouseLeave } = this.props
     const angle = this.getAngle()
 
     return (
@@ -75,6 +77,8 @@ export default class Feeder extends React.Component<FeederProps, {}> {
         selected={selected}
         data={data}
         onClick={onLeftClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         ref={(r) => {if (r) this.part = r}}
       />
     )

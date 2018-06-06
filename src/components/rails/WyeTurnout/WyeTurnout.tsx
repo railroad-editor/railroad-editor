@@ -46,7 +46,6 @@ export default class WyeTurnout extends RailBase<WyeTurnoutProps, RailBaseState>
           railId: id,
           partId: 0
         }}
-        onLeftClick={this.props.onRailPartLeftClick}
         ref={this.getInstance}
       />
     )

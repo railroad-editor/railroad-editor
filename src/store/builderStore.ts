@@ -144,6 +144,11 @@ export class BuilderStore {
   }
 
   @computed
+  get isRailMode() {
+    return ![Tools.FEEDERS, Tools.GAP].includes(this.activeTool)
+  }
+
+  @computed
   get paletteRailGroupData() {
     const {type, name} = this.paletteItem
     if (type !== 'RailGroup' && name) {
@@ -341,7 +346,8 @@ export class BuilderStore {
     this.selecting = selecting
   }
 
-  private setCursorShape = (tool: Tools) => {
+  @action
+  setCursorShape = (tool: Tools) => {
     // カーソル形状を変更する
     switch (tool) {
       case Tools.PAN:

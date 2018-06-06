@@ -10,7 +10,6 @@ const LOGGER = getLogger(__filename)
 
 interface GapJoinerProps extends Partial<DefaultProps> {
   id: number
-  onLeftClick?: (e: MouseEvent) => boolean
 }
 
 interface DefaultProps {
@@ -22,6 +21,9 @@ interface DefaultProps {
   opacity?: number
   visible?: boolean
   fillColor?: string
+  onLeftClick?: (e: MouseEvent) => boolean
+  onMouseEnter?: (e: MouseEvent) => void
+  onMouseLeave?: (e: MouseEvent) => void
 }
 
 
@@ -47,7 +49,7 @@ export default class GapJoiner extends React.Component<GapJoinerProps, {}> {
   }
 
   render() {
-    const { position, angle, pivot, fillColor, opacity, visible, selected, data, onLeftClick } = this.props
+    const { position, angle, pivot, fillColor, opacity, visible, selected, data, onLeftClick, onMouseEnter, onMouseLeave } = this.props
 
     return (
       <RectPart
@@ -62,6 +64,8 @@ export default class GapJoiner extends React.Component<GapJoinerProps, {}> {
         selected={selected}
         data={data}
         onClick={onLeftClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         ref={(r) => {if (r) this.part = r}}
       />
     )

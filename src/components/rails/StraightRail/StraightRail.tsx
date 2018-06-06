@@ -41,7 +41,6 @@ export default class StraightRail extends RailBase<StraightRailProps, RailBaseSt
           railId: id,
           partId: 0,
         }}
-        onLeftClick={this.props.onRailPartLeftClick}
         ref={this.getInstance}
       />
     )

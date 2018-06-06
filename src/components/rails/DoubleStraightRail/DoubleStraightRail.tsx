@@ -45,7 +45,6 @@ export default class DoubleStraightRail extends RailBase<DoubleStraightRailProps
           railId: id,
           partId: 0,
         }}
-        onLeftClick={this.props.onRailPartLeftClick}
         ref={this.getInstance}
       />
     )

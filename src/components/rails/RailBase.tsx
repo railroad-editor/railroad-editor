@@ -6,13 +6,11 @@ import {pointsEqual} from "components/rails/utils";
 import * as _ from "lodash";
 import RailPartBase from "components/rails/parts/RailPartBase";
 import getLogger from "logging";
-import Gap from "components/rails/parts/Gap";
 import FeederSocket from "components/rails/parts/FeederSocket";
 import {FlowDirection, Pivot} from "components/rails/parts/primitives/PartBase";
 import GapJoiner from "components/rails/parts/GapJoiner";
 import Feeder from "components/rails/parts/Feeder";
 import GapJoinerSocket from "components/rails/parts/GapJoinerSocket";
-import {WithRailBaseProps} from "components/rails/withRailBase";
 
 const LOGGER = getLogger(__filename)
 
@@ -95,21 +93,29 @@ export interface RailBaseDefaultProps {
   // イベントハンドラ
   onRailPartLeftClick: (e: MouseEvent) => boolean
   onRailPartRightClick: (e: MouseEvent) => boolean
+  onRailPartMouseEnter: (e: MouseEvent) => boolean
+  onRailPartMouseLeave: (e: MouseEvent) => boolean
+
   onJointLeftClick: (jointId: number, e: MouseEvent) => void
   onJointRightClick: (jointId: number, e: MouseEvent) => void
   onJointMouseMove: (jointId: number, e: MouseEvent) => void
   onJointMouseEnter: (jointId: number, e: MouseEvent) => void
   onJointMouseLeave: (jointId: number, e: MouseEvent) => void
-  onFeederSocketLeftClick: (feederId: number, e: MouseEvent) => void
-  onFeederSocketRightClick: (feederId: number, e: MouseEvent) => void
-  onFeederSocketMouseEnter: (feederId: number, e: MouseEvent) => void
-  onFeederSocketMouseLeave: (feederId: number, e: MouseEvent) => void
-  onFeederLeftClick: (id: number, e: MouseEvent) => void
-  onGapJoinerSocketLeftClick: (jointId: number, e: MouseEvent) => void
-  onGapJoinerSocketMouseEnter: (jointId: number, e: MouseEvent) => void
-  onGapJoinerSocketMouseLeave: (jointId: number, e: MouseEvent) => void
-  onGapJoinerLeftClick: (id: number, e: MouseEvent) => void
 
+  onFeederSocketMouseEnter: (socketId: number, e: MouseEvent) => void
+  onFeederSocketMouseLeave: (socketId: number, e: MouseEvent) => void
+  onFeederSocketLeftClick: (socketId: number, e: MouseEvent) => void
+  onFeederSocketRightClick: (socketId: number, e: MouseEvent) => void
+  onFeederLeftClick: (id: number, e: MouseEvent) => void
+  onFeederMouseEnter: (id: number, e: MouseEvent) => void
+  onFeederMouseLeave: (id: number, e: MouseEvent) => void
+
+  onGapJoinerSocketMouseEnter: (jointId: number, e: MouseEvent) => void
+  onGapJoinerSocketMouseLeave:(jointId: number, e: MouseEvent) => void
+  onGapJoinerSocketLeftClick: (jointId: number, e: MouseEvent) => void
+  onGapJoinerLeftClick: (id: number, e: MouseEvent) => void
+  onGapJoinerMouseEnter: (id: number, e: MouseEvent) => void
+  onGapJoinerMouseLeave: (id: number, e: MouseEvent) => void
 }
 
 export interface RailBaseState {
@@ -143,19 +149,28 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     // 何もしないハンドラをセットしておく
     onRailPartLeftClick: (e: MouseEvent) => false,
     onRailPartRightClick: (e: MouseEvent) => false,
+    onRailPartMouseEnter: (e: MouseEvent) => false,
+    onRailPartMouseLeave: (e: MouseEvent) => false,
+
     onJointLeftClick: (jointId: number, e: MouseEvent) => {},
     onJointRightClick: (jointId: number, e: MouseEvent) => {},
     onJointMouseMove: (jointId: number, e: MouseEvent) => {},
     onJointMouseEnter: (jointId: number, e: MouseEvent) => {},
     onJointMouseLeave: (jointId: number, e: MouseEvent) => {},
-    onFeederSocketLeftClick: (feederId: number, e: MouseEvent) => {},
-    onFeederSocketRightClick: (feederId: number, e: MouseEvent) => {},
+
     onFeederSocketMouseEnter: (feederId: number, e: MouseEvent) => {},
     onFeederSocketMouseLeave: (feederId: number, e: MouseEvent) => {},
-    onGapJoinerSocketLeftClick: (feederId: number, e: MouseEvent) => {},
+    onFeederSocketLeftClick: (feederId: number, e: MouseEvent) => {},
+    onFeederSocketRightClick: (feederId: number, e: MouseEvent) => {},
+    onFeederMouseEnter: (id: number, e: MouseEvent) => {},
+    onFeederMouseLeave: (id: number, e: MouseEvent) => {},
+    onFeederLeftClick: (id: number, e: MouseEvent) => {},
+
     onGapJoinerSocketMouseEnter: (feederId: number, e: MouseEvent) => {},
     onGapJoinerSocketMouseLeave: (feederId: number, e: MouseEvent) => {},
-    onFeederLeftClick: (id: number, e: MouseEvent) => {},
+    onGapJoinerSocketLeftClick: (feederId: number, e: MouseEvent) => {},
+    onGapJoinerMouseEnter: (id: number, e: MouseEvent) => {},
+    onGapJoinerMouseLeave: (id: number, e: MouseEvent) => {},
     onGapJoinerLeftClick: (id: number, e: MouseEvent) => {},
   }
 
@@ -288,6 +303,8 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
             type: 'Feeder',
           }}
           onLeftClick={this.props.onFeederLeftClick.bind(this, feeder.id)}
+          onMouseEnter={this.props.onFeederMouseEnter.bind(this, feeder.id)}
+          onMouseLeave={this.props.onFeederMouseLeave.bind(this, feeder.id)}
           ref={(r) => {if (r) this.feeders[feeder.socketId] = r}}
         />
       )
@@ -348,6 +365,8 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
             type: 'GapJoiner'
           }}
           onLeftClick={this.props.onGapJoinerLeftClick.bind(this, gapJoiner.id)}
+          onMouseEnter={this.props.onGapJoinerMouseEnter.bind(this, gapJoiner.id)}
+          onMouseLeave={this.props.onGapJoinerMouseLeave.bind(this, gapJoiner.id)}
           ref={(r) => {if (r) this.gapJoiners[gapJoiner.jointId] = r}}
         />
       )
@@ -415,9 +434,19 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
   }
 
   render() {
+    const { onRailPartLeftClick, onRailPartMouseEnter, onRailPartMouseLeave } = this.props
+
+    const railPart = this.renderRailPart(this.props)
+    const extendedRailPart = React.cloneElement(railPart as any, {
+      ...railPart.props,
+      onLeftClick: onRailPartLeftClick,
+      onMouseEnter: onRailPartMouseEnter,
+      onMouseLeave: onRailPartMouseLeave
+    })
+
     return (
       <>
-        {this.renderRailPart(this.props)}
+        {extendedRailPart}
         {this.renderJoints(this.props)}
         {this.renderFeederSockets(this.props)}
         {this.renderGapJoiners(this.props)}
@@ -425,6 +454,6 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     )
   }
 
-  abstract renderRailPart: (props) => React.ReactNode
+  abstract renderRailPart: (props) => React.ReactElement<any>
 }
 
