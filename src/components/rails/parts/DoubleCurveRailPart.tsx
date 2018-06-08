@@ -34,14 +34,6 @@ export default class DoubleCurveRailPart extends RailPartBase<DoubleCurveRailPar
     ]
   }
 
-  get glues() {
-    return [[]]
-  }
-
-  get gaps() {
-    return []
-  }
-
   get feederSockets() {
     return [
       {pivotPartIndex: 0, pivot: Pivot.CENTER},

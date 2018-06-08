@@ -41,19 +41,6 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
     ][this.props.switchState]
   }
 
-  get glues() {
-    return [[]]
-  }
-
-  get gaps() {
-    return [
-      {pivotPartIndex: 0, pivot: Pivot.RIGHT},
-      {pivotPartIndex: 2, pivot: Pivot.RIGHT},
-      {pivotPartIndex: 4, pivot: Pivot.RIGHT},
-      {pivotPartIndex: 5, pivot: Pivot.LEFT},
-    ]
-  }
-
   get feederSockets() {
     return []
   }

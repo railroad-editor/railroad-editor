@@ -33,14 +33,6 @@ export default class GappedStraightRailPart extends RailPartBase<GappedStraightR
     ]
   }
 
-  get glues() {
-    return [[]]
-  }
-
-  get gaps() {
-    return [{pivotPartIndex: 0, pivot: Pivot.RIGHT}]
-  }
-
   get feederSockets() {
     return []
   }

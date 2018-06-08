@@ -187,13 +187,9 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
    */
   abstract get joints(): PivotInfo[]
 
-  abstract get glues(): PivotInfo[][]
-
-  abstract get gaps(): PivotInfo[]
+  abstract get feederSockets(): PivotInfo[]
 
   abstract get conductiveParts(): number[]
-
-  abstract get feederSockets(): PivotInfo[]
 
   getPivot(jointIndex: number) {
     if (jointIndex == null) {

@@ -31,14 +31,6 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
     ]
   }
 
-  get glues() {
-    return [[]]
-  }
-
-  get gaps() {
-    return []
-  }
-
   get feederSockets() {
     return [{pivotPartIndex: 0, pivot: Pivot.CENTER}]
   }

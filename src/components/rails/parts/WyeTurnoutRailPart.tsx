@@ -40,14 +40,6 @@ export default class WyeTurnoutRailPart extends RailPartBase<WyeTurnoutRailPartP
     ][this.props.switchState]
   }
 
-  get glues() {
-    return [[]]
-  }
-
-  get gaps() {
-    return []
-  }
-
   get feederSockets() {
     return []
   }

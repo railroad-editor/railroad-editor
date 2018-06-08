@@ -42,14 +42,6 @@ export default class SimpleTurnoutRailPart extends RailPartBase<SimpleTurnoutRai
     ][this.props.switchState]
   }
 
-  get glues() {
-    return [[]]
-  }
-
-  get gaps() {
-    return []
-  }
-
   get feederSockets() {
     return []
   }

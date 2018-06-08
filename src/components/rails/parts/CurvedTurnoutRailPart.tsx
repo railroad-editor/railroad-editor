@@ -42,14 +42,6 @@ export default class CurvedTurnoutRailPart extends RailPartBase<CurvedTurnoutRai
     ][this.props.switchState]
   }
 
-  get glues() {
-    return [[]]
-  }
-
-  get gaps() {
-    return []
-  }
-
   get feederSockets() {
     return []
   }

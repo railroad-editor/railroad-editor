@@ -31,14 +31,6 @@ export default class CurveRailPart extends RailPartBase<CurveRailPartProps, {}> 
     ]
   }
 
-  get glues() {
-    return [[]]
-  }
-
-  get gaps() {
-    return []
-  }
-
   get feederSockets() {
     return [
       {pivotPartIndex: 0, pivot: Pivot.CENTER},
