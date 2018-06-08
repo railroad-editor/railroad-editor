@@ -8,6 +8,7 @@ import {Pivot} from "components/rails/parts/primitives/PartBase";
 import PartGroup from "components/rails/parts/primitives/PartGroup";
 import RailPartBase, {RailPartBaseDefaultProps, RailPartBaseProps} from "components/rails/parts/RailPartBase";
 import getLogger from "logging";
+import Gap from "components/rails/parts/Gap";
 
 const LOGGER = getLogger(__filename)
 
@@ -161,6 +162,32 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           flowDirection={flowDirections[7]}
           data={{
             type: 'Part'
+          }}
+        />
+        <Gap
+          position={new Point(length/2, 0)}
+          data={{
+            type: 'Gap',
+          }}
+        />
+        <Gap
+          position={new Point(length/2, RAIL_SPACE)}
+          data={{
+            type: 'Gap',
+          }}
+        />
+        <Gap
+          position={new Point(length/2, RAIL_SPACE/2)}
+          angle={15}
+          data={{
+            type: 'Gap',
+          }}
+        />
+        <Gap
+          position={new Point(length/2, RAIL_SPACE/2)}
+          angle={-15}
+          data={{
+            type: 'Gap',
           }}
         />
       </PartGroup>

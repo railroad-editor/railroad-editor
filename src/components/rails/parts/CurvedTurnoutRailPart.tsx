@@ -75,6 +75,9 @@ export default class CurvedTurnoutRailPart extends RailPartBase<CurvedTurnoutRai
           width={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
           flowDirection={flowDirections[0]}
+          data={{
+            type: 'Part'
+          }}
         />
         <ArcPart
           direction={direction}
@@ -83,6 +86,9 @@ export default class CurvedTurnoutRailPart extends RailPartBase<CurvedTurnoutRai
           width={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
           flowDirection={flowDirections[1]}
+          data={{
+            type: 'Part'
+          }}
         />
       </PartGroup>
     )

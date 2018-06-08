@@ -36,32 +36,15 @@ export default class Gap extends React.Component<GapProps, {}> {
     detectionEnabled: true
   }
 
-  part: DetectablePart
+  part: RectPart
 
   constructor(props: GapProps) {
     super(props)
   }
 
-  // ========== Public APIs ==========
-
-  get position() {
-    return this.part.position
+  get path() {
+    return this.part.path
   }
-
-  get globalPosition() {
-    return this.part.globalPosition
-  }
-
-  get angle() {
-    return this.part.angle
-  }
-
-  get globalAngle() {
-    return this.part.globalAngle
-  }
-
-
-  // ========== Private methods ==========
 
   render() {
     const { position, angle, opacity, fillColor, visible } = this.props
@@ -77,6 +60,7 @@ export default class Gap extends React.Component<GapProps, {}> {
         visible={visible}
         fillColor={fillColor}
         name={name}
+        ref={(r) => {if (r) this.part = r}}
       />
     )
   }

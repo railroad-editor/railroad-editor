@@ -182,16 +182,16 @@ export default abstract class PartBase<P extends PartBaseProps, S> extends React
       case FlowDirection.LEFT_TO_RIGHT:
         currentOrigin = this.getPosition(Pivot.LEFT).multiply(2 - ratio).add(this.getPosition(Pivot.RIGHT).multiply(ratio - 1))
         currentDestination = currentOrigin.add(this.getPosition(Pivot.RIGHT).subtract(this.getPosition(Pivot.LEFT)).multiply(2))
-        this.path.bringToFront()
+        this.bringToFrontAmongParts()
         break;
       case FlowDirection.RIGHT_TO_LEFT:
         currentOrigin = this.getPosition(Pivot.LEFT).multiply(ratio + 1).add(this.getPosition(Pivot.RIGHT).multiply(-ratio))
         currentDestination = currentOrigin.add(this.getPosition(Pivot.RIGHT).subtract(this.getPosition(Pivot.LEFT)).multiply(2))
-        this.path.bringToFront()
+        this.bringToFrontAmongParts()
         break;
       case FlowDirection.ILLEGAL:
         this.path.fillColor = "red";
-        this.path.bringToFront()
+        this.bringToFrontAmongParts()
         return;
     }
 
@@ -202,6 +202,12 @@ export default abstract class PartBase<P extends PartBaseProps, S> extends React
       origin: currentDestination,
       destination: currentOrigin,
     } as any
+  }
+
+
+  bringToFrontAmongParts = () => {
+    const lastPart = _.findLast(this.path.parent.children, c => c.data.type === 'Part')
+    this.path.moveAbove(lastPart)
   }
 
 

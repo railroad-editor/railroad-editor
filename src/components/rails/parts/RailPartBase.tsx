@@ -67,6 +67,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     logger.trace(`[RailPart][${this.props.name}] j0: ${this.getGlobalJointPosition(0)}, ${this.getGlobalJointAngle(0)}`);
     logger.trace(`[RailPart][${this.props.name}] j1: ${this.getGlobalJointPosition(1)}, ${this.getGlobalJointAngle(1)}`);
     this.fixRotationByPivot()
+    this.setGapColor()
   }
 
   componentDidMount() {
@@ -74,6 +75,18 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     logger.trace(`[RailPart][${this.props.name}] j0: ${this.getGlobalJointPosition(0)}, ${this.getGlobalJointAngle(0)}`);
     logger.trace(`[RailPart][${this.props.name}] j1: ${this.getGlobalJointPosition(1)}, ${this.getGlobalJointAngle(1)}`);
     this.fixRotationByPivot()
+    this.setGapColor()
+  }
+
+  // 現在レールパーツとギャップは同じグループなので色も同じになってしまう
+  // それを防ぐため汚いがここで色をセットする
+  // TODO: もっといい方法を考える
+  setGapColor = () => {
+    this.detectablePart.mainPart.children
+      .filter(c => c.props.data.type === 'Gap')
+      .forEach(c => {
+        c.path.fillColor = 'red'
+      })
   }
 
 
@@ -234,6 +247,9 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
 
 
   onFrame = (e) => {
-    this.detectablePart.mainPart._children.forEach(c => c.onFrame(e))
+    // アニメーションはパーツだけに限定
+    this.detectablePart.mainPart.children
+      .filter(c => c.props.data.type === 'Part')
+      .forEach(c => c.onFrame(e))
   }
 }
