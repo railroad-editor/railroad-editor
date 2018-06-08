@@ -1,4 +1,4 @@
-import {action} from "mobx";
+import {action, observable} from "mobx";
 import getLogger from "logging";
 import layoutStore from "store/layoutStore";
 import {getRailComponent} from "components/rails/utils";
@@ -7,13 +7,67 @@ import {FlowDirection, Pivot} from "components/rails/parts/primitives/PartBase";
 const LOGGER = getLogger(__filename)
 
 
+export interface TemporaryFlowDirection {
+  feederId: number
+  direction: FlowDirection
+}
+
+export interface TemporaryRailPartFlows {
+  [partId: number]: TemporaryFlowDirection[]
+}
+
+export interface TemporaryRailFlows {
+  [railId: number]: TemporaryRailPartFlows
+}
+
+
+
 export class SimulatorLogicStore {
+
+  @observable temporaryRailFlows: TemporaryRailFlows
 
   constructor() {
   }
 
+  /**
+   * 全てのフィーダーに通電し、レール電流のシミュレーションを開始する
+   */
   @action
-  setCurrentFlowToFeeder = (feederId: number) => {
+  startCurrentFlowSimulation = () => {
+    this.initializeCurrentFlows()
+
+    layoutStore.currentLayoutData.feeders.forEach(feeder => this.simulateFeederCurrentFlow(feeder.id))
+
+    LOGGER.info(this.temporaryRailFlows)
+
+    _.keys(this.temporaryRailFlows).forEach(railId => {
+      _.keys(this.temporaryRailFlows[railId]).forEach(partId => {
+        this.setFlow(Number(railId), Number(partId), this.temporaryRailFlows[railId][partId])
+      })
+    })
+  }
+
+  /**
+   * レール電流のシミュレーションを終了する
+   */
+  @action
+  stopCurrentFlowSimulation = () => {
+    this.initializeCurrentFlows()
+  }
+
+
+  initializeCurrentFlows = () => {
+    this.temporaryRailFlows = {}
+    layoutStore.updateRails(layoutStore.currentLayoutData.rails.map(r => {
+      return {
+        id: r.id,
+        flowDirections: null  // reset
+      }
+    }))
+  }
+
+
+  simulateFeederCurrentFlow = (feederId: number) => {
     const feeder = layoutStore.getFeederDataById(feederId)
     const rail = layoutStore.getRailDataById(feeder.railId)
     const joints = getRailComponent(rail.id).railPart.joints
@@ -21,7 +75,7 @@ export class SimulatorLogicStore {
     const feederedPartId = feederSockets[feeder.socketId].pivotPartIndex
 
     // フィーダーが接続されているパーツの電流を設定
-    const isAlreadySet = this.setFlow(feeder.railId, feederedPartId, feeder.direction)
+    const isAlreadySet = this.setTemporaryFlow(feeder.railId, feederedPartId, feederId, feeder.direction)
     if (isAlreadySet) {
       return
     }
@@ -34,20 +88,19 @@ export class SimulatorLogicStore {
       }
       const joint = joints[jointId]
       const isGoing = this.isCurrentGoing(joint.pivot, feeder.direction)
-      this.setCurrentFlowToRail(opposingJoint.railId, opposingJoint.jointId, isGoing)
+      this.setCurrentFlowToRail(opposingJoint.railId, opposingJoint.jointId, feederId, isGoing)
     })
   }
 
 
-  @action
-  setCurrentFlowToRail = (railId: number, jointId: number, isComing: boolean) => {
+  setCurrentFlowToRail = (railId: number, jointId: number, feederId: number, isComing: boolean) => {
     const rail = layoutStore.getRailDataById(railId)
     const railPart = getRailComponent(railId).railPart
     const joint = railPart.joints[jointId]
     const partId = joint.pivotPartIndex
     const direction = this.getDirection(joint.pivot, isComing)
 
-    const isAlreadySet = this.setFlow(railId, partId, direction)
+    const isAlreadySet = this.setTemporaryFlow(railId, partId, feederId, direction)
     if (isAlreadySet) {
       return
     }
@@ -59,7 +112,7 @@ export class SimulatorLogicStore {
       return
     }
     const isGoing = this.isCurrentGoing(anotherJoint.pivot, direction)
-    this.setCurrentFlowToRail(opposingJoint.railId, opposingJoint.jointId, isGoing)
+    this.setCurrentFlowToRail(opposingJoint.railId, opposingJoint.jointId, feederId, isGoing)
   }
 
 
@@ -87,19 +140,44 @@ export class SimulatorLogicStore {
   }
 
 
-  @action
-  setFlow = (railId: number, partId: number, direction: FlowDirection) => {
-    const rail = layoutStore.getRailDataById(railId)
-    if (rail.flowDirections[partId]) {
+  setTemporaryFlow = (railId: number, partId: number, feederId: number, direction: FlowDirection) => {
+
+    if (!this.temporaryRailFlows[railId]) {
+      this.temporaryRailFlows[railId] = {}
+    }
+    if (!this.temporaryRailFlows[railId][partId]) {
+      this.temporaryRailFlows[railId][partId] = []
+    }
+
+    const alreadySet = this.temporaryRailFlows[railId][partId].find(tempDir => tempDir.feederId === feederId)
+    if (alreadySet) {
       return true
     }
+
+    this.temporaryRailFlows[railId][partId].push({feederId: feederId, direction: direction})
+    return false
+  }
+
+
+  setFlow = (railId: number, partId: number, tempFlows: TemporaryFlowDirection[]) => {
+    let direction = FlowDirection.NONE
+    const directions = tempFlows.map(tf => tf.direction)
+    const l2r = directions.find(d => d === FlowDirection.LEFT_TO_RIGHT)
+    const r2l = directions.find(d => d === FlowDirection.RIGHT_TO_LEFT)
+    if (l2r && r2l) {
+      direction = FlowDirection.ILLEGAL
+    } else if (l2r) {
+      direction = FlowDirection.LEFT_TO_RIGHT
+    } else if (r2l) {
+      direction = FlowDirection.RIGHT_TO_LEFT
+    }
+
     layoutStore.updateRail({
       id: railId,
       flowDirections: {
         [partId]: direction
       }
     })
-    return false
   }
 }
 

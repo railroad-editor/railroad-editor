@@ -200,17 +200,22 @@ export class LayoutStore {
     const index = this.currentLayoutData.rails.findIndex(rail => rail.id === item.id)
     const target = this.currentLayoutData.rails[index]
 
+    // 明示的にnull指定されたらリセットする
+    const opposingJoints = item.opposingJoints === null ? {} : removeEmpty({
+      ...target.opposingJoints,
+      ...item.opposingJoints
+    })
+    // 明示的にnull指定されたらリセットする
+    const flowDirections = item.flowDirections === null ? {} : removeEmpty({
+      ...target.flowDirections,
+      ...item.flowDirections
+    })
+
     this.currentLayoutData.rails[index] = {
       ...target,
       ...item,
-      opposingJoints: removeEmpty({
-        ...target.opposingJoints,
-        ...item.opposingJoints
-      }),
-      flowDirections: removeEmpty({
-        ...target.flowDirections,
-        ...item.flowDirections
-      })
+      opposingJoints: opposingJoints,
+      flowDirections: flowDirections
     }
   }
 

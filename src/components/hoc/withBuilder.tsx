@@ -242,7 +242,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
 
     keyDown_CtrlE = (e) => {
-      this.props.simulatorLogic.setCurrentFlowToFeeder(1)
+      this.props.simulatorLogic.startCurrentFlowSimulation()
     }
 
     /**
