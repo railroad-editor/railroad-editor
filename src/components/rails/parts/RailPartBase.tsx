@@ -8,6 +8,7 @@ import {Pivot} from "components/rails/parts/primitives/PartBase";
 import getLogger from "logging";
 import {ReactElement} from "react";
 import {normAngle} from "components/rails/utils";
+import {FlowDirections} from "components/rails/RailBase";
 
 const logger = getLogger(__filename)
 
@@ -35,6 +36,7 @@ export interface RailPartBaseDefaultProps {
   opacity?: number
   visible?: boolean
   fillColors?: string[]
+  flowDirections: FlowDirections
 }
 
 
@@ -47,6 +49,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     opacity: 1,
     visible: true,
     fillColors: RAIL_PART_FILL_COLORS,
+    flowDirections: {}
   }
 
   detectablePart: DetectablePart
@@ -229,6 +232,6 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
 
 
   onFrame = (e) => {
-    // this.detectablePart.mainPart._children.forEach(c => c.onFrame(e))
+    this.detectablePart.mainPart._children.forEach(c => c.onFrame(e))
   }
 }

@@ -9,7 +9,14 @@ import {DetectionState} from "components/rails/parts/primitives/DetectablePart";
 import railItems from "constants/railItems.json"
 import {TEMPORARY_RAIL_OPACITY, Tools} from "constants/tools";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI} from 'constants/stores';
+import {
+  STORE_BUILDER,
+  STORE_COMMON,
+  STORE_LAYOUT,
+  STORE_LAYOUT_LOGIC,
+  STORE_SIMULATOR_LOGIC,
+  STORE_UI
+} from 'constants/stores';
 import {BuilderStore, UserRailGroupData} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import * as $ from "jquery";
@@ -18,6 +25,7 @@ import {withSnackbar} from 'material-ui-snackbar-provider'
 import {UiStore} from "store/uiStore";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import {CommonStore} from "store/commonStore";
+import {SimulatorLogicStore} from "store/simulatorLogicStore";
 
 
 const LOGGER = getLogger(__filename)
@@ -53,6 +61,7 @@ interface WithBuilderPrivateProps {
   builder?: BuilderStore
   layout?: LayoutStore
   layoutLogic?: LayoutLogicStore
+  simulatorLogic?: SimulatorLogicStore
   ui?: UiStore
 }
 
@@ -77,7 +86,7 @@ export interface WithBuilderState {
  */
 export default function withBuilder(WrappedComponent: React.ComponentClass<WithBuilderPublicProps>) {
 
-  @inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI)
+  @inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SIMULATOR_LOGIC, STORE_UI)
   @observer
   class WithBuilder extends React.Component<WithBuilderProps, WithBuilderState> {
 
@@ -230,6 +239,10 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
         this.props.snackbar.showMessage("Please login.")
         this.props.ui.setLoginDialog(true)
       }
+    }
+
+    keyDown_CtrlE = (e) => {
+      this.props.simulatorLogic.setCurrentFlowToFeeder(1)
     }
 
     /**

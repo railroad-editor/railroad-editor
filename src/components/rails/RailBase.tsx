@@ -41,6 +41,10 @@ export interface OpposingJoints {
   [key: number]: JointInfo
 }
 
+export interface FlowDirections {
+  [key: number]: FlowDirection
+}
+
 
 export interface RailBaseProps extends Partial<RailBaseDefaultProps> {
   position: Point
@@ -89,6 +93,7 @@ export interface RailBaseDefaultProps {
   // 色
   fillColor: string
 
+  flowDirections: FlowDirections
 
   // イベントハンドラ
   onRailPartLeftClick: (e: MouseEvent) => boolean
@@ -142,6 +147,8 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     visible: true,
     opacity: 1,
     fillColor: '#000',
+
+    flowDirections: {},
 
     enableFeederSockets: false,
     enableGapJoinerSockets: false,
@@ -434,14 +441,15 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
   }
 
   render() {
-    const { onRailPartLeftClick, onRailPartMouseEnter, onRailPartMouseLeave } = this.props
+    const { onRailPartLeftClick, onRailPartMouseEnter, onRailPartMouseLeave, flowDirections } = this.props
 
     const railPart = this.renderRailPart(this.props)
     const extendedRailPart = React.cloneElement(railPart as any, {
       ...railPart.props,
       onLeftClick: onRailPartLeftClick,
       onMouseEnter: onRailPartMouseEnter,
-      onMouseLeave: onRailPartMouseLeave
+      onMouseLeave: onRailPartMouseLeave,
+      flowDirections: flowDirections
     })
 
     return (

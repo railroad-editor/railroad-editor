@@ -14,8 +14,8 @@ export enum Pivot {
 
 export enum FlowDirection {
   NONE,
-  START_TO_END,
-  END_TO_START,
+  LEFT_TO_RIGHT,
+  RIGHT_TO_LEFT,
   ILLEGAL
 }
 
@@ -60,7 +60,7 @@ export default abstract class PartBase<P extends PartBaseProps, S> extends React
     visible: true,
     opacity: 1,
     selected: false,
-    flowDirection: FlowDirection.START_TO_END,
+    flowDirection: FlowDirection.NONE,
   }
 
 
@@ -178,12 +178,12 @@ export default abstract class PartBase<P extends PartBaseProps, S> extends React
         // アニメーションしない
         this.path.fillColor = "black";
         return;
-      case FlowDirection.START_TO_END:
+      case FlowDirection.LEFT_TO_RIGHT:
         currentOrigin = this.getPosition(Pivot.LEFT).multiply(2 - ratio).add(this.getPosition(Pivot.RIGHT).multiply(ratio - 1))
         currentDestination = currentOrigin.add(this.getPosition(Pivot.RIGHT).subtract(this.getPosition(Pivot.LEFT)).multiply(2))
         // log.debug("S to E : ", currentOrigin, "=>", currentDestination);
         break;
-      case FlowDirection.END_TO_START:
+      case FlowDirection.RIGHT_TO_LEFT:
         currentOrigin = this.getPosition(Pivot.LEFT).multiply(ratio + 1).add(this.getPosition(Pivot.RIGHT).multiply(-ratio))
         currentDestination = currentOrigin.add(this.getPosition(Pivot.RIGHT).subtract(this.getPosition(Pivot.LEFT)).multiply(2))
         // log.debug("E to S : ", currentOrigin, "=>", currentDestination);

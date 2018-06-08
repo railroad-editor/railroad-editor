@@ -206,6 +206,10 @@ export class LayoutStore {
       opposingJoints: removeEmpty({
         ...target.opposingJoints,
         ...item.opposingJoints
+      }),
+      flowDirections: removeEmpty({
+        ...target.flowDirections,
+        ...item.flowDirections
       })
     }
   }
@@ -465,6 +469,17 @@ export class LayoutStore {
     this.updateRails(nextRails)
   }
 
+  getRailDataById = (id: number) => {
+    return this.currentLayoutData.rails.find(item => item.id === id)
+  }
+
+  getFeederDataById = (id: number) => {
+    return this.currentLayoutData.feeders.find(item => item.id === id)
+  }
+
+  getGapJoinerDataById = (id: number) => {
+    return this.currentLayoutData.gapJoiners.find(item => item.id === id)
+  }
 }
 
 

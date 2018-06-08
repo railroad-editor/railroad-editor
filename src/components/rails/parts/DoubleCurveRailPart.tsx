@@ -19,14 +19,7 @@ interface DoubleCurveRailPartProps extends RailPartBaseProps {
 
 
 export default class DoubleCurveRailPart extends RailPartBase<DoubleCurveRailPartProps, {}> {
-  public static defaultProps: RailPartBaseDefaultProps = {
-    position: new Point(0, 0),
-    angle: 0,
-    detectionEnabled: false,
-    selected: false,
-    opacity: 1,
-    fillColors: RAIL_PART_FILL_COLORS
-  }
+  public static defaultProps: RailPartBaseDefaultProps = RailPartBase.defaultProps
 
   constructor(props: DoubleCurveRailPartProps) {
     super(props)
@@ -62,7 +55,7 @@ export default class DoubleCurveRailPart extends RailPartBase<DoubleCurveRailPar
 
 
   renderParts = () => {
-    const { innerRadius, outerRadius, centerAngle, direction, pivotJointIndex, data } = this.props
+    const { innerRadius, outerRadius, centerAngle, direction, pivotJointIndex, data, flowDirections } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 
     let radius1, radius2
@@ -89,6 +82,7 @@ export default class DoubleCurveRailPart extends RailPartBase<DoubleCurveRailPar
           radius={radius1}
           centerAngle={centerAngle}
           width={RAIL_PART_WIDTH}
+          flowDirection={flowDirections[0]}
           data={{
             type: 'Part'
           }}
@@ -100,6 +94,7 @@ export default class DoubleCurveRailPart extends RailPartBase<DoubleCurveRailPar
           radius={radius2}
           centerAngle={centerAngle}
           width={RAIL_PART_WIDTH}
+          flowDirection={flowDirections[1]}
           data={{
             type: 'Part'
           }}

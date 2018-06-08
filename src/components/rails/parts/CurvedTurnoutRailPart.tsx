@@ -20,14 +20,7 @@ interface CurvedTurnoutRailPartProps extends RailPartBaseProps {
 
 
 export default class CurvedTurnoutRailPart extends RailPartBase<CurvedTurnoutRailPartProps, {}> {
-  public static defaultProps: RailPartBaseDefaultProps = {
-    position: new Point(0, 0),
-    angle: 0,
-    detectionEnabled: false,
-    selected: false,
-    opacity: 1,
-    fillColors: RAIL_PART_FILL_COLORS
-  }
+  public static defaultProps: RailPartBaseDefaultProps = RailPartBase.defaultProps
 
 
   constructor(props: CurvedTurnoutRailPartProps) {
@@ -59,7 +52,7 @@ export default class CurvedTurnoutRailPart extends RailPartBase<CurvedTurnoutRai
   }
 
   renderParts = () => {
-    const { innerRadius, outerRadius, innerCenterAngle, outerCenterAngle, direction, pivotJointIndex, data } = this.props
+    const { innerRadius, outerRadius, innerCenterAngle, outerCenterAngle, direction, pivotJointIndex, data, flowDirections } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 
     return (
@@ -74,6 +67,7 @@ export default class CurvedTurnoutRailPart extends RailPartBase<CurvedTurnoutRai
           centerAngle={outerCenterAngle}
           width={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
+          flowDirection={flowDirections[0]}
         />
         <ArcPart
           direction={direction}
@@ -81,6 +75,7 @@ export default class CurvedTurnoutRailPart extends RailPartBase<CurvedTurnoutRai
           centerAngle={innerCenterAngle}
           width={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
+          flowDirection={flowDirections[1]}
         />
       </PartGroup>
     )

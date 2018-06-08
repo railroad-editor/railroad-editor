@@ -19,14 +19,7 @@ interface WyeTurnoutRailPartProps extends RailPartBaseProps {
 
 
 export default class WyeTurnoutRailPart extends RailPartBase<WyeTurnoutRailPartProps, {}> {
-  public static defaultProps: RailPartBaseDefaultProps = {
-    position: new Point(0, 0),
-    angle: 0,
-    detectionEnabled: false,
-    selected: false,
-    opacity: 1,
-    fillColors: RAIL_PART_FILL_COLORS
-  }
+  public static defaultProps: RailPartBaseDefaultProps = RailPartBase.defaultProps
 
   constructor(props: WyeTurnoutRailPartProps) {
     super(props)
@@ -58,7 +51,7 @@ export default class WyeTurnoutRailPart extends RailPartBase<WyeTurnoutRailPartP
 
 
   renderParts = () => {
-    const { radius, centerAngle, pivotJointIndex, data } = this.props
+    const { radius, centerAngle, pivotJointIndex, data, flowDirections } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 
     return (
@@ -73,6 +66,7 @@ export default class WyeTurnoutRailPart extends RailPartBase<WyeTurnoutRailPartP
           centerAngle={centerAngle}
           width={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
+          flowDirection={flowDirections[0]}
           data={{
             type: 'Part'
           }}
@@ -82,6 +76,7 @@ export default class WyeTurnoutRailPart extends RailPartBase<WyeTurnoutRailPartP
           radius={radius}
           centerAngle={centerAngle}
           width={RAIL_PART_WIDTH}
+          flowDirection={flowDirections[1]}
           pivot={Pivot.LEFT}
           data={{
             type: 'Part'

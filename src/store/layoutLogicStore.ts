@@ -4,6 +4,8 @@ import layoutStore, {LayoutStore} from "store/layoutStore";
 import builderStore, {BuilderStore} from "store/builderStore";
 import {JointPair} from "components/hoc/withBuilder";
 import {Tools} from "constants/tools";
+import {getRailComponent} from "components/rails/utils";
+import {FlowDirection, Pivot} from "components/rails/parts/primitives/PartBase";
 
 const LOGGER = getLogger(__filename)
 
@@ -160,6 +162,7 @@ export class LayoutLogicStore {
 
   @action
   toggleSelectRail = (railId: number) => {
+    this.selectAllRails(false)
     const target = this.getRailDataById(railId)
     if (target == null) {
       return
@@ -193,6 +196,7 @@ export class LayoutLogicStore {
 
   @action
   toggleSelectFeeder = (feederId: number) => {
+    this.selectAllFeeders(false)
     const target = this.getFeederDataById(feederId)
     if (target == null) {
       return
@@ -225,6 +229,7 @@ export class LayoutLogicStore {
 
   @action
   toggleSelectGapJoiner = (gapJoinerId: number) => {
+    this.selectAllGapJoiners(false)
     const target = this.getGapJoinerDataById(gapJoinerId)
     if (target == null) {
       return
@@ -303,6 +308,82 @@ export class LayoutLogicStore {
     layoutStore.enableJoints()
     this.selectAllFeeders(false)
     this.selectAllGapJoiners(false)
+  }
+
+
+  @action
+  simulateFlow = (feederId: number) => {
+    const feeder = this.getFeederDataById(feederId)
+    const rail = this.getRailDataById(feeder.railId)
+    const railPart = getRailComponent(rail.id).railPart
+    const partId = railPart.feederSockets[feeder.socketId].pivotPartIndex
+
+    // フィーダーが接続されているパーツの電流を設定
+    layoutStore.updateRail({
+      id: feeder.railId,
+      flowDirections: {
+        [partId]: feeder.direction
+      }
+    })
+
+    // このパーツに接続されているジョイントの先のレールに電流を設定
+    _.range(railPart.joints.length).forEach(jointId => {
+      const opposingJoint = rail.opposingJoints[jointId]
+      if (!opposingJoint) {
+        return
+      }
+      const joint = railPart.joints[jointId]
+      const isComing = this.isCurrentComing(joint.pivot, feeder.direction)
+      this.setFlow(opposingJoint.railId, opposingJoint.jointId, isComing)
+    })
+  }
+
+  isCurrentComing = (pivot: Pivot, direction: FlowDirection) => {
+    const MAP = {
+      [Pivot.LEFT]: {
+        [FlowDirection.LEFT_TO_RIGHT]: false,
+        [FlowDirection.RIGHT_TO_LEFT]: true,
+      },
+      [Pivot.RIGHT]: {
+        [FlowDirection.LEFT_TO_RIGHT]: true,
+        [FlowDirection.RIGHT_TO_LEFT]: false,
+      },
+    }
+    return MAP[pivot][direction]
+  }
+
+
+  @action
+  setFlow = (railId: number, jointId: number, isComing: boolean) => {
+    const rail = this.getRailDataById(railId)
+    const railPart = getRailComponent(railId).railPart
+    const joint = railPart.joints[jointId]
+    const partId = joint.pivotPartIndex
+    let direction
+    switch (joint.pivot) {
+      case Pivot.LEFT:
+        direction = isComing ? FlowDirection.LEFT_TO_RIGHT : FlowDirection.RIGHT_TO_LEFT
+        break
+      case Pivot.RIGHT:
+        direction = isComing ? FlowDirection.RIGHT_TO_LEFT : FlowDirection.LEFT_TO_RIGHT
+        break
+    }
+
+    layoutStore.updateRail({
+      id: railId,
+      flowDirections: {
+        [partId]: direction
+      }
+    })
+
+    const anotherJointId = railPart.joints.findIndex(j=> j.pivotPartIndex === partId && j.pivot !== joint.pivot)
+    const anotherJoint = railPart.joints[anotherJointId]
+    const opposingJoint = rail.opposingJoints[anotherJointId]
+    if (!opposingJoint) {
+      return
+    }
+    const nextIsComing = this.isCurrentComing(anotherJoint.pivot, direction)
+    this.setFlow(opposingJoint.railId, opposingJoint.jointId, nextIsComing)
   }
 
 

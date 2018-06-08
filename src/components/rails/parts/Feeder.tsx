@@ -51,9 +51,9 @@ export default class Feeder extends React.Component<FeederProps, {}> {
   getAngle = () => {
     const {angle, direction} = this.props
     switch (direction) {
-      case FlowDirection.START_TO_END:
+      case FlowDirection.LEFT_TO_RIGHT:
         return angle
-      case FlowDirection.END_TO_START:
+      case FlowDirection.RIGHT_TO_LEFT:
         return angle + 180
       default:
         return angle

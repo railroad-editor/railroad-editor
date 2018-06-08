@@ -17,14 +17,7 @@ interface DoubleCrossTurnoutRailPartProps extends RailPartBaseProps {
 
 
 export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCrossTurnoutRailPartProps, {}> {
-  public static defaultProps: RailPartBaseDefaultProps = {
-    position: new Point(0, 0),
-    angle: 0,
-    detectionEnabled: false,
-    selected: false,
-    opacity: 1,
-    fillColors: RAIL_PART_FILL_COLORS,
-  }
+  public static defaultProps: RailPartBaseDefaultProps = RailPartBase.defaultProps
 
   constructor(props: DoubleCrossTurnoutRailPartProps) {
     super(props)
@@ -63,7 +56,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
 
 
   renderParts = () => {
-    const { length, pivotJointIndex, data } = this.props
+    const { length, pivotJointIndex, data, flowDirections } = this.props
 
     // TODO: 方程式を解いてちゃんと値を出す
     const radius = length / (2 * Math.sin(15 / 180 * Math.PI))
@@ -79,6 +72,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           width={length/2}
           height={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
+          flowDirection={flowDirections[0]}
           data={{
             type: 'Part'
           }}
@@ -88,6 +82,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           width={length/2}
           height={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
+          flowDirection={flowDirections[1]}
           data={{
             type: 'Part'
           }}
@@ -97,6 +92,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           width={length/2}
           height={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
+          flowDirection={flowDirections[2]}
           data={{
             type: 'Part'
           }}
@@ -106,6 +102,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           width={length/2}
           height={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
+          flowDirection={flowDirections[3]}
           data={{
             type: 'Part'
           }}
@@ -116,6 +113,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           centerAngle={15}
           width={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
+          flowDirection={flowDirections[4]}
           data={{
             type: 'Part'
           }}
@@ -128,6 +126,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           centerAngle={15}
           width={RAIL_PART_WIDTH}
           pivot={Pivot.RIGHT}
+          flowDirection={flowDirections[5]}
           data={{
             type: 'Part'
           }}
@@ -139,6 +138,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           centerAngle={15}
           width={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
+          flowDirection={flowDirections[6]}
           data={{
             type: 'Part'
           }}
@@ -151,6 +151,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           centerAngle={15}
           width={RAIL_PART_WIDTH}
           pivot={Pivot.RIGHT}
+          flowDirection={flowDirections[7]}
           data={{
             type: 'Part'
           }}

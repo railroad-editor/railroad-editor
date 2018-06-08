@@ -16,14 +16,7 @@ interface DoubleStraightRailPartProps extends RailPartBaseProps {
 
 
 export default class DoubleStraightRailPart extends RailPartBase<DoubleStraightRailPartProps, {}> {
-  public static defaultProps: RailPartBaseDefaultProps = {
-    position: new Point(0, 0),
-    angle: 0,
-    detectionEnabled: false,
-    selected: false,
-    opacity: 1,
-    fillColors: RAIL_PART_FILL_COLORS
-  }
+  public static defaultProps: RailPartBaseDefaultProps = RailPartBase.defaultProps
 
   constructor(props: DoubleStraightRailPartProps) {
     super(props)
@@ -58,7 +51,7 @@ export default class DoubleStraightRailPart extends RailPartBase<DoubleStraightR
   }
 
   renderParts = () => {
-    const { length, pivotJointIndex, data } = this.props
+    const { length, pivotJointIndex, data, flowDirections } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 
     return (
@@ -71,6 +64,7 @@ export default class DoubleStraightRailPart extends RailPartBase<DoubleStraightR
           width={length}
           height={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
+          flowDirection={flowDirections[0]}
           data={{
             type: 'Part'
           }}
@@ -80,6 +74,7 @@ export default class DoubleStraightRailPart extends RailPartBase<DoubleStraightR
           width={length}
           height={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
+          flowDirection={flowDirections[1]}
           data={{
             type: 'Part'
           }}

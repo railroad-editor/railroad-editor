@@ -18,14 +18,7 @@ interface CurveRailPartProps extends RailPartBaseProps {
 
 
 export default class CurveRailPart extends RailPartBase<CurveRailPartProps, {}> {
-  public static defaultProps: RailPartBaseDefaultProps = {
-    position: new Point(0, 0),
-    angle: 0,
-    detectionEnabled: false,
-    selected: false,
-    opacity: 1,
-    fillColors: RAIL_PART_FILL_COLORS
-  }
+  public static defaultProps: RailPartBaseDefaultProps = RailPartBase.defaultProps
 
   constructor(props: CurveRailPartProps) {
     super(props)
@@ -58,7 +51,7 @@ export default class CurveRailPart extends RailPartBase<CurveRailPartProps, {}> 
 
 
   renderParts = () => {
-    const { radius, centerAngle, direction, pivotJointIndex, data } = this.props
+    const { radius, centerAngle, direction, pivotJointIndex, data, flowDirections } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 
     return (
@@ -73,6 +66,7 @@ export default class CurveRailPart extends RailPartBase<CurveRailPartProps, {}> 
           radius={radius}
           centerAngle={centerAngle}
           width={RAIL_PART_WIDTH}
+          flowDirection={flowDirections[0]}
           data={{
             type: 'Part'
           }}

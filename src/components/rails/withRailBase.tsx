@@ -229,7 +229,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
         railId: this.rail.props.id,
         socketId: pivotInfo.pivotPartIndex,
         pivot: pivotInfo.pivot,
-        direction: FlowDirection.START_TO_END,
+        direction: FlowDirection.LEFT_TO_RIGHT,
         selected: false
       })
     }
@@ -237,11 +237,11 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
     private toggleTemporaryFeederDirection = (socketId: number) => {
       let direction
       switch (this.props.builder.temporaryFeeder.direction) {
-        case FlowDirection.START_TO_END:
-          direction = FlowDirection.END_TO_START
+        case FlowDirection.LEFT_TO_RIGHT:
+          direction = FlowDirection.RIGHT_TO_LEFT
           break
-        case FlowDirection.END_TO_START:
-          direction = FlowDirection.START_TO_END
+        case FlowDirection.RIGHT_TO_LEFT:
+          direction = FlowDirection.LEFT_TO_RIGHT
           break
       }
       this.props.builder.updateTemporaryFeeder({
