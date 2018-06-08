@@ -21,10 +21,7 @@ interface SimpleTurnoutRailPartProps extends RailPartBaseProps {
 
 
 export default class SimpleTurnoutRailPart extends RailPartBase<SimpleTurnoutRailPartProps, {}> {
-  public static defaultProps: RailPartBaseDefaultProps = {
-    ...RailPartBase.defaultProps,
-    switchState: 1
-  }
+  public static defaultProps: RailPartBaseDefaultProps = RailPartBase.defaultProps
 
   constructor(props: SimpleTurnoutRailPartProps) {
     super(props)

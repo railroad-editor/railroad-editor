@@ -17,10 +17,7 @@ interface DoubleCrossTurnoutRailPartProps extends RailPartBaseProps {
 
 
 export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCrossTurnoutRailPartProps, {}> {
-  public static defaultProps: RailPartBaseDefaultProps = {
-    ...RailPartBase.defaultProps,
-    switchState: 1
-  }
+  public static defaultProps: RailPartBaseDefaultProps = RailPartBase.defaultProps
 
   constructor(props: DoubleCrossTurnoutRailPartProps) {
     super(props)

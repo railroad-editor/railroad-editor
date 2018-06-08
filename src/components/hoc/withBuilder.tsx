@@ -245,6 +245,10 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       this.props.simulatorLogic.startCurrentFlowSimulation()
     }
 
+    keyDown_CtrlQ = (e) => {
+      this.props.simulatorLogic.stopCurrentFlowSimulation()
+    }
+
     /**
      * 指定の名前のレールの固有Propsを返す。
      * プリセットのレールに無ければユーザーカスタムレールで探して返す。
