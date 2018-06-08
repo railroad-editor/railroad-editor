@@ -40,8 +40,8 @@ export default class CrossingRailPart extends RailPartBase<CrossingRailPartProps
     return []
   }
 
-  get conductives() {
-    return [[0, 1]]
+  get conductiveParts() {
+    return [0, 1]
   }
 
   get feederSockets() {

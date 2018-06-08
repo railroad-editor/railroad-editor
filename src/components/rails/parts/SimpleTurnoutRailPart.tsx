@@ -21,7 +21,10 @@ interface SimpleTurnoutRailPartProps extends RailPartBaseProps {
 
 
 export default class SimpleTurnoutRailPart extends RailPartBase<SimpleTurnoutRailPartProps, {}> {
-  public static defaultProps: RailPartBaseDefaultProps = RailPartBase.defaultProps
+  public static defaultProps: RailPartBaseDefaultProps = {
+    ...RailPartBase.defaultProps,
+    switchState: 1
+  }
 
   constructor(props: SimpleTurnoutRailPartProps) {
     super(props)
@@ -29,10 +32,17 @@ export default class SimpleTurnoutRailPart extends RailPartBase<SimpleTurnoutRai
 
   get joints() {
     return [
-      {pivotPartIndex: 0, pivot: Pivot.LEFT},
-      {pivotPartIndex: 0, pivot: Pivot.RIGHT},
-      {pivotPartIndex: 1, pivot: Pivot.RIGHT}
-    ]
+      [
+        {pivotPartIndex: 0, pivot: Pivot.LEFT},
+        {pivotPartIndex: 0, pivot: Pivot.RIGHT},
+        {pivotPartIndex: 1, pivot: Pivot.RIGHT}
+      ],
+      [
+        {pivotPartIndex: 1, pivot: Pivot.LEFT},
+        {pivotPartIndex: 0, pivot: Pivot.RIGHT},
+        {pivotPartIndex: 1, pivot: Pivot.RIGHT}
+      ]
+    ][this.props.switchState]
   }
 
   get glues() {
@@ -47,8 +57,8 @@ export default class SimpleTurnoutRailPart extends RailPartBase<SimpleTurnoutRai
     return []
   }
 
-  get conductives() {
-    return [[0], [1]]
+  get conductiveParts() {
+    return [[0], [1]][this.props.switchState]
   }
 
 

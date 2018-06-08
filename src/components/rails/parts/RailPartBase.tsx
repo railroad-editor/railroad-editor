@@ -37,6 +37,7 @@ export interface RailPartBaseDefaultProps {
   visible?: boolean
   fillColors?: string[]
   flowDirections: FlowDirections
+  switchState: number
 }
 
 
@@ -49,7 +50,8 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     opacity: 1,
     visible: true,
     fillColors: RAIL_PART_FILL_COLORS,
-    flowDirections: {}
+    flowDirections: {},
+    switchState: 0
   }
 
   detectablePart: DetectablePart
@@ -176,7 +178,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
 
   abstract get gaps(): PivotInfo[]
 
-  abstract get conductives(): number[][]
+  abstract get conductiveParts(): number[]
 
   abstract get feederSockets(): PivotInfo[]
 

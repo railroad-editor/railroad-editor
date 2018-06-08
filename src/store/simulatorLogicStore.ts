@@ -98,20 +98,29 @@ export class SimulatorLogicStore {
     const railPart = getRailComponent(railId).railPart
     const joint = railPart.joints[jointId]
     const partId = joint.pivotPartIndex
-    const direction = this.getDirection(joint.pivot, isComing)
+    // パーツが通電可能であるかを確認
+    if (!railPart.conductiveParts.includes(partId)) {
+      return
+    }
 
+    const direction = this.getDirection(joint.pivot, isComing)
     const isAlreadySet = this.setTemporaryFlow(railId, partId, feederId, direction)
+    // 既にこのフィーダーで電流がセット済みなら終了
     if (isAlreadySet) {
       return
     }
 
+    // もう一方のジョイントがあれば、他のレールに接続されているか確認する
     const anotherJointId = railPart.joints.findIndex(j=> j.pivotPartIndex === partId && j.pivot !== joint.pivot)
     const anotherJoint = railPart.joints[anotherJointId]
     const opposingJoint = rail.opposingJoints[anotherJointId]
+    // 接続されていなければ終了
     if (!opposingJoint) {
       return
     }
+
     const isGoing = this.isCurrentGoing(anotherJoint.pivot, direction)
+    // 再帰的に電流をセットする
     this.setCurrentFlowToRail(opposingJoint.railId, opposingJoint.jointId, feederId, isGoing)
   }
 

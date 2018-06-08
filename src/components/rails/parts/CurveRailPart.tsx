@@ -45,8 +45,8 @@ export default class CurveRailPart extends RailPartBase<CurveRailPartProps, {}> 
     ]
   }
 
-  get conductives() {
-    return [[0]]
+  get conductiveParts() {
+    return [0]
   }
 
 

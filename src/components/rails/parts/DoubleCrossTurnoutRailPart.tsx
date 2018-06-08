@@ -17,7 +17,10 @@ interface DoubleCrossTurnoutRailPartProps extends RailPartBaseProps {
 
 
 export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCrossTurnoutRailPartProps, {}> {
-  public static defaultProps: RailPartBaseDefaultProps = RailPartBase.defaultProps
+  public static defaultProps: RailPartBaseDefaultProps = {
+    ...RailPartBase.defaultProps,
+    switchState: 1
+  }
 
   constructor(props: DoubleCrossTurnoutRailPartProps) {
     super(props)
@@ -25,11 +28,19 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
 
   get joints() {
     return [
-      {pivotPartIndex: 0, pivot: Pivot.LEFT},
-      {pivotPartIndex: 1, pivot: Pivot.RIGHT},
-      {pivotPartIndex: 2, pivot: Pivot.LEFT},
-      {pivotPartIndex: 3, pivot: Pivot.RIGHT}
-    ]
+      [
+        {pivotPartIndex: 0, pivot: Pivot.LEFT},
+        {pivotPartIndex: 1, pivot: Pivot.RIGHT},
+        {pivotPartIndex: 2, pivot: Pivot.LEFT},
+        {pivotPartIndex: 3, pivot: Pivot.RIGHT}
+      ],
+      [
+        {pivotPartIndex: 4, pivot: Pivot.LEFT},
+        {pivotPartIndex: 5, pivot: Pivot.RIGHT},
+        {pivotPartIndex: 6, pivot: Pivot.LEFT},
+        {pivotPartIndex: 7, pivot: Pivot.RIGHT}
+      ]
+    ][this.props.switchState]
   }
 
   get glues() {
@@ -49,9 +60,8 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
     return []
   }
 
-
-  get conductives() {
-    return [[0]]
+  get conductiveParts() {
+    return [[0, 1, 2, 3], [4, 5, 6, 7]][this.props.switchState]
   }
 
 

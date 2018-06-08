@@ -45,10 +45,8 @@ export default class GappedStraightRailPart extends RailPartBase<GappedStraightR
     return []
   }
 
-  get conductives() {
-    return [
-      [0, 1]
-    ]
+  get conductiveParts() {
+    return [0, 1]
   }
 
 

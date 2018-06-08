@@ -29,10 +29,17 @@ export default class CurvedTurnoutRailPart extends RailPartBase<CurvedTurnoutRai
 
   get joints() {
     return [
-      {pivotPartIndex: 0, pivot: Pivot.LEFT},
-      {pivotPartIndex: 0, pivot: Pivot.RIGHT},
-      {pivotPartIndex: 1, pivot: Pivot.RIGHT}
-    ]
+      [
+        {pivotPartIndex: 0, pivot: Pivot.LEFT},
+        {pivotPartIndex: 0, pivot: Pivot.RIGHT},
+        {pivotPartIndex: 1, pivot: Pivot.RIGHT}
+      ],
+      [
+        {pivotPartIndex: 1, pivot: Pivot.LEFT},
+        {pivotPartIndex: 0, pivot: Pivot.RIGHT},
+        {pivotPartIndex: 1, pivot: Pivot.RIGHT}
+      ]
+    ][this.props.switchState]
   }
 
   get glues() {
@@ -47,8 +54,8 @@ export default class CurvedTurnoutRailPart extends RailPartBase<CurvedTurnoutRai
     return []
   }
 
-  get conductives() {
-    return [[0], [1]]
+  get conductiveParts() {
+    return [[0], [1]][this.props.switchState]
   }
 
   renderParts = () => {

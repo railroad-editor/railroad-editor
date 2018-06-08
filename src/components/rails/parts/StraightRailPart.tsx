@@ -43,10 +43,8 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
     return [{pivotPartIndex: 0, pivot: Pivot.CENTER}]
   }
 
-  get conductives() {
-    return [
-      [0, 1]
-    ]
+  get conductiveParts() {
+    return [0]
   }
 
 

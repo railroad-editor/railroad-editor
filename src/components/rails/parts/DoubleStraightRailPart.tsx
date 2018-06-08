@@ -46,8 +46,8 @@ export default class DoubleStraightRailPart extends RailPartBase<DoubleStraightR
     ]
   }
 
-  get conductives() {
-    return [[0, 1]]
+  get conductiveParts() {
+    return [0, 1]
   }
 
   renderParts = () => {
