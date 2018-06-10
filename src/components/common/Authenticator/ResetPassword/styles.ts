@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Grid from "material-ui/Grid";
+import Grid from "@material-ui/core/Grid";
 
 export const CenteredGrid = styled(Grid as any)`
   && {

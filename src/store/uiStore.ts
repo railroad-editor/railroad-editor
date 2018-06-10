@@ -1,13 +1,19 @@
 import {action, observable} from "mobx";
 import commonStore from "./commonStore";
 
+export enum EditorMode {
+  BUILDER,
+  SIMULATOR
+}
+
 
 const INITIAL_STATE = {
   layoutsDialog: false,
   createNewDialog: false,
   saveNewDialog: false,
   loginDialog: false,
-  signInDialog: false
+  signInDialog: false,
+  editorMode: EditorMode.BUILDER,
 }
 
 
@@ -17,13 +23,15 @@ export class UiStore {
   @observable saveNewDialog: boolean
   @observable loginDialog: boolean
   @observable signInDialog: boolean
+  @observable editorMode: EditorMode
 
-  constructor({layoutsDialog, createNewDialog, saveNewDialog, loginDialog, signInDialog}) {
+  constructor({layoutsDialog, createNewDialog, saveNewDialog, loginDialog, signInDialog, editorMode}) {
     this.layoutsDialog = layoutsDialog
     this.createNewDialog = createNewDialog
     this.saveNewDialog = saveNewDialog
     this.loginDialog = loginDialog
     this.signInDialog = signInDialog
+    this.editorMode = editorMode
   }
 
   @action
@@ -59,6 +67,11 @@ export class UiStore {
   @action
   setSignInDialog = (open: boolean) => {
     this.signInDialog = open
+  }
+
+  @action
+  setEditorMode = (editorMode: EditorMode) => {
+    this.editorMode = editorMode
   }
 }
 

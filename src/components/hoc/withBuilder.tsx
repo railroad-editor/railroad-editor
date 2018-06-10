@@ -234,7 +234,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
 
     keyDown_CtrlS = (e) => {
       if (this.props.common.userInfo) {
-        this.props.layout.saveLayout(this.props.snackbar.showMessage)
+        this.props.layoutLogic.saveLayout(this.props.snackbar.showMessage)
       } else {
         this.props.snackbar.showMessage("Please login.")
         this.props.ui.setLoginDialog(true)

@@ -2,15 +2,15 @@ import * as React from 'react'
 import {ReactNode} from 'react'
 import {CenteredDiv, HideableDiv, PaletteBodyPaper, ScrollablePaper, StyledSelector,} from "./style";
 import {TitleDiv} from "../../LayerPalette/styles";
-import Typography from "material-ui/Typography";
-import Divider from "material-ui/Divider";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
 import * as classNames from "classnames"
 import {PrimaryPaletteAddButton} from "components/common/PaletteAddButton/PaletteAddButton";
-import Tooltip from "material-ui/Tooltip";
-import AddBoxIcon from "material-ui-icons/AddBox";
+import Tooltip from "@material-ui/core/Tooltip";
+import AddBoxIcon from "@material-ui/icons/AddBox";
 import {Scrollbars} from 'react-custom-scrollbars';
 
 

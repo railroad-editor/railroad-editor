@@ -19,7 +19,7 @@ import {compose} from "recompose";
 import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {LayoutStore} from "store/layoutStore";
 import {withSnackbar} from 'material-ui-snackbar-provider'
-
+import PowerPackPalette from './PowerPackPalette/PowerUnitPalette';
 
 
 export interface PaletteProps {
@@ -155,6 +155,16 @@ export class Palette extends React.Component<EnhancedPaletteProps, PaletteState>
           tooltipTitle={'Add Rail Group'}
           helpMessage={'To add a new rail group, select rails and click + button.'}
         />
+
+        <PowerPackPalette
+          active={this.isActive(Tools.SIMULATOR)}
+          items={this.props.layout.currentLayoutData.powerPacks}
+          helpMessage={'Click + to add a power unit.'}
+        />
+
+
+
+
       </Rnd>
     )
   }

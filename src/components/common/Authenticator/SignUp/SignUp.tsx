@@ -6,7 +6,7 @@ import AuthPiece, {
   AuthPieceState,
   AuthState
 } from "components/common/Authenticator/AuthPiece/AuthPiece";
-import {Button, DialogTitle, Grid} from "material-ui";
+import {Button, DialogTitle, Grid} from '@material-ui/core';
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {ErrorMessageGrid, MainButtonGrid, StyledDialogContent} from "components/common/Authenticator/styles";
 

@@ -1,21 +1,21 @@
 import * as React from "react";
-import {ListItem, ListItemIcon, ListItemText} from "material-ui";
-import Drawer from "material-ui/Drawer";
-import List from "material-ui/List";
-import CloudIcon from "material-ui-icons/Cloud";
-import OpenInNewIcon from "material-ui-icons/OpenInNew";
-import SaveIcon from "material-ui-icons/Save";
-import SigninIcon from "material-ui-icons/PermIdentity";
-import LoginIcon from "material-ui-icons/LockOpen";
-import LogoutIcon from "material-ui-icons/Lock";
-import ArchiveIcon from "material-ui-icons/Archive";
+import {ListItem, ListItemIcon, ListItemText} from '@material-ui/core';
+import Drawer from "@material-ui/core/Drawer";
+import List from "@material-ui/core/List";
+import CloudIcon from "@material-ui/icons/Cloud";
+import OpenInNewIcon from "@material-ui/icons/OpenInNew";
+import SaveIcon from "@material-ui/icons/Save";
+import SigninIcon from "@material-ui/icons/PermIdentity";
+import LoginIcon from "@material-ui/icons/LockOpen";
+import LogoutIcon from "@material-ui/icons/Lock";
+import ArchiveIcon from "@material-ui/icons/Archive";
 import OpenLayoutsDialog from "components/Editor/MenuDrawer/OpenLayoutsDialog/OpenLayoutsDialog";
 import Auth from "aws-amplify/lib/Auth";
 import StorageAPI from "apis/storage"
-import Divider from "material-ui/Divider";
+import Divider from "@material-ui/core/Divider";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_UI} from "constants/stores";
+import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI} from "constants/stores";
 import {CommonStore} from "store/commonStore";
 import {LayoutConfig, LayoutData, LayoutMeta, LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
@@ -28,6 +28,7 @@ import SignUpDialog from "components/Editor/ToolBar/SignUpDialog/SignUpDialog";
 import {UiStore} from "store/uiStore";
 import {KeyLabel} from "components/common/KeyLabel/KeyLabel";
 import {when} from "mobx";
+import {LayoutLogicStore} from "store/layoutLogicStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -38,6 +39,7 @@ export interface MenuDrawerProps {
 
   common?: CommonStore
   layout?: LayoutStore
+  layoutLogic?: LayoutLogicStore
   builder?: BuilderStore
   ui?: UiStore
 
@@ -48,7 +50,7 @@ export interface MenuDrawerState {
 }
 
 
-@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_UI)
+@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI)
 @observer
 export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState> {
 
@@ -122,7 +124,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
       return
     }
     // 現在のストアのデータを保存する
-    this.props.layout.saveLayout(this.props.snackbar.showMessage)
+    this.props.layoutLogic.saveLayout(this.props.snackbar.showMessage)
     this.props.onClose()
   }
 
@@ -132,7 +134,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
     }
     // metaを更新してから保存する
     this.props.layout.setLayoutMeta(meta)
-    this.props.layout.saveLayout(this.props.snackbar.showMessage)
+    this.props.layoutLogic.saveLayout(this.props.snackbar.showMessage)
     this.props.onClose()
   }
 
@@ -182,7 +184,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
             onClose={this.closeLayoutsDialog}
             authData={this.props.common.userInfo}
             layouts={this.props.common.layouts}
-            loadLayout={this.props.layout.loadLayout}
+            loadLayout={this.props.layoutLogic.loadLayout}
             loadLayoutList={this.props.common.loadLayoutList}
           />
         </>

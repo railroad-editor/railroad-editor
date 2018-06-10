@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Auth, JS, Logger} from 'aws-amplify';
 
-import {Button, DialogTitle, Grid} from "material-ui";
+import {Button, DialogTitle, Grid} from '@material-ui/core';
 import AuthPiece, {
   AuthPieceProps,
   AuthPieceState,

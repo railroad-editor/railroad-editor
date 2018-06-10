@@ -4,10 +4,10 @@ import {
   ActiveListItemProps,
   SecondaryColorActiveListItem
 } from "components/common/ActiveListItem";
-import {ListItemText, MenuItem} from "material-ui";
-import Menu from "material-ui/Menu";
-import IconButton from "material-ui/IconButton";
-import MoreVertIcon from 'material-ui-icons/MoreVert';
+import {ListItemText, MenuItem} from '@material-ui/core';
+import Menu from "@material-ui/core/Menu";
+import IconButton from "@material-ui/core/IconButton";
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 
 export interface LayerListItemProps extends ActiveListItemProps {

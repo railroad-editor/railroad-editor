@@ -5,13 +5,13 @@ import AuthPiece, {
   AuthPieceState,
   AuthState
 } from "components/common/Authenticator/AuthPiece/AuthPiece";
-import Grid from "material-ui/Grid";
-import Button from "material-ui/Button";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {CenteredGrid} from "components/common/Authenticator/ResetPassword/styles";
-import Typography from "material-ui/Typography";
+import Typography from "@material-ui/core/Typography";
 import {RouteComponentProps, withRouter} from "react-router";
-import {DialogTitle} from "material-ui";
+import {DialogTitle} from '@material-ui/core';
 
 const logger = new Logger('ResetPassword');
 

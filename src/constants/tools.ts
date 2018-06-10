@@ -12,6 +12,7 @@ export enum Tools {
   REDO = 'Redo',
   RESET_VIEW = 'Centerize View',
   DELETE = 'Delete',
+  SIMULATOR = 'Simulator'
 }
 
 export const DEFAULT_VIEW_WIDTH = 1920

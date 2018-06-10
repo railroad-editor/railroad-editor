@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import {theme} from "../../../withRoot";
-import IconButton from "material-ui/IconButton";
-import Button from "material-ui/Button";
-import Typography from "material-ui/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 
 
 export const StyledIconButton = styled(IconButton as any)`

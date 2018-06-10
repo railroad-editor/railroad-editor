@@ -1,19 +1,19 @@
 import * as React from 'react'
-import LayersIcon from 'material-ui-icons/Layers';
-import {Checkbox, Grid} from 'material-ui'
+import LayersIcon from '@material-ui/icons/Layers';
+import {Checkbox, Grid} from '@material-ui/core'
 import {ScrollablePaper, TitleDiv} from "./styles";
 import Rnd from 'react-rnd'
 import {LayerListItem} from "components/Editor/LayerPalette/LayerListItem/LayerListItem";
 import getLogger from "logging";
 import LayerSettingDialog from "components/Editor/LayerPalette/LayerSettingDialog/LayerSettingDialog";
 import {ConfirmationDialog} from "components/Editor/LayerPalette/ConfirmationDialog/ConfirmationDialog";
-import Typography from "material-ui/Typography";
+import Typography from "@material-ui/core/Typography";
 import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {inject, observer} from "mobx-react";
 import {DEFAULT_LAYER_DATA, LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
 import {SecondaryPaletteAddButton} from "components/common/PaletteAddButton/PaletteAddButton";
-import Tooltip from "material-ui/Tooltip";
+import Tooltip from "@material-ui/core/Tooltip";
 import {DEFAULT_LAYER_TRANSLUCENT_OPACITY} from "constants/tools";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 

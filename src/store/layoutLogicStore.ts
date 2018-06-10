@@ -1,11 +1,15 @@
 import {action} from "mobx";
 import getLogger from "logging";
-import layoutStore, {LayoutStore} from "store/layoutStore";
+import layoutStore, {LayoutData, LayoutStore} from "store/layoutStore";
 import builderStore, {BuilderStore} from "store/builderStore";
 import {JointPair} from "components/hoc/withBuilder";
 import {Tools} from "constants/tools";
 import {getRailComponent} from "components/rails/utils";
 import {FlowDirection, Pivot} from "components/rails/parts/primitives/PartBase";
+import commonStore from "./commonStore";
+import StorageAPI from "apis/storage"
+import LayoutAPI from "apis/layout";
+import * as moment from "moment";
 
 const LOGGER = getLogger(__filename)
 
@@ -15,11 +19,50 @@ export class LayoutLogicStore {
   constructor() {
   }
 
+  /**
+   * レイアウト Save/Load
+   */
   @action
-  deleteRails = (railIds: number[]) => {
-    railIds.forEach(id => this.deleteRail(id))
+  saveLayout = async (showMessage?: any) => {
+    const userId = commonStore.userInfo.username
+    // メタデータを更新
+    layoutStore.setLayoutMeta({
+      ...layoutStore.meta,
+      lastModified: moment().valueOf()
+    })
+    // レイアウトデータをセーブ
+    LayoutAPI.saveLayoutData(
+      commonStore.currentUser,
+      layoutStore.currentLayoutData,
+      layoutStore.meta,
+      layoutStore.config,
+      builderStore.userRailGroups,
+      builderStore.userRails
+    )
+    // レイアウト画像をセーブ
+    await StorageAPI.saveCurrentLayoutImage(userId, layoutStore.meta.id)
+    // 背景画像が設定されていたらセーブ
+    if (layoutStore.config.backgroundImageUrl) {
+      await StorageAPI.saveBackgroundImage(userId, layoutStore.meta.id, layoutStore.config.backgroundImageUrl)
+    }
+
+    await commonStore.loadLayoutList()
+    if (showMessage) showMessage("Saved successfully.")
   }
 
+  @action
+  loadLayout = async (layoutId: string) => {
+    const layout = await LayoutAPI.fetchLayoutData(commonStore.currentUser, layoutId)
+    layoutStore.setLayoutData(layout.layout)
+    layoutStore.setLayoutMeta(layout.meta)
+    layoutStore.setConfig(layout.config)
+    builderStore.setUserRailGroups(layout.userRailGroups)
+    builderStore.setUserRails(layout.userRails)
+  }
+
+  /**
+   * レールを削除する。接続されているフィーダー、ギャップジョイナーも削除する。
+   */
   @action
   deleteRail = (railId: number) => {
     // フィーダーを削除
@@ -31,6 +74,18 @@ export class LayoutLogicStore {
     layoutStore.deleteRail({id: railId})
   }
 
+  /**
+   * 複数のレールを削除する。
+   */
+  @action
+  deleteRails = (railIds: number[]) => {
+    railIds.forEach(id => this.deleteRail(id))
+  }
+
+  /**
+   * レイヤーを削除する。レイヤー上のレールも全て削除する。
+   * TODO: deleteRailsを使わないのはなんで？
+   */
   @action
   deleteLayer = (layerId: number) => {
     // レイヤー上のレールを全て接続解除してから削除する
@@ -49,6 +104,9 @@ export class LayoutLogicStore {
     }
   }
 
+  /**
+   * ２レール間のジョイントを接続する。
+   */
   @action
   connectJoint = (pair: JointPair) => {
     layoutStore.updateRail({
@@ -65,11 +123,17 @@ export class LayoutLogicStore {
     })
   }
 
+  /**
+   * 複数のジョイントを接続する。
+   */
   @action
   connectJoints = (pairs: JointPair[]) => {
     pairs.forEach(pair => this.connectJoint(pair))
   }
 
+  /**
+   * 指定のレールのジョイントの接続を解除する。
+   */
   @action
   disconnectJoint = (railId: number) => {
     const target = this.getRailDataById(railId)
@@ -99,11 +163,17 @@ export class LayoutLogicStore {
     layoutStore.updateRails(updatedData)
   }
 
+  /**
+   * disocnnectJointのバルク版
+   */
   @action
   disconnectJoints = (railIds: number[]) => {
     railIds.forEach(id => this.disconnectJoint(id))
   }
 
+  /**
+   * ギャップジョイナーを削除する
+   */
   @action
   disconnectGapJoiner = (railId: number) => {
     const target = this.getRailDataById(railId)

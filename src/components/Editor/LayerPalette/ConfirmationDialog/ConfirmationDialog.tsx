@@ -1,7 +1,7 @@
 import * as React from "react";
-import Dialog from "material-ui/Dialog";
-import {DialogActions, DialogContent, DialogContentText, DialogTitle} from "material-ui";
-import Button from "material-ui/Button";
+import Dialog from "@material-ui/core/Dialog";
+import {DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core';
+import Button from "@material-ui/core/Button";
 
 export interface RenameLayerDialogProps {
   title: string

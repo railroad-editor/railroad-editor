@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import {DialogContent} from "material-ui";
-import Grid from "material-ui/Grid";
+import {DialogContent} from '@material-ui/core';
+import Grid from "@material-ui/core/Grid";
 
 
 export const TitleDiv = styled.div`

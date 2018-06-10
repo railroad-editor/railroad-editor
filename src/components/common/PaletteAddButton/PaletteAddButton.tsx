@@ -1,6 +1,6 @@
 import * as React from "react";
-import {default as IconButton, IconButtonProps} from "material-ui/IconButton";
-import AddBoxIcon from 'material-ui-icons/AddBox';
+import {default as IconButton, IconButtonProps} from "@material-ui/core/IconButton";
+import AddBoxIcon from '@material-ui/icons/AddBox';
 import styled from "styled-components";
 import {theme} from "withRoot";
 

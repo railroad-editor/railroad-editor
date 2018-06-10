@@ -1,7 +1,7 @@
 import * as React from 'react'
-import {DialogActions, DialogContent, DialogTitle} from "material-ui"
-import Dialog from "material-ui/Dialog";
-import Button from "material-ui/Button";
+import {DialogActions, DialogContent, DialogTitle} from '@material-ui/core'
+import Dialog from "@material-ui/core/Dialog";
+import Button from "@material-ui/core/Button";
 import getLogger from "logging";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 

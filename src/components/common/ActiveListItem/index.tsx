@@ -1,7 +1,7 @@
 import * as React from 'react'
 
-import {ListItem} from "material-ui";
-import {ListItemProps} from "material-ui/List";
+import {ListItem} from '@material-ui/core';
+import {ListItemProps} from "@material-ui/core/ListItem";
 import styled from "styled-components";
 import {theme} from "withRoot";
 

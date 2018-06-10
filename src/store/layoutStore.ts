@@ -39,6 +39,8 @@ export interface LayoutData {
   rails: RailData[]
   feeders: FeederInfo[]
   gapJoiners: GapJoinerInfo[]
+  powerPacks: PowerPackData[]
+  switchers: SwitcherData[]
 }
 
 export interface LayerData {
@@ -47,6 +49,37 @@ export interface LayerData {
   visible: boolean
   color: string
   opacity: number
+}
+
+export interface PowerPackData {
+  id: number
+  name: string
+  power: number
+  direction: boolean
+  supplyingFeederIds: number[]
+}
+
+export enum SwitcherType {
+  NORMAL,
+  THREE_WAY,
+}
+
+
+export interface SwitcherData {
+  id: number
+  name: string
+  type: SwitcherType
+  currentState: number
+  conductionStates: ConductionStates
+}
+
+export interface ConductionStates {
+  [state: number]: ConductionState[]
+}
+
+export interface ConductionState {
+  railId: number
+  conductionState: number
 }
 
 
@@ -74,6 +107,8 @@ export const INITIAL_STATE: LayoutStoreState = {
       rails: [],
       feeders: [],
       gapJoiners: [],
+      powerPacks: [],
+      switchers: [],
     }
   ],
   historyIndex: 0,
@@ -177,6 +212,18 @@ export class LayoutStore {
   @computed
   get nextGapJoinerId() {
     let ids = this.currentLayoutData.gapJoiners.map(r => r.id)
+    return ids.length > 0 ? Math.max(...ids) + 1 : 1
+  }
+
+  @computed
+  get nextPowerPackId() {
+    let ids = this.currentLayoutData.powerPacks.map(r => r.id)
+    return ids.length > 0 ? Math.max(...ids) + 1 : 1
+  }
+
+  @computed
+  get nextSwitcherId() {
+    let ids = this.currentLayoutData.switchers.map(r => r.id)
     return ids.length > 0 ? Math.max(...ids) + 1 : 1
   }
 
@@ -312,48 +359,6 @@ export class LayoutStore {
     }
   }
 
-  /**
-   * レイアウト Save/Load
-   */
-
-  @action
-  saveLayout = async (showMessage?: any) => {
-    const userId = commonStore.userInfo.username
-    // メタデータを更新
-    this.setLayoutMeta({
-      ...this.meta,
-      lastModified: moment().valueOf()
-    })
-    // レイアウトデータをセーブ
-    LayoutAPI.saveLayoutData(
-      commonStore.currentUser,
-      this.currentLayoutData,
-      this.meta,
-      this.config,
-      builderStore.userRailGroups,
-      builderStore.userRails
-    )
-    // レイアウト画像をセーブ
-    await StorageAPI.saveCurrentLayoutImage(userId, this.meta.id)
-    // 背景画像が設定されていたらセーブ
-    if (this.config.backgroundImageUrl) {
-      await StorageAPI.saveBackgroundImage(userId, this.meta.id, this.config.backgroundImageUrl)
-    }
-
-    await commonStore.loadLayoutList()
-    if (showMessage) showMessage("Saved successfully.")
-  }
-
-  @action
-  loadLayout = async (layoutId: string) => {
-    const layout = await LayoutAPI.fetchLayoutData(commonStore.currentUser, layoutId)
-    this.setLayoutData(layout.layout)
-    this.setLayoutMeta(layout.meta)
-    this.setConfig(layout.config)
-    builderStore.setUserRailGroups(layout.userRailGroups)
-    builderStore.setUserRails(layout.userRails)
-  }
-
   @action
   setLayoutData = (layoutData: LayoutData) => {
     this.histories = [layoutData]
@@ -473,6 +478,67 @@ export class LayoutStore {
     })
     this.updateRails(nextRails)
   }
+
+  /**
+   * パワーユニット系 Add/Update/Delete
+   */
+
+  @action
+  addPowerPack = (item: PowerPackData) => {
+    // IDはここで発行
+    this.currentLayoutData.powerPacks.push({
+      ...item,
+      id: this.nextPowerPackId,
+    })
+  }
+
+  @action
+  updatePowerPack = (item: Partial<PowerPackData>) => {
+    const index = this.currentLayoutData.powerPacks.findIndex(feeder => feeder.id === item.id)
+    const target = this.currentLayoutData.powerPacks[index]
+
+    this.currentLayoutData.powerPacks[index] = {
+      ...target,
+      ...item
+    }
+  }
+
+  @action
+  deletePowerPack = (item: Partial<PowerPackData>) => {
+    this.currentLayoutData.powerPacks = this.currentLayoutData.powerPacks.filter(feeder => feeder.id !== item.id)
+  }
+
+
+  /**
+   * ポイントコントロールボックス系 Add/Update/Delete
+   */
+  @action
+  addSwitcher = (item: SwitcherData) => {
+    // IDはここで発行
+    this.currentLayoutData.switchers.push({
+      ...item,
+      id: this.nextSwitcherId,
+    })
+  }
+
+  @action
+  updateSwitcher = (item: Partial<SwitcherData>) => {
+    const index = this.currentLayoutData.switchers.findIndex(feeder => feeder.id === item.id)
+    const target = this.currentLayoutData.switchers[index]
+
+    this.currentLayoutData.switchers[index] = {
+      ...target,
+      ...item
+    }
+  }
+
+  @action
+  deleteSwitcher = (item: Partial<SwitcherData>) => {
+    this.currentLayoutData.switchers = this.currentLayoutData.switchers.filter(feeder => feeder.id !== item.id)
+  }
+
+
+
 
   getRailDataById = (id: number) => {
     return this.currentLayoutData.rails.find(item => item.id === id)

@@ -155,7 +155,6 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
     // LOGGER.debug(`from=${this.props.selectionRectFrom}, to=${this.props.selectionRectTo}`)
 
     return (
-
       <StyledWrapper onContextMenu={this.noopContextMenu}>
         <StyledToolBar resetViewPosition={this.props.resetViewPosition} />
         <EditorBody>

@@ -11,32 +11,29 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import styled from "styled-components";
 import IconButton from "@material-ui/core/IconButton";
 import Card from "@material-ui/core/Card";
+import {PowerPackData} from "store/layoutStore";
 
 const LOGGER = getLogger(__filename)
 
 
-export interface LayoutCardProps {
-  imgKey: string
-  title: string
-  lastModified: number
-  onClick: ReactEventHandler<HTMLElement>
-  onRename: ReactEventHandler<HTMLElement>
-  onDelete: ReactEventHandler<HTMLElement>
+export interface PowerPackCardProps {
+  item: PowerPackData
+  onSetting: (item: PowerPackData) => void
+  onDelete: (item: PowerPackData) => void
 }
 
-export interface LayoutCardState {
+export interface PowerPackCardState {
   anchorEl: HTMLElement
 }
 
 
-export class LayoutCard extends React.Component<LayoutCardProps, LayoutCardState> {
+export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPackCardState> {
 
-  constructor(props: LayoutCardProps) {
+  constructor(props: PowerPackCardProps) {
     super(props)
     this.state = {
       anchorEl: null
     }
-
   }
 
   openMenu = (e: React.MouseEvent<HTMLElement>) => {
@@ -47,23 +44,23 @@ export class LayoutCard extends React.Component<LayoutCardProps, LayoutCardState
     this.setState({anchorEl: null})
   }
 
-  onRename = (e: React.MouseEvent<HTMLElement>) => {
-    this.props.onRename(e)
+  onSetting = (e: React.MouseEvent<HTMLElement>) => {
+    this.props.onSetting(this.props.item)
     this.onMenuClose(e)
   }
 
   onDelete = (e: React.MouseEvent<HTMLElement>) => {
-    this.props.onDelete(e)
+    this.props.onDelete(this.props.item)
     this.onMenuClose(e)
   }
 
   render() {
-    const {imgKey, title, lastModified} = this.props
+    const {name} = this.props.item
     return (
       <>
         <Card>
           <CardHeader
-            title={title}
+            title={name}
             action={
               <IconButton
                 onClick={this.openMenu}
@@ -73,22 +70,15 @@ export class LayoutCard extends React.Component<LayoutCardProps, LayoutCardState
             }
             style={{paddingTop: '16px', paddingBottom: '8px'}}
           />
-          <Button
-            onClick={this.props.onClick}
-          >
           <CardContent>
-            <S3Image level={'private'} imgKey={imgKey}/>
-            <Typography align="left" variant="body2">
-              Last modified: {moment(lastModified).format('YYYY/MM/DD, hh:mm')}
-            </Typography>
           </CardContent>
-          </Button>
         </Card>
         <Menu
           anchorEl={this.state.anchorEl}
           open={Boolean(this.state.anchorEl)}
           onClose={this.onMenuClose}
         >
+          <MenuItem onClick={this.onSetting}>Setting</MenuItem>}
           <MenuItem onClick={this.onDelete}>Delete</MenuItem>}
         </Menu>
       </>

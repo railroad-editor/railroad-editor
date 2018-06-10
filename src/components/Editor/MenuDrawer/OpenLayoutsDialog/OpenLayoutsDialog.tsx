@@ -1,7 +1,7 @@
 import * as React from 'react'
-import {DialogContent, DialogTitle} from "material-ui"
-import Dialog from "material-ui/Dialog";
-import Typography from "material-ui/Typography";
+import {DialogContent, DialogTitle} from '@material-ui/core'
+import Dialog from "@material-ui/core/Dialog";
+import Typography from "@material-ui/core/Typography";
 import {S3Image} from 'aws-amplify-react';
 import LayoutAPI from "apis/layout"
 import getLogger from "logging";
@@ -9,7 +9,7 @@ import {getLayoutImageFileName} from "apis/storage";
 import {LayoutCard} from "components/Editor/MenuDrawer/OpenLayoutsDialog/LayoutCard/LayoutCard";
 import {ConfirmationDialog} from "components/Editor/LayerPalette/ConfirmationDialog/ConfirmationDialog";
 import {LayoutMeta} from "store/layoutStore";
-import Grid from "material-ui/Grid";
+import Grid from "@material-ui/core/Grid";
 
 const LOGGER = getLogger(__filename)
 

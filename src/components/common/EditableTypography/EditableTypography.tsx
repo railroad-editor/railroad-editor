@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {TypographyProps} from "material-ui/Typography";
+import {TypographyProps} from "@material-ui/core/Typography";
 import {inject, observer} from "mobx-react";
 import {STORE_COMMON, STORE_LAYOUT} from "constants/stores";
 import {CommonStore} from "store/commonStore";

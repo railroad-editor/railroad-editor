@@ -1,6 +1,6 @@
 import * as React from "react";
-import {FormControlLabel} from "material-ui";
-import Checkbox from "material-ui/Checkbox";
+import {FormControlLabel} from '@material-ui/core';
+import Checkbox from "@material-ui/core/Checkbox";
 import {Tools} from "constants/tools";
 import AutoFocusTextValidator from "components/common/AutoFocusTextValidator";
 import {RailItemData} from "components/rails";

@@ -4,26 +4,26 @@ import StraightRailIcon from './Icon/StraightRailIcon'
 import TurnoutIcon from './Icon/TurnoutIcon'
 import SpecialRailIcon from "components/Editor/ToolBar/Icon/SpecialRailIcon";
 import RailGroupIcon from "components/Editor/ToolBar/Icon/RailGroupIcon";
-import {AppBar, Grid, Toolbar as MuiToolbar} from "material-ui"
+import {AppBar, Grid, Toolbar as MuiToolbar} from '@material-ui/core'
 import {StyledIconButton, VerticalDivider} from "./styles";
 import {Tools} from "constants/tools";
-import UndoIcon from 'material-ui-icons/Undo'
-import RedoIcon from 'material-ui-icons/Redo'
-import DeleteIcon from 'material-ui-icons/Delete'
-import PanToolIcon from 'material-ui-icons/PanTool'
-import AspectRatioIcon from "material-ui-icons/AspectRatio";
-import MenuIcon from "material-ui-icons/Menu";
-import SettingsIcon from "material-ui-icons/Settings";
-import CopyIcon from "material-ui-icons/ContentCopy";
-import CutIcon from "material-ui-icons/ContentCut";
-import FreePlacingModeIcon from "material-ui-icons/LocationOn";
-import ConnectModeIcon from "material-ui-icons/CompareArrows";
-import PlayArrowIcon from "material-ui-icons/PlayArrow";
+import UndoIcon from '@material-ui/icons/Undo'
+import RedoIcon from '@material-ui/icons/Redo'
+import DeleteIcon from '@material-ui/icons/Delete'
+import PanToolIcon from '@material-ui/icons/PanTool'
+import AspectRatioIcon from "@material-ui/icons/AspectRatio";
+import MenuIcon from "@material-ui/icons/Menu";
+import SettingsIcon from "@material-ui/icons/Settings";
+import CopyIcon from "@material-ui/icons/ContentCopy";
+import CutIcon from "@material-ui/icons/ContentCut";
+import FreePlacingModeIcon from "@material-ui/icons/LocationOn";
+import ConnectModeIcon from "@material-ui/icons/CompareArrows";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import FeederIcon from "./Icon/Feeder";
 import GapIcon from "./Icon/Gap";
 import getLogger from "logging";
 import * as classNames from "classnames"
-import Tooltip from "material-ui/Tooltip";
+import Tooltip from "@material-ui/core/Tooltip";
 import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
@@ -366,13 +366,15 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                   layoutMeta={this.props.layout.meta}
                 />
 
-                {/*<Tooltip title={'Connect'}>*/}
-                  {/*<StyledIconButton*/}
-                    {/*onClick={this.connectWebRTC}*/}
-                  {/*>*/}
-                    {/*<PlayArrowIcon/>*/}
-                  {/*</StyledIconButton>*/}
-                {/*</Tooltip>*/}
+                <Tooltip title={'Simulator'} placement={'bottom'}>
+                  <div>
+                  <StyledIconButton
+                    onClick={() => this.props.builder.setActiveTool(Tools.SIMULATOR)}
+                  >
+                    <PlayArrowIcon/>
+                  </StyledIconButton>
+                  </div>
+                </Tooltip>
                 {/*<Tooltip title={'Connect'}>*/}
                   {/*<StyledIconButton*/}
                     {/*onClick={this.sendSomething}*/}
@@ -384,6 +386,8 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
               </Grid>
 
               <Grid xs style={{display: 'flex'}}/>
+
+
             </Grid>
           </MuiToolbar>
         </AppBar>

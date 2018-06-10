@@ -1,9 +1,9 @@
 import * as React from 'react'
-import {List, ListItemText, MenuItem} from 'material-ui'
+import {List, ListItemText, MenuItem} from '@material-ui/core'
 import {PrimaryColorActiveListItem} from "components/common/ActiveListItem";
-import IconButton from "material-ui/IconButton";
-import MoreVertIcon from 'material-ui-icons/MoreVert';
-import Menu from "material-ui/Menu";
+import IconButton from "@material-ui/core/IconButton";
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Menu from "@material-ui/core/Menu";
 
 export interface PaletteListItemProps {
   item: PaletteItem
