@@ -6,6 +6,8 @@ import {Tools} from "constants/tools";
 import builderPaletteData from "constants/builderPaletteItems.json"
 import layoutStore from "store/layoutStore";
 import layoutLogicStore from "store/layoutLogicStore";
+import railItems from "constants/railItems.json"
+
 
 export interface PresetPaletteItems {
   [key: string]: PaletteItem[]
@@ -188,6 +190,51 @@ export class BuilderStore {
       return undefined
     }
     return nextPivotJointIndex
+  }
+
+  /**
+   * 指定の名前のレールの固有Propsを返す。
+   * プリセットのレールに無ければユーザーカスタムレールで探して返す。
+   * @param {string} name
+   * @returns {any}
+   */
+  getRailItemData(name?: string) {
+    return computed(() => {
+      if (!name) {
+        name = this.paletteItem.name
+      }
+      const presetItem = railItems.items.find(item => item.name === name)
+      if (presetItem) {
+        return presetItem
+      }
+      const customRail = this.userRails.find(item => item.name === name)
+      if (customRail) {
+        return customRail
+      }
+      return null
+
+    }).get()
+  }
+
+  /**
+   * 指定の名前のユーザー登録済みレールグループデータを返す。
+   * @param {string} name
+   * @returns {any}
+   */
+  getRailGroupItemData = (name?: string) => {
+    return computed(() => {
+      if (!name) {
+        name = this.paletteItem.name
+        if (this.paletteItem.type !== 'RailGroup') {
+          return null
+        }
+      }
+      const ret = this.userRailGroups.find(rg => rg.name === name)
+      if (ret) {
+        return ret
+      }
+      return null
+    }).get()
   }
 
 

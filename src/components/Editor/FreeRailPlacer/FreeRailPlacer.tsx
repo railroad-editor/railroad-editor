@@ -172,9 +172,9 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
   }
 
   private showTemporaryRailOrRailGroup = () => {
-    if (this.props.builderGetRailGroupItemData()) {
+    if (this.props.builder.getRailGroupItemData()) {
       this.showTemporaryRailGroup()
-    } else if (this.props.builderGetRailItemData()) {
+    } else if (this.props.builder.getRailItemData()) {
       this.showTemporaryRail()
     } else {
       // 置けるレールが無かったら状態を戻す
@@ -185,7 +185,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
   }
 
   private showTemporaryRailGroup = () => {
-    const {rails, openJoints} = this.props.builderGetRailGroupItemData()
+    const {rails, openJoints} = this.props.builder.getRailGroupItemData()
     const angle = getFirstRailAngle(this.state.fixedPosition, this.props.mousePosition)
 
     if (! this.props.builder.temporaryRailGroup) {
@@ -209,7 +209,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
 
 
   private showTemporaryRail = () => {
-    const itemData = this.props.builderGetRailItemData()
+    const itemData = this.props.builder.getRailItemData()
     const angle = getFirstRailAngle(this.state.fixedPosition, this.props.mousePosition)
 
     if (_.isEmpty(this.props.builder.temporaryRails)) {

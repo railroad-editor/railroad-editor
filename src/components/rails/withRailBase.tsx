@@ -260,9 +260,9 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
       // 矩形選択中は仮レールを表示させない
       if (this.props.builder.selecting) return
 
-      if (this.props.builderGetRailGroupItemData()) {
+      if (this.props.builder.getRailGroupItemData()) {
         this.showTemporaryRailGroup(jointId)
-      } else if (this.props.builderGetRailItemData()) {
+      } else if (this.props.builder.getRailItemData()) {
         this.showTemporaryRail(jointId)
       }
     }
@@ -439,7 +439,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * @param {number} jointId
      */
     private showTemporaryRailGroup = (jointId: number) => {
-      const {rails, openJoints} = this.props.builderGetRailGroupItemData()
+      const {rails, openJoints} = this.props.builder.getRailGroupItemData()
 
       // PivotJointの設定
       let pivotJointInfo
@@ -465,7 +465,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * @param {number} jointId
      */
     private showTemporaryRail = (jointId: number) => {
-      const railData = this.props.builderGetRailItemData()
+      const railData = this.props.builder.getRailItemData()
       // PivotJointを設定する
       let pivotJointIndex
       if (_.isEmpty(this.props.builder.temporaryRails)) {

@@ -81,13 +81,13 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
   }
 
   buildModeMouseDown = (e) => {
-    this.props.builderMouseDown(e)
+    // this.props.builderMouseDown(e)
     this.props.selectToolMouseDown(e)
     // this.props.moveToolMouseDown(e)
   }
 
   buildModeMouseMove = (e) => {
-    this.props.builderMouseMove(e)
+    // this.props.builderMouseMove(e)
     const mousePosition = this.props.moveToolMouseMove(e)
     this.setState({mousePosition})
   }

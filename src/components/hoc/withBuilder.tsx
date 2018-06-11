@@ -6,7 +6,6 @@ import {JointInfo} from "components/rails/RailBase";
 import {getCloseJointsOf, getRailComponent, getTemporaryRailGroupComponent, intersectsOf} from "components/rails/utils";
 import RailGroup from "components/rails/RailGroup/RailGroup";
 import {DetectionState} from "components/rails/parts/primitives/DetectablePart";
-import railItems from "constants/railItems.json"
 import {TEMPORARY_RAIL_OPACITY, Tools} from "constants/tools";
 import {inject, observer} from "mobx-react";
 import {
@@ -32,21 +31,11 @@ const LOGGER = getLogger(__filename)
 
 
 export interface WithBuilderPublicProps {
-  builderMouseDown: (e: ToolEvent|any) => void
-  builderMouseMove: (e: ToolEvent|any) => void
+  // builderMouseDown: (e: ToolEvent|any) => void
+  // builderMouseMove: (e: ToolEvent|any) => void
   builderKeyDown: (e: ToolEvent|any) => void
   builderKeyUp: (e: ToolEvent|any) => void
-  builderConnectJoints: (pairs: JointPair[]) => void
-  builderDisconnectJoint: (railId: number) => void
   builderChangeJointState: (pairs: JointPair[], state: DetectionState, isError?: boolean) => void
-  builderSelectRail: (railId: number) => void
-  builderSelectRails: (railIds: number[]) => void
-  builderDeselectRail: (railData: RailData) => void
-  builderToggleRail: (railData: RailData, deselectOthers: boolean) => void
-  builderDeselectAllRails: () => void
-  builderDeleteSelectedRails: () => void
-  builderGetRailItemData: (name?: string) => any
-  builderGetRailGroupItemData: (name?: string) => UserRailGroupData
   builderSetTemporaryRail: (railData: Partial<RailData>) => void
   builderAddRail: () => void
   builderSetTemporaryRailGroup: (railGroupData: Partial<RailGroupData>, childRails: RailData[]) => void
@@ -100,45 +89,32 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
         newRailGroupDialogOpen: false,
         deleteOnRegistered: false,
       }
-
-      this.mouseDown = this.mouseDown.bind(this)
-      this.mouseLeftDown = this.mouseLeftDown.bind(this)
-      this.mouseRightDown = this.mouseRightDown.bind(this)
-      this.mouseMove = this.mouseMove.bind(this)
-      this.keyDown = this.keyDown.bind(this)
-      this.keyUp = this.keyUp.bind(this)
-      this.connectJoints = this.connectJoints.bind(this)
-      this.disconnectJoint = this.disconnectJoint.bind(this)
-      this.selectRail = this.selectRail.bind(this)
-      this.deselectRail = this.deselectRail.bind(this)
-      this.toggleRail = this.toggleRail.bind(this)
-      this.deleteSelectedRails = this.deleteSelectedRails.bind(this)
-      this.getRailItemData = this.getRailItemData.bind(this)
     }
 
 
-    mouseMove = (e: ToolEvent | any) => {
-      // noop
-    }
+    // mouseMove = (e: ToolEvent | any) => {
+    //   // noop
+    // }
+    //
+    // mouseDown = (e: ToolEvent | any) => {
+    //   switch (e.event.button) {
+    //     case 0:
+    //       this.mouseLeftDown(e)
+    //       break
+    //     case 2:
+    //       this.mouseRightDown(e)
+    //       break
+    //   }
+    // }
+    //
+    // mouseLeftDown = (e: ToolEvent | any) => {
+    //   // noop
+    // }
+    //
+    // mouseRightDown = (e: ToolEvent | any) => {
+    //   // noop
+    // }
 
-    mouseDown(e: ToolEvent | any) {
-      switch (e.event.button) {
-        case 0:
-          this.mouseLeftDown(e)
-          break
-        case 2:
-          this.mouseRightDown(e)
-          break
-      }
-    }
-
-    mouseLeftDown(e: ToolEvent | any) {
-      // noop
-    }
-
-    mouseRightDown(e: ToolEvent | any) {
-      // noop
-    }
 
     keyUp = (e: ToolEvent | any) => {
       if (this.dialogExists()) return
@@ -200,7 +176,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
 
     keyDown_CtrlV = (e) => {
-      if (this.getUserRailGroupItemData('Clipboard')
+      if (this.props.builder.getRailGroupItemData('Clipboard')
         && this._prevTool == null && this._prevPaletteItem == null) {
         LOGGER.info('CTRL V Down')
         this._prevTool = this.props.builder.activeTool
@@ -211,7 +187,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
 
     keyUp_CtrlV = (e) => {
-      if (this.getUserRailGroupItemData('Clipboard')
+      if (this.props.builder.getRailGroupItemData('Clipboard')
         && this._prevTool != null && this._prevPaletteItem != null) {
         LOGGER.info('CTRL V Up')
         this.props.builder.setActiveTool(this._prevTool)
@@ -221,7 +197,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
 
     keyDown_CtrlA = (e) => {
-      this.selectRails(this.props.layout.currentLayoutData.rails.map(rail => rail.id))
+      this.props.layoutLogic.selectRails(this.props.layout.currentLayoutData.rails.map(rail => rail.id), true)
     }
 
     keyDown_CtrlO = (e) => {
@@ -249,43 +225,6 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       this.props.simulatorLogic.stopCurrentFlowSimulation()
     }
 
-    /**
-     * 指定の名前のレールの固有Propsを返す。
-     * プリセットのレールに無ければユーザーカスタムレールで探して返す。
-     * @param {string} name
-     * @returns {any}
-     */
-    getRailItemData = (name?: string) => {
-      if (!name) {
-        name = this.props.builder.paletteItem.name
-      }
-      const presetItem = railItems.items.find(item => item.name === name)
-      if (presetItem) {
-        return presetItem
-      }
-      const customRail = this.props.builder.userRails.find(item => item.name === name)
-      if (customRail) {
-        return customRail
-      }
-      return null
-    }
-
-    /**
-     * 指定の名前のユーザー登録済みレールグループデータを返す。
-     * @param {string} name
-     * @returns {any}
-     */
-    getUserRailGroupItemData = (name?: string) => {
-      if (!name) {
-        name = this.props.builder.paletteItem.name
-        if (this.props.builder.paletteItem.type !== 'RailGroup') {
-          return null
-        }
-      }
-      const ret = this.props.builder.userRailGroups.find(rg => rg.name === name)
-      LOGGER.debug('withBuilder#getUserRailGroupItemData', ret)
-      return ret
-    }
 
     /**
      * 仮レールを設置する。
@@ -348,15 +287,15 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       LOGGER.info('withBuilder#setTemporaryRailGroup', railGroup, children, 'intersects:', intersects)
     }
 
-    connectCloseJoints = () => {
-      this.connectJoints(this.props.layout.unconnectedCloseJoints)
+    protected connectCloseJoints = () => {
+      this.props.layoutLogic.connectJoints(this.props.layout.unconnectedCloseJoints)
     }
 
-    setCloseJointsDetecting = () => {
+    protected setCloseJointsDetecting = () => {
       this.changeJointState(this.props.layout.unconnectedCloseJoints, DetectionState.DETECTING)
     }
 
-    checkIntersections = () => {
+    protected checkIntersections = () => {
       const {temporaryRails} = this.props.builder;
       const {currentLayoutData, activeLayerRails} = this.props.layout;
 
@@ -370,11 +309,10 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       return intersects
     }
 
-
     /**
      * 仮レールの位置にレールまたはレールグループを設置する。
      */
-    public addRail = () => {
+    addRail = () => {
       const {temporaryRails, temporaryRailGroup, deleteTemporaryRail} = this.props.builder
 
       this.props.layout.commit()
@@ -400,7 +338,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
      * 単体のレールを設置する。
      * @param {RailData} rail
      */
-    private addSingleRail = (rail: RailData) => {
+    protected addSingleRail = (rail: RailData) => {
       const data = {
         ..._.omitBy(rail, _.isFunction),
         name: '',
@@ -413,7 +351,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       this.props.layout.addRail(data)
     }
 
-    private addSingleRails = (rails: RailData[]) => {
+    protected addSingleRails = (rails: RailData[]) => {
       const railDatas = rails.map(rail => {
         return {
           ..._.omitBy(rail, _.isFunction),
@@ -433,7 +371,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
      * @param {RailGroupData} railGroup
      * @param {RailData[]} children
      */
-    private addRailGroup = (railGroup: RailGroupData, children: RailData[]) => {
+    protected addRailGroup = (railGroup: RailGroupData, children: RailData[]) => {
       const tmpRGC = getTemporaryRailGroupComponent()
       LOGGER.info('withBuilder#addRailGroup', 'temporaryRailGroup', tmpRGC)
       const railDatas = children.map(child => {
@@ -449,32 +387,6 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       })
       this.addSingleRails(railDatas)
     }
-
-
-    /**
-     * 選択中のレールを削除する。
-     */
-    deleteSelectedRails() {
-      // いったんセーブ
-      this.props.layout.commit()
-      this.props.layoutLogic.deleteSelectedRails()
-    }
-
-
-    /**
-     * 指定のレールの全てのジョイント接続を解除する。
-     */
-    disconnectJoint = (railId: number) => {
-      this.props.layoutLogic.disconnectJoint(railId)
-    }
-
-    /**
-     * ジョイントを接続する。
-     */
-    connectJoints = (pairs: JointPair[]) => {
-      this.props.layoutLogic.connectJoints(pairs)
-    }
-
 
     /**
      * ジョイントの検出状態を変更する。
@@ -498,80 +410,12 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
 
     /**
-     * レールを選択する。
-     * @param {number[]} railIds
-     */
-    selectRails = (railIds: number[]) => {
-      LOGGER.info('withBuilder#selectRails', railIds)
-      const updated = railIds.map(r => {
-          const railData = this.getRailDataById(r)
-          return {
-            id: railData.id,
-            selected: true
-          }
-        }
-      )
-      this.props.layout.updateRails(updated)
-    }
-
-    /**
-     * レールを選択する。
-     */
-    selectRail = (railId: number) => {
-      const railData = this.getRailDataById(railId)
-      if (! railData) return
-
-      this.props.layout.updateRail({
-        id: railData.id,
-        selected: true
-      })
-    }
-
-    /**
-     * レールの選択状態をトグルする。
-     * @param {RailData} railData
-     */
-    toggleRail = (railData: RailData, deselectOthers: boolean) => {
-      if (deselectOthers) {
-        this.deselectAllRails()
-      }
-      this.props.layout.updateRail({
-        id: railData.id,
-        selected: ! railData.selected,
-      })
-    }
-
-    /**
-     * レールの選択を解除する。
-     * @param {RailData} railData
-     */
-    deselectRail = (railData: RailData) => {
-      this.props.layout.updateRail({
-        id: railData.id,
-        selected: false
-      })
-    }
-
-    /**
-     * 全てのレールの選択を解除する。
-     */
-    deselectAllRails = () => {
-      const selected = this.props.layout.currentLayoutData.rails.filter(r => r.selected)
-      this.props.layout.updateRails(selected.map(r => {
-        return {
-          id: r.id,
-          selected: false
-        }
-      }))
-    }
-
-    /**
      * 選択中のレールを新しいレールグループとして登録する
      * @param {string} name
      * @param {boolean} shouldDelete
      */
     registerRailGroup = (name: string, shouldDelete: boolean) => {
-      const rails = this.getSelectedRails()
+      const rails = this.props.layout.selectedRails
       if (rails.length === 0) {
         this.props.snackbar.showMessage(`Please select at least one rail.`)  //`
         return
@@ -584,11 +428,11 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
           }
         }))
       } else {
-        this.deselectAllRails()
+        this.props.layoutLogic.selectAllRails(false)
       }
     }
 
-    private registerRailGroupInner = (rails: RailData[], name: string) => {
+    protected registerRailGroupInner = (rails: RailData[], name: string) => {
       // このレールグループメンバーのレールID
       const memberRailIds = rails.map(r => r.id)
       const openJoints = []
@@ -634,24 +478,14 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
         <>
           <WrappedComponent
             {...this.props}
-            builderMouseDown={this.mouseDown}
-            builderMouseMove={this.mouseMove}
+            // builderMouseDown={this.mouseDown}
+            // builderMouseMove={this.mouseMove}
             builderKeyDown={this.keyDown}
             builderKeyUp={this.keyUp}
-            builderGetRailItemData={this.getRailItemData}
-            builderGetRailGroupItemData={this.getUserRailGroupItemData}
             builderSetTemporaryRail={this.setTemporaryRail}
             builderSetTemporaryRailGroup={this.setTemporaryRailGroup}
             builderAddRail={this.addRail}
-            builderConnectJoints={this.connectJoints}
-            builderDisconnectJoint={this.disconnectJoint}
             builderChangeJointState={this.changeJointState}
-            builderSelectRail={this.selectRail}
-            builderSelectRails={this.selectRails}
-            builderDeselectRail={this.deselectRail}
-            builderToggleRail={this.toggleRail}
-            builderDeselectAllRails={this.deselectAllRails}
-            builderDeleteSelectedRails={this.deleteSelectedRails}
             builderRegisterRailGroup={this.registerRailGroup}
           />
         </>
@@ -667,9 +501,6 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       return this.props.layout.currentLayoutData.rails.find(item => item.id === id)
     }
 
-    private getSelectedRails = () => {
-      return this.props.layout.currentLayoutData.rails.filter(r => r.selected)
-    }
   }
 
   return compose<WithBuilderProps, WithBuilderProps>(
