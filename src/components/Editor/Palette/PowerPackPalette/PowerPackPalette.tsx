@@ -68,7 +68,8 @@ export default class SimulatorPalette extends React.Component<SimulatorPalettePr
       name: name,
       power: 0,
       direction: true,
-      supplyingFeederIds: []
+      supplyingFeederIds: [],
+      color: 'black'
     })
   }
 

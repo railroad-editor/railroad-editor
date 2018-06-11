@@ -36,10 +36,12 @@ export class SimulatorLogicStore {
   startCurrentFlowSimulation = () => {
     this.initializeCurrentFlows()
 
+    // 各フィーダーの電流を仮シミュレートする
     layoutStore.currentLayoutData.feeders.forEach(feeder => this.simulateFeederCurrentFlow(feeder.id))
 
     LOGGER.info(this.temporaryRailFlows)
 
+    // 仮シミュレートの結果をもとに全レールの最終的な電流を決定する
     _.keys(this.temporaryRailFlows).forEach(railId => {
       _.keys(this.temporaryRailFlows[railId]).forEach(partId => {
         this.setFlow(Number(railId), Number(partId), this.temporaryRailFlows[railId][partId])
@@ -80,16 +82,28 @@ export class SimulatorLogicStore {
       return
     }
 
-    // このパーツに接続されているジョイントの先のレールに電流を設定
+    // このパーツに接続されているジョイントの先のレールに流を設定
     _.range(joints.length).forEach(jointId => {
+      // 対向ジョイントが無ければ終了
       const opposingJoint = rail.opposingJoints[jointId]
       if (!opposingJoint) {
         return
       }
+      // このジョイントか、対向ジョイントがギャップジョイナーなら終了
+      if (this.isGapJoiner(feeder.railId, jointId) || this.isGapJoiner(opposingJoint.railId, opposingJoint.jointId)) {
+        return
+      }
+
       const joint = joints[jointId]
       const isGoing = this.isCurrentGoing(joint.pivot, feeder.direction)
       this.setCurrentFlowToRail(opposingJoint.railId, opposingJoint.jointId, feederId, isGoing)
     })
+  }
+
+  isGapJoiner = (railId: number, jointId: number) => {
+    const gapJoiner = layoutStore.currentLayoutData.gapJoiners.find(gj =>
+      gj.railId === railId && gj.jointId === jointId)
+    return !!gapJoiner
   }
 
 

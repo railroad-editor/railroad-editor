@@ -57,6 +57,7 @@ export interface PowerPackData {
   power: number
   direction: boolean
   supplyingFeederIds: number[]
+  color: string
 }
 
 export enum SwitcherType {

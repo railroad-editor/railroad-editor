@@ -1,29 +1,31 @@
 import * as React from 'react'
-import {ReactEventHandler} from 'react'
-import {CardContent, CardHeader, MenuItem} from '@material-ui/core'
+import {CardContent, CardHeader, FormControlLabel, MenuItem, Switch} from '@material-ui/core'
 import Typography from "@material-ui/core/Typography";
 import {S3Image} from 'aws-amplify-react';
 import getLogger from "logging";
-import * as moment from "moment";
 import Menu from "@material-ui/core/Menu";
-import Button from "@material-ui/core/Button";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import styled from "styled-components";
 import IconButton from "@material-ui/core/IconButton";
 import Card from "@material-ui/core/Card";
 import {PowerPackData} from "store/layoutStore";
+import Slider from '@material-ui/lab/Slider';
 
 const LOGGER = getLogger(__filename)
 
 
 export interface PowerPackCardProps {
   item: PowerPackData
+  onPowerChange: (power: number) => void
+  onDirectionChange: (direction: boolean) => void
   onSetting: (item: PowerPackData) => void
   onDelete: (item: PowerPackData) => void
 }
 
 export interface PowerPackCardState {
   anchorEl: HTMLElement
+  sliderValue: number
+  sliderDragging: boolean
+  direction: boolean
 }
 
 
@@ -32,12 +34,42 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
   constructor(props: PowerPackCardProps) {
     super(props)
     this.state = {
-      anchorEl: null
+      anchorEl: null,
+      sliderValue: 0,
+      sliderDragging: false,
+      direction: true,
     }
   }
 
+  onSliderDragStart = (e) => {
+    this.setState({
+      sliderDragging: true
+    })
+  }
+
+  onSliderDragEnd = (e) => {
+    this.setState({
+      sliderDragging: false
+    })
+    this.props.onPowerChange(this.state.sliderValue)
+  }
+
+  onSliderChange = (e, value) => {
+    this.setState({
+      sliderValue: value
+    })
+    if (! this.state.sliderDragging) {
+      this.props.onPowerChange(this.state.sliderValue)
+    }
+  }
+
+  onDirectionChange = (e) => {
+    this.setState({ direction: e.target.checked });
+    this.props.onDirectionChange(e.target.checked)
+  }
+
   openMenu = (e: React.MouseEvent<HTMLElement>) => {
-    this.setState({ anchorEl: e.currentTarget });
+    this.setState({anchorEl: e.currentTarget});
   }
 
   onMenuClose = (e: React.MouseEvent<HTMLElement>) => {
@@ -55,7 +87,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
   }
 
   render() {
-    const {name} = this.props.item
+    const {name, direction, power} = this.props.item
     return (
       <>
         <Card>
@@ -68,9 +100,31 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
                 <MoreVertIcon/>
               </IconButton>
             }
-            style={{paddingTop: '16px', paddingBottom: '8px'}}
+            // style={{paddingTop: '16px', paddingBottom: '8px'}}
           />
           <CardContent>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={this.state.direction}
+                  onChange={this.onDirectionChange}
+                  value="checkedA"
+                />
+              }
+              label="Direction"
+            />
+            <Typography id="label">Power</Typography>
+            <Slider
+              value={this.state.sliderValue}
+              onChange={this.onSliderChange}
+              onDragStart={this.onSliderDragStart}
+              onDragEnd={this.onSliderDragEnd}
+              aria-labelledby="label"
+            />
+            <Typography>Connected Feeders</Typography>
+            {
+
+            }
           </CardContent>
         </Card>
         <Menu

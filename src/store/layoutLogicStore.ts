@@ -232,11 +232,11 @@ export class LayoutLogicStore {
 
   @action
   toggleSelectRail = (railId: number) => {
-    this.selectAllRails(false)
     const target = this.getRailDataById(railId)
     if (target == null) {
       return
     }
+    this.selectAllRails(false)
     this.selectRail(railId, !target.selected)
   }
 
@@ -266,11 +266,11 @@ export class LayoutLogicStore {
 
   @action
   toggleSelectFeeder = (feederId: number) => {
-    this.selectAllFeeders(false)
     const target = this.getFeederDataById(feederId)
     if (target == null) {
       return
     }
+    this.selectAllFeeders(false)
     this.selectFeeder(feederId, !target.selected)
   }
 
@@ -299,11 +299,11 @@ export class LayoutLogicStore {
 
   @action
   toggleSelectGapJoiner = (gapJoinerId: number) => {
-    this.selectAllGapJoiners(false)
     const target = this.getGapJoinerDataById(gapJoinerId)
     if (target == null) {
       return
     }
+    this.selectAllGapJoiners(false)
     this.selectGapJoiner(gapJoinerId, !target.selected)
   }
 

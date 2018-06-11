@@ -19,7 +19,7 @@ import {compose} from "recompose";
 import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {LayoutStore} from "store/layoutStore";
 import {withSnackbar} from 'material-ui-snackbar-provider'
-import PowerPackPalette from './PowerPackPalette/PowerUnitPalette';
+import PowerPackPalette from './PowerPackPalette/PowerPackPalette';
 
 
 export interface PaletteProps {

@@ -31,11 +31,12 @@ import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "con
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {CommonStore} from "store/commonStore";
 import MenuDrawer from "components/Editor/MenuDrawer/MenuDrawer";
-import {SettingsDialog} from "components/Editor/ToolBar/SettingsDialog/SettingsDialog";
+import {SettingsDialog} from "components/Editor/ToolBar/BuilderToolBar/SettingsDialog/SettingsDialog";
 import {compose} from "recompose";
 import {EditableTypography} from "components/common/EditableTypography/EditableTypography";
 import Peer from 'skyway-js';
 import {LayoutLogicStore} from "store/layoutLogicStore";
+import BuilderToolBar from "components/Editor/ToolBar/BuilderToolBar/BuilderToolBar";
 
 const LOGGER = getLogger(__filename)
 
@@ -187,6 +188,8 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                   />
                 </Tooltip>
               </Grid>
+
+              {/*<BuildertoolBar />*/}
 
               <Grid xs alignItems="center" style={{display: 'flex'}}>
                 <Tooltip title={"Straight Rails (S)"}>

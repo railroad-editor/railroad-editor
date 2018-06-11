@@ -61,6 +61,10 @@
   dependencies:
     recompose "^0.26.0 || ^0.27.0"
 
+"@material-ui/lab@^1.0.0-alpha.5":
+  version "1.0.0-alpha.5"
+  resolved "https://registry.yarnpkg.com/@material-ui/lab/-/lab-1.0.0-alpha.5.tgz#2f53a76c4b53aca044c91392ad5e4b47f9a4b241"
+
 "@types/cheerio@*":
   version "0.22.7"
   resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.22.7.tgz#4a92eafedfb2b9f4437d3a4410006d81114c66ce"
@@ -7788,7 +7792,7 @@ react-material-ui-form-validator@next:
 
 "react-paper-bindings@https://github.com/kota65535/react-paper-bindings.dist#master":
   version "1.0.0"
-  resolved "https://github.com/kota65535/react-paper-bindings.dist#617213b3d20c5e7ad1bdfb09ad592cc5deb0cda3"
+  resolved "https://github.com/kota65535/react-paper-bindings.dist#2ac28d4b694ae287a6bcbb16dc02c833ffbf4804"
 
 react-popper@^0.10.0:
   version "0.10.4"
