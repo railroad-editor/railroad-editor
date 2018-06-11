@@ -28,6 +28,7 @@ export interface FeederInfo {
   pivot: Pivot
   selected: boolean
   direction: FlowDirection
+  visible: boolean
 }
 
 export interface GapJoinerInfo {

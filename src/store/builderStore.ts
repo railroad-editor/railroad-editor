@@ -27,23 +27,14 @@ export interface UserRailGroupData extends RailGroupProps {
 
 export interface BuilderStoreState {
   presetPaletteItems: PresetPaletteItems
-  // パレットで選択中のレール
   paletteItem: PaletteItem
-  // 直前に選択していたレール
   lastPaletteItems: LastPaletteItems
-  // Placing Mode
   placingMode: PlacingMode
-  // 現在アクティブ（編集中）のレイヤーID
   activeLayerId: number
-  // 仮レール（レールグループの場合は複数）
   temporaryRails: RailData[]
-  // 仮レールグループ
   temporaryRailGroup: RailGroupData
-  // ユーザーが登録したレールグループ
   userRailGroups: UserRailGroupData[]
-  // カスタムレール
   userRails: any
-  // 仮レールと他のレールが重なっているか否か
   intersects: boolean
   activeTool: string
   selecting: boolean
@@ -80,13 +71,17 @@ export const INITIAL_STATE: BuilderStoreState = {
 }
 
 
+/**
+ * Builderモードに特有のUIの状態を保持し、操作するStore
+ */
 export class BuilderStore {
+  // 事前定義済みのパレットアイテム群
   @observable presetPaletteItems: PresetPaletteItems
-  // パレットで選択中のレール
+  // パレットで選択中のアイテム
   @observable paletteItem: PaletteItem
-  // 直前に選択していたレール
+  // パレット切替の直前に選択していたアイテム
   @observable lastPaletteItems: LastPaletteItems
-  // Placing Mode
+  // レール設置モード
   @observable placingMode: PlacingMode
   // 現在アクティブ（編集中）のレイヤーID
   @observable activeLayerId: number
@@ -100,11 +95,11 @@ export class BuilderStore {
   @observable userRails: any
   // ユーザーが登録したレールグループ
   @observable userRailGroups: UserRailGroupData[]
-
+  // 現在アクティブなツール（パレット）
   @observable activeTool: Tools
-
+  // 矩形選択中か否か
   @observable selecting: boolean
-
+  // 仮フィーダー
   @observable temporaryFeeder: FeederInfo
 
 

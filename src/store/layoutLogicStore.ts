@@ -14,6 +14,11 @@ import * as moment from "moment";
 const LOGGER = getLogger(__filename)
 
 
+/**
+ * LayoutStoreが肥大化しすぎるのを防ぐため、
+ * LayoutStoreには単純なCRUDに当たるメソッドだけを定義し、
+ * ロジックをこのStoreに集中させた。
+ */
 export class LayoutLogicStore {
   
   constructor() {

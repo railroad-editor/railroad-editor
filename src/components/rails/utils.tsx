@@ -21,11 +21,10 @@ export const createFeederComponent = (feeder: FeederInfo) => {
   const pivotInfo = {pivotPartIndex: feeder.socketId, pivot: feeder.pivot}
   return (
     <Feeder
-      id={feeder.id}
+      {...feeder}
       position={rail.railPart.getPivotPositionToParent(pivotInfo)}
       angle={rail.railPart.getPivotAngleToParent(pivotInfo)}
       fillColor={FEEDER_SOCKET_FILL_COLORS[2]}
-      direction={feeder.direction}
       opacity={0.8}
     />
   )

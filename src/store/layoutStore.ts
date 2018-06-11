@@ -1,14 +1,11 @@
 import {RailData} from "components/rails";
-import {action, computed, observable, reaction, toJS, when} from "mobx";
-import LayoutAPI from "apis/layout";
-import commonStore from "./commonStore";
+import {action, computed, observable, reaction, toJS} from "mobx";
 import builderStore, {PlacingMode} from "./builderStore";
-import {DEFAULT_GRID_SIZE, DEFAULT_INITIAL_ZOOM, DEFAULT_PAPER_HEIGHT, DEFAULT_PAPER_WIDTH} from "constants/tools";
+import {DEFAULT_GRID_SIZE, DEFAULT_PAPER_HEIGHT, DEFAULT_PAPER_WIDTH} from "constants/tools";
 import {getAllOpenCloseJoints} from "components/rails/utils";
 import getLogger from "logging";
 import * as uuidv4 from "uuid/v4";
 import * as moment from "moment";
-import StorageAPI from "apis/storage"
 import {FeederInfo, GapJoinerInfo} from "components/rails/RailBase";
 
 const LOGGER = getLogger(__filename)
@@ -127,6 +124,9 @@ export const INITIAL_STATE: LayoutStoreState = {
 }
 
 
+/**
+ * レイアウトに関する永続的なデータを保持・操作するStore
+ */
 export class LayoutStore {
   @observable histories: LayoutData[]
   @observable historyIndex: number

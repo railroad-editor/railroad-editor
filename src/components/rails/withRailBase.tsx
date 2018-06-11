@@ -161,7 +161,9 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * @param {MouseEvent} e
      */
     onFeederSocketMouseLeave = (socketId: number, e: MouseEvent) => {
-      this.props.builder.deleteTemporaryFeeder()
+      this.props.builder.updateTemporaryFeeder({
+        visible: false
+      })
     }
 
     /**
@@ -222,16 +224,22 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
     }
 
     private showTemporaryFeeder = (socketId: number) => {
-      // このフィーダーソケットのPivotInfoからフィーダーデータを作成
       const pivotInfo = this.rail.railPart.feederSockets[socketId]
-      this.props.builder.setTemporaryFeeder({
+      const feederData = {
         id: -1,
         railId: this.rail.props.id,
         socketId: pivotInfo.pivotPartIndex,
         pivot: pivotInfo.pivot,
         direction: FlowDirection.LEFT_TO_RIGHT,
-        selected: false
-      })
+        selected: false,
+        visible: true,
+      }
+      // 既に存在するなら向きを保存する
+      if (this.props.builder.temporaryFeeder) {
+        feederData.direction = this.props.builder.temporaryFeeder.direction
+      }
+      // このフィーダーソケットのPivotInfoからフィーダーデータを作成
+      this.props.builder.setTemporaryFeeder(feederData)
     }
 
     private toggleTemporaryFeederDirection = (socketId: number) => {
