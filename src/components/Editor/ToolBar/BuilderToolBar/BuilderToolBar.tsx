@@ -16,7 +16,6 @@ import CopyIcon from "@material-ui/icons/ContentCopy";
 import CutIcon from "@material-ui/icons/ContentCut";
 import FreePlacingModeIcon from "@material-ui/icons/LocationOn";
 import ConnectModeIcon from "@material-ui/icons/CompareArrows";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import FeederIcon from "../Icon/Feeder";
 import GapIcon from "../Icon/Gap";
 import getLogger from "logging";
@@ -29,10 +28,10 @@ import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "con
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {CommonStore} from "store/commonStore";
 import {compose} from "recompose";
-import Peer from 'skyway-js';
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import {StyledIconButton, VerticalDivider} from "components/Editor/ToolBar/styles";
 import {SettingsDialog} from "components/Editor/ToolBar/BuilderToolBar/SettingsDialog/SettingsDialog";
+import withMoveTool from "components/hoc/withMoveTool";
 
 const LOGGER = getLogger(__filename)
 
@@ -48,7 +47,6 @@ export interface BuilderToolBarProps {
 }
 
 export interface BuilderToolBarState {
-  openMenu: boolean
   openSettings: boolean
   el: HTMLElement | undefined
 }
@@ -64,7 +62,6 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
   constructor(props: EnhancedBuilderToolBarProps) {
     super(props)
     this.state = {
-      openMenu: false,
       openSettings: false,
       el: undefined,
     }
@@ -80,20 +77,6 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
     this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[tool])
   }
 
-
-  openMenu = (e) => {
-    LOGGER.info(this.props.layout.meta)
-    this.setState({
-      openMenu: true,
-    })
-  }
-
-  closeMenu = () => {
-    this.setState({
-      openMenu: false,
-    })
-  }
-
   openSettingsDialog = (e) => {
     this.setState({
       openSettings: true
@@ -106,12 +89,6 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
     })
   }
 
-  setLayoutName = (text: string) => {
-    this.props.layout.updateLayoutMeta({
-      name: text
-    })
-  }
-
   onChangePlacingMode = (mode: PlacingMode) => (e) => {
     this.props.builder.setPlacingMode(mode)
   }
@@ -119,7 +96,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
 
   render() {
     return (
-      <Grid xs alignItems="center" style={{display: 'flex'}}>
+      <Grid xs justify="center" alignItems="center" style={{display: 'flex'}}>
         <Tooltip title={"Straight Rails (S)"}>
           <StyledIconButton
             className={classNames({
@@ -296,22 +273,13 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
           userInfo={this.props.common.userInfo}
           layoutMeta={this.props.layout.meta}
         />
-
-        <Tooltip title={'Simulator'} placement={'bottom'}>
-          <div>
-            <StyledIconButton
-              onClick={() => this.props.builder.setActiveTool(Tools.SIMULATOR)}
-            >
-              <PlayArrowIcon/>
-            </StyledIconButton>
-          </div>
-        </Tooltip>
       </Grid>
     )
   }
 }
 
 
-export default compose<BuilderToolBarProps, BuilderToolBarProps>(
-  withBuilder
+export default compose<BuilderToolBarProps, BuilderToolBarProps|any>(
+  withBuilder,
+  withMoveTool
 )(BuilderToolBar)

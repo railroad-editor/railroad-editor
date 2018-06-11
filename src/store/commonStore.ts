@@ -4,6 +4,7 @@ import {LayoutMeta} from "store/layoutStore";
 import LayoutAPI from "apis/layout";
 import {create} from "mobx-persist";
 import {DEFAULT_INITIAL_ZOOM} from "constants/tools";
+import {EditorMode} from "store/uiStore";
 
 
 const INITIAL_STATE = {
@@ -17,6 +18,7 @@ export class CommonStore {
   @observable userInfo: AuthData
   @observable isPaperLoaded: boolean
   @observable initialZoom: number
+  @observable editorMode: EditorMode
 
 
   constructor({layouts, authData}) {
@@ -24,6 +26,7 @@ export class CommonStore {
     this.userInfo = authData
     this.isPaperLoaded = false
     this.initialZoom = DEFAULT_INITIAL_ZOOM
+    this.editorMode = EditorMode.BUILDER
   }
 
 
@@ -60,6 +63,11 @@ export class CommonStore {
   @action
   setInitialZoom = (zoom: number) => {
     this.initialZoom = zoom
+  }
+
+  @action
+  setEditorMode = (editorMode: EditorMode) => {
+    this.editorMode = editorMode
   }
 }
 

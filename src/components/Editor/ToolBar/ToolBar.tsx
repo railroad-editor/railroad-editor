@@ -1,28 +1,18 @@
 import * as React from 'react'
-import CurveRailIcon from './Icon/CurveRailIcon'
-import StraightRailIcon from './Icon/StraightRailIcon'
-import TurnoutIcon from './Icon/TurnoutIcon'
-import SpecialRailIcon from "components/Editor/ToolBar/Icon/SpecialRailIcon";
-import RailGroupIcon from "components/Editor/ToolBar/Icon/RailGroupIcon";
-import {AppBar, Grid, Toolbar as MuiToolbar} from '@material-ui/core'
-import {StyledIconButton, VerticalDivider} from "./styles";
+import {
+  AppBar,
+  Grid,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  Select,
+  Toolbar as MuiToolbar,
+  Typography
+} from '@material-ui/core'
+import {StyledIconButton} from "./styles";
 import {Tools} from "constants/tools";
-import UndoIcon from '@material-ui/icons/Undo'
-import RedoIcon from '@material-ui/icons/Redo'
-import DeleteIcon from '@material-ui/icons/Delete'
-import PanToolIcon from '@material-ui/icons/PanTool'
-import AspectRatioIcon from "@material-ui/icons/AspectRatio";
 import MenuIcon from "@material-ui/icons/Menu";
-import SettingsIcon from "@material-ui/icons/Settings";
-import CopyIcon from "@material-ui/icons/ContentCopy";
-import CutIcon from "@material-ui/icons/ContentCut";
-import FreePlacingModeIcon from "@material-ui/icons/LocationOn";
-import ConnectModeIcon from "@material-ui/icons/CompareArrows";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import FeederIcon from "./Icon/Feeder";
-import GapIcon from "./Icon/Gap";
 import getLogger from "logging";
-import * as classNames from "classnames"
 import Tooltip from "@material-ui/core/Tooltip";
 import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {LayoutStore} from "store/layoutStore";
@@ -31,12 +21,16 @@ import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "con
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {CommonStore} from "store/commonStore";
 import MenuDrawer from "components/Editor/MenuDrawer/MenuDrawer";
-import {SettingsDialog} from "components/Editor/ToolBar/BuilderToolBar/SettingsDialog/SettingsDialog";
 import {compose} from "recompose";
 import {EditableTypography} from "components/common/EditableTypography/EditableTypography";
 import Peer from 'skyway-js';
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import BuilderToolBar from "components/Editor/ToolBar/BuilderToolBar/BuilderToolBar";
+import withMoveTool from "components/hoc/withMoveTool";
+import SimulatorToolBar from "components/Editor/ToolBar/SimulatorToolBar/SimulatorToolBar";
+import {EditorMode} from "store/uiStore";
+import BuildIcon from '@material-ui/icons/Build';
+import PlayArrowIcon from '@material-ui/icons/PlayCircleFilled';
 
 const LOGGER = getLogger(__filename)
 
@@ -55,6 +49,7 @@ export interface ToolBarState {
   openMenu: boolean
   openSettings: boolean
   el: HTMLElement | undefined
+  editorMode: EditorMode
 }
 
 type EnhancedToolBarProps = ToolBarProps & WithBuilderPublicProps
@@ -76,6 +71,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
       openMenu: false,
       openSettings: false,
       el: undefined,
+      editorMode: EditorMode.BUILDER
     }
   }
 
@@ -138,30 +134,8 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
     this.props.builder.setPlacingMode(mode)
   }
 
-  connectWebRTC = () => {
-    const connectedPeers = {};
-    const requestedPeer = "C1yv3nGCQGzgdcFs"
-    if (!connectedPeers[requestedPeer]) {
-      this.conn = this.peer.connect(requestedPeer, {
-        label:    'chat',
-        metadata: {message: 'hi i want to chat with you!'},
-      });
-      this.conn.on('open', (id) => {
-        console.log('open', id)
-      });
-      this.conn.on('error', err => alert(err));
-
-      this.conn.on('data', data => {
-        console.log('data', data)
-      });
-
-      this.conn.on('close', () => {
-      });
-    }
-  }
-
-  sendSomething = () => {
-    this.conn.send('hello!')
+  onChangeEditorMode = (e) => {
+    this.props.common.setEditorMode(e.target.value)
   }
 
 
@@ -170,8 +144,8 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
       <>
         <AppBar>
           <MuiToolbar>
-            <Grid container justify="center" spacing={0} style={{display: 'flex'}}>
-              <Grid xs alignItems="center" style={{display: 'flex'}}>
+            <Grid container justify="space-between" spacing={0}>
+              <Grid xs justify="flex-start" alignItems="center" style={{display: 'flex'}}>
                 <Tooltip title={"Menu"}>
                   <StyledIconButton onClick={this.openMenu} >
                     <MenuIcon/>
@@ -189,208 +163,43 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                 </Tooltip>
               </Grid>
 
-              {/*<BuildertoolBar />*/}
+              {
+                this.props.common.editorMode === EditorMode.BUILDER &&
+                <BuilderToolBar />
+              }
+              {
+                this.props.common.editorMode === EditorMode.SIMULATOR &&
+                <SimulatorToolBar />
+              }
 
-              <Grid xs alignItems="center" style={{display: 'flex'}}>
-                <Tooltip title={"Straight Rails (S)"}>
-                  <StyledIconButton
-                    className={classNames({
-                      'active': this.isActive(Tools.STRAIGHT_RAILS)
-                    })}
-                    onClick={this.onClickBuilderItem(Tools.STRAIGHT_RAILS)}
-                  >
-                    <StraightRailIcon/>
-                  </StyledIconButton>
-                </Tooltip>
-                <Tooltip title={"Curve Rails (C)"}>
-                  <StyledIconButton
-                    className={classNames({
-                      'active': this.isActive(Tools.CURVE_RAILS)
-                    })}
-                    onClick={this.onClickBuilderItem(Tools.CURVE_RAILS)}
-                  >
-                    <CurveRailIcon/>
-                  </StyledIconButton>
-                </Tooltip>
-                <Tooltip title={"Turnouts (T)"}>
-                  <StyledIconButton
-                    className={classNames({
-                      'active': this.isActive(Tools.TURNOUTS)
-                    })}
-                    onClick={this.onClickBuilderItem(Tools.TURNOUTS)}
-                  >
-                    <TurnoutIcon/>
-                  </StyledIconButton>
-                </Tooltip>
-                <Tooltip title={"Special Rails (X)"}>
-                  <StyledIconButton
-                    className={classNames({
-                      'active': this.isActive(Tools.SPECIAL_RAILS)
-                    })}
-                    onClick={this.onClickBuilderItem(Tools.SPECIAL_RAILS)}
-                  >
-                    <SpecialRailIcon/>
-                  </StyledIconButton>
-                </Tooltip>
 
-                <Tooltip title={"Rail Groups (G)"}>
-                  <StyledIconButton
-                    className={classNames({
-                      'active': this.isActive(Tools.RAIL_GROUPS)
-                    })}
-                    onClick={this.onClickBuilderItem(Tools.RAIL_GROUPS)}
-                  >
-                    <RailGroupIcon/>
-                  </StyledIconButton>
-                </Tooltip>
-
-                <Tooltip title={"Feeders (F)"}>
-                  <StyledIconButton
-                    className={classNames({
-                      'active': this.isActive(Tools.FEEDERS)
-                    })}
-                    onClick={this.onClickBuilderItem(Tools.FEEDERS)}
-                  >
-                    <FeederIcon/>
-                  </StyledIconButton>
-                </Tooltip>
-                <Tooltip title={"Gap Joiners (J)"}>
-                  <StyledIconButton
-                    className={classNames({
-                      'active': this.isActive(Tools.GAP_JOINERS)
-                    })}
-                    onClick={this.onClickBuilderItem(Tools.GAP_JOINERS)}
-                  >
-                    <GapIcon/>
-                  </StyledIconButton>
-                </Tooltip>
-
-                <Tooltip title={"PAN (Alt)"}>
-                  <StyledIconButton
-                    className={classNames({
-                      'active': this.isActive(Tools.PAN)
-                    })}
-                    onClick={() => this.props.builder.setActiveTool(Tools.PAN)}
-                  >
-                    <PanToolIcon/>
-                  </StyledIconButton>
-                </Tooltip>
-
-                <VerticalDivider/>
-
-                <Tooltip title={PlacingMode.FREE}>
-                  <StyledIconButton
-                    className={classNames({
-                      'active': this.props.builder.placingMode === PlacingMode.FREE
-                    })}
-                    onClick={this.onChangePlacingMode(PlacingMode.FREE)}
-                  >
-                    <FreePlacingModeIcon/>
-                  </StyledIconButton>
-                </Tooltip>
-                <Tooltip title={PlacingMode.JOINT}>
-                  <StyledIconButton
-                    className={classNames({
-                      'active': this.props.builder.placingMode === PlacingMode.JOINT
-                    })}
-                    onClick={this.onChangePlacingMode(PlacingMode.JOINT)}
-                  >
-                    <ConnectModeIcon/>
-                  </StyledIconButton>
-                </Tooltip>
-
-                <VerticalDivider/>
-
-                <Tooltip title={"Copy (Ctrl+C)"}>
-                  <StyledIconButton
-                    onClick={(e) => {
-                      this.props.builderRegisterRailGroup('Clipboard', false)
-                    }}>
-                    <CopyIcon/>
-                  </StyledIconButton>
-                </Tooltip>
-                <Tooltip title={"Cut (Ctrl+X)"}>
-                  <StyledIconButton
-                    onClick={(e) => {
-                      this.props.builderRegisterRailGroup('Clipboard', true)
-                    }}>
-                    <CutIcon/>
-                  </StyledIconButton>
-                </Tooltip>
-                <Tooltip title={"Delete (BS)"}>
-                  <StyledIconButton
-                    onClick={this.props.layoutLogic.deleteSelected}
-                  >
-                    <DeleteIcon/>
-                  </StyledIconButton>
-                </Tooltip>
-
-                <Tooltip title={Tools.UNDO}>
-                  <StyledIconButton
-                    className={classNames({
-                      'disabled': ! this.props.layout.canUndo
-                    })}
-                    onClick={this.props.layout.undo}>
-                    <UndoIcon/>
-                  </StyledIconButton>
-                </Tooltip>
-                <Tooltip title={Tools.REDO}>
-                  <StyledIconButton
-                    className={classNames({
-                      'disabled': ! this.props.layout.canRedo
-                    })}
-                    onClick={this.props.layout.redo}>
-                    <RedoIcon/>
-                  </StyledIconButton>
-                </Tooltip>
-
-                <Tooltip title={Tools.RESET_VIEW}>
-                  <StyledIconButton
-                    onClick={this.props.resetViewPosition}
-                  >
-                    <AspectRatioIcon/>
-                  </StyledIconButton>
-                </Tooltip>
-
-                <Tooltip title={'Settings'}>
-                  <StyledIconButton
-                    onClick={this.openSettingsDialog}
-                  >
-                    <SettingsIcon/>
-                  </StyledIconButton>
-                </Tooltip>
-                <SettingsDialog
-                  title={'Settings'}
-                  open={this.state.openSettings}
-                  onClose={this.closeSettingsDialog}
-                  config={this.props.layout.config}
-                  setConfig={this.props.layout.setConfig}
-                  userInfo={this.props.common.userInfo}
-                  layoutMeta={this.props.layout.meta}
-                />
-
-                <Tooltip title={'Simulator'} placement={'bottom'}>
-                  <div>
-                  <StyledIconButton
-                    onClick={() => this.props.builder.setActiveTool(Tools.SIMULATOR)}
-                  >
-                    <PlayArrowIcon/>
-                  </StyledIconButton>
-                  </div>
-                </Tooltip>
-                {/*<Tooltip title={'Connect'}>*/}
-                  {/*<StyledIconButton*/}
-                    {/*onClick={this.sendSomething}*/}
-                  {/*>*/}
-                    {/*<PlayArrowIcon/>*/}
-                  {/*</StyledIconButton>*/}
-                {/*</Tooltip>*/}
-
+              <Grid xs justify="flex-end" alignItems="center" style={{display: 'flex'}}>
+                <Select
+                  value={this.props.common.editorMode}
+                  onChange={this.onChangeEditorMode}
+                  renderValue={value => {
+                    return (
+                      <>
+                        {value === EditorMode.BUILDER && <ListItemIcon><BuildIcon/></ListItemIcon>}
+                        {value === EditorMode.SIMULATOR && <ListItemIcon><PlayArrowIcon/></ListItemIcon>}
+                      </>
+                    )
+                  }}
+                >
+                  <MenuItem value={EditorMode.BUILDER}>
+                    <ListItemIcon>
+                      <BuildIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary={EditorMode.BUILDER}/>
+                  </MenuItem>
+                  <MenuItem value={EditorMode.SIMULATOR}>
+                    <ListItemIcon>
+                      <PlayArrowIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary={EditorMode.SIMULATOR}/>
+                  </MenuItem>
+                </Select>
               </Grid>
-
-              <Grid xs style={{display: 'flex'}}/>
-
-
             </Grid>
           </MuiToolbar>
         </AppBar>
@@ -401,5 +210,6 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
 
 
 export default compose<ToolBarProps, ToolBarProps>(
-  withBuilder
+  withBuilder,
+  withMoveTool
 )(ToolBar)

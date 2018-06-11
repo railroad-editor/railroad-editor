@@ -2,8 +2,8 @@ import {action, observable} from "mobx";
 import commonStore from "./commonStore";
 
 export enum EditorMode {
-  BUILDER,
-  SIMULATOR
+  BUILDER = 'Builder',
+  SIMULATOR = 'Simulator'
 }
 
 
@@ -67,11 +67,6 @@ export class UiStore {
   @action
   setSignInDialog = (open: boolean) => {
     this.signInDialog = open
-  }
-
-  @action
-  setEditorMode = (editorMode: EditorMode) => {
-    this.editorMode = editorMode
   }
 }
 
