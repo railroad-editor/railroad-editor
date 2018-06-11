@@ -174,31 +174,33 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
 
 
               <Grid xs justify="flex-end" alignItems="center" style={{display: 'flex'}}>
-                <Select
-                  value={this.props.common.editorMode}
-                  onChange={this.onChangeEditorMode}
-                  renderValue={value => {
-                    return (
-                      <>
-                        {value === EditorMode.BUILDER && <ListItemIcon><BuildIcon/></ListItemIcon>}
-                        {value === EditorMode.SIMULATOR && <ListItemIcon><PlayArrowIcon/></ListItemIcon>}
-                      </>
-                    )
-                  }}
-                >
-                  <MenuItem value={EditorMode.BUILDER}>
-                    <ListItemIcon>
-                      <BuildIcon/>
-                    </ListItemIcon>
-                    <ListItemText primary={EditorMode.BUILDER}/>
-                  </MenuItem>
-                  <MenuItem value={EditorMode.SIMULATOR}>
-                    <ListItemIcon>
-                      <PlayArrowIcon/>
-                    </ListItemIcon>
-                    <ListItemText primary={EditorMode.SIMULATOR}/>
-                  </MenuItem>
-                </Select>
+                <Tooltip title={'Editor Mode'}>
+                  <Select
+                    value={this.props.common.editorMode}
+                    onChange={this.onChangeEditorMode}
+                    renderValue={value => {
+                      return (
+                        <>
+                          {value === EditorMode.BUILDER && <ListItemIcon><BuildIcon/></ListItemIcon>}
+                          {value === EditorMode.SIMULATOR && <ListItemIcon><PlayArrowIcon/></ListItemIcon>}
+                        </>
+                      )
+                    }}
+                  >
+                    <MenuItem value={EditorMode.BUILDER}>
+                      <ListItemIcon>
+                        <BuildIcon/>
+                      </ListItemIcon>
+                      <ListItemText primary={EditorMode.BUILDER}/>
+                    </MenuItem>
+                    <MenuItem value={EditorMode.SIMULATOR}>
+                      <ListItemIcon>
+                        <PlayArrowIcon/>
+                      </ListItemIcon>
+                      <ListItemText primary={EditorMode.SIMULATOR}/>
+                    </MenuItem>
+                  </Select>
+                </Tooltip>
               </Grid>
             </Grid>
           </MuiToolbar>
