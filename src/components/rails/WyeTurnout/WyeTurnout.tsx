@@ -17,6 +17,7 @@ export default class WyeTurnout extends RailBase<WyeTurnoutProps, RailBaseState>
     type: 'WyeTurnout',
     numJoints: 3,
     pivotJointChangingStride: 1,
+    numConductionStates: 2,
   }
 
   constructor(props: WyeTurnoutProps) {

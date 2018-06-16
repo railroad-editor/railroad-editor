@@ -98,6 +98,8 @@ export interface RailBaseDefaultProps {
 
   flowDirections: FlowDirections
 
+  numConductionStates: number
+
   // イベントハンドラ
   onRailPartLeftClick: (e: MouseEvent) => boolean
   onRailPartRightClick: (e: MouseEvent) => boolean
@@ -155,6 +157,8 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
 
     enableFeederSockets: false,
     enableGapJoinerSockets: false,
+
+    numConductionStates: 1,
 
     // 何もしないハンドラをセットしておく
     onRailPartLeftClick: (e: MouseEvent) => false,

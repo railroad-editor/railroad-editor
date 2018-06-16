@@ -17,6 +17,7 @@ export default class CrossingRail extends RailBase<CrossingRailProps, RailBaseSt
     type: 'CrossingRail',
     numJoints: 4,
     pivotJointChangingStride: 2,
+    numConductionStates: 1
   }
 
   constructor(props: CrossingRailProps) {

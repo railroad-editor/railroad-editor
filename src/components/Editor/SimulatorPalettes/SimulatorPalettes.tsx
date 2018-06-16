@@ -7,6 +7,11 @@ import {withSnackbar} from 'material-ui-snackbar-provider'
 import PowerPackPalette from './PowerPackPalette/PowerPackPalette';
 import {CommonStore} from "store/commonStore";
 import {EditorMode} from "store/uiStore";
+import SwitcherPalette from "components/Editor/SimulatorPalettes/SwitcherPalette/SwitcherPalette";
+import {
+  StyledPowerPackPalette,
+  StyledSwitcherPalette
+} from "components/Editor/SimulatorPalettes/SimulatorPalettes.style";
 
 
 export interface PaletteProps {
@@ -34,11 +39,17 @@ export class SimulatorPalettes extends React.Component<PaletteProps, PaletteStat
         {
           this.props.common.editorMode === EditorMode.SIMULATOR &&
           <>
-            <PowerPackPalette
+            <StyledPowerPackPalette
               // active={this.props.common.EditorMode.SIMULATOR}
               active={true}
               items={this.props.layout.currentLayoutData.powerPacks}
               helpMessage={'Click + to add a power unit.'}
+            />
+            <StyledSwitcherPalette
+              // active={this.props.common.EditorMode.SIMULATOR}
+              active={true}
+              items={this.props.layout.currentLayoutData.switchers}
+              helpMessage={'Click + to add a turnout switcher.'}
             />
           </>
         }

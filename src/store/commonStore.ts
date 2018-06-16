@@ -1,4 +1,4 @@
-import {action, computed, observable} from "mobx";
+import {action, computed, observable, reaction} from "mobx";
 import {AuthData} from "components/common/Authenticator/AuthPiece/AuthPiece";
 import {LayoutMeta} from "store/layoutStore";
 import LayoutAPI from "apis/layout";
@@ -20,6 +20,7 @@ export class CommonStore {
   @observable initialZoom: number
   @observable editorMode: EditorMode
   @observable zoom: number
+  @observable zooming: boolean
 
 
   constructor({layouts, authData}) {
@@ -28,6 +29,15 @@ export class CommonStore {
     this.isPaperLoaded = false
     this.initialZoom = DEFAULT_INITIAL_ZOOM
     this.editorMode = EditorMode.BUILDER
+    this.zooming = false
+
+    // zoomがセットされてから少し経ったらzoomingをfalseに戻す
+    reaction(() => this.zoom,
+      () => this.zooming = false,
+      {
+        delay: 100
+      }
+    )
   }
 
 
@@ -74,6 +84,7 @@ export class CommonStore {
   @action
   setZoom =  (zoom: number) => {
     this.zoom = zoom
+    this.zooming = true
   }
 }
 

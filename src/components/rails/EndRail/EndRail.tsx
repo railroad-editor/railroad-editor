@@ -15,6 +15,7 @@ export default class EndRail extends RailBase<EndRailProps, RailBaseState> {
     type: 'EndRail',
     numJoints: 1,
     pivotJointChangingStride: 1,
+    numConductionStates: 1
   }
 
   constructor(props: EndRailProps) {

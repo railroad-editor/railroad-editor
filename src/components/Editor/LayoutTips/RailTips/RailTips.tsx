@@ -10,6 +10,8 @@ import {LayoutStore} from "store/layoutStore";
 import {Tooltip} from "@material-ui/core";
 import {CommonStore} from "store/commonStore";
 import {reaction} from "mobx";
+import {RailComponentClasses} from "components/rails";
+import RailTip from "components/Editor/LayoutTips/RailTips/RailTip/RailTip";
 
 const LOGGER = getLogger(__filename)
 
@@ -26,33 +28,30 @@ export interface RailTipsState {
 
 @inject(STORE_BUILDER, STORE_LAYOUT, STORE_COMMON)
 @observer
-export class RailTip extends React.Component<RailTipProps & WithBuilderPublicProps, RailTipsState> {
+export class RailTips extends React.Component<RailTipProps & WithBuilderPublicProps, RailTipsState> {
 
   constructor(props: RailTipProps & WithBuilderPublicProps) {
     super(props)
 
-    reaction(() => this.props.common.zoom,
+    reaction(() => this.props.common.zooming,
       () => this.forceUpdate() )
   }
 
 
   render() {
 
-    const layout = this.props.layout.currentLayoutData
+    const turnoutRails = this.props.layout.currentLayoutData.rails
+      .filter(rail => RailComponentClasses[rail.type].defaultProps.numConductionStates > 1)
 
     return (
       <>
         {
-          layout.rails.map(rail => {
+          turnoutRails.map(rail => {
             const c = getRailComponent(rail.id)
             const tipPos = c.railPart.getPivotPositionToParent(c.railPart.tip)
             const position = window.PAPER_SCOPE.view.projectToView(tipPos)
-            const top = position.y
-            const left = position.x
             return (
-              <Tooltip open={true} title={'unko'}>
-                <div style={{top: `${top}px`, left: `${left}px`, width: '1px', height: '1px', position: 'absolute'}}/>
-              </Tooltip>
+              <RailTip open={true} position={position} rail={rail} />
             )
           })
         }
@@ -63,4 +62,4 @@ export class RailTip extends React.Component<RailTipProps & WithBuilderPublicPro
 
 
 export default compose<RailTipProps, RailTipProps|any>(
-)(RailTip)
+)(RailTips)

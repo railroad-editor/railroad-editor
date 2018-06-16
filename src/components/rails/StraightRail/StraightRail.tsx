@@ -15,6 +15,7 @@ export default class StraightRail extends RailBase<StraightRailProps, RailBaseSt
     numJoints: 2,
     pivotJointChangingStride: 2,
     numFeederSockets: 1,
+    numConductionStates: 1
   }
 
   constructor(props: StraightRailProps) {

@@ -4,7 +4,7 @@ import {STORE_COMMON} from "constants/stores";
 import {compose} from "recompose";
 import {withSnackbar} from 'material-ui-snackbar-provider'
 import BuilderPalette from "components/Editor/BuilderPalettes/BuilderPalette/BuilderPalette";
-import {StyledLayerPalette} from "components/Editor/BuilderPalettes/BuilderPalettes.style";
+import {StyledBuilderPalette, StyledLayerPalette} from "components/Editor/BuilderPalettes/BuilderPalettes.style";
 import {EditorMode} from "store/uiStore";
 import {CommonStore} from "store/commonStore";
 
@@ -33,7 +33,7 @@ export class BuilderPalettes extends React.Component<PaletteProps, PaletteState>
         {
           this.props.common.editorMode === EditorMode.BUILDER &&
           <>
-            <BuilderPalette />
+            <StyledBuilderPalette />
             <StyledLayerPalette />
           </>
         }

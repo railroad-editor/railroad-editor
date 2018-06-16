@@ -10,11 +10,8 @@ import Tooltip from "@material-ui/core/Tooltip";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import {Scrollbars} from 'react-custom-scrollbars';
 // import PowerIcon from '@material-ui/icons/Power';
-import PowerIcon from '@material-ui/icons/PowerSettingsNew';
-import NewPowerPackDialog
-  from "components/Editor/SimulatorPalettes/PowerPackPalette/NewPowerPackDialog/NewPowerPackDialog";
-import PowerPackList from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackList/PowerPackList";
-import {LayoutStore, PowerPackData} from "store/layoutStore";
+import CallSplitIcon from '@material-ui/icons/CallSplit';
+import {LayoutStore, SwitcherData, SwitcherType} from "store/layoutStore";
 import Rnd from "react-rnd"
 import {
   CenteredDiv,
@@ -22,12 +19,14 @@ import {
   PaletteBodyPaper,
   ScrollablePaper
 } from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackPalette.style";
+import NewSwitcherDialog from "components/Editor/SimulatorPalettes/SwitcherPalette/NewSwitcherDialog/NewSwitcherDialog";
+import SwitcherList from "components/Editor/SimulatorPalettes/SwitcherPalette/SwitcherList/SwitcherList";
 
 
-export interface PowerPackPaletteProps {
+export interface SwitcherPaletteProps {
   className?: string
   active: boolean
-  items: PowerPackData[]
+  items: SwitcherData[]
   helpMessage?: string
   layout?: LayoutStore
 }
@@ -41,9 +40,9 @@ export interface PowerPackPaletteState {
 
 @inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
 @observer
-export default class PowerPackPalette extends React.Component<PowerPackPaletteProps, PowerPackPaletteState> {
+export default class SwitcherPalette extends React.Component<SwitcherPaletteProps, PowerPackPaletteState> {
 
-  constructor(props: PowerPackPaletteProps) {
+  constructor(props: SwitcherPaletteProps) {
     super(props)
     this.state = {
       dialogOpen: false
@@ -63,14 +62,13 @@ export default class PowerPackPalette extends React.Component<PowerPackPalettePr
     })
   }
 
-  addPowerPack = (name: string) => {
-    this.props.layout.addPowerPack({
+  addSwitcher = (name: string, type: SwitcherType) => {
+    this.props.layout.addSwitcher({
       id: 0,
       name: name,
-      power: 0,
-      direction: true,
-      supplyingFeederIds: [],
-      color: 'black'
+      type: type,
+      currentState: 0,
+      conductionStates: {}
     })
   }
 
@@ -79,7 +77,7 @@ export default class PowerPackPalette extends React.Component<PowerPackPalettePr
     let list, helpMessage
     if (! _.isEmpty(this.props.items)) {
       list = (
-        <PowerPackList
+        <SwitcherList
           items={this.props.items}
         />
       )
@@ -111,11 +109,11 @@ export default class PowerPackPalette extends React.Component<PowerPackPalettePr
           >
             <PaletteBodyPaper>
               <TitleDiv className='Palette__title'>
-                <PowerIcon />
+                <CallSplitIcon />
                 <Typography variant="subheading" color="inherit" style={{flex: 1}}>
-                  {'Power Units'}
+                  {'Switchers'}
                 </Typography>
-                <Tooltip title={'Add Power Unit'}>
+                <Tooltip title={'Add Switcher'}>
                   <PrimaryPaletteAddButton onClick={this.openDialog}/>
                 </Tooltip>
               </TitleDiv>
@@ -125,11 +123,11 @@ export default class PowerPackPalette extends React.Component<PowerPackPalettePr
               </ScrollablePaper>
             </PaletteBodyPaper>
           </HideableDiv>
-          <NewPowerPackDialog
-            title={'New Power Pack'}
+          <NewSwitcherDialog
+            title={'New Switcher'}
             open={this.state.dialogOpen}
             onClose={this.onCloseDialog}
-            addPowerPack={this.addPowerPack}
+            addSwitcher={this.addSwitcher}
           />
         </div>
       </Rnd>

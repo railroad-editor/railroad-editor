@@ -16,6 +16,7 @@ export default class DoubleCrossTurnout extends RailBase<DoubleCrossTurnoutProps
     type: 'DoubleCrossTurnout',
     numJoints: 4,
     pivotJointChangingStride: 2,
+    numConductionStates: 2,
   }
 
   constructor(props: DoubleCrossTurnoutProps) {

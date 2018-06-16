@@ -1,4 +1,4 @@
-import {RailData} from "components/rails";
+import {RailComponentClasses, RailData} from "components/rails";
 import {action, computed, observable, reaction, toJS} from "mobx";
 import builderStore, {PlacingMode} from "./builderStore";
 import {DEFAULT_GRID_SIZE, DEFAULT_PAPER_HEIGHT, DEFAULT_PAPER_WIDTH} from "constants/tools";
@@ -58,8 +58,8 @@ export interface PowerPackData {
 }
 
 export enum SwitcherType {
-  NORMAL,
-  THREE_WAY,
+  NORMAL = 'Normal',
+  THREE_WAY = '3-Way',
 }
 
 
@@ -234,8 +234,15 @@ export class LayoutStore {
 
   @action
   addRail = (item: RailData) => {
-    item.id = this.nextRailId
-    this.currentLayoutData.rails.push(item)
+    let name = ''
+    if (RailComponentClasses[item.type].defaultProps.numConductionStates > 1) {
+      name = this.nextTurnoutName
+    }
+    this.currentLayoutData.rails.push({
+      ...item,
+      id: this.nextRailId,
+      name: name
+    })
   }
 
   @action
@@ -553,6 +560,17 @@ export class LayoutStore {
   getGapJoinerDataById = (id: number) => {
     return this.currentLayoutData.gapJoiners.find(item => item.id === id)
   }
+
+
+  @computed
+  get nextTurnoutName() {
+    const ids = this.currentLayoutData.rails
+      .filter(r => RailComponentClasses[r.type].defaultProps.numConductionStates > 1)
+      .map(r => r.id)
+    const nextId = ids.length > 0 ? Math.max(...ids) + 1 : 1
+    return `T${nextId}`
+  }
+
 }
 
 

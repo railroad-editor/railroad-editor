@@ -14,6 +14,7 @@ export default class GappedStraightRail extends RailBase<GappedStraightRailProps
     type: 'StraightRail',
     numJoints: 2,
     pivotJointChangingStride: 2,
+    numConductionStates: 1
   }
 
   constructor(props: GappedStraightRailProps) {
