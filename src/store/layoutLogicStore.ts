@@ -462,6 +462,42 @@ export class LayoutLogicStore {
   }
 
 
+  @action
+  connectFeederToPowerPack = (feederId: number, powerPackId: number) => {
+    const target = this.getPowerPackById(powerPackId)
+    if (target == null) {
+      return
+    }
+
+    if (target.supplyingFeederIds.includes(feederId)) {
+      return
+    }
+
+    this.disconnectFeederFromPowerPack(feederId, powerPackId)
+    layoutStore.updatePowerPack({
+      id: target.id,
+      supplyingFeederIds: [...target.supplyingFeederIds, feederId]
+    })
+  }
+
+  @action
+  disconnectFeederFromPowerPack = (feederId: number, powerPackId: number) => {
+    const target = this.getPowerPackById(powerPackId)
+    if (target == null) {
+      return
+    }
+
+    if (!target.supplyingFeederIds.includes(feederId)) {
+      return
+    }
+
+    const newFeederIds = target.supplyingFeederIds.filter(id => id !== feederId)
+    layoutStore.updatePowerPack({
+      id: target.id,
+      supplyingFeederIds: newFeederIds
+    })
+  }
+
   private getRailDataById = (id: number) => {
     return layoutStore.currentLayoutData.rails.find(item => item.id === id)
   }
@@ -472,6 +508,10 @@ export class LayoutLogicStore {
 
   private getGapJoinerDataById = (id: number) => {
     return layoutStore.currentLayoutData.gapJoiners.find(item => item.id === id)
+  }
+
+  private getPowerPackById = (id: number) => {
+    return layoutStore.currentLayoutData.powerPacks.find(p => p.id === id)
   }
 }
 

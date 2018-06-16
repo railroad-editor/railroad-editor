@@ -169,6 +169,7 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
           sy: zoomCenter.y,
           zoom: newZoom,
         })
+        this.props.common.setZoom(newZoom)
       }
     }
 

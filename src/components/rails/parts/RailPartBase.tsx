@@ -191,6 +191,10 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
 
   abstract get conductiveParts(): number[]
 
+  get tip() {
+    return {pivotPartIndex: 0, pivot: Pivot.CENTER}
+  }
+
   getPivot(jointIndex: number) {
     if (jointIndex == null) {
       return {pivotPartIndex: undefined, pivot: Pivot.CENTER}

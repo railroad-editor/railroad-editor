@@ -1,5 +1,4 @@
 import * as React from 'react'
-import {ReactNode} from 'react'
 import {TitleDiv} from "../../BuilderPalettes/LayerPalette/styles";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
@@ -10,19 +9,19 @@ import {PrimaryPaletteAddButton} from "components/common/PaletteAddButton/Palett
 import Tooltip from "@material-ui/core/Tooltip";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import {Scrollbars} from 'react-custom-scrollbars';
-import PowerIcon from '@material-ui/icons/Power';
+// import PowerIcon from '@material-ui/icons/Power';
+import PowerIcon from '@material-ui/icons/PowerSettingsNew';
+import NewPowerPackDialog
+  from "components/Editor/SimulatorPalettes/PowerPackPalette/NewPowerPackDialog/NewPowerPackDialog";
+import PowerPackList from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackList/PowerPackList";
+import {LayoutStore, PowerPackData} from "store/layoutStore";
+import Rnd from "react-rnd"
 import {
   CenteredDiv,
   HideableDiv,
   PaletteBodyPaper,
   ScrollablePaper
-} from "components/Editor/BuilderPalettes/BuilderPalette/RailPalette/style";
-import NewPowerPackDialog from "components/Editor/SimulatorPalettes/PowerPackPalette/NewPowerPackDialog/NewPowerPackDialog";
-import PowerPackList from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackList/PowerPackList";
-import {BuilderStore} from "store/builderStore";
-import {LayoutStore, PowerPackData} from "store/layoutStore";
-import {PowerPackCard} from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard";
-import Rnd from "react-rnd"
+} from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackPalette.style";
 
 
 export interface SimulatorPaletteProps {

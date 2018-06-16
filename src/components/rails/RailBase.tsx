@@ -29,6 +29,8 @@ export interface FeederInfo {
   selected: boolean
   direction: FlowDirection
   visible: boolean
+  name: string
+  powerPackId?: number
 }
 
 export interface GapJoinerInfo {

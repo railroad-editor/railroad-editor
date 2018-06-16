@@ -71,6 +71,7 @@ export default class PowerPackList extends React.Component<PowerPackListProps, P
               <>
               <PowerPackCard
                 item={item}
+                feeders={this.props.layout.currentLayoutData.feeders}
                 onDelete={this.onDelete(item.id)}
                 onSetting={this.onSetting(item.id)}
                 onPowerChange={this.onPowerChange(item.id)}

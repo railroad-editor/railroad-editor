@@ -19,6 +19,7 @@ export class CommonStore {
   @observable isPaperLoaded: boolean
   @observable initialZoom: number
   @observable editorMode: EditorMode
+  @observable zoom: number
 
 
   constructor({layouts, authData}) {
@@ -68,6 +69,11 @@ export class CommonStore {
   @action
   setEditorMode = (editorMode: EditorMode) => {
     this.editorMode = editorMode
+  }
+
+  @action
+  setZoom =  (zoom: number) => {
+    this.zoom = zoom
   }
 }
 

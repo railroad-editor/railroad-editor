@@ -32,6 +32,7 @@ import {LayoutLogicStore} from "store/layoutLogicStore";
 import {StyledIconButton, VerticalDivider} from "components/Editor/ToolBar/styles";
 import {SettingsDialog} from "components/Editor/ToolBar/BuilderToolBar/SettingsDialog/SettingsDialog";
 import withMoveTool from "components/hoc/withMoveTool";
+import PowerIcon from "@material-ui/icons/Power";
 
 const LOGGER = getLogger(__filename)
 
@@ -156,7 +157,8 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
             })}
             onClick={this.onClickBuilderItem(Tools.FEEDERS)}
           >
-            <FeederIcon/>
+            {/*<FeederIcon/>*/}
+            <PowerIcon/>
           </StyledIconButton>
         </Tooltip>
         <Tooltip title={"Gap Joiners (J)"}>

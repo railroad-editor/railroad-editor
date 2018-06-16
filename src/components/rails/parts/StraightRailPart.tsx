@@ -39,6 +39,10 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
     return [0]
   }
 
+  get tip() {
+    return {pivotPartIndex: 0, pivot: Pivot.CENTER}
+  }
+
 
   renderParts = () => {
     const { length, pivotJointIndex, data, flowDirections } = this.props

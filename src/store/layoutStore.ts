@@ -393,6 +393,7 @@ export class LayoutStore {
     this.currentLayoutData.feeders.push({
       ...item,
       id: this.nextFeederId,
+      name: `F${this.nextFeederId}`
     })
   }
 

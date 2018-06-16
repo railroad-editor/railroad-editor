@@ -233,6 +233,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
         direction: FlowDirection.LEFT_TO_RIGHT,
         selected: false,
         visible: true,
+        name: ''
       }
       // 既に存在するなら向きを保存する
       if (this.props.builder.temporaryFeeder) {

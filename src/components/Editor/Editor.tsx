@@ -34,6 +34,8 @@ import {BuilderStore, PlacingMode} from "store/builderStore";
 import {getAllRailComponents} from "components/rails/utils";
 import BuilderPalettes from "components/Editor/BuilderPalettes/BuilderPalettes";
 import SimulatorPalettes from "components/Editor/SimulatorPalettes/SimulatorPalettes";
+import {Tooltip} from "@material-ui/core";
+import LayoutTips from "components/Editor/LayoutTips/LayoutTips";
 
 const LOGGER = getLogger(__filename)
 
@@ -162,6 +164,8 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
         <EditorBody>
           <BuilderPalettes />
           <SimulatorPalettes />
+
+          <LayoutTips />
 
           <GridPaper
             viewWidth={DEFAULT_VIEW_WIDTH}
