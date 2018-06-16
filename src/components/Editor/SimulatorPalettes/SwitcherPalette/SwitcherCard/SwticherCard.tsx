@@ -1,18 +1,32 @@
 import * as React from 'react'
-import {CardContent, CardHeader, MenuItem} from '@material-ui/core'
+import {
+  Button,
+  CardContent,
+  CardHeader,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+  MenuItem,
+  Typography
+} from '@material-ui/core'
 import {S3Image} from 'aws-amplify-react';
 import getLogger from "logging";
 import Menu from "@material-ui/core/Menu";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from "@material-ui/core/IconButton";
 import Card from "@material-ui/core/Card";
-import {LayoutStore, SwitcherData} from "store/layoutStore";
+import {ConductionStates, LayoutStore, SwitcherData} from "store/layoutStore";
 import {FeederInfo} from "components/rails/RailBase";
 import {inject, observer} from 'mobx-react';
 import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import SwitcherSettingDialog
   from "components/Editor/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwitcherSettingDialog/SwitcherSettingDialog";
+import {
+  ActiveSmallButton, NarrowCardContent,
+} from "components/Editor/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwitchCard.style";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const LOGGER = getLogger(__filename)
 
@@ -77,9 +91,35 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
     this.onMenuClose(e)
   }
 
+  transformConductionStates = (conductionStates: ConductionStates) => {
+    const rails = {}
+    _.keys(conductionStates).forEach(stateIdxStr => {
+      const stateIdx = Number(stateIdxStr)
+      conductionStates[stateIdx].forEach(state => {
+        if (! rails[state.railId]) {
+          rails[state.railId] = {}
+        }
+        rails[state.railId][stateIdx] = state.conductionState
+      })
+    })
+    return rails
+  }
+
+  onSwitchStateChange = (state: number) => (e) => {
+    this.props.layout.updateSwitcher({
+      id: this.props.item.id,
+      currentState: state
+    })
+  }
+
+  onDisconnectRail = (railId: number) => (e) => {
+    this.props.layoutLogic.disconnectTurnoutFromSwitcher(Number(railId), this.props.item.id)
+  }
+
 
   render() {
     const {name, conductionStates} = this.props.item
+    const transformedConductionStates = this.transformConductionStates(conductionStates)
 
     return (
       <>
@@ -95,28 +135,42 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
             }
             // style={{paddingTop: '16px', paddingBottom: '8px'}}
           />
-          <CardContent>
-            {/*<List>*/}
-              {/*{*/}
-                {/*conductionStates.map(id => {*/}
-                  {/*const feeder = this.props.feeders.find(f => f.id === id)*/}
-                  {/*return (*/}
-                    {/*<ListItem>*/}
-                      {/*<ListItemIcon>*/}
-                        {/*<PowerIcon />*/}
-                      {/*</ListItemIcon>*/}
-                      {/*<ListItemText primary={feeder.name} />*/}
-                      {/*<ListItemSecondaryAction>*/}
-                        {/*<IconButton>*/}
-                          {/*<DeleteIcon onClick={this.onDisconnectFeeder(id)}/>*/}
-                        {/*</IconButton>*/}
-                      {/*</ListItemSecondaryAction>*/}
-                    {/*</ListItem>*/}
-                  {/*)*/}
-                {/*})*/}
-              {/*}*/}
-            {/*</List>*/}
-          </CardContent>
+          <NarrowCardContent>
+            {_.keys(transformedConductionStates).map(railIdStr => {
+              const railId = Number(railIdStr)
+              const rail = this.props.layout.getRailDataById(railId)
+              return (
+                <Grid container justify="center" alignItems="center" spacing={0}>
+                  <Grid item xs={3}>
+                    <Typography align="center"> {rail.name} </Typography>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <ActiveSmallButton
+                      active={this.props.item.currentState === 0}
+                      onClick={this.onSwitchStateChange(0)}
+                    >
+                      {transformedConductionStates[railId][0]}
+                    </ActiveSmallButton>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <ActiveSmallButton
+                      active={this.props.item.currentState === 1}
+                      onClick={this.onSwitchStateChange(1)}
+                    >
+                      {transformedConductionStates[railId][1]}
+                    </ActiveSmallButton>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <IconButton
+                      onClick={this.onDisconnectRail(railId)}
+                    >
+                      <DeleteIcon/>
+                    </IconButton>
+                  </Grid>
+                </Grid>
+              )
+            })}
+          </NarrowCardContent>
         </Card>
         <Menu
           anchorEl={this.state.anchorEl}
