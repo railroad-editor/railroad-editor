@@ -174,7 +174,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
 
 
               <Grid xs justify="flex-end" alignItems="center" style={{display: 'flex'}}>
-                <Tooltip title={'Editor Mode'}>
+                <Tooltip id="tooltip-icon" title={'Editor Mode'}>
                   <Select
                     value={this.props.common.editorMode}
                     onChange={this.onChangeEditorMode}

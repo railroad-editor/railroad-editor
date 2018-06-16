@@ -20,7 +20,7 @@ import {
   ScrollablePaper
 } from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackPalette.style";
 import NewSwitcherDialog from "components/Editor/SimulatorPalettes/SwitcherPalette/NewSwitcherDialog/NewSwitcherDialog";
-import SwitcherList from "components/Editor/SimulatorPalettes/SwitcherPalette/SwitcherList/SwitcherList";
+import {SwitcherCard} from "components/Editor/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwticherCard";
 
 
 export interface SwitcherPaletteProps {
@@ -63,12 +63,22 @@ export default class SwitcherPalette extends React.Component<SwitcherPaletteProp
   }
 
   addSwitcher = (name: string, type: SwitcherType) => {
+    let conductionStates
+    switch (type) {
+      case SwitcherType.NORMAL:
+        conductionStates = { 0: [], 1: [] }
+        break
+      case SwitcherType.THREE_WAY:
+        conductionStates = { 0: [], 1: [], 2: [] }
+        break
+    }
     this.props.layout.addSwitcher({
       id: 0,
       name: name,
       type: type,
       currentState: 0,
-      conductionStates: {}
+      conductionStates: conductionStates,
+      color: 'black'
     })
   }
 
@@ -77,9 +87,18 @@ export default class SwitcherPalette extends React.Component<SwitcherPaletteProp
     let list, helpMessage
     if (! _.isEmpty(this.props.items)) {
       list = (
-        <SwitcherList
-          items={this.props.items}
-        />
+        <>
+          {
+            this.props.items.map((item, index) => {
+              return (
+                <SwitcherCard
+                  item={item}
+                  feeders={this.props.layout.currentLayoutData.feeders}
+                />
+              )
+            })
+          }
+        </>
       )
     }
 
@@ -128,6 +147,7 @@ export default class SwitcherPalette extends React.Component<SwitcherPaletteProp
             open={this.state.dialogOpen}
             onClose={this.onCloseDialog}
             addSwitcher={this.addSwitcher}
+            defaultInputs={{type: SwitcherType.NORMAL}}
           />
         </div>
       </Rnd>

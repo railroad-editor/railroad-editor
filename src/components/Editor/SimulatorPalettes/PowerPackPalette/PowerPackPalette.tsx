@@ -13,7 +13,6 @@ import {Scrollbars} from 'react-custom-scrollbars';
 import PowerIcon from '@material-ui/icons/PowerSettingsNew';
 import NewPowerPackDialog
   from "components/Editor/SimulatorPalettes/PowerPackPalette/NewPowerPackDialog/NewPowerPackDialog";
-import PowerPackList from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackList/PowerPackList";
 import {LayoutStore, PowerPackData} from "store/layoutStore";
 import Rnd from "react-rnd"
 import {
@@ -22,6 +21,7 @@ import {
   PaletteBodyPaper,
   ScrollablePaper
 } from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackPalette.style";
+import {PowerPackCard} from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard";
 
 
 export interface PowerPackPaletteProps {
@@ -79,9 +79,16 @@ export default class PowerPackPalette extends React.Component<PowerPackPalettePr
     let list, helpMessage
     if (! _.isEmpty(this.props.items)) {
       list = (
-        <PowerPackList
-          items={this.props.items}
-        />
+        <>
+          {this.props.items.map((item, index) => {
+            return (
+              <PowerPackCard
+                item={item}
+                feeders={this.props.layout.currentLayoutData.feeders}
+              />
+            )
+          })}
+        </>
       )
     }
 

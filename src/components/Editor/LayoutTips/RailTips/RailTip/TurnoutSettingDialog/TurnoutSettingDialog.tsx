@@ -3,22 +3,24 @@ import AutoFocusTextValidator from "components/common/AutoFocusTextValidator";
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {FeederInfo} from "components/rails/RailBase";
-import {FormControl, InputLabel, ListItemText, MenuItem, Select} from "@material-ui/core";
-import {LayoutStore, PowerPackData} from "store/layoutStore";
+import {FormControl, InputLabel, List, ListItem, ListItemText, MenuItem, Select} from "@material-ui/core";
+import {ConductionStates, LayoutStore, SwitcherData, SwitcherType} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {LayoutLogicStore} from "store/layoutLogicStore";
+import {RailData} from "components/rails";
 
 
 export interface TurnoutSettingDialogProps extends FormDialogProps {
-  feeder: FeederInfo
-  powerPacks: PowerPackData[]
+  rail: RailData
+  switchers: SwitcherData[]
   layout?: LayoutStore
   layoutLogic?: LayoutLogicStore
 }
 
 export interface TurnoutSettingDialogState extends FormDialogState {
-  connectedPowerPackId: number
+  connectedSwitcherId: number
+  conductionStates: ConductionStates
 }
 
 
@@ -34,41 +36,89 @@ export default class TurnoutSettingDialog extends FormDialog<TurnoutSettingDialo
     this.state = this.getInitialState()
   }
 
+
   getInitialState = () => {
-    const {feeder, powerPacks} = this.props
-    const connectedPowerPack = powerPacks.find(p => p.supplyingFeederIds.includes(feeder.id))
-    const connectedPowerPackId = connectedPowerPack ? connectedPowerPack.id : null
+    const {rail, switchers} = this.props
+    const conductionStates = {}
+    let connectedSwitcher = null
+
+    for (let sw of switchers) {
+      _.keys(sw.conductionStates).forEach(idx => {
+        const state = sw.conductionStates[idx].find(state => state.railId === rail.id)
+        if (state) {
+          if (!conductionStates[idx]) {
+            conductionStates[idx] = []
+          }
+          conductionStates[idx].push(state)
+        }
+      })
+      if (_.keys(conductionStates).length > 0) {
+        connectedSwitcher = sw
+        break
+      }
+    }
+
+    const connectedSwitcherId = connectedSwitcher ? connectedSwitcher.id : null
     return {
-      inputs: _.mapValues(this.props.feeder, (v) => String(v)),
-      connectedPowerPackId: connectedPowerPackId,
-      disabled: false
+      inputs: _.mapValues(this.props.rail, (v) => String(v)),
+      disabled: false,
+      connectedSwitcherId: connectedSwitcherId,
+      conductionStates: conductionStates
     }
   }
 
   onOK = (e) => {
-    this.props.layout.updateFeeder({
-      ...this.props.feeder,
+    this.props.layout.updateRail({
+      ...this.props.rail,
       name: this.state.inputs.name,
     })
-    if (this.state.connectedPowerPackId) {
-      this.props.layoutLogic.connectFeederToPowerPack(this.props.feeder.id, this.state.connectedPowerPackId)
+    if (this.state.connectedSwitcherId) {
+      this.props.layoutLogic.connectTurnoutToSwitcher(
+        this.props.rail.id, this.state.conductionStates, this.state.connectedSwitcherId)
     } else {
-      this.props.layoutLogic.disconnectFeederFromPowerPack(this.props.feeder.id, this.state.connectedPowerPackId)
+      // this.props.layoutLogic.disconnectFeederFromSwitcher(this.props.feeder.id, this.state.connectedSwitcherId)
     }
     this.onClose()
   }
 
-  onChangeFeederPowerPack = (e) => {
+  onChangeConnectedSwitcher = (e) => {
     // currentTarget は使ってはいけない
-    const powerPackId = e.target.value ? Number(e.target.value) : null
+    const switcherId = e.target.value ? Number(e.target.value) : null
     this.setState({
-      connectedPowerPackId: powerPackId
+      connectedSwitcherId: switcherId,
+      conductionStates: {
+        0: [{
+          railId: this.props.rail.id,
+          conductionState: 0
+        }],
+        1: [{
+          railId: this.props.rail.id,
+          conductionState: 1
+        }]
+      }
     })
   }
 
 
   renderContent = () => {
-    const {feeder, powerPacks} = this.props
+    const {rail, switchers} = this.props
+    const {connectedSwitcherId, conductionStates} = this.state
+    const connectedSwitcher = switchers.find(sw => sw.id === connectedSwitcherId)
+
+    let conductionStatesPart
+    if (connectedSwitcher && connectedSwitcher.type === SwitcherType.NORMAL) {
+      conductionStatesPart = (
+        <List>
+          {_.keys(conductionStates).map(idx => {
+            return (
+              <ListItem button>
+                {idx}
+              </ListItem>
+            )
+          })}
+        </List>
+      )
+    }
 
     return (
       <>
@@ -76,7 +126,7 @@ export default class TurnoutSettingDialog extends FormDialog<TurnoutSettingDialo
           ref={(form) => this._form = form}
         >
           <AutoFocusTextValidator
-            label="Feeder Name"
+            label="Turnout Name"
             name="name"
             key="name"
             value={this.state.inputs.name}
@@ -89,17 +139,17 @@ export default class TurnoutSettingDialog extends FormDialog<TurnoutSettingDialo
         </ValidatorForm>
         <form>
           <FormControl style={{width: '100%'}}>
-            <InputLabel>PowerPack</InputLabel>
+            <InputLabel>Switcher</InputLabel>
             <Select
-              value={this.state.connectedPowerPackId}
-              onChange={this.onChangeFeederPowerPack}
+              value={this.state.connectedSwitcherId}
+              onChange={this.onChangeConnectedSwitcher}
               autoWidth
               displayEmpty
             >
               <MenuItem value={null}>
               </MenuItem>
               {
-                powerPacks.map(p => {
+                switchers.map(p => {
                   return (
                     <MenuItem value={p.id}>
                       {p.name}
@@ -110,6 +160,8 @@ export default class TurnoutSettingDialog extends FormDialog<TurnoutSettingDialo
             </Select>
           </FormControl>
         </form>
+
+        {conductionStatesPart}
       </>
     )
   }

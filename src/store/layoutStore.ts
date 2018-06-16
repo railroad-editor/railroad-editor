@@ -69,6 +69,7 @@ export interface SwitcherData {
   type: SwitcherType
   currentState: number
   conductionStates: ConductionStates
+  color: string
 }
 
 export interface ConductionStates {

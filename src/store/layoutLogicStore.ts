@@ -1,6 +1,6 @@
 import {action} from "mobx";
 import getLogger from "logging";
-import layoutStore, {LayoutData, LayoutStore} from "store/layoutStore";
+import layoutStore, {ConductionStates, LayoutData, LayoutStore} from "store/layoutStore";
 import builderStore, {BuilderStore} from "store/builderStore";
 import {JointPair} from "components/hoc/withBuilder";
 import {Tools} from "constants/tools";
@@ -474,6 +474,7 @@ export class LayoutLogicStore {
     }
 
     this.disconnectFeederFromPowerPack(feederId, powerPackId)
+
     layoutStore.updatePowerPack({
       id: target.id,
       supplyingFeederIds: [...target.supplyingFeederIds, feederId]
@@ -498,6 +499,44 @@ export class LayoutLogicStore {
     })
   }
 
+  @action
+  connectTurnoutToSwitcher = (railId: number, conductionStates: ConductionStates, switcherId: number) => {
+    const target = this.getSwitcherById(switcherId)
+    if (target == null) {
+      return
+    }
+
+    this.disconnectTurnoutFromSwitcher(railId, switcherId)
+
+    const newConductionStates = target.conductionStates
+    _.keys(conductionStates).forEach(idx => {
+      newConductionStates[idx] = [...target.conductionStates[idx], ...conductionStates[idx]]
+    })
+
+    layoutStore.updateSwitcher({
+      id: switcherId,
+      conductionStates: newConductionStates
+    })
+  }
+
+  @action
+  disconnectTurnoutFromSwitcher = (railId: number, switcherId: number) => {
+    const target = this.getSwitcherById(switcherId)
+    if (target == null) {
+      return
+    }
+
+    let newConductionStates = {}
+    _.keys(target.conductionStates).forEach(idx => {
+      newConductionStates[idx] = target.conductionStates[idx].filter(state => state.railId !== railId)
+    })
+
+    layoutStore.updateSwitcher({
+      id: switcherId,
+      conductionStates: newConductionStates
+    })
+  }
+
   private getRailDataById = (id: number) => {
     return layoutStore.currentLayoutData.rails.find(item => item.id === id)
   }
@@ -512,6 +551,9 @@ export class LayoutLogicStore {
 
   private getPowerPackById = (id: number) => {
     return layoutStore.currentLayoutData.powerPacks.find(p => p.id === id)
+  }
+  private getSwitcherById = (id: number) => {
+    return layoutStore.currentLayoutData.switchers.find(p => p.id === id)
   }
 }
 

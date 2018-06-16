@@ -51,7 +51,12 @@ export class RailTips extends React.Component<RailTipProps & WithBuilderPublicPr
             const tipPos = c.railPart.getPivotPositionToParent(c.railPart.tip)
             const position = window.PAPER_SCOPE.view.projectToView(tipPos)
             return (
-              <RailTip open={true} position={position} rail={rail} />
+              <RailTip
+                open={true}
+                position={position}
+                rail={rail}
+                switchers={this.props.layout.currentLayoutData.switchers}
+              />
             )
           })
         }

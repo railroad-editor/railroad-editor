@@ -21,6 +21,7 @@ export class NewSwitcherDialog extends FormDialog<NewSwitcherDialogProps, FormDi
   constructor(props: NewSwitcherDialogProps) {
     super(props)
     this.state = this.getInitialState()
+    this.state.inputs.type = SwitcherType.NORMAL
   }
 
   onOK = (e) => {

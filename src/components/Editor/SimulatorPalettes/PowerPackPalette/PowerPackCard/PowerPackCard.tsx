@@ -18,12 +18,14 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from "@material-ui/core/IconButton";
 import PowerIcon from "@material-ui/icons/Power";
 import Card from "@material-ui/core/Card";
-import {PowerPackData} from "store/layoutStore";
+import {LayoutStore, PowerPackData} from "store/layoutStore";
 import Slider from '@material-ui/lab/Slider';
 import {FeederInfo} from "components/rails/RailBase";
 import {inject, observer} from 'mobx-react';
-import {STORE_LAYOUT_LOGIC} from "constants/stores";
+import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {LayoutLogicStore} from "store/layoutLogicStore";
+import PowerPackSettingDialog
+  from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackSettingDialog/PowerPackSettingDialog";
 
 const LOGGER = getLogger(__filename)
 
@@ -31,10 +33,7 @@ const LOGGER = getLogger(__filename)
 export interface PowerPackCardProps {
   item: PowerPackData
   feeders: FeederInfo[]
-  onPowerChange: (power: number) => void
-  onDirectionChange: (direction: boolean) => void
-  onSetting: (item: PowerPackData) => void
-  onDelete: (item: PowerPackData) => void
+  layout?: LayoutStore
   layoutLogic?: LayoutLogicStore
 }
 
@@ -43,11 +42,12 @@ export interface PowerPackCardState {
   sliderValue: number
   sliderDragging: boolean
   direction: boolean
+  dialogOpen: boolean
 }
 
 
 
-@inject(STORE_LAYOUT_LOGIC)
+@inject(STORE_LAYOUT_LOGIC, STORE_LAYOUT)
 @observer
 export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPackCardState> {
 
@@ -58,6 +58,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
       sliderValue: 0,
       sliderDragging: false,
       direction: true,
+      dialogOpen: false,
     }
   }
 
@@ -71,7 +72,11 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
     this.setState({
       sliderDragging: false
     })
-    this.props.onPowerChange(this.state.sliderValue)
+    this.props.layout.updatePowerPack({
+      id: this.props.item.id,
+      power: this.state.sliderValue
+    })
+
   }
 
   onSliderChange = (e, value) => {
@@ -79,13 +84,19 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
       sliderValue: value
     })
     if (! this.state.sliderDragging) {
-      this.props.onPowerChange(this.state.sliderValue)
+      this.props.layout.updatePowerPack({
+        id: this.props.item.id,
+        power: this.state.sliderValue
+      })
     }
   }
 
   onDirectionChange = (e) => {
     this.setState({ direction: e.target.checked });
-    this.props.onDirectionChange(e.target.checked)
+    this.props.layout.updatePowerPack({
+      id: this.props.item.id,
+      direction: e.target.checked
+    })
   }
 
   openMenu = (e: React.MouseEvent<HTMLElement>) => {
@@ -97,18 +108,29 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
   }
 
   onSetting = (e: React.MouseEvent<HTMLElement>) => {
-    this.props.onSetting(this.props.item)
+    this.setState({
+      dialogOpen: true
+    })
     this.onMenuClose(e)
   }
 
+  onSettingDialogClosed = () => {
+    this.setState({
+      dialogOpen: false
+    })
+  }
+
   onDelete = (e: React.MouseEvent<HTMLElement>) => {
-    this.props.onDelete(this.props.item)
+    this.props.layout.deletePowerPack({
+      id: this.props.item.id
+    })
     this.onMenuClose(e)
   }
 
   onDisconnectFeeder = (id) => (e) => {
     this.props.layoutLogic.disconnectFeederFromPowerPack(id, this.props.item.id)
   }
+
 
   render() {
     const {name, direction, power, supplyingFeederIds} = this.props.item
@@ -171,6 +193,13 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
           <MenuItem onClick={this.onSetting}>Setting</MenuItem>}
           <MenuItem onClick={this.onDelete}>Delete</MenuItem>}
         </Menu>
+        <PowerPackSettingDialog
+          title={'Power Pack Settings'}
+          open={this.state.dialogOpen}
+          onClose={this.onSettingDialogClosed}
+          powerPack={this.props.item}
+          updatePowerPack={this.props.layout.updatePowerPack}
+        />
       </>
     )
   }
