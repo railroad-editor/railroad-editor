@@ -2,9 +2,9 @@ import * as React from 'react'
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import {LayoutStore, PowerPackData} from "store/layoutStore";
-import {PowerPackCard} from "components/Editor/Palette/PowerPackPalette/PowerPackCard/PowerPackCard";
+import {PowerPackCard} from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard";
 import PowerPackSettingDialog
-  from "components/Editor/Palette/PowerPackPalette/PowerPackSettingDialog/PowerPackSettingDialog";
+  from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackSettingDialog/PowerPackSettingDialog";
 
 export interface PowerPackListProps {
   items: PowerPackData[]

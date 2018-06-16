@@ -7,7 +7,7 @@ import {WithFullscreenProps} from '../hoc/withFullscreen'
 import withTools, {WithToolsPrivateProps} from '../hoc/withTools'
 import withMoveTool, {WithMoveToolProps} from '../hoc/withMoveTool'
 
-import {EditorBody, StyledLayerPalette, StyledPalette, StyledToolBar, StyledWrapper} from "./Editor.style";
+import {EditorBody, StyledToolBar, StyledWrapper} from "./Editor.style";
 
 import './Paper.css'
 import withBuilder, {WithBuilderPublicProps} from "../hoc/withBuilder";
@@ -32,6 +32,8 @@ import {
 import FreeRailPlacer from "components/Editor/FreeRailPlacer/FreeRailPlacer";
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {getAllRailComponents} from "components/rails/utils";
+import BuilderPalettes from "components/Editor/BuilderPalettes/BuilderPalettes";
+import SimulatorPalettes from "components/Editor/SimulatorPalettes/SimulatorPalettes";
 
 const LOGGER = getLogger(__filename)
 
@@ -158,8 +160,9 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
       <StyledWrapper onContextMenu={this.noopContextMenu}>
         <StyledToolBar resetViewPosition={this.props.resetViewPosition} />
         <EditorBody>
-          <StyledPalette />
-          <StyledLayerPalette layers={this.props.layout.currentLayoutData.layers} />
+          <BuilderPalettes />
+          <SimulatorPalettes />
+
           <GridPaper
             viewWidth={DEFAULT_VIEW_WIDTH}
             viewHeight={DEFAULT_VIEW_HEIGHT}

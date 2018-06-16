@@ -7,7 +7,7 @@ import LayoutAPI from "apis/layout"
 import getLogger from "logging";
 import {getLayoutImageFileName} from "apis/storage";
 import {LayoutCard} from "components/Editor/MenuDrawer/OpenLayoutsDialog/LayoutCard/LayoutCard";
-import {ConfirmationDialog} from "components/Editor/LayerPalette/ConfirmationDialog/ConfirmationDialog";
+import {ConfirmationDialog} from "components/Editor/BuilderPalettes/LayerPalette/ConfirmationDialog/ConfirmationDialog";
 import {LayoutMeta} from "store/layoutStore";
 import Grid from "@material-ui/core/Grid";
 

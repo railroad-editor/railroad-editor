@@ -12,6 +12,9 @@ import {LayoutLogicStore} from "store/layoutLogicStore";
 import withMoveTool from "components/hoc/withMoveTool";
 import {StyledIconButton} from "components/Editor/ToolBar/styles";
 import AspectRatioIcon from "@material-ui/icons/AspectRatio";
+import PanToolIcon from '@material-ui/icons/PanTool'
+import * as classNames from "classnames"
+import {BuilderStore} from "store/builderStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -23,6 +26,7 @@ export interface SimulatorToolBarProps {
 
   resetViewPosition: () => void
   snackbar: any
+  builder?: BuilderStore
 }
 
 export interface SimulatorToolBarState {
@@ -102,10 +106,29 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
     this.conn.send('hello!')
   }
 
+  isActive(tool: string) {
+    return this.props.builder.activeTool === tool
+  }
+
+  onClickBuilderItem = (tool: Tools) => (e: MouseEvent) => {
+    this.props.builder.setActiveTool(tool)
+    // 最後に選択していたアイテムを選択する
+    this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[tool])
+  }
 
   render() {
     return (
       <Grid xs justify="center" alignItems="center" style={{display: 'flex'}}>
+        <Tooltip title={"PAN (Alt)"}>
+          <StyledIconButton
+            className={classNames({
+              'active': this.isActive(Tools.PAN)
+            })}
+            onClick={() => this.props.builder.setActiveTool(Tools.PAN)}
+          >
+            <PanToolIcon/>
+          </StyledIconButton>
+        </Tooltip>
         <Tooltip title={Tools.RESET_VIEW}>
           <StyledIconButton
             onClick={this.props.resetViewPosition}

@@ -2,7 +2,7 @@ import * as React from "react";
 import {FormControlLabel} from '@material-ui/core';
 import Checkbox from "@material-ui/core/Checkbox";
 import {Tools} from "constants/tools";
-import {RailItemData} from "components/rails";
+import {RailItemData} from "components/rails/index";
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import AutoFocusTextValidator from "components/common/AutoFocusTextValidator";

@@ -1,33 +1,30 @@
 import * as React from 'react'
 import {Tools} from "constants/tools";
-import StraightRailIcon from '../ToolBar/Icon/StraightRailIcon'
-import CurveRailIcon from '../ToolBar/Icon/CurveRailIcon'
-import TurnoutIcon from "../ToolBar/Icon/TurnoutIcon";
+import StraightRailIcon from 'components/Editor/ToolBar/Icon/StraightRailIcon'
+import CurveRailIcon from 'components/Editor/ToolBar/Icon/CurveRailIcon'
+import TurnoutIcon from "components/Editor/ToolBar/Icon/TurnoutIcon";
 import SpecialRailIcon from "components/Editor/ToolBar/Icon/SpecialRailIcon";
 import RailGroupIcon from "components/Editor/ToolBar/Icon/RailGroupIcon";
-import BuilderPalette from "./BuilderPalette/BuilderPalette"
+import RailPalette from "./RailPalette/RailPalette"
 import Rnd from "react-rnd"
 import CustomStraightRailDialog
-  from "components/Editor/Palette/BuilderPalette/CustomStraightRailDialog/CustomStraightRailDialog";
+  from "components/Editor/BuilderPalettes/BuilderPalette/RailPalette/CustomStraightRailDialog/CustomStraightRailDialog";
 import CustomCurveRailDialog
-  from "components/Editor/Palette/BuilderPalette/CustomCurveRailDialog/CustomCurveRailDialog";
+  from "components/Editor/BuilderPalettes/BuilderPalette/RailPalette/CustomCurveRailDialog/CustomCurveRailDialog";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
-import NewRailGroupDialog from "components/Editor/Palette/BuilderPalette/NewRailGroupDialog/NewRailGroupDialog";
+import NewRailGroupDialog from "components/Editor/BuilderPalettes/BuilderPalette/RailPalette/NewRailGroupDialog/NewRailGroupDialog";
 import {compose} from "recompose";
 import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {LayoutStore} from "store/layoutStore";
 import {withSnackbar} from 'material-ui-snackbar-provider'
-import PowerPackPalette from './PowerPackPalette/PowerPackPalette';
 
 
 export interface PaletteProps {
   className?: string
-  tool: Tools
   builder?: BuilderStore
   layout?: LayoutStore
-  addUserRailGroup: any
   snackbar: any
 }
 
@@ -35,13 +32,13 @@ export interface PaletteState {
   customDialogOpen: boolean
 }
 
-type EnhancedPaletteProps = PaletteProps & WithBuilderPublicProps
+type EnhancedPaletteProps = PaletteProps & WithBuilderPublicProps & WithSnackbarProps
 
 
 
 @inject(STORE_BUILDER, STORE_LAYOUT)
 @observer
-export class Palette extends React.Component<EnhancedPaletteProps, PaletteState> {
+export class BuilderPalette extends React.Component<EnhancedPaletteProps, PaletteState> {
 
   constructor(props: EnhancedPaletteProps) {
     super(props)
@@ -86,7 +83,7 @@ export class Palette extends React.Component<EnhancedPaletteProps, PaletteState>
         className={this.props.className}
         dragHandleClassName='.Palette__title'
       >
-        <BuilderPalette
+        <RailPalette
           active={this.isActive(Tools.STRAIGHT_RAILS)}
           icon={<StraightRailIcon/>}
           title={Tools.STRAIGHT_RAILS}
@@ -105,7 +102,7 @@ export class Palette extends React.Component<EnhancedPaletteProps, PaletteState>
           tooltipTitle={'Add Custom Straight Rail'}
           helpMessage={'Click + to add a custom straight rail.'}
         />
-        <BuilderPalette
+        <RailPalette
           active={this.isActive(Tools.CURVE_RAILS)}
           icon={<CurveRailIcon/>}
           title={Tools.CURVE_RAILS}
@@ -124,19 +121,19 @@ export class Palette extends React.Component<EnhancedPaletteProps, PaletteState>
           tooltipTitle={'Add Custom Curve Rail'}
           helpMessage={'Click + to add a custom curve rail.'}
         />
-        <BuilderPalette
+        <RailPalette
           active={this.isActive(Tools.TURNOUTS)}
           icon={<TurnoutIcon/>}
           title={Tools.TURNOUTS}
           items={this.props.builder.presetPaletteItems[Tools.TURNOUTS]}
         />
-        <BuilderPalette
+        <RailPalette
           active={this.isActive(Tools.SPECIAL_RAILS)}
           icon={<SpecialRailIcon/>}
           title={Tools.SPECIAL_RAILS}
           items={this.props.builder.presetPaletteItems[Tools.SPECIAL_RAILS]}
         />
-        <BuilderPalette
+        <RailPalette
           active={this.isActive(Tools.RAIL_GROUPS)}
           icon={<RailGroupIcon/>}
           title={Tools.RAIL_GROUPS}
@@ -155,24 +152,14 @@ export class Palette extends React.Component<EnhancedPaletteProps, PaletteState>
           tooltipTitle={'Add Rail Group'}
           helpMessage={'To add a new rail group, select rails and click + button.'}
         />
-
-        <PowerPackPalette
-          active={this.isActive(Tools.SIMULATOR)}
-          items={this.props.layout.currentLayoutData.powerPacks}
-          helpMessage={'Click + to add a power unit.'}
-        />
-
-
-
-
       </Rnd>
     )
   }
 }
 
 
-export default compose<PaletteProps, EnhancedPaletteProps>(
+export default compose<PaletteProps, EnhancedPaletteProps|any>(
   withBuilder,
   withSnackbar()
-)(Palette)
+)(BuilderPalette)
 

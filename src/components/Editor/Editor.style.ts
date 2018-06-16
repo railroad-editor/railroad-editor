@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import {View} from "react-paper-bindings";
-import Palette from "./Palette/Palette";
+import Palette from "./BuilderPalettes/BuilderPalettes";
 import ToolBar from "./ToolBar/ToolBar";
-import LayerPalette from "./LayerPalette/LayerPalette";
+import LayerPalette from "./BuilderPalettes/LayerPalette/LayerPalette";
 
 
 export const StyledWrapper = styled.div`
@@ -36,14 +36,4 @@ export const StretchedView = styled(View as any)`
   // Viewのインライン要素の width, height を上書きする
   width: 100%!important;
   height: 100%!important;
-`
-
-export const StyledLayerPalette = styled(LayerPalette as any)`
-  // Rndのインラインスタイルである top:0, left:0 を打ち消す
-  top: 10px!important;
-  left: auto!important;
-  right: 10px;
-  //top: 10px!important;
-  //left: 10px!important;
-  //width: 200px!important;
 `

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Paper from "@material-ui/core/Paper";
-import Selector from "components/Editor/Palette/BuilderPalette/Selector/Selector";
+import Selector from "components/Editor/BuilderPalettes/BuilderPalette/RailPalette/Selector/Selector";
 
 export const HideableDiv = styled.div`
   &.hidden {

@@ -4,7 +4,7 @@ import ChromePicker from "react-color/lib/components/chrome/Chrome";
 import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import {SmallButton, Spacer} from "components/Editor/LayerPalette/LayerSettingDialog/styles";
+import {SmallButton, Spacer} from "components/Editor/BuilderPalettes/LayerPalette/LayerSettingDialog/styles";
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {LayerData} from "store/layoutStore";

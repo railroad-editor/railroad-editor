@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {ReactNode} from 'react'
-import {TitleDiv} from "../../LayerPalette/styles";
+import {TitleDiv} from "../../BuilderPalettes/LayerPalette/styles";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import {inject, observer} from "mobx-react";
@@ -16,12 +16,14 @@ import {
   HideableDiv,
   PaletteBodyPaper,
   ScrollablePaper
-} from "components/Editor/Palette/BuilderPalette/style";
-import NewPowerPackDialog from "components/Editor/Palette/PowerPackPalette/NewPowerPackDialog/NewPowerPackDialog";
-import PowerPackList from "components/Editor/Palette/PowerPackPalette/PowerPackList/PowerPackList";
+} from "components/Editor/BuilderPalettes/BuilderPalette/RailPalette/style";
+import NewPowerPackDialog from "components/Editor/SimulatorPalettes/PowerPackPalette/NewPowerPackDialog/NewPowerPackDialog";
+import PowerPackList from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackList/PowerPackList";
 import {BuilderStore} from "store/builderStore";
 import {LayoutStore, PowerPackData} from "store/layoutStore";
-import {PowerPackCard} from "components/Editor/Palette/PowerPackPalette/PowerPackCard/PowerPackCard";
+import {PowerPackCard} from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard";
+import Rnd from "react-rnd"
+
 
 export interface SimulatorPaletteProps {
   className?: string
@@ -99,35 +101,39 @@ export default class SimulatorPalette extends React.Component<SimulatorPalettePr
     }
 
     return (
-      // styleを上書きするために必要
-      <div className={this.props.className}>
-        <HideableDiv className={classNames({
-          'hidden': ! this.props.active
-        })}
-        >
-          <PaletteBodyPaper>
-            <TitleDiv className='Palette__title'>
-              <PowerIcon />
-              <Typography variant="subheading" color="inherit" style={{flex: 1}}>
-                {'Power Units'}
-              </Typography>
-              <Tooltip title={'Add Power Unit'}>
-                <PrimaryPaletteAddButton onClick={this.openDialog}/>
-              </Tooltip>
-            </TitleDiv>
-            <ScrollablePaper>
-              {list}
-              {helpMessage}
-            </ScrollablePaper>
-          </PaletteBodyPaper>
-        </HideableDiv>
-        <NewPowerPackDialog
-          title={'New Power Pack'}
-          open={this.state.dialogOpen}
-          onClose={this.onCloseDialog}
-          addPowerPack={this.addPowerPack}
-        />
-      </div>
+      <Rnd
+        className={this.props.className}
+        dragHandleClassName='.Palette__title'
+      >
+        <div className={this.props.className}>
+          <HideableDiv className={classNames({
+            'hidden': ! this.props.active
+          })}
+          >
+            <PaletteBodyPaper>
+              <TitleDiv className='Palette__title'>
+                <PowerIcon />
+                <Typography variant="subheading" color="inherit" style={{flex: 1}}>
+                  {'Power Units'}
+                </Typography>
+                <Tooltip title={'Add Power Unit'}>
+                  <PrimaryPaletteAddButton onClick={this.openDialog}/>
+                </Tooltip>
+              </TitleDiv>
+              <ScrollablePaper>
+                {list}
+                {helpMessage}
+              </ScrollablePaper>
+            </PaletteBodyPaper>
+          </HideableDiv>
+          <NewPowerPackDialog
+            title={'New Power Pack'}
+            open={this.state.dialogOpen}
+            onClose={this.onCloseDialog}
+            addPowerPack={this.addPowerPack}
+          />
+        </div>
+      </Rnd>
     )
   }
 }

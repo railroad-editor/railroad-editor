@@ -3,7 +3,7 @@ import {ReactEventHandler} from "react";
 import {
   ActiveListItemProps,
   SecondaryColorActiveListItem
-} from "components/common/ActiveListItem";
+} from "components/common/ActiveListItem/index";
 import {ListItemText, MenuItem} from '@material-ui/core';
 import Menu from "@material-ui/core/Menu";
 import IconButton from "@material-ui/core/IconButton";

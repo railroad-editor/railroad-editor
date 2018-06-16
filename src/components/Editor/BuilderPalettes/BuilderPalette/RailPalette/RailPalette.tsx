@@ -14,7 +14,7 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 import {Scrollbars} from 'react-custom-scrollbars';
 
 
-export interface BuilderPaletteProps {
+export interface RailPaletteProps {
   className?: string
   active: boolean
   title: string
@@ -31,9 +31,9 @@ export interface BuilderPaletteProps {
 
 @inject(STORE_BUILDER)
 @observer
-export default class BuilderPalette extends React.Component<BuilderPaletteProps, {}> {
+export default class RailPalette extends React.Component<RailPaletteProps, {}> {
 
-  constructor(props: BuilderPaletteProps) {
+  constructor(props: RailPaletteProps) {
     super(props)
     this.state = {
       addDialogOpen: false

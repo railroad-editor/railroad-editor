@@ -3,10 +3,10 @@ import LayersIcon from '@material-ui/icons/Layers';
 import {Checkbox, Grid} from '@material-ui/core'
 import {ScrollablePaper, TitleDiv} from "./styles";
 import Rnd from 'react-rnd'
-import {LayerListItem} from "components/Editor/LayerPalette/LayerListItem/LayerListItem";
+import {LayerListItem} from "components/Editor/BuilderPalettes/LayerPalette/LayerListItem/LayerListItem";
 import getLogger from "logging";
-import LayerSettingDialog from "components/Editor/LayerPalette/LayerSettingDialog/LayerSettingDialog";
-import {ConfirmationDialog} from "components/Editor/LayerPalette/ConfirmationDialog/ConfirmationDialog";
+import LayerSettingDialog from "components/Editor/BuilderPalettes/LayerPalette/LayerSettingDialog/LayerSettingDialog";
+import {ConfirmationDialog} from "components/Editor/BuilderPalettes/LayerPalette/ConfirmationDialog/ConfirmationDialog";
 import Typography from "@material-ui/core/Typography";
 import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {inject, observer} from "mobx-react";

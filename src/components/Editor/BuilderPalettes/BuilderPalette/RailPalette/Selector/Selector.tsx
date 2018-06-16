@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {List} from '@material-ui/core'
-import PaletteListItem from "components/Editor/Palette/BuilderPalette/PaletteListItem/PaletteListItem";
+import PaletteListItem from "components/Editor/BuilderPalettes/BuilderPalette/RailPalette/PaletteListItem/PaletteListItem";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
