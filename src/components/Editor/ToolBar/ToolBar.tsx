@@ -7,7 +7,7 @@ import {
   MenuItem,
   Select,
   Toolbar as MuiToolbar,
-  Typography
+  Typography, withStyles
 } from '@material-ui/core'
 import {StyledIconButton} from "./styles";
 import {Tools} from "constants/tools";
@@ -31,6 +31,8 @@ import SimulatorToolBar from "components/Editor/ToolBar/SimulatorToolBar/Simulat
 import {EditorMode} from "store/uiStore";
 import BuildIcon from '@material-ui/icons/Build';
 import PlayArrowIcon from '@material-ui/icons/PlayCircleFilled';
+import {PrimaryColorActiveButton} from "components/common/ActiveButton";
+import {PrimaryColorActiveMenuItem} from 'components/common/ActiveMenuItem';
 
 const LOGGER = getLogger(__filename)
 
@@ -43,6 +45,7 @@ export interface ToolBarProps {
 
   resetViewPosition: () => void
   snackbar: any
+  classes?: any
 }
 
 export interface ToolBarState {
@@ -54,6 +57,22 @@ export interface ToolBarState {
 
 type EnhancedToolBarProps = ToolBarProps & WithBuilderPublicProps
 
+// TODO: MenuItemの色変わらね〜〜〜！！！
+// const styles = theme => ({
+//   menuItem: {
+//     '&$selected': {
+//       backgroundColor: 'orange'
+//     },
+//     root: {
+//       '&$selected': {
+//         backgroundColor: 'orange'
+//       },
+//     },
+//     selected: {
+//       backgroundColor: 'orange !important'
+//     },
+//   }
+// })
 
 
 @inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
@@ -174,7 +193,8 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
 
 
               <Grid xs justify="flex-end" alignItems="center" style={{display: 'flex'}}>
-                <Tooltip id="tooltip-icon" title={'Editor Mode'}>
+                <Tooltip title={'Editor Mode'} PopperProps={{style: {zIndex: '1000'}}}
+                >
                   <Select
                     value={this.props.common.editorMode}
                     onChange={this.onChangeEditorMode}
@@ -187,13 +207,17 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                       )
                     }}
                   >
-                    <MenuItem value={EditorMode.BUILDER}>
+                    <PrimaryColorActiveMenuItem
+                      value={EditorMode.BUILDER}
+                    >
                       <ListItemIcon>
                         <BuildIcon/>
                       </ListItemIcon>
                       <ListItemText primary={EditorMode.BUILDER}/>
-                    </MenuItem>
-                    <MenuItem value={EditorMode.SIMULATOR}>
+                    </PrimaryColorActiveMenuItem>
+                    <MenuItem
+                      value={EditorMode.SIMULATOR}
+                    >
                       <ListItemIcon>
                         <PlayArrowIcon/>
                       </ListItemIcon>
@@ -213,5 +237,6 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
 
 export default compose<ToolBarProps, ToolBarProps>(
   withBuilder,
-  withMoveTool
+  withMoveTool,
+  // withStyles(styles)
 )(ToolBar)

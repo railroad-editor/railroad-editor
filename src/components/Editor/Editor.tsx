@@ -92,8 +92,11 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
   buildModeMouseMove = (e) => {
     // this.props.builderMouseMove(e)
-    const mousePosition = this.props.moveToolMouseMove(e)
-    this.setState({mousePosition})
+    const mousePosition = this.props.moveToolMouseMove(e);
+    this.setState({mousePosition});
+    // Material-UIの要素に変にフォーカスが残ってしまうので、Canvasにいるときは常にBlurして対処
+    // TODO: もっとスマートな方法が無いか調べる
+    (document.activeElement as HTMLElement).blur();
   }
 
   buildModeMouseDrag = (e) => {

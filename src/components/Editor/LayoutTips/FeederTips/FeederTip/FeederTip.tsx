@@ -14,6 +14,7 @@ import FeederSettingDialog
   from "components/Editor/LayoutTips/FeederTips/FeederTip/FeederSettingDialog/FeederSettingDialog";
 import {FeederInfo} from "components/rails/RailBase";
 import {StyledTooltip} from "components/Editor/LayoutTips/FeederTips/FeederTip/FeederTip.style";
+import {FlowDirection} from "components/rails/parts/primitives/PartBase";
 
 const LOGGER = getLogger(__filename)
 
@@ -56,7 +57,16 @@ export class FeederTip extends React.Component<FeederTipProps & WithBuilderPubli
   }
 
   getPlacement = () => {
-    const a = normAngle(this.props.angle)
+    let b = 0
+    switch (this.props.feeder.direction) {
+      case FlowDirection.LEFT_TO_RIGHT:
+        b = 0
+        break
+      case FlowDirection.RIGHT_TO_LEFT:
+        b = 180
+        break
+    }
+    const a = normAngle(this.props.angle + b)
     if (0 <= a && a < 22.5) {
       return 'bottom'
     } else if (22.5 <= a && a < 67.5) {
