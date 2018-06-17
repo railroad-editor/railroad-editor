@@ -18,7 +18,7 @@ import {Point} from "paper";
 import {inject, observer} from "mobx-react";
 import {CommonStore} from "store/commonStore";
 import {LayoutStore} from "store/layoutStore";
-import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
+import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_SIMULATOR_LOGIC} from "constants/stores";
 import {GridPaper} from "components/Editor/GridPaper/GridPaper";
 import Layout from "components/Editor/Layout/Layout";
 import {
@@ -34,8 +34,9 @@ import {BuilderStore, PlacingMode} from "store/builderStore";
 import {getAllRailComponents} from "components/rails/utils";
 import BuilderPalettes from "components/Editor/BuilderPalettes/BuilderPalettes";
 import SimulatorPalettes from "components/Editor/SimulatorPalettes/SimulatorPalettes";
-import {Tooltip} from "@material-ui/core";
 import LayoutTips from "components/Editor/LayoutTips/LayoutTips";
+import {EditorMode} from "store/uiStore";
+import {SimulatorLogicStore} from "store/simulatorLogicStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -46,6 +47,7 @@ export interface EditorProps {
   builder?: BuilderStore
   common?: CommonStore
   layout?: LayoutStore
+  simulatorLogic?: SimulatorLogicStore
 }
 
 
@@ -63,7 +65,7 @@ export interface EditorState {
 }
 
 
-@inject(STORE_COMMON, STORE_LAYOUT, STORE_BUILDER)
+@inject(STORE_COMMON, STORE_LAYOUT, STORE_BUILDER, STORE_SIMULATOR_LOGIC)
 @observer
 class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
@@ -81,7 +83,11 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
 
   isActive = (... tools: string[]) => {
-    return tools.includes(this.props.builder.activeTool)
+    if (this.props.common.editorMode === EditorMode.BUILDER) {
+      return tools.includes(this.props.builder.activeTool)
+    } else {
+      return tools.includes(this.props.simulatorLogic.activeTool)
+    }
   }
 
   buildModeMouseDown = (e) => {
@@ -120,7 +126,10 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
   }
 
   panModeMouseMove = (e) => {
-    this.props.moveToolMouseMove(e)
+    this.props.moveToolMouseMove(e);
+    // Material-UIの要素に変にフォーカスが残ってしまうので、Canvasにいるときは常にBlurして対処
+    // TODO: もっとスマートな方法が無いか調べる
+    (document.activeElement as HTMLElement).blur();
   }
 
   panModeMouseDrag = (e) => {

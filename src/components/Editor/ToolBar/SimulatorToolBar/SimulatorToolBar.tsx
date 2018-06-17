@@ -2,31 +2,29 @@ import * as React from 'react'
 import {Grid, Tooltip} from '@material-ui/core'
 import {Tools} from "constants/tools";
 import getLogger from "logging";
-import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
+import {STORE_BUILDER, STORE_COMMON, STORE_SIMULATOR_LOGIC} from "constants/stores";
 import {CommonStore} from "store/commonStore";
 import {compose} from "recompose";
 import Peer from 'skyway-js';
-import {LayoutLogicStore} from "store/layoutLogicStore";
 import withMoveTool from "components/hoc/withMoveTool";
 import {StyledIconButton} from "components/Editor/ToolBar/styles";
 import AspectRatioIcon from "@material-ui/icons/AspectRatio";
 import PanToolIcon from '@material-ui/icons/PanTool'
 import * as classNames from "classnames"
 import {BuilderStore} from "store/builderStore";
+import {SimulatorLogicStore} from "store/simulatorLogicStore";
 
 const LOGGER = getLogger(__filename)
 
 
 export interface SimulatorToolBarProps {
   common?: CommonStore
-  layout?: LayoutStore
-  layoutLogic?: LayoutLogicStore
 
   resetViewPosition: () => void
   snackbar: any
   builder?: BuilderStore
+  simulatorLogic?: SimulatorLogicStore
 }
 
 export interface SimulatorToolBarState {
@@ -38,7 +36,7 @@ type EnhancedSimulatorToolBarProps = SimulatorToolBarProps
 
 
 
-@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
+@inject(STORE_COMMON, STORE_BUILDER, STORE_SIMULATOR_LOGIC)
 @observer
 export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarProps, SimulatorToolBarState> {
 
@@ -107,13 +105,7 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
   }
 
   isActive(tool: string) {
-    return this.props.builder.activeTool === tool
-  }
-
-  onClickBuilderItem = (tool: Tools) => (e: MouseEvent) => {
-    this.props.builder.setActiveTool(tool)
-    // 最後に選択していたアイテムを選択する
-    this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[tool])
+    return this.props.simulatorLogic.activeTool === tool
   }
 
   render() {
@@ -124,7 +116,7 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
             className={classNames({
               'active': this.isActive(Tools.PAN)
             })}
-            onClick={() => this.props.builder.setActiveTool(Tools.PAN)}
+            onClick={() => this.props.simulatorLogic.setActiveTool(Tools.PAN)}
           >
             <PanToolIcon/>
           </StyledIconButton>

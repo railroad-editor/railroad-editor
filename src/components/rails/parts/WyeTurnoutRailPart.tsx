@@ -37,7 +37,7 @@ export default class WyeTurnoutRailPart extends RailPartBase<WyeTurnoutRailPartP
         {pivotPartIndex: 0, pivot: Pivot.RIGHT},
         {pivotPartIndex: 1, pivot: Pivot.RIGHT}
       ]
-    ][this.props.switchState]
+    ][this.props.conductionState]
   }
 
   get feederSockets() {
@@ -45,7 +45,7 @@ export default class WyeTurnoutRailPart extends RailPartBase<WyeTurnoutRailPartP
   }
 
   get conductiveParts() {
-    return [[0], [1]][this.props.switchState]
+    return [[0], [1]][this.props.conductionState]
   }
 
 

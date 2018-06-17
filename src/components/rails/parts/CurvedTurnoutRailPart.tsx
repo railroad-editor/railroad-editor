@@ -39,7 +39,7 @@ export default class CurvedTurnoutRailPart extends RailPartBase<CurvedTurnoutRai
         {pivotPartIndex: 0, pivot: Pivot.RIGHT},
         {pivotPartIndex: 1, pivot: Pivot.RIGHT}
       ]
-    ][this.props.switchState]
+    ][this.props.conductionState]
   }
 
   get feederSockets() {
@@ -47,7 +47,7 @@ export default class CurvedTurnoutRailPart extends RailPartBase<CurvedTurnoutRai
   }
 
   get conductiveParts() {
-    return [[0], [1]][this.props.switchState]
+    return [[0], [1]][this.props.conductionState]
   }
 
   renderParts = () => {

@@ -207,14 +207,14 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
                       )
                     }}
                   >
-                    <PrimaryColorActiveMenuItem
+                    <MenuItem
                       value={EditorMode.BUILDER}
                     >
                       <ListItemIcon>
                         <BuildIcon/>
                       </ListItemIcon>
                       <ListItemText primary={EditorMode.BUILDER}/>
-                    </PrimaryColorActiveMenuItem>
+                    </MenuItem>
                     <MenuItem
                       value={EditorMode.SIMULATOR}
                     >

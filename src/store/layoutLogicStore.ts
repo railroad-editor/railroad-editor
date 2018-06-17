@@ -11,6 +11,7 @@ import StorageAPI from "apis/storage"
 import LayoutAPI from "apis/layout";
 import * as moment from "moment";
 import simulatorLogicStore from "store/simulatorLogicStore";
+import {EditorMode} from "store/uiStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -65,6 +66,11 @@ export class LayoutLogicStore {
     layoutStore.setConfig(layout.config)
     builderStore.setUserRailGroups(layout.userRailGroups)
     builderStore.setUserRails(layout.userRails)
+
+    // TODO: 本当はセーブするときに全ての電流をOFFにしておくのが良い
+    if (commonStore.editorMode === EditorMode.BUILDER) {
+      simulatorLogicStore.stopCurrentFlowSimulation()
+    }
   }
 
   /**
@@ -383,6 +389,14 @@ export class LayoutLogicStore {
   @action
   changeToRailMode = () => {
     layoutStore.enableJoints()
+    this.selectAllFeeders(false)
+    this.selectAllGapJoiners(false)
+  }
+
+  @action
+  changeToSimulationMode = () => {
+    layoutStore.disableAllDetectables()
+    this.selectAllRails(false)
     this.selectAllFeeders(false)
     this.selectAllGapJoiners(false)
   }

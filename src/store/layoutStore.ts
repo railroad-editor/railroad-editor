@@ -499,6 +499,19 @@ export class LayoutStore {
     this.updateRails(nextRails)
   }
 
+  @action
+  disableAllDetectables = () => {
+    const nextRails = this.currentLayoutData.rails.map(rail => {
+      return {
+        ...rail,
+        enableJoints: false,
+        enableFeederSockets: false,
+        enableGapJoinerSockets: false,
+      }
+    })
+    this.updateRails(nextRails)
+  }
+
   /**
    * パワーユニット系 Add/Update/Delete
    */

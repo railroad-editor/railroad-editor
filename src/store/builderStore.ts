@@ -1,10 +1,9 @@
 import {RailComponentClasses, RailData, RailGroupData, RailItemData} from "components/rails";
 import {FeederInfo, JointInfo} from "components/rails/RailBase";
 import {RailGroupProps} from "components/rails/RailGroup/RailGroup";
-import {action, computed, observable, reaction, when} from "mobx";
+import {action, computed, observable, reaction} from "mobx";
 import {Tools} from "constants/tools";
 import builderPaletteData from "constants/builderPaletteItems.json"
-import layoutStore from "store/layoutStore";
 import layoutLogicStore from "store/layoutLogicStore";
 import railItems from "constants/railItems.json"
 
@@ -119,26 +118,29 @@ export class BuilderStore {
     this.selecting = selecting
     this.temporaryFeeder = temporaryFeeder
 
+    // ツール変更時
     reaction(
       () => this.activeTool,
-      (tool) => {
-
-        this.setCursorShape(tool)
-
-        switch (tool) {
-          case Tools.FEEDERS:
-            layoutLogicStore.changeToFeederMode()
-            break
-          case Tools.GAP_JOINERS:
-            layoutLogicStore.changeToGapJoinerMode()
-            break
-          default:
-            layoutLogicStore.changeToRailMode()
-            break
-        }
-      }
+      (tool) => this.changeMode(tool)
     )
   }
+
+  @action
+  changeMode = (tool: Tools) => {
+    this.setCursorShape(tool)
+    switch (tool) {
+      case Tools.FEEDERS:
+        layoutLogicStore.changeToFeederMode()
+        break
+      case Tools.GAP_JOINERS:
+        layoutLogicStore.changeToGapJoinerMode()
+        break
+      default:
+        layoutLogicStore.changeToRailMode()
+        break
+    }
+  }
+
 
   @computed
   get isRailMode() {

@@ -37,7 +37,7 @@ export interface RailPartBaseDefaultProps {
   visible?: boolean
   fillColors?: string[]
   flowDirections: FlowDirections
-  switchState: number
+  conductionState: number
 }
 
 
@@ -51,7 +51,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     visible: true,
     fillColors: RAIL_PART_FILL_COLORS,
     flowDirections: {},
-    switchState: 0
+    conductionState: 0
   }
 
   detectablePart: DetectablePart

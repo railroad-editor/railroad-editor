@@ -461,7 +461,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
       onMouseEnter: onRailPartMouseEnter,
       onMouseLeave: onRailPartMouseLeave,
       flowDirections: flowDirections,
-      switchState: conductionState,
+      conductionState: conductionState,
     })
 
     return (

@@ -38,7 +38,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
         {pivotPartIndex: 6, pivot: Pivot.LEFT},
         {pivotPartIndex: 7, pivot: Pivot.RIGHT}
       ]
-    ][this.props.switchState]
+    ][this.props.conductionState]
   }
 
   get feederSockets() {
@@ -46,7 +46,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
   }
 
   get conductiveParts() {
-    return [[0, 1, 2, 3], [4, 5, 6, 7]][this.props.switchState]
+    return [[0, 1, 2, 3], [4, 5, 6, 7]][this.props.conductionState]
   }
 
 

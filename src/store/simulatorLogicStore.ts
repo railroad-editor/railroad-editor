@@ -1,4 +1,4 @@
-import {action, comparer, observable, reaction} from "mobx";
+import {action, comparer, observable, reaction, when} from "mobx";
 import getLogger from "logging";
 import layoutStore, {PowerPackData} from "store/layoutStore";
 import {getRailComponent} from "components/rails/utils";
@@ -7,6 +7,8 @@ import commonStore from "./commonStore";
 import {EditorMode} from "store/uiStore";
 import {deepEqual} from "deep-equal";
 import {shallowEqual} from "recompose";
+import {Tools} from "constants/tools";
+import layoutLogicStore from "store/layoutLogicStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -28,6 +30,7 @@ export interface TemporaryRailFlows {
 
 export class SimulatorLogicStore {
 
+  @observable activeTool: Tools
   @observable temporaryRailFlows: TemporaryRailFlows
 
   constructor() {
@@ -64,6 +67,26 @@ export class SimulatorLogicStore {
         }
       }
     )
+    // ツール変更時
+    reaction(
+      () => this.activeTool,
+      (tool) => {
+        this.changeMode(tool)
+      }
+    )
+
+    this.activeTool = Tools.PAN
+  }
+
+  @action
+  changeMode = (tool: Tools) => {
+    this.setCursorShape(tool)
+    layoutLogicStore.changeToSimulationMode()
+  }
+
+  @action
+  setActiveTool = (tool: Tools) => {
+    this.activeTool = tool
   }
 
   // shouldUpdateSimulation = (value: PowerPackData[], nextValue: PowerPackData[]) => {
@@ -272,6 +295,18 @@ export class SimulatorLogicStore {
         [partId]: direction
       }
     })
+  }
+
+  @action
+  setCursorShape = (tool: Tools) => {
+    // カーソル形状を変更する
+    switch (tool) {
+      case Tools.PAN:
+        document.body.style.cursor = 'move'
+        break
+      default:
+        document.body.style.cursor = 'crosshair'
+    }
   }
 }
 

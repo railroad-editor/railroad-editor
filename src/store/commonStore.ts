@@ -6,6 +6,8 @@ import {create} from "mobx-persist";
 import {DEFAULT_INITIAL_ZOOM} from "constants/tools";
 import {EditorMode} from "store/uiStore";
 import {Point} from "paper";
+import builderStore from "store/builderStore";
+import simulatorLogicStore from "store/simulatorLogicStore";
 
 
 const INITIAL_STATE = {
@@ -48,6 +50,18 @@ export class CommonStore {
       () => this.panning = false,
       {
         delay: 100
+      }
+    )
+
+    // モード変更時に各モードの状態を復元する
+    reaction(
+      () => this.editorMode,
+      (mode) => {
+        if (mode === EditorMode.BUILDER) {
+          builderStore.changeMode(builderStore.activeTool)
+        } else {
+          simulatorLogicStore.changeMode(simulatorLogicStore.activeTool)
+        }
       }
     )
   }
