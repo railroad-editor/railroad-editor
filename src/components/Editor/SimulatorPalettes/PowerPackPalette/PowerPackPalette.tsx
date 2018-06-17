@@ -137,6 +137,7 @@ export default class PowerPackPalette extends React.Component<PowerPackPalettePr
             open={this.state.dialogOpen}
             onClose={this.onCloseDialog}
             addPowerPack={this.addPowerPack}
+            defaultInputs={{name: `P${this.props.layout.nextPowerPackId}`}}
           />
         </div>
       </Rnd>

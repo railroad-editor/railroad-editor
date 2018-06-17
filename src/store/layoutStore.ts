@@ -229,20 +229,30 @@ export class LayoutStore {
     return ids.length > 0 ? Math.max(...ids) + 1 : 1
   }
 
+  @computed
+  get nextTurnoutId() {
+    const ids = this.currentLayoutData.rails
+      .filter(r => RailComponentClasses[r.type].defaultProps.numConductionStates > 1)
+      .filter(r => r.turnoutId)
+      .map(r => r.turnoutId)
+    return ids.length > 0 ? Math.max(...ids) + 1 : 1
+  }
   /**
    * レール系 Add/Update/Delete
    */
 
   @action
   addRail = (item: RailData) => {
-    let name = ''
+    let turnoutId = null, name = ''
     if (RailComponentClasses[item.type].defaultProps.numConductionStates > 1) {
-      name = this.nextTurnoutName
+      turnoutId = this.nextTurnoutId
+      name = `T${turnoutId}`
     }
     this.currentLayoutData.rails.push({
       ...item,
       id: this.nextRailId,
-      name: name
+      turnoutId,
+      name
     })
   }
 

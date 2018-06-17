@@ -49,7 +49,7 @@ export class FeederTips extends React.Component<FeederTipProps & WithBuilderPubl
             const positionOnCanvas = c.feeders[feeder.socketId].part.getGlobalPosition(Pivot.CENTER)
             const position = window.PAPER_SCOPE.view.projectToView(positionOnCanvas)
             return (
-              <FeederTip open={true} position={position} feeder={feeder} />
+              <FeederTip open={true} position={position} angle={c.props.angle} feeder={feeder} />
             )
           })
         }

@@ -64,6 +64,8 @@ export interface RailBaseProps extends Partial<RailBaseDefaultProps> {
   groupId?: number
   // ピボットとなるジョイントのIndex
   pivotJointIndex?: number,
+
+  turnoutId?: number
 }
 
 export interface RailBaseDefaultProps {

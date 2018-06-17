@@ -5,6 +5,7 @@ import LayoutAPI from "apis/layout";
 import {create} from "mobx-persist";
 import {DEFAULT_INITIAL_ZOOM} from "constants/tools";
 import {EditorMode} from "store/uiStore";
+import {Point} from "paper";
 
 
 const INITIAL_STATE = {
@@ -21,6 +22,8 @@ export class CommonStore {
   @observable editorMode: EditorMode
   @observable zoom: number
   @observable zooming: boolean
+  @observable pan: Point
+  @observable panning: boolean
 
 
   constructor({layouts, authData}) {
@@ -30,10 +33,19 @@ export class CommonStore {
     this.initialZoom = DEFAULT_INITIAL_ZOOM
     this.editorMode = EditorMode.BUILDER
     this.zooming = false
+    this.panning = false
 
     // zoomがセットされてから少し経ったらzoomingをfalseに戻す
     reaction(() => this.zoom,
       () => this.zooming = false,
+      {
+        delay: 100
+      }
+    )
+
+    // zoomがセットされてから少し経ったらzoomingをfalseに戻す
+    reaction(() => this.pan,
+      () => this.panning = false,
       {
         delay: 100
       }
@@ -85,6 +97,12 @@ export class CommonStore {
   setZoom =  (zoom: number) => {
     this.zoom = zoom
     this.zooming = true
+  }
+
+  @action
+  setPan = (point: Point) => {
+    this.pan = point
+    this.panning = true
   }
 }
 

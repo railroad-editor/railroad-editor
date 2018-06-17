@@ -147,7 +147,7 @@ export default class SwitcherPalette extends React.Component<SwitcherPaletteProp
             open={this.state.dialogOpen}
             onClose={this.onCloseDialog}
             addSwitcher={this.addSwitcher}
-            defaultInputs={{type: SwitcherType.NORMAL}}
+            defaultInputs={{type: SwitcherType.NORMAL, name: `S${this.props.layout.nextSwitcherId}`}}
           />
         </div>
       </Rnd>

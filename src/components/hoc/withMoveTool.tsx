@@ -214,6 +214,7 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
       // transform view manually
       view.translate(tx, ty)
       this._pan = next
+      this.props.common.setPan(new Point(tx, ty))
     }
 
     /**

@@ -12,6 +12,7 @@ import {StyledTooltip} from "components/Editor/LayoutTips/FeederTips/FeederTip/F
 import TurnoutSettingDialog
   from "components/Editor/LayoutTips/RailTips/RailTip/TurnoutSettingDialog/TurnoutSettingDialog";
 import {RailData} from "components/rails";
+import {normAngle} from "components/rails/utils";
 
 const LOGGER = getLogger(__filename)
 
@@ -53,15 +54,41 @@ export class RailTip extends React.Component<FeederTipProps & WithBuilderPublicP
     })
   }
 
+  getPlacement = () => {
+    const a = normAngle(this.props.rail.angle)
+    if (0 <= a && a < 22.5) {
+      return 'bottom'
+    } else if (22.5 <= a && a < 67.5) {
+      return 'bottom-end'
+    } else if (67.5 <= a && a < 112.5) {
+      return 'right'
+    } else if (112.5 <= a && a < 157.5) {
+      return 'top-end'
+    } else if (157.5 <= a && a < 202.5) {
+      return 'top'
+    } else if (202.5 <= a && a < 247.5) {
+      return 'top-start'
+    } else if (247.5 <= a && a < 292.5) {
+      return 'left'
+    } else if (292.5 <= a && a <= 337.5) {
+      return 'bottom-start'
+    } else {
+      return 'bottom'
+    }
+  }
+
 
   render() {
     const {rail, switchers, open, position} = this.props
+    const placement = this.getPlacement()
 
     return (
       <>
         <StyledTooltip open={open} title={rail.name}
-                       PopperProps={{onClick: this.onClick, style: {cursor: 'pointer'}}}>
-          <div style={{top: `${position.y}px`, left: `${position.x}px`, width: '1px', height: '1px', position: 'absolute'}}/>
+                       PopperProps={{onClick: this.onClick, style: {cursor: 'pointer', zIndex: '1000'}}}
+                       placement={placement}
+        >
+          <div style={{top: `${position.y}px`, left: `${position.x}px`, width: '5px', height: '5px', position: 'absolute'}}/>
         </StyledTooltip>
         <TurnoutSettingDialog
           title={'Turnout Setting'}

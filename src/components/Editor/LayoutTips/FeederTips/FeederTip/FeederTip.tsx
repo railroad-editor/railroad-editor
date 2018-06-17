@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Layer} from "react-paper-bindings";
-import {getRailComponent} from "components/rails/utils";
+import {getRailComponent, normAngle} from "components/rails/utils";
 import getLogger from "logging";
 import {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {compose} from "recompose";
@@ -21,6 +21,7 @@ const LOGGER = getLogger(__filename)
 export interface FeederTipProps {
   feeder: FeederInfo
   position: Point
+  angle: number
   open: boolean
   layout?: LayoutStore
   common?: CommonStore
@@ -54,14 +55,39 @@ export class FeederTip extends React.Component<FeederTipProps & WithBuilderPubli
     })
   }
 
+  getPlacement = () => {
+    const a = normAngle(this.props.angle)
+    if (0 <= a && a < 22.5) {
+      return 'bottom'
+    } else if (22.5 <= a && a < 67.5) {
+      return 'bottom-end'
+    } else if (67.5 <= a && a < 112.5) {
+      return 'right'
+    } else if (112.5 <= a && a < 157.5) {
+      return 'top-end'
+    } else if (157.5 <= a && a < 202.5) {
+      return 'top'
+    } else if (202.5 <= a && a < 247.5) {
+      return 'top-start'
+    } else if (247.5 <= a && a < 292.5) {
+      return 'left'
+    } else if (292.5 <= a && a <= 337.5) {
+      return 'bottom-start'
+    } else {
+      return 'bottom'
+    }
+  }
 
   render() {
-    const {feeder, open, position} = this.props
+    const {feeder, open, position, angle} = this.props
+    const placement = this.getPlacement()
 
     return (
       <>
         <StyledTooltip open={open} title={feeder.name}
-                       PopperProps={{onClick: this.onClick, style: {cursor: 'pointer'}}}>
+                       PopperProps={{onClick: this.onClick, style: {cursor: 'pointer', zIndex: '1000'}}}
+                       placement={placement}
+        >
           <div style={{top: `${position.y}px`, left: `${position.x}px`, width: '1px', height: '1px', position: 'absolute'}}/>
         </StyledTooltip>
         <FeederSettingDialog
