@@ -34,20 +34,13 @@ export class SimulatorLogicStore {
   @observable temporaryRailFlows: TemporaryRailFlows
 
   constructor() {
-    reaction(() => commonStore.editorMode,
-      (mode) => {
-        if (mode === EditorMode.SIMULATOR) {
-          this.startCurrentFlowSimulation(layoutStore.currentLayoutData.powerPacks)
-        } else {
-          this.stopCurrentFlowSimulation()
-        }
-      }
-    )
+    // シミュレーション更新タイミング
+    // TODO: もっと簡潔に書けないのか？
     reaction(
       () => layoutStore.currentLayoutData.powerPacks.map( p => p.power * (p.direction ? 1 : -1)),
       (data) => {
         if (commonStore.editorMode === EditorMode.SIMULATOR) {
-          this.startCurrentFlowSimulation(layoutStore.currentLayoutData.powerPacks)
+          this.startCurrentFlowSimulation()
         }
       },
     )
@@ -55,7 +48,7 @@ export class SimulatorLogicStore {
       () => layoutStore.currentLayoutData.powerPacks.map( p => p.supplyingFeederIds),
       (data) => {
         if (commonStore.editorMode === EditorMode.SIMULATOR) {
-          this.startCurrentFlowSimulation(layoutStore.currentLayoutData.powerPacks)
+          this.startCurrentFlowSimulation()
         }
       },
     )
@@ -63,7 +56,7 @@ export class SimulatorLogicStore {
       () => layoutStore.currentLayoutData.switchers.map( p => p.currentState),
       (data) => {
         if (commonStore.editorMode === EditorMode.SIMULATOR) {
-          this.startCurrentFlowSimulation(layoutStore.currentLayoutData.powerPacks)
+          this.startCurrentFlowSimulation()
         }
       }
     )
@@ -108,13 +101,13 @@ export class SimulatorLogicStore {
    * 全てのフィーダーに通電し、レール電流のシミュレーションを開始する
    */
   @action
-  startCurrentFlowSimulation = (powerPacks: PowerPackData[]) => {
+  startCurrentFlowSimulation = () => {
     LOGGER.info('Simulation start.')
     this.initializeCurrentFlows()
 
     // 各フィーダーの電流を仮シミュレートする
     layoutStore.currentLayoutData.feeders.forEach(feeder =>
-      this.simulateFeederCurrentFlow(feeder.id, powerPacks))
+      this.simulateFeederCurrentFlow(feeder.id, layoutStore.currentLayoutData.powerPacks))
 
     LOGGER.info(this.temporaryRailFlows)
 

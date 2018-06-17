@@ -217,15 +217,6 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       }
     }
 
-    // keyDown_CtrlE = (e) => {
-    //   this.props.simulatorLogic.startCurrentFlowSimulation()
-    // }
-
-    keyDown_CtrlQ = (e) => {
-      this.props.simulatorLogic.stopCurrentFlowSimulation()
-    }
-
-
     /**
      * 仮レールを設置する。
      * @param {RailData} railData position, angle, pivotJointIndex などの位置に関する情報を含むこと。

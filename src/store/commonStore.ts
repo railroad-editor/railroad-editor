@@ -59,8 +59,10 @@ export class CommonStore {
       (mode) => {
         if (mode === EditorMode.BUILDER) {
           builderStore.changeMode(builderStore.activeTool)
+          simulatorLogicStore.stopCurrentFlowSimulation()
         } else {
           simulatorLogicStore.changeMode(simulatorLogicStore.activeTool)
+          simulatorLogicStore.startCurrentFlowSimulation()
         }
       }
     )
