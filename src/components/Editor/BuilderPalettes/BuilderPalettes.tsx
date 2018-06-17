@@ -29,15 +29,10 @@ export class BuilderPalettes extends React.Component<PaletteProps, PaletteState>
 
   render() {
     return (
-      <>
-        {
-          this.props.common.editorMode === EditorMode.BUILDER &&
-          <>
-            <StyledBuilderPalette />
-            <StyledLayerPalette />
-          </>
-        }
-      </>
+      <div hidden={this.props.common.editorMode !== EditorMode.BUILDER}>
+        <StyledBuilderPalette />
+        <StyledLayerPalette />
+      </div>
     )
   }
 }

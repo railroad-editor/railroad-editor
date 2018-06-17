@@ -106,10 +106,7 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
   }
 
   onSwitchStateChange = (state: number) => (e) => {
-    this.props.layout.updateSwitcher({
-      id: this.props.item.id,
-      currentState: state
-    })
+    this.props.layoutLogic.changeSwitcherState(this.props.item.id, state)
   }
 
   onDisconnectRail = (railId: number) => (e) => {

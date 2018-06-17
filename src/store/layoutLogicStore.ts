@@ -10,6 +10,7 @@ import commonStore from "./commonStore";
 import StorageAPI from "apis/storage"
 import LayoutAPI from "apis/layout";
 import * as moment from "moment";
+import simulatorLogicStore from "store/simulatorLogicStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -29,6 +30,7 @@ export class LayoutLogicStore {
    */
   @action
   saveLayout = async (showMessage?: any) => {
+
     const userId = commonStore.userInfo.username
     // メタデータを更新
     layoutStore.setLayoutMeta({
@@ -536,6 +538,29 @@ export class LayoutLogicStore {
       conductionStates: newConductionStates
     })
   }
+
+  @action
+  changeSwitcherState = (switcherId: number, state: number) => {
+    const target = this.getSwitcherById(switcherId)
+    if (target == null) {
+      return
+    }
+
+    // レールの状態更新
+    target.conductionStates[state].forEach(s => {
+      layoutStore.updateRail({
+        id: s.railId,
+        conductionState: s.conductionState
+      })
+    })
+
+    // Switcherの状態更新
+    layoutStore.updateSwitcher({
+      id: switcherId,
+      currentState: state
+    })
+  }
+
 
   private getRailDataById = (id: number) => {
     return layoutStore.currentLayoutData.rails.find(item => item.id === id)

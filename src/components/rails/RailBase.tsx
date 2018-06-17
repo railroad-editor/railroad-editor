@@ -101,6 +101,7 @@ export interface RailBaseDefaultProps {
   flowDirections: FlowDirections
 
   numConductionStates: number
+  conductionState: number
 
   // イベントハンドラ
   onRailPartLeftClick: (e: MouseEvent) => boolean
@@ -161,6 +162,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     enableGapJoinerSockets: false,
 
     numConductionStates: 1,
+    conductionState: 0,
 
     // 何もしないハンドラをセットしておく
     onRailPartLeftClick: (e: MouseEvent) => false,
@@ -450,7 +452,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
   }
 
   render() {
-    const { onRailPartLeftClick, onRailPartMouseEnter, onRailPartMouseLeave, flowDirections } = this.props
+    const { onRailPartLeftClick, onRailPartMouseEnter, onRailPartMouseLeave, flowDirections, conductionState } = this.props
 
     const railPart = this.renderRailPart(this.props)
     const extendedRailPart = React.cloneElement(railPart as any, {
@@ -458,7 +460,8 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
       onLeftClick: onRailPartLeftClick,
       onMouseEnter: onRailPartMouseEnter,
       onMouseLeave: onRailPartMouseLeave,
-      flowDirections: flowDirections
+      flowDirections: flowDirections,
+      switchState: conductionState,
     })
 
     return (

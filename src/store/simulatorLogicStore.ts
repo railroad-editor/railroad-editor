@@ -56,6 +56,14 @@ export class SimulatorLogicStore {
         }
       },
     )
+    reaction(
+      () => layoutStore.currentLayoutData.switchers.map( p => p.currentState),
+      (data) => {
+        if (commonStore.editorMode === EditorMode.SIMULATOR) {
+          this.startCurrentFlowSimulation(layoutStore.currentLayoutData.powerPacks)
+        }
+      }
+    )
   }
 
   // shouldUpdateSimulation = (value: PowerPackData[], nextValue: PowerPackData[]) => {
@@ -158,7 +166,7 @@ export class SimulatorLogicStore {
       }
 
       const joint = joints[jointId]
-      const isGoing = this.isCurrentGoing(joint.pivot, feeder.direction)
+      const isGoing = this.isCurrentGoing(joint.pivot, flowDirection)
       this.setCurrentFlowToRail(opposingJoint.railId, opposingJoint.jointId, feederId, isGoing)
     })
   }
