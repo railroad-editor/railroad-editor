@@ -7,6 +7,7 @@ import getLogger from "logging";
 import * as uuidv4 from "uuid/v4";
 import * as moment from "moment";
 import {FeederInfo, GapJoinerInfo} from "components/rails/RailBase";
+import simulatorLogicStore from "store/simulatorLogicStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -142,14 +143,13 @@ export class LayoutStore {
 
     reaction(
       () => this.currentLayoutData.rails.length,
-      () => {
+      (data) => {
         if (this.isLayoutEmpty) {
           builderStore.setPlacingMode(PlacingMode.FREE)
         } else {
           builderStore.setPlacingMode(PlacingMode.JOINT)
         }
       }
-
     )
   }
 

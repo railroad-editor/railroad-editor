@@ -120,9 +120,9 @@ export default class PowerPackPalette extends React.Component<PowerPackPalettePr
               <TitleDiv className='Palette__title'>
                 <PowerIcon />
                 <Typography variant="subheading" color="inherit" style={{flex: 1}}>
-                  {'Power Units'}
+                  {'Power Packs'}
                 </Typography>
-                <Tooltip title={'Add Power Unit'}>
+                <Tooltip title={'Add Power Pack'}>
                   <PrimaryPaletteAddButton onClick={this.openDialog}/>
                 </Tooltip>
               </TitleDiv>

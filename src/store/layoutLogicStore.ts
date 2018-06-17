@@ -473,7 +473,7 @@ export class LayoutLogicStore {
       return
     }
 
-    this.disconnectFeederFromPowerPack(feederId, powerPackId)
+    this.disconnectFeederFromPowerPack(feederId)
 
     layoutStore.updatePowerPack({
       id: target.id,
@@ -482,8 +482,8 @@ export class LayoutLogicStore {
   }
 
   @action
-  disconnectFeederFromPowerPack = (feederId: number, powerPackId: number) => {
-    const target = this.getPowerPackById(powerPackId)
+  disconnectFeederFromPowerPack = (feederId: number) => {
+    const target = layoutStore.currentLayoutData.powerPacks.find(p => p.supplyingFeederIds.includes(feederId))
     if (target == null) {
       return
     }

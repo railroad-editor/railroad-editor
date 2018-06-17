@@ -1,8 +1,12 @@
-import {action, observable} from "mobx";
+import {action, comparer, observable, reaction} from "mobx";
 import getLogger from "logging";
-import layoutStore from "store/layoutStore";
+import layoutStore, {PowerPackData} from "store/layoutStore";
 import {getRailComponent} from "components/rails/utils";
 import {FlowDirection, Pivot} from "components/rails/parts/primitives/PartBase";
+import commonStore from "./commonStore";
+import {EditorMode} from "store/uiStore";
+import {deepEqual} from "deep-equal";
+import {shallowEqual} from "recompose";
 
 const LOGGER = getLogger(__filename)
 
@@ -27,17 +31,59 @@ export class SimulatorLogicStore {
   @observable temporaryRailFlows: TemporaryRailFlows
 
   constructor() {
+    reaction(() => commonStore.editorMode,
+      (mode) => {
+        if (mode === EditorMode.SIMULATOR) {
+          this.startCurrentFlowSimulation(layoutStore.currentLayoutData.powerPacks)
+        } else {
+          this.stopCurrentFlowSimulation()
+        }
+      }
+    )
+    reaction(
+      () => layoutStore.currentLayoutData.powerPacks.map( p => p.power * (p.direction ? 1 : -1)),
+      (data) => {
+        if (commonStore.editorMode === EditorMode.SIMULATOR) {
+          this.startCurrentFlowSimulation(layoutStore.currentLayoutData.powerPacks)
+        }
+      },
+    )
+    reaction(
+      () => layoutStore.currentLayoutData.powerPacks.map( p => p.supplyingFeederIds),
+      (data) => {
+        if (commonStore.editorMode === EditorMode.SIMULATOR) {
+          this.startCurrentFlowSimulation(layoutStore.currentLayoutData.powerPacks)
+        }
+      },
+    )
   }
+
+  // shouldUpdateSimulation = (value: PowerPackData[], nextValue: PowerPackData[]) => {
+  //   if (value.length !== nextValue.length) {
+  //     return true
+  //   }
+  //   LOGGER.info(value[0], nextValue[0])
+  //   for (let i=0 ; i < value.length ; ++i) {
+  //     if (value[i].direction !== nextValue[i].direction
+  //       || value[i].power !== nextValue[i].power) {
+  //       return true
+  //     }
+  //   }
+  //   return false
+  //   // return deepEqual(value, nextValue)
+  // }
 
   /**
    * 全てのフィーダーに通電し、レール電流のシミュレーションを開始する
    */
   @action
-  startCurrentFlowSimulation = () => {
+  startCurrentFlowSimulation = (powerPacks: PowerPackData[]) => {
+    LOGGER.info('Simulation start.')
     this.initializeCurrentFlows()
 
     // 各フィーダーの電流を仮シミュレートする
-    layoutStore.currentLayoutData.feeders.forEach(feeder => this.simulateFeederCurrentFlow(feeder.id))
+    layoutStore.currentLayoutData.feeders.forEach(feeder =>
+      this.simulateFeederCurrentFlow(feeder.id, powerPacks))
 
     LOGGER.info(this.temporaryRailFlows)
 
@@ -69,15 +115,32 @@ export class SimulatorLogicStore {
   }
 
 
-  simulateFeederCurrentFlow = (feederId: number) => {
+  toggleFeederDirection = (direction: FlowDirection) => {
+    switch (direction) {
+      case FlowDirection.RIGHT_TO_LEFT:
+        return FlowDirection.LEFT_TO_RIGHT
+      case FlowDirection.LEFT_TO_RIGHT:
+        return FlowDirection.RIGHT_TO_LEFT
+    }
+    return direction
+  }
+
+  simulateFeederCurrentFlow = (feederId: number, powerPacks: PowerPackData[]) => {
+    // パワーパックに接続されてないか、電流が0なら何もしない
+    const powerPack = powerPacks.find(p => p.supplyingFeederIds.includes(feederId))
+    if (!powerPack || powerPack.power === 0) {
+      return
+    }
+
     const feeder = layoutStore.getFeederDataById(feederId)
     const rail = layoutStore.getRailDataById(feeder.railId)
     const joints = getRailComponent(rail.id).railPart.joints
     const feederSockets = getRailComponent(rail.id).railPart.feederSockets
     const feederedPartId = feederSockets[feeder.socketId].pivotPartIndex
+    const flowDirection = powerPack.direction ? feeder.direction : this.toggleFeederDirection(feeder.direction)
 
     // フィーダーが接続されているパーツの電流を設定
-    const isAlreadySet = this.setTemporaryFlow(feeder.railId, feederedPartId, feederId, feeder.direction)
+    const isAlreadySet = this.setTemporaryFlow(feeder.railId, feederedPartId, feederId, flowDirection)
     if (isAlreadySet) {
       return
     }

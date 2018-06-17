@@ -217,9 +217,9 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       }
     }
 
-    keyDown_CtrlE = (e) => {
-      this.props.simulatorLogic.startCurrentFlowSimulation()
-    }
+    // keyDown_CtrlE = (e) => {
+    //   this.props.simulatorLogic.startCurrentFlowSimulation()
+    // }
 
     keyDown_CtrlQ = (e) => {
       this.props.simulatorLogic.stopCurrentFlowSimulation()

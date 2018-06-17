@@ -53,7 +53,7 @@ export default class FeederSettingDialog extends FormDialog<FeederSettingDialogP
     if (this.state.connectedPowerPackId) {
       this.props.layoutLogic.connectFeederToPowerPack(this.props.feeder.id, this.state.connectedPowerPackId)
     } else {
-      this.props.layoutLogic.disconnectFeederFromPowerPack(this.props.feeder.id, this.state.connectedPowerPackId)
+      this.props.layoutLogic.disconnectFeederFromPowerPack(this.props.feeder.id)
     }
     this.onClose()
   }

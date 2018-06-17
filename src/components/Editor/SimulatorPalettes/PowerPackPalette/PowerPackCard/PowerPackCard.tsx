@@ -86,7 +86,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
     if (! this.state.sliderDragging) {
       this.props.layout.updatePowerPack({
         id: this.props.item.id,
-        power: this.state.sliderValue
+        power: value
       })
     }
   }
@@ -128,7 +128,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
   }
 
   onDisconnectFeeder = (id) => (e) => {
-    this.props.layoutLogic.disconnectFeederFromPowerPack(id, this.props.item.id)
+    this.props.layoutLogic.disconnectFeederFromPowerPack(id)
   }
 
 
@@ -162,7 +162,6 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
               onDragEnd={this.onSliderDragEnd}
               aria-labelledby="label"
             />
-            <Divider />
             <List>
               {
                 supplyingFeederIds.map(id => {
