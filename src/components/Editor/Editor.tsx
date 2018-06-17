@@ -224,6 +224,19 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             />
           </GridPaper>
         </EditorBody>
+        {/*<div style={{left: '200px', top: '200px', position: 'absolute'}}>*/}
+          {/*<RailIcon*/}
+            {/*width={200}*/}
+            {/*height={200}*/}
+            {/*rail={*/}
+              {/*<SimpleTurnout*/}
+                {/*length={140} radius={514} centerAngle={15} branchDirection={ArcDirection.LEFT}*/}
+                {/*position={new Point(0, 0)} angle={0} id={0} layerId={0}*/}
+                {/*// ref={(r) => console.log('unko', r)}*/}
+              {/*/>*/}
+            {/*}*/}
+          {/*/>*/}
+        {/*</div>*/}
       </StyledWrapper>
     )
   }

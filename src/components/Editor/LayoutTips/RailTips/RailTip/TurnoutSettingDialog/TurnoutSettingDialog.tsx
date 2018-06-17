@@ -161,7 +161,7 @@ export default class TurnoutSettingDialog extends FormDialog<TurnoutSettingDialo
           </FormControl>
         </form>
 
-        {conductionStatesPart}
+        {/*{conductionStatesPart}*/}
       </>
     )
   }

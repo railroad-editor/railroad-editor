@@ -9,6 +9,7 @@ export const ActiveSmallButton = styled(SecondaryColorActiveButton as any)`
     min-width: 30px;
     display: block;   // for centerize to parent div
     margin: 0 auto;   // for centerize to parent div
+    padding: 4px 8px;
   }
 `
 

@@ -1,15 +1,5 @@
 import * as React from 'react'
-import {
-  Button,
-  CardContent,
-  CardHeader,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  MenuItem,
-  Typography
-} from '@material-ui/core'
+import {CardHeader, Grid, MenuItem, Typography} from '@material-ui/core'
 import {S3Image} from 'aws-amplify-react';
 import getLogger from "logging";
 import Menu from "@material-ui/core/Menu";
@@ -24,9 +14,12 @@ import {LayoutLogicStore} from "store/layoutLogicStore";
 import SwitcherSettingDialog
   from "components/Editor/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwitcherSettingDialog/SwitcherSettingDialog";
 import {
-  ActiveSmallButton, NarrowCardContent,
+  ActiveSmallButton,
+  NarrowCardContent,
 } from "components/Editor/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwitchCard.style";
 import DeleteIcon from '@material-ui/icons/Delete';
+import RailIcon from "components/common/RailIcon/RailIcon";
+import {RailComponentClasses, RailData} from "components/rails/index";
 
 const LOGGER = getLogger(__filename)
 
@@ -146,7 +139,11 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
                       active={this.props.item.currentState === 0}
                       onClick={this.onSwitchStateChange(0)}
                     >
-                      {transformedConductionStates[railId][0]}
+                      <RailIcon
+                        width={30}
+                        height={30}
+                        rail={createRailComponentForIcon(rail, 0)}
+                      />
                     </ActiveSmallButton>
                   </Grid>
                   <Grid item xs={3}>
@@ -154,7 +151,11 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
                       active={this.props.item.currentState === 1}
                       onClick={this.onSwitchStateChange(1)}
                     >
-                      {transformedConductionStates[railId][1]}
+                      <RailIcon
+                        width={30}
+                        height={30}
+                        rail={createRailComponentForIcon(rail, 1)}
+                      />
                     </ActiveSmallButton>
                   </Grid>
                   <Grid item xs={3}>
@@ -189,3 +190,18 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
   }
 }
 
+export const createRailComponentForIcon = (item: RailData, conductionState: number) => {
+  const {id: id, type: type, ...props} = item
+  let RailContainer = RailComponentClasses[type]
+  if (RailContainer == null) {
+    throw Error(`'${type}' is not a valid Rail type!`)
+  }
+  return (
+    <RailContainer
+      // key={id}
+      // id={id}
+      {...props}
+      conductionState={conductionState}
+    />
+  )
+}
