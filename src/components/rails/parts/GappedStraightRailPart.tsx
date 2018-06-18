@@ -43,7 +43,7 @@ export default class GappedStraightRailPart extends RailPartBase<GappedStraightR
 
 
   renderParts = () => {
-    const { length, pivotJointIndex, data, flowDirections } = this.props
+    const { length, pivotJointIndex, data, fillColors, flowDirections } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
     return (
       <PartGroup
@@ -55,6 +55,7 @@ export default class GappedStraightRailPart extends RailPartBase<GappedStraightR
           width={length/2}
           height={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
+          fillColor={fillColors[0]}
           flowDirection={flowDirections[0]}
           data={{
             type: 'Part'
@@ -65,6 +66,7 @@ export default class GappedStraightRailPart extends RailPartBase<GappedStraightR
           width={length/2}
           height={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
+          fillColor={fillColors[0]}
           flowDirection={flowDirections[1]}
           data={{
             type: 'Part'

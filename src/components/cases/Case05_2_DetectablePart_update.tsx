@@ -70,7 +70,7 @@ export default class Case05 extends React.Component<any, any> {
           pivot={this.state.pivot}
           pivotPartIndex={0}
           fillColors={['black', 'orange', 'blue', 'grey']}
-          onClick={(e) => console.log('Clicked')}
+          // onClick={(e) => console.log('Clicked')}
           detectionEnabled={true}
         />
 

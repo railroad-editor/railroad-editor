@@ -17,6 +17,7 @@ interface SimpleTurnoutRailPartProps extends RailPartBaseProps {
   radius: number
   centerAngle: number
   direction: ArcDirection
+  colors?: any
 }
 
 
@@ -52,7 +53,7 @@ export default class SimpleTurnoutRailPart extends RailPartBase<SimpleTurnoutRai
 
 
   renderParts = () => {
-    const { length, radius, centerAngle, direction, pivotJointIndex, data, flowDirections } = this.props
+    const { length, radius, centerAngle, direction, pivotJointIndex, data, fillColors, flowDirections } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 
     return (
@@ -65,6 +66,7 @@ export default class SimpleTurnoutRailPart extends RailPartBase<SimpleTurnoutRai
           width={length}
           height={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
+          fillColor={fillColors[0]}
           flowDirection={flowDirections[0]}
           data={{
             type: 'Part'
@@ -76,6 +78,7 @@ export default class SimpleTurnoutRailPart extends RailPartBase<SimpleTurnoutRai
           centerAngle={centerAngle}
           width={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
+          fillColor={fillColors[1]}
           flowDirection={flowDirections[1]}
           data={{
             type: 'Part'

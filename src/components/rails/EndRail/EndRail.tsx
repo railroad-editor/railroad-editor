@@ -26,7 +26,7 @@ export default class EndRail extends RailBase<EndRailProps, RailBaseState> {
 
   renderRailPart = () => {
     const {
-      position, angle, length, id, selected, pivotJointIndex, opacity, visible, fillColor
+      position, angle, length, id, selected, pivotJointIndex, opacity, visible
     } = this.props
 
     return (
@@ -38,7 +38,6 @@ export default class EndRail extends RailBase<EndRailProps, RailBaseState> {
         selected={selected}
         opacity={opacity}
         visible={visible}
-        fillColors={_.fill(Array(4),  fillColor)}
         data={{
           type: 'RailPart',
           railId: id,

@@ -2,7 +2,7 @@ import * as React from "react";
 import {Point} from "paper";
 import {Rectangle} from "react-paper-bindings";
 import Joint from "./parts/Joint";
-import {pointsEqual} from "components/rails/utils";
+import {anglesEqual, pointsEqual} from "components/rails/utils";
 import * as _ from "lodash";
 import RailPartBase from "components/rails/parts/RailPartBase";
 import getLogger from "logging";
@@ -97,11 +97,14 @@ export interface RailBaseDefaultProps {
   opacity: number
   // 色
   fillColor: string
+  fillColors: object
 
   flowDirections: FlowDirections
 
   numConductionStates: number
   conductionState: number
+
+  frontPartIndex: number
 
   // イベントハンドラ
   onRailPartLeftClick: (e: MouseEvent) => boolean
@@ -154,7 +157,8 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     enableJoints: true,
     visible: true,
     opacity: 1,
-    fillColor: '#000',
+    fillColor: undefined,
+    fillColors: {},
 
     flowDirections: {},
 
@@ -163,6 +167,8 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
 
     numConductionStates: 1,
     conductionState: 0,
+
+    frontPartIndex: undefined,
 
     // 何もしないハンドラをセットしておく
     onRailPartLeftClick: (e: MouseEvent) => false,
@@ -229,6 +235,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
   componentDidUpdate() {
     this.fixJoints()
     this.fixFeederSockets()
+    this.bringToFrontConductiveParts()
   }
 
   componentDidMount() {
@@ -239,7 +246,15 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     if (this.props.onMount) {
       this.props.onMount(this)
     }
+
+    this.bringToFrontConductiveParts()
     LOGGER.info(`Rail ${this.props.id} mounted.`) //`
+  }
+
+  bringToFrontConductiveParts = () => {
+    const conductiveParts = this.railPart.conductiveParts
+    conductiveParts.map(idx => this.railPart.partGroup.children[idx].path.bringToFront())
+    this.railPart.partGroup.children.filter(child => child.props.data.type === 'Gap').forEach(gap => gap.path.bringToFront())
   }
 
   /**
@@ -416,7 +431,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     // レールパーツから取得したジョイントの位置・角度が現在のものと異なれば再描画
     if (_.range(this.joints.length).every(i =>
       pointsEqual(this.state.jointPositions[i], jointPositions[i])
-      && this.state.jointAngles[i] === jointAngles[i])) {
+      && anglesEqual(this.state.jointAngles[i], jointAngles[i]))) {
       // noop
     } else {
       this.setState({
@@ -433,7 +448,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
 
     if (_.range(this.feederSockets.length).every(i =>
       pointsEqual(this.state.feederSocketPositions[i], feederSocketPositions[i])
-      && this.state.feederSocketAngles[i] === feederSocketAngles[i])) {
+      && anglesEqual(this.state.feederSocketAngles[i], feederSocketAngles[i]))) {
       // noop
     } else {
       this.setState({
@@ -452,11 +467,13 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
   }
 
   render() {
-    const { onRailPartLeftClick, onRailPartMouseEnter, onRailPartMouseLeave, flowDirections, conductionState } = this.props
+    const { fillColor, fillColors, onRailPartLeftClick, onRailPartMouseEnter, onRailPartMouseLeave, flowDirections, conductionState } = this.props
 
     const railPart = this.renderRailPart(this.props)
     const extendedRailPart = React.cloneElement(railPart as any, {
       ...railPart.props,
+      fillColor: fillColor,
+      fillColors: fillColors,
       onLeftClick: onRailPartLeftClick,
       onMouseEnter: onRailPartMouseEnter,
       onMouseLeave: onRailPartMouseLeave,

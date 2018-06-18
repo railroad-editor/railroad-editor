@@ -34,7 +34,7 @@ export default class PartGroup extends PartBase<PartGroupProps, PartGroupState> 
     this._children = this.props.children ? new Array((this.props.children as any[]).length) : []
   }
 
-  _children: any[]
+  _children: PartBase<any, any>[]
 
   // ========== Public APIs ==========
 
@@ -69,7 +69,7 @@ export default class PartGroup extends PartBase<PartGroupProps, PartGroupState> 
   render() {
     const {
       pivot, fillColor, visible, opacity, selected, name, data,
-      onMouseDown, onMouseDrag, onMouseUp, onClick, onDoubleClick, onMouseMove, onMouseEnter, onMouseLeave
+      onMouseDown, onMouseDrag, onMouseUp, onDoubleClick, onMouseMove, onMouseEnter, onMouseLeave
     } = this.props
 
     // 子要素のメソッドを呼び出す必要があるので、refをそれらのpropsに追加する
@@ -112,7 +112,7 @@ export default class PartGroup extends PartBase<PartGroupProps, PartGroupState> 
         onMouseDown={onMouseDown}
         onMouseDrag={onMouseDrag}
         onMouseUp={onMouseUp}
-        onClick={onClick}
+        onClick={this.onClick}
         onDoubleClick={onDoubleClick}
         onMouseMove={onMouseMove}
         onMouseEnter={onMouseEnter}

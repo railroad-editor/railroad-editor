@@ -162,7 +162,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
           let isIntersected = this.selectionRect.intersects(path)
           let isContained = this.selectionRect.contains((path as any).localToOther(this.selectionRect, path.position))
           return isIntersected || isContained
-        }).every((e) => e)
+        }).some((e) => e)
 
         // 上記の条件を満たしていれば選択状態にする
         if (result) {

@@ -2,7 +2,6 @@ import * as React from "react";
 import {Group, Item, Path, Point} from "paper";
 import {Path as PathComponent} from "react-paper-bindings";
 import {ANIMATION_FLOW_COLOR_1, ANIMATION_FLOW_COLOR_2} from "constants/parts";
-import {RefObject} from "react";
 
 export enum Pivot {
   CENTER = 'Center',
@@ -32,7 +31,8 @@ export interface PartBaseProps extends Partial<PartBaseDefaultProps> {
   onMouseDown?: any
   onMouseDrag?: any
   onMouseUp?: any
-  onClick?: any
+  onLeftClick?: any
+  onRightClick?: any
   onDoubleClick?: any
   onMouseMove?: any
   onMouseEnter?: any
@@ -176,22 +176,19 @@ export default abstract class PartBase<P extends PartBaseProps, S> extends React
     // 無電流のパーツよりも前に持ってくる
     switch (this.props.flowDirection) {
       case FlowDirection.NONE:
-        // アニメーションしない
-        this.path.fillColor = "black";
+        // 何もしない
+        this.path.fillColor = this.props.fillColor
         return;
       case FlowDirection.LEFT_TO_RIGHT:
         currentOrigin = this.getPosition(Pivot.LEFT).multiply(2 - ratio).add(this.getPosition(Pivot.RIGHT).multiply(ratio - 1))
         currentDestination = currentOrigin.add(this.getPosition(Pivot.RIGHT).subtract(this.getPosition(Pivot.LEFT)).multiply(2))
-        this.bringToFrontAmongParts()
         break;
       case FlowDirection.RIGHT_TO_LEFT:
         currentOrigin = this.getPosition(Pivot.LEFT).multiply(ratio + 1).add(this.getPosition(Pivot.RIGHT).multiply(-ratio))
         currentDestination = currentOrigin.add(this.getPosition(Pivot.RIGHT).subtract(this.getPosition(Pivot.LEFT)).multiply(2))
-        this.bringToFrontAmongParts()
         break;
       case FlowDirection.ILLEGAL:
         this.path.fillColor = "red";
-        this.bringToFrontAmongParts()
         return;
     }
 
@@ -205,15 +202,24 @@ export default abstract class PartBase<P extends PartBaseProps, S> extends React
   }
 
 
-  bringToFrontAmongParts = () => {
-    const lastPart = _.findLast(this.path.parent.children, c => c.data.type === 'Part')
-    this.path.moveAbove(lastPart)
+  onClick = (e: MouseEvent | any) => {
+    switch (e.event.button) {
+      case 0:
+        if (this.props.onLeftClick) {
+          this.props.onLeftClick(e)
+        }
+        break
+      case 2:
+        if (this.props.onRightClick) {
+          this.props.onRightClick(e)
+        }
+        break
+    }
   }
-
 
   render() {
     const { position, angle, pivot, fillColor, visible, opacity, selected, name, data,
-      onMouseDown, onMouseDrag, onMouseUp, onClick, onDoubleClick, onMouseMove, onMouseEnter, onMouseLeave
+      onMouseDown, onMouseDrag, onMouseUp, onDoubleClick, onMouseMove, onMouseEnter, onMouseLeave
     } = this.props
 
     const pathData = this.createPathData(this.props)
@@ -233,7 +239,7 @@ export default abstract class PartBase<P extends PartBaseProps, S> extends React
       onMouseDown={onMouseDown}
       onMouseDrag={onMouseDrag}
       onMouseUp={onMouseUp}
-      onClick={onClick}
+      onClick={this.onClick}
       onDoubleClick={onDoubleClick}
       onMouseMove={onMouseMove}
       onMouseEnter={onMouseEnter}

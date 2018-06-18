@@ -154,7 +154,8 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
           height={this.props.layout.config.paperHeight}
           position={position}
           opacity={0}
-          onClick={this.onClick}
+          onLeftClick={this.mouseLeftDown}
+          onRightClick={this.mouseRightDown}
           onMouseMove={this.onMouseMove}
         />
       </>

@@ -202,6 +202,8 @@ export const createRailComponentForIcon = (item: RailData, conductionState: numb
       // id={id}
       {...props}
       conductionState={conductionState}
+      fillColors={{[conductionState]: 'red'}}
+      opacity={1.0}
     />
   )
 }

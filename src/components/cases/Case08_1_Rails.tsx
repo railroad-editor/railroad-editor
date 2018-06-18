@@ -81,6 +81,7 @@ export default class Case08 extends React.Component<any, any> {
           centerAngle={30}
           id={0}
           layerId={1}
+          fillColors={{1: 'blue'}}
         />
 
         <Tool

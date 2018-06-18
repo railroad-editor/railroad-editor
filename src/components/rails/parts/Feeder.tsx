@@ -76,7 +76,7 @@ export default class Feeder extends React.Component<FeederProps, {}> {
         visible={visible}
         selected={selected}
         data={data}
-        onClick={onLeftClick}
+        onLeftClick={onLeftClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         ref={(r) => {if (r) this.part = r}}

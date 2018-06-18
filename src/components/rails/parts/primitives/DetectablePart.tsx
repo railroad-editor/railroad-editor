@@ -5,15 +5,18 @@ import PartBase, {PartBaseProps} from "components/rails/parts/primitives/PartBas
 import PartGroup from "components/rails/parts/primitives/PartGroup";
 
 
-export interface DetectablePartProps extends PartBaseProps {
+export interface DetectablePartProps extends PartBaseProps, DetectablePartDefaultProps {
   mainPart: ReactElement<PartBase<PartBaseProps, {}>>         // 本体のコンポーネント
   detectionPart: ReactElement<PartBase<PartBaseProps, {}>>    //  当たり判定のコンポーネント
-  fillColors: string[]    // DetectionState ごとの本体、当たり判定の色
   onLeftClick?: (e: MouseEvent) => boolean
   onRightClick?: (e: MouseEvent) => boolean
   detectionEnabled: boolean
   pivotPartIndex?: number
   preventBringToFront?: boolean
+}
+
+export interface DetectablePartDefaultProps {
+  fillColors?: string[]    // DetectionState ごとの本体、当たり判定の色
 }
 
 export interface DetectablePartState {
@@ -34,6 +37,9 @@ export enum DetectionState {
 
 
 export default class DetectablePart extends React.Component<DetectablePartProps, DetectablePartState> {
+  public static defaultProps: DetectablePartDefaultProps = {
+    fillColors: [undefined, undefined, undefined, undefined]
+  }
 
   onMouseMove = (e: MouseEvent) => {
     // 検出中状態を他のPathに邪魔されないよう、前面に出し続ける
@@ -178,7 +184,7 @@ export default class DetectablePart extends React.Component<DetectablePartProps,
   render() {
     const {
       position, angle, pivot, pivotPartIndex, fillColors, selected, name, data, detectionEnabled,
-      mainPart, detectionPart, visible, opacity
+      mainPart, detectionPart, visible, opacity, onLeftClick, onRightClick
     } = this.props
     const {detectionState, isError} = this.state
 
@@ -218,7 +224,8 @@ export default class DetectablePart extends React.Component<DetectablePartProps,
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
         onMouseMove={this.onMouseMove}
-        onClick={this.onClick}
+        onLeftClick={onLeftClick}
+        onRightClick={onRightClick}
         ref={this.getInstance}
       >
         {clonedMainPart}

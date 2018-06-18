@@ -9,6 +9,7 @@ import getLogger from "logging";
 import {ReactElement} from "react";
 import {normAngle} from "components/rails/utils";
 import {FlowDirections} from "components/rails/RailBase";
+import PartGroup from "components/rails/parts/primitives/PartGroup";
 
 const logger = getLogger(__filename)
 
@@ -35,7 +36,8 @@ export interface RailPartBaseDefaultProps {
   selected?: boolean
   opacity?: number
   visible?: boolean
-  fillColors?: string[]
+  fillColor?: string
+  fillColors?: object    // パーツの色。stringで全パーツ指定、string[]でパーツ毎の指定。
   flowDirections: FlowDirections
   conductionState: number
 }
@@ -49,18 +51,19 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     selected: false,
     opacity: 1,
     visible: true,
-    fillColors: RAIL_PART_FILL_COLORS,
+    fillColor: undefined,
+    fillColors: {},
     flowDirections: {},
     conductionState: 0
   }
 
-  detectablePart: DetectablePart
+  partGroup: PartGroup
 
   protected constructor(props: P) {
     super(props)
   }
 
-  get path() { return this.detectablePart.mainPart.path }
+  get path() { return this.partGroup.path }
 
   componentDidUpdate() {
     logger.trace('updated')
@@ -82,7 +85,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
   // それを防ぐため汚いがここで色をセットする
   // TODO: もっといい方法を考える
   setGapColor = () => {
-    this.detectablePart.mainPart.children
+    this.partGroup.children
       .filter(c => c.props.data.type === 'Gap')
       .forEach(c => {
         c.path.fillColor = 'red'
@@ -93,7 +96,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
   fixRotationByPivot = () => {
     const {pivotPartIndex, pivot} = this.getPivot(this.props.pivotJointIndex)
     if (pivotPartIndex != null) {
-      const pivotAngle = this.detectablePart.mainPart.children[pivotPartIndex].getAngle(pivot)
+      const pivotAngle = this.partGroup.children[pivotPartIndex].getAngle(pivot)
       let rotation
       switch (pivot) {
         case Pivot.LEFT:
@@ -105,18 +108,18 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
         default:
           throw Error(`Invalid pivot ${pivot} for ${this.constructor.name}`)
       }
-      this.path.rotation = rotation
+      this.path.rotation = rotation + this.props.angle
     }
   }
 
   getPivotPositionToParent(pivotInfo: PivotInfo) {
-    let parent = this.detectablePart.partGroup.path.parent
-    return this.detectablePart.mainPart.children[pivotInfo.pivotPartIndex].getPositionTo(parent, pivotInfo.pivot)
+    let parent = this.partGroup.path.parent
+    return this.partGroup.children[pivotInfo.pivotPartIndex].getPositionTo(parent, pivotInfo.pivot)
   }
 
   getPivotAngleToParent(pivotInfo: PivotInfo) {
-    let parent = this.detectablePart.partGroup.path.parent
-    let globalRotation = this.detectablePart.mainPart.children[pivotInfo.pivotPartIndex].getAngleTo(parent, pivotInfo.pivot)
+    let parent = this.partGroup.path.parent
+    let globalRotation = this.partGroup.children[pivotInfo.pivotPartIndex].getAngleTo(parent, pivotInfo.pivot)
     if (pivotInfo.pivot === Pivot.LEFT) {
       return (globalRotation + 180) % 360
     } else {
@@ -132,8 +135,8 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
   getJointPositionToParent(jointIndex: number) {
     // 決まった階層構造を前提としている。どのように実装を矯正すべきか？
     const {pivotPartIndex, pivot} = this.getPivot(jointIndex)
-    let parent = this.detectablePart.partGroup.path.parent
-    return this.detectablePart.mainPart.children[pivotPartIndex].getPositionTo(parent, pivot)
+    let parent = this.partGroup.path.parent
+    return this.partGroup.children[pivotPartIndex].getPositionTo(parent, pivot)
   }
 
   /**
@@ -144,7 +147,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
   getGlobalJointPosition(jointIndex: number) {
     // 決まった階層構造を前提としている。どのように実装を矯正すべきか？
     const {pivotPartIndex, pivot} = this.getPivot(jointIndex)
-    return this.detectablePart.mainPart.children[pivotPartIndex].getGlobalPosition(pivot)
+    return this.partGroup.children[pivotPartIndex].getGlobalPosition(pivot)
   }
 
   /**
@@ -155,8 +158,8 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
   getJointAngleToParent(jointIndex: number) {
     const {pivotPartIndex, pivot} = this.getPivot(jointIndex)
     // レールパーツ内部のGroupにおけるPartのPivotにおける角度を取得
-    let parent = this.detectablePart.partGroup.path.parent
-    let globalRotation = this.detectablePart.mainPart.children[pivotPartIndex].getAngleTo(parent, pivot)
+    let parent = this.partGroup.path.parent
+    let globalRotation = this.partGroup.children[pivotPartIndex].getAngleTo(parent, pivot)
     if (pivot === Pivot.LEFT) {
       return (globalRotation + 180) % 360
     } else {
@@ -172,7 +175,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
   getGlobalJointAngle(jointIndex: number) {
     const {pivotPartIndex, pivot} = this.getPivot(jointIndex)
     // レールパーツ内部のGroupにおけるPartのPivotにおける角度を取得
-    let globalRotation = this.detectablePart.mainPart.children[pivotPartIndex].getGlobalAngle(pivot)
+    let globalRotation = this.partGroup.children[pivotPartIndex].getGlobalAngle(pivot)
     if (pivot === Pivot.LEFT) {
       return (globalRotation + 180) % 360
     } else {
@@ -209,46 +212,41 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
 
 
   render() {
-    const { position, pivotJointIndex, detectionEnabled, selected, fillColors,
+    const { position, angle, pivotJointIndex, selected, fillColor,
       name, data, onLeftClick, onRightClick, visible, opacity, onMouseEnter, onMouseLeave
     } = this.props
-    const pivot = _.isNil(pivotJointIndex) ? undefined: this.getPivot(pivotJointIndex).pivot
-    const part = this.renderParts()
+    const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
+    const extendedPart = React.cloneElement(this.renderParts(), {
+      position,
+      angle,
+      pivot,
+      pivotPartIndex,
+      fillColor,
+      visible,
+      opacity,
+      selected,
+      name,
+      data,
+      onLeftClick,
+      onRightClick,
+      onMouseEnter,
+      onMouseLeave,
+      ref: this.getRef
+    })
 
-    return (
-      <DetectablePart
-        mainPart={part}
-        detectionPart={<></>}
-        position={position}
-        angle={this.props.angle}
-        pivot={pivot}
-        pivotPartIndex={0}    // 常にGroupなのでこれで良い
-        fillColors={fillColors}
-        visible={visible}
-        opacity={opacity}
-        detectionEnabled={true}
-        preventBringToFront={true}
-        name={name}
-        data={data}
-        onLeftClick={onLeftClick}
-        onRightClick={onRightClick}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-        selected={selected}
-        ref={this.getRef}
-      />
-    )
+
+    return extendedPart
   }
 
 
-  protected getRef = (detectablePart) => {
-    if (detectablePart) this.detectablePart = detectablePart
+  protected getRef = (partGroup) => {
+    if (partGroup) this.partGroup = partGroup
   }
 
 
   onFrame = (e) => {
     // アニメーションはパーツだけに限定
-    this.detectablePart.mainPart.children
+    this.partGroup.children
       .filter(c => c.props.data.type === 'Part')
       .forEach(c => c.onFrame(e))
   }

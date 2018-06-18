@@ -32,7 +32,7 @@ export default class RailIcon extends React.Component<RailIconProps, RailIconSta
 
     // const r = new Path.Rectangle(rect)
     // const position = this._ref.paper.view.projectToView(new Point(this.props.width, this.props.height))
-    const zoom = Math.min(this.props.height / rect.height, this.props.width / rect.width)
+    const zoom = Math.min(this.props.height / rect.height, this.props.width / rect.width) - 0.01
     // console.info(rect)
     this.setState({
       zoom: zoom

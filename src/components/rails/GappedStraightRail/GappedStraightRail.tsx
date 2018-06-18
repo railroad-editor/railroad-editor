@@ -24,7 +24,7 @@ export default class GappedStraightRail extends RailBase<GappedStraightRailProps
 
 
   renderRailPart = () => {
-    const { position, angle, length, id, selected, pivotJointIndex, opacity, visible, fillColor,
+    const { position, angle, length, id, selected, pivotJointIndex, opacity, visible,
       onRailPartLeftClick, onRailPartMouseEnter, onRailPartMouseLeave } = this.props
 
 
@@ -37,7 +37,6 @@ export default class GappedStraightRail extends RailBase<GappedStraightRailProps
         selected={selected}
         opacity={opacity}
         visible={visible}
-        fillColors={_.fill(Array(4),  fillColor)}
         data={{
           type: 'RailPart',
           railId: id,

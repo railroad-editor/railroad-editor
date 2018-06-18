@@ -63,7 +63,7 @@ export default class GapJoiner extends React.Component<GapJoinerProps, {}> {
         visible={visible}
         selected={selected}
         data={data}
-        onClick={onLeftClick}
+        onLeftClick={onLeftClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         ref={(r) => {if (r) this.part = r}}
