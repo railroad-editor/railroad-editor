@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Button from "@material-ui/core/Button";
 import ActiveButton, {SecondaryColorActiveButton} from "components/common/ActiveButton";
-import {CardContent} from "@material-ui/core";
+import {CardContent, CardHeader} from "@material-ui/core";
 
 
 export const ActiveSmallButton = styled(SecondaryColorActiveButton as any)`
@@ -17,9 +17,15 @@ export const Spacer = styled.div`
   height: 20px;
 `
 
-export const NarrowCardContent = styled(CardContent as any)`
+export const NarrowCardContent = styled(CardContent)`
   && {
-    padding-left: 6px;
-    padding-right: 6px;
+    padding: 8px 6px;
+  }
+`
+
+export const NarrowCardHeader = styled(CardHeader)`
+  && {
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
 `

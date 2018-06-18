@@ -15,7 +15,7 @@ import SwitcherSettingDialog
   from "components/Editor/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwitcherSettingDialog/SwitcherSettingDialog";
 import {
   ActiveSmallButton,
-  NarrowCardContent,
+  NarrowCardContent, NarrowCardHeader,
 } from "components/Editor/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwitchCard.style";
 import DeleteIcon from '@material-ui/icons/Delete';
 import RailIcon from "components/common/RailIcon/RailIcon";
@@ -116,7 +116,7 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
     return (
       <>
         <Card>
-          <CardHeader
+          <NarrowCardHeader
             title={name}
             action={
               <IconButton

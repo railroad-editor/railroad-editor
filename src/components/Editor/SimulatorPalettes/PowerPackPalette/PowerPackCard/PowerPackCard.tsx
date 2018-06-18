@@ -26,6 +26,10 @@ import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import PowerPackSettingDialog
   from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackSettingDialog/PowerPackSettingDialog";
+import {
+  NarrowCardContent,
+  NarrowCardHeader, StyledList, StyledSlider
+} from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard.style";
 
 const LOGGER = getLogger(__filename)
 
@@ -138,7 +142,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
     return (
       <>
         <Card>
-          <CardHeader
+          <NarrowCardHeader
             title={name}
             action={
               <IconButton
@@ -149,20 +153,20 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
             }
             // style={{paddingTop: '16px', paddingBottom: '8px'}}
           />
-          <CardContent>
+          <NarrowCardContent>
             <Switch
               checked={this.state.direction}
               onChange={this.onDirectionChange}
               value="checkedA"
             />
-            <Slider
+            <StyledSlider
               value={this.state.sliderValue}
               onChange={this.onSliderChange}
               onDragStart={this.onSliderDragStart}
               onDragEnd={this.onSliderDragEnd}
               aria-labelledby="label"
             />
-            <List>
+            <StyledList>
               {
                 supplyingFeederIds.map(id => {
                   const feeder = this.props.feeders.find(f => f.id === id)
@@ -181,8 +185,8 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
                   )
                 })
               }
-            </List>
-          </CardContent>
+            </StyledList>
+          </NarrowCardContent>
         </Card>
         <Menu
           anchorEl={this.state.anchorEl}
