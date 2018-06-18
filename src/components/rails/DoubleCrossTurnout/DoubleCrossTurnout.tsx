@@ -6,6 +6,7 @@ import DoubleCrossTurnoutPart from "components/rails/parts/DoubleCrossTurnoutRai
 
 export interface DoubleCrossTurnoutProps extends RailBaseProps {
   length: number
+  centerAngle: number
 }
 
 
@@ -27,12 +28,13 @@ export default class DoubleCrossTurnout extends RailBase<DoubleCrossTurnoutProps
 
   renderRailPart = () => {
     const {
-      position, angle, length, id, selected, pivotJointIndex, opacity, visible, fillColor
+      position, centerAngle, angle, length, id, selected, pivotJointIndex, opacity, visible, fillColor
     } = this.props
 
     return (
       <DoubleCrossTurnoutPart
         length={length}
+        centerAngle={centerAngle}
         position={position}
         angle={angle}
         pivotJointIndex={pivotJointIndex}

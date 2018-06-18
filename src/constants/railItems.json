@@ -202,7 +202,8 @@
     {
       "type": "DoubleCrossTurnout",
       "name": "N-PX280",
-      "length": 280
+      "length": 280,
+      "centerAngle": 15
     },
     {
       "type": "EndRail",

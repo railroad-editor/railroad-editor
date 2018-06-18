@@ -104,7 +104,7 @@ export interface RailBaseDefaultProps {
   numConductionStates: number
   conductionState: number
 
-  frontPartIndex: number
+  showGap: boolean,
 
   // イベントハンドラ
   onRailPartLeftClick: (e: MouseEvent) => boolean
@@ -168,7 +168,8 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     numConductionStates: 1,
     conductionState: 0,
 
-    frontPartIndex: undefined,
+    showGap: true,
+
 
     // 何もしないハンドラをセットしておく
     onRailPartLeftClick: (e: MouseEvent) => false,
@@ -467,7 +468,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
   }
 
   render() {
-    const { fillColor, fillColors, onRailPartLeftClick, onRailPartMouseEnter, onRailPartMouseLeave, flowDirections, conductionState } = this.props
+    const { fillColor, fillColors, onRailPartLeftClick, onRailPartMouseEnter, onRailPartMouseLeave, flowDirections, conductionState, showGap } = this.props
 
     const railPart = this.renderRailPart(this.props)
     const extendedRailPart = React.cloneElement(railPart as any, {
@@ -479,6 +480,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
       onMouseLeave: onRailPartMouseLeave,
       flowDirections: flowDirections,
       conductionState: conductionState,
+      showGap: showGap,
     })
 
     return (

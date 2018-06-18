@@ -20,6 +20,8 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import RailIcon from "components/common/RailIcon/RailIcon";
 import {RailComponentClasses, RailData} from "components/rails/index";
+import SimpleTurnout from "components/rails/SimpleTurnout/SimpleTurnout";
+import DoubleCrossTurnout from "components/rails/DoubleCrossTurnout/DoubleCrossTurnout";
 
 const LOGGER = getLogger(__filename)
 
@@ -190,20 +192,44 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
   }
 }
 
+
+const iconizeSimpleTurnoutProps = (props) => {
+  props.length = 70
+  props.centerAngle = 30
+  props.radius = 140
+}
+
+const iconizeDoubleCrossTurnoutProps = (props) => {
+  props.length = 70
+  props.centerAngle = 60
+}
+
+
 export const createRailComponentForIcon = (item: RailData, conductionState: number) => {
   const {id: id, type: type, ...props} = item
   let RailContainer = RailComponentClasses[type]
   if (RailContainer == null) {
     throw Error(`'${type}' is not a valid Rail type!`)
   }
+
+  switch (RailContainer) {
+    case SimpleTurnout:
+      iconizeSimpleTurnoutProps(props)
+      break
+    case DoubleCrossTurnout:
+      iconizeDoubleCrossTurnoutProps(props)
+      break
+  }
+
   return (
     <RailContainer
       // key={id}
       // id={id}
       {...props}
       conductionState={conductionState}
-      fillColors={{[conductionState]: 'red'}}
+      fillColors={{[conductionState]: 'orange'}}
       opacity={1.0}
+      showGap={false}
     />
   )
 }

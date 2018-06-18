@@ -14,6 +14,7 @@ const LOGGER = getLogger(__filename)
 
 interface DoubleCrossTurnoutRailPartProps extends RailPartBaseProps {
   length: number
+  centerAngle: number
 }
 
 
@@ -51,10 +52,10 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
 
 
   renderParts = () => {
-    const { length, pivotJointIndex, data, fillColors, flowDirections } = this.props
+    const { length, centerAngle, pivotJointIndex, data, fillColors, flowDirections, showGap } = this.props
 
     // TODO: 方程式を解いてちゃんと値を出す
-    const radius = length / (2 * Math.sin(15 / 180 * Math.PI))
+    const radius = length / (2 * Math.sin(centerAngle / 180 * Math.PI))
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 
     return (
@@ -109,7 +110,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
         <ArcPart
           direction={ArcDirection.RIGHT}
           radius={radius}
-          centerAngle={15}
+          centerAngle={centerAngle}
           width={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
           fillColor={fillColors[1]}
@@ -121,9 +122,9 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
         <ArcPart
           position={new Point(length, 0)}
           direction={ArcDirection.RIGHT}
-          angle={-15}
+          angle={-centerAngle}
           radius={radius}
-          centerAngle={15}
+          centerAngle={centerAngle}
           width={RAIL_PART_WIDTH}
           pivot={Pivot.RIGHT}
           fillColor={fillColors[1]}
@@ -136,7 +137,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           position={new Point(0, RAIL_SPACE)}
           direction={ArcDirection.LEFT}
           radius={radius}
-          centerAngle={15}
+          centerAngle={centerAngle}
           width={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
           fillColor={fillColors[1]}
@@ -148,9 +149,9 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
         <ArcPart
           position={new Point(length, RAIL_SPACE)}
           direction={ArcDirection.LEFT}
-          angle={15}
+          angle={centerAngle}
           radius={radius}
-          centerAngle={15}
+          centerAngle={centerAngle}
           width={RAIL_PART_WIDTH}
           pivot={Pivot.RIGHT}
           fillColor={fillColors[1]}
@@ -159,32 +160,36 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
             type: 'Part'
           }}
         />
-        <Gap
-          position={new Point(length/2, 0)}
-          data={{
-            type: 'Gap',
-          }}
-        />
-        <Gap
-          position={new Point(length/2, RAIL_SPACE)}
-          data={{
-            type: 'Gap',
-          }}
-        />
-        <Gap
-          position={new Point(length/2, RAIL_SPACE/2)}
-          angle={15}
-          data={{
-            type: 'Gap',
-          }}
-        />
-        <Gap
-          position={new Point(length/2, RAIL_SPACE/2)}
-          angle={-15}
-          data={{
-            type: 'Gap',
-          }}
-        />
+        {showGap &&
+          <>
+            <Gap
+              position={new Point(length/2, 0)}
+              data={{
+                type: 'Gap',
+              }}
+            />
+            <Gap
+              position={new Point(length/2, RAIL_SPACE)}
+              data={{
+                type: 'Gap',
+              }}
+            />
+            <Gap
+              position={new Point(length/2, RAIL_SPACE/2)}
+              angle={centerAngle}
+              data={{
+                type: 'Gap',
+              }}
+            />
+            <Gap
+              position={new Point(length/2, RAIL_SPACE/2)}
+              angle={-centerAngle}
+              data={{
+                type: 'Gap',
+              }}
+            />
+          </>
+        }
       </PartGroup>
     )
   }

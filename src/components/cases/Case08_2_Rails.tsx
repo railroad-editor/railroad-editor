@@ -64,7 +64,8 @@ export default class Case08 extends React.Component<any, any> {
         <DoubleCrossTurnout
           position={this.state.position}
           pivotJointIndex={this.state.pivotJoint}
-          length={200}
+          length={70}
+          centerAngle={60}
           angle={30}
           id={0}
           layerId={1}

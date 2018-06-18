@@ -21,6 +21,15 @@ import CrossingRailContainer from "components/rails/CrossingRail";
 import CrossingRail from "components/rails/CrossingRail/CrossingRail";
 import RailGroup from "components/rails/RailGroup";
 import {RailGroupProps} from "components/rails/RailGroup/RailGroup";
+import StraightRailPart from "components/rails/parts/StraightRailPart";
+import CurveRailPart from "components/rails/parts/CurveRailPart";
+import DoubleStraightRailPart from "components/rails/parts/DoubleStraightRailPart";
+import GappedStraightRailPart from "components/rails/parts/GappedStraightRailPart";
+import DoubleCurveRailPart from "components/rails/parts/DoubleCurveRailPart";
+import SimpleTurnoutRailPart from "components/rails/parts/SimpleTurnoutRailPart";
+import WyeTurnoutRailPart from "components/rails/parts/WyeTurnoutRailPart";
+import DoubleCrossTurnoutRailPart from "components/rails/parts/DoubleCrossTurnoutRailPart";
+import CrossingRailPart from "components/rails/parts/CrossingRailPart";
 
 // クラス名の文字列とクラスオブジェクトを関連付ける連想配列
 // 新しいレールクラスを作成したらここに追加する必要がある
@@ -49,6 +58,19 @@ export const RailComponentClasses = {
   DoubleCrossTurnout,
   EndRail,
   CrossingRail
+}
+
+export const RailPartComponentClasses = {
+  StraightRail: StraightRailPart,
+  CurveRail: CurveRailPart,
+  DoubleStraightRail: DoubleStraightRailPart,
+  GappedStraightRail: GappedStraightRailPart,
+  DoubleCurveRail: DoubleCurveRailPart,
+  SimpleTurnout: SimpleTurnoutRailPart,
+  WyeTurnout: WyeTurnoutRailPart,
+  DoubleCrossTurnout: DoubleCrossTurnoutRailPart,
+  EndRail: StraightRailPart,
+  CrossingRail: CrossingRailPart
 }
 
 export default RailContainerClasses
