@@ -92,17 +92,17 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
   buildModeMouseDown = (e) => {
     // this.props.builderMouseDown(e)
-    this.props.selectToolMouseDown(e)
+    this.props.selectToolMouseDown(e);
     // this.props.moveToolMouseDown(e)
+    // Material-UIの要素に変にフォーカスが残ってしまうので、Canvasにいるときは常にBlurして対処
+    // TODO: もっとスマートな方法が無いか調べる
+    (document.activeElement as HTMLElement).blur();
   }
 
   buildModeMouseMove = (e) => {
     // this.props.builderMouseMove(e)
     const mousePosition = this.props.moveToolMouseMove(e);
     this.setState({mousePosition});
-    // Material-UIの要素に変にフォーカスが残ってしまうので、Canvasにいるときは常にBlurして対処
-    // TODO: もっとスマートな方法が無いか調べる
-    (document.activeElement as HTMLElement).blur();
   }
 
   buildModeMouseDrag = (e) => {
@@ -122,14 +122,14 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
   }
 
   panModeMouseDown = (e) => {
-    this.props.moveToolMouseDown(e)
+    this.props.moveToolMouseDown(e);
+    // Material-UIの要素に変にフォーカスが残ってしまうので、Canvasにいるときは常にBlurして対処
+    // TODO: もっとスマートな方法が無いか調べる
+    (document.activeElement as HTMLElement).blur();
   }
 
   panModeMouseMove = (e) => {
     this.props.moveToolMouseMove(e);
-    // Material-UIの要素に変にフォーカスが残ってしまうので、Canvasにいるときは常にBlurして対処
-    // TODO: もっとスマートな方法が無いか調べる
-    (document.activeElement as HTMLElement).blur();
   }
 
   panModeMouseDrag = (e) => {
