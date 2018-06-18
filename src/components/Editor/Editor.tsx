@@ -216,7 +216,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             <Tool
               active={this.isActive(Tools.PAN)}
               name={Tools.PAN}
-              onMouseDown={this.panModeKeyDown}
+              onMouseDown={this.panModeMouseDown}
               onMouseMove={this.panModeMouseMove}
               onMouseDrag={this.panModeMouseDrag}
               onMouseUp={this.panModeMouseUp}

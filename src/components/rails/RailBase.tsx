@@ -255,6 +255,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
   bringToFrontConductiveParts = () => {
     const conductiveParts = this.railPart.conductiveParts
     conductiveParts.map(idx => this.railPart.partGroup.children[idx].path.bringToFront())
+    // LOGGER.info('GAPS', this.railPart.partGroup.children.map(child => child.props.data.type))
     this.railPart.partGroup.children.filter(child => child.props.data.type === 'Gap').forEach(gap => gap.path.bringToFront())
   }
 

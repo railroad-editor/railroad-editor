@@ -72,14 +72,13 @@ export default class GappedStraightRailPart extends RailPartBase<GappedStraightR
             type: 'Part'
           }}
         />
-        {showGap &&
           <Gap
             position={new Point(length/2, 0)}
+            visible={showGap}
             data={{
               type: 'Gap',
             }}
           />
-        }
       </PartGroup>
     )
   }

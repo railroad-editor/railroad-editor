@@ -160,36 +160,36 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
             type: 'Part'
           }}
         />
-        {showGap &&
-          <>
-            <Gap
-              position={new Point(length/2, 0)}
-              data={{
-                type: 'Gap',
-              }}
-            />
-            <Gap
-              position={new Point(length/2, RAIL_SPACE)}
-              data={{
-                type: 'Gap',
-              }}
-            />
-            <Gap
-              position={new Point(length/2, RAIL_SPACE/2)}
-              angle={centerAngle}
-              data={{
-                type: 'Gap',
-              }}
-            />
-            <Gap
-              position={new Point(length/2, RAIL_SPACE/2)}
-              angle={-centerAngle}
-              data={{
-                type: 'Gap',
-              }}
-            />
-          </>
-        }
+        <Gap
+          position={new Point(length/2, 0)}
+          visible={showGap}
+          data={{
+            type: 'Gap',
+          }}
+        />
+        <Gap
+          position={new Point(length/2, RAIL_SPACE)}
+          visible={showGap}
+          data={{
+            type: 'Gap',
+          }}
+        />
+        <Gap
+          position={new Point(length/2, RAIL_SPACE/2)}
+          angle={centerAngle}
+          visible={showGap}
+          data={{
+            type: 'Gap',
+          }}
+        />
+        <Gap
+          position={new Point(length/2, RAIL_SPACE/2)}
+          angle={-centerAngle}
+          visible={showGap}
+          data={{
+            type: 'Gap',
+          }}
+        />
       </PartGroup>
     )
   }
