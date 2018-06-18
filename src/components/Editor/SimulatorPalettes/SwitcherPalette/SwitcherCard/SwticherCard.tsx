@@ -6,7 +6,7 @@ import Menu from "@material-ui/core/Menu";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from "@material-ui/core/IconButton";
 import Card from "@material-ui/core/Card";
-import {ConductionStates, LayoutStore, SwitcherData} from "store/layoutStore";
+import {ConductionStates, LayoutStore, SwitcherData, SwitcherType} from "store/layoutStore";
 import {FeederInfo} from "components/rails/RailBase";
 import {inject, observer} from 'mobx-react';
 import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
@@ -22,6 +22,9 @@ import RailIcon from "components/common/RailIcon/RailIcon";
 import {RailComponentClasses, RailData} from "components/rails/index";
 import SimpleTurnout from "components/rails/SimpleTurnout/SimpleTurnout";
 import DoubleCrossTurnout from "components/rails/DoubleCrossTurnout/DoubleCrossTurnout";
+import GridLayout from 'react-grid-layout';
+import 'react-grid-layout/css/styles.css'
+
 
 const LOGGER = getLogger(__filename)
 
@@ -39,6 +42,15 @@ export interface SwitcherCardState {
   sliderDragging: boolean
   direction: boolean
   dialogOpen: boolean
+  stateTableLayout: object
+}
+
+interface InversedConductionStates {
+  [railId: number]: InversedConductionState
+}
+
+interface InversedConductionState {
+  [switchState: number]: number     // Rail's conductionState
 }
 
 
@@ -46,6 +58,8 @@ export interface SwitcherCardState {
 @inject(STORE_LAYOUT_LOGIC, STORE_LAYOUT)
 @observer
 export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCardState> {
+
+  _dragging: boolean
 
   constructor(props: SwitcherCardProps) {
     super(props)
@@ -55,7 +69,13 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
       sliderDragging: false,
       direction: true,
       dialogOpen: false,
+      stateTableLayout: [
+        {i: '0', x: 0, y: 0, w: 1, h: 1},     // xがswitchStateの値, iがレールのconductionStateに対応する？
+        {i: '1', x: 1, y: 0, w: 1, h: 1},
+      ]
     }
+
+    this._dragging = false
   }
 
   openMenu = (e: React.MouseEvent<HTMLElement>) => {
@@ -86,7 +106,26 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
     this.onMenuClose(e)
   }
 
-  transformConductionStates = (conductionStates: ConductionStates) => {
+  /**
+   * {
+   *   [railId]: {
+   *     [switchState]: [railConductionState],
+   *     ...
+   *   }
+   *
+   *   1: {
+   *     0: 0,
+   *     1: 1
+   *   },
+   *   2: {
+   *     0: 1,
+   *     1: 0
+   *   }
+   *
+   * @param {ConductionStates} conductionStates
+   * @returns {{}}
+   */
+  transformConductionStates = (conductionStates: ConductionStates): InversedConductionStates => {
     const rails = {}
     _.keys(conductionStates).forEach(stateIdxStr => {
       const stateIdx = Number(stateIdxStr)
@@ -100,18 +139,160 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
     return rails
   }
 
+  detransformConductionStates = (inversedConductionStates: InversedConductionStates): ConductionStates => {
+    const switchStates = {}
+    _.keys(inversedConductionStates).forEach(railIdStr => {
+      const railId = Number(railIdStr)
+      _.keys(inversedConductionStates[railId]).forEach(switchStateStr => {
+        const switchState = Number(switchStateStr)
+        if (! switchStates[switchState]) {
+          switchStates[switchState] = []
+        }
+        switchStates[switchState].push({
+          railId: railId,
+          conductionState: inversedConductionStates[railId][switchState]
+        })
+      })
+    })
+
+    return switchStates
+  }
+
+
+
   onSwitchStateChange = (state: number) => (e) => {
-    this.props.layoutLogic.changeSwitcherState(this.props.item.id, state)
+    // ドラッグ直後のクリックイベントも発生するので、ドラッグ中かどうか判断する
+    if (!this._dragging) {
+      this.props.layoutLogic.changeSwitcherState(this.props.item.id, state)
+    }
+    this._dragging = false
   }
 
   onDisconnectRail = (railId: number) => (e) => {
     this.props.layoutLogic.disconnectTurnoutFromSwitcher(Number(railId), this.props.item.id)
   }
 
+  onStateTableChange = (railId: number) => (stateTableLayout) => {
+    LOGGER.info(stateTableLayout)
+    const transformedConductionStates = this.transformConductionStates(this.props.item.conductionStates)
+
+    transformedConductionStates[railId] = {
+      0: stateTableLayout[0]['x'],
+      1: stateTableLayout[1]['x']
+    }
+
+    const switchStateTable = this.detransformConductionStates(transformedConductionStates)
+
+    LOGGER.info('rail', railId, 'table changed!!', switchStateTable)
+
+    this.props.layoutLogic.changeSwitcherConductionTable(this.props.item.id, switchStateTable)
+  }
+
+  onDrag = (e) => {
+    this._dragging = true
+  }
+
+
+  createStateTable = (switcher: SwitcherData, rail: RailData) => {
+    const railConductionStates = switcher.conductionStates[switcher.currentState]
+    // _.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId && cs.conductionState === 0)))
+    LOGGER.info('rail', rail.id, rail.conductionState)
+    LOGGER.info('railConductionStates', railConductionStates)
+    LOGGER.info('active 0', railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === 0))
+    LOGGER.info('active 1', railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === 1))
+    LOGGER.info('onClick 0' , Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === 0)))))
+    LOGGER.info('onClick 1' , Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === 1)))))
+
+
+    switch (switcher.type) {
+      case SwitcherType.NORMAL:
+        return (
+          <GridLayout className="layout" layout={this.state.stateTableLayout}
+                      cols={2} rowHeight={50} width={120} isResizable={false}
+                      compactType="horizontal" margin={[0, 0]}
+                      onLayoutChange={this.onStateTableChange(rail.id)}
+                      onDrag={this.onDrag}
+          >
+            <ActiveSmallButton
+              // このセルのIdentity、つまりこのレールのConductionState
+              key={"0"}
+              //
+              active={!!railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === 0)}
+              onClick={this.onSwitchStateChange(Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === 0)))))}
+            >
+              <RailIcon
+                width={30}
+                height={30}
+                rail={createRailComponentForIcon(rail, 0)}
+              />
+            </ActiveSmallButton>
+            <ActiveSmallButton
+              key={"1"}  //` このセルのIdentityはレールのConductionStateである
+              active={!!railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === 1)}
+              onClick={this.onSwitchStateChange(Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === 1)))))}
+            >
+              <RailIcon
+                width={30}
+                height={30}
+                rail={createRailComponentForIcon(rail, 1)}
+              />
+            </ActiveSmallButton>
+          </GridLayout>
+        )
+      case SwitcherType.THREE_WAY:
+        return (
+          <GridLayout className="layout" layout={this.state.stateTableLayout}
+                      cols={3} rowHeight={50} width={120} isResizable={false}
+                      compactType="horizontal" margin={[0, 0]}
+                      onLayoutChange={this.onStateTableChange(rail.id)}
+          >
+            <ActiveSmallButton
+              key="a"
+              active={this.props.item.currentState === 0}
+              onClick={this.onSwitchStateChange(0)}
+            >
+              <RailIcon
+                width={30}
+                height={30}
+                rail={createRailComponentForIcon(rail, 0)}
+              />
+            </ActiveSmallButton>
+            <ActiveSmallButton
+              key="b"
+              active={this.props.item.currentState === 1}
+              onClick={this.onSwitchStateChange(1)}
+            >
+              <RailIcon
+                width={30}
+                height={30}
+                rail={createRailComponentForIcon(rail, 1)}
+              />
+            </ActiveSmallButton>
+            <ActiveSmallButton
+              key="c"
+              active={this.props.item.currentState === 2}
+              onClick={this.onSwitchStateChange(2)}
+            >
+              <RailIcon
+                width={30}
+                height={30}
+                rail={createRailComponentForIcon(rail, 2)}
+              />
+            </ActiveSmallButton>
+          </GridLayout>
+        )
+    }
+
+  }
+
 
   render() {
-    const {name, conductionStates} = this.props.item
+    const {name, type, conductionStates} = this.props.item
     const transformedConductionStates = this.transformConductionStates(conductionStates)
+
+    LOGGER.info('conductionStates', conductionStates)
+    LOGGER.info('transformedConductionStates', transformedConductionStates)
+
 
     return (
       <>
@@ -136,29 +317,8 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
                   <Grid item xs={3}>
                     <Typography align="center"> {rail.name} </Typography>
                   </Grid>
-                  <Grid item xs={3}>
-                    <ActiveSmallButton
-                      active={this.props.item.currentState === 0}
-                      onClick={this.onSwitchStateChange(0)}
-                    >
-                      <RailIcon
-                        width={30}
-                        height={30}
-                        rail={createRailComponentForIcon(rail, 0)}
-                      />
-                    </ActiveSmallButton>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <ActiveSmallButton
-                      active={this.props.item.currentState === 1}
-                      onClick={this.onSwitchStateChange(1)}
-                    >
-                      <RailIcon
-                        width={30}
-                        height={30}
-                        rail={createRailComponentForIcon(rail, 1)}
-                      />
-                    </ActiveSmallButton>
+                  <Grid item xs={6}>
+                    {this.createStateTable(this.props.item, rail)}
                   </Grid>
                   <Grid item xs={3}>
                     <IconButton
@@ -230,6 +390,7 @@ export const createRailComponentForIcon = (item: RailData, conductionState: numb
       fillColors={{[conductionState]: 'orange'}}
       opacity={1.0}
       showGap={false}
+      showJoints={false}
     />
   )
 }

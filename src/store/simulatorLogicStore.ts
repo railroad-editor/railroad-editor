@@ -60,6 +60,14 @@ export class SimulatorLogicStore {
         }
       }
     )
+    reaction(
+      () => _.flatMap(layoutStore.currentLayoutData.switchers, sw => sw.conductionStates),
+      (data) => {
+        if (commonStore.editorMode === EditorMode.SIMULATOR) {
+          this.startCurrentFlowSimulation()
+        }
+      }
+    )
     // ツール変更時
     reaction(
       () => this.activeTool,

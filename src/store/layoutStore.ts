@@ -1,5 +1,5 @@
 import {RailComponentClasses, RailData} from "components/rails";
-import {action, computed, observable, reaction, toJS} from "mobx";
+import {action, computed, observable, reaction, toJS, extendObservable} from "mobx";
 import builderStore, {PlacingMode} from "./builderStore";
 import {DEFAULT_GRID_SIZE, DEFAULT_PAPER_HEIGHT, DEFAULT_PAPER_WIDTH} from "constants/tools";
 import {getAllOpenCloseJoints} from "components/rails/utils";
@@ -63,7 +63,26 @@ export enum SwitcherType {
   THREE_WAY = '3-Way',
 }
 
-
+/**
+ * conductionState の例
+ * {
+ *   0: [
+ *        {
+ *          railId: 1, conductionState: 0
+ *        },
+ *        {
+ *          railId: 2, conductionState: 1
+ *        }
+ *      ],
+ *   1: [
+ *        {
+ *          railId: 1, conductionState: 1
+ *        },
+ *        {
+ *          railId: 2, conductionState: 0
+ *        }
+ *      ],
+ */
 export interface SwitcherData {
   id: number
   name: string
@@ -551,12 +570,13 @@ export class LayoutStore {
     this.currentLayoutData.switchers.push({
       ...item,
       id: this.nextSwitcherId,
+      conductionStates: observable({0: [], 1:[], 2: []})
     })
   }
 
   @action
   updateSwitcher = (item: Partial<SwitcherData>) => {
-    const index = this.currentLayoutData.switchers.findIndex(feeder => feeder.id === item.id)
+    const index = this.currentLayoutData.switchers.findIndex(sw => sw.id === item.id)
     const target = this.currentLayoutData.switchers[index]
 
     this.currentLayoutData.switchers[index] = {

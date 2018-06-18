@@ -575,6 +575,28 @@ export class LayoutLogicStore {
     })
   }
 
+  @action
+  changeSwitcherConductionTable = (switcherId: number, conductionStates: ConductionStates) => {
+    const target = this.getSwitcherById(switcherId)
+    if (target == null) {
+      return
+    }
+
+    conductionStates[target.currentState].forEach(s => {
+      layoutStore.updateRail({
+        id: s.railId,
+        conductionState: s.conductionState
+      })
+    })
+
+    // Switcherの状態更新
+    layoutStore.updateSwitcher({
+      id: switcherId,
+      conductionStates: conductionStates
+    })
+
+  }
+
 
   private getRailDataById = (id: number) => {
     return layoutStore.currentLayoutData.rails.find(item => item.id === id)

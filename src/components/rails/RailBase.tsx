@@ -105,6 +105,7 @@ export interface RailBaseDefaultProps {
   conductionState: number
 
   showGap: boolean,
+  showJoints: boolean
 
   // イベントハンドラ
   onRailPartLeftClick: (e: MouseEvent) => boolean
@@ -169,7 +170,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     conductionState: 0,
 
     showGap: true,
-
+    showJoints: true,
 
     // 何もしないハンドラをセットしておく
     onRailPartLeftClick: (e: MouseEvent) => false,
@@ -264,8 +265,11 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
    * @returns {any[]}
    */
   protected renderJoints = (props: P) => {
-    const {id, opacity, opposingJoints, enableJoints, visible} = props
+    const {id, opacity, opposingJoints, enableJoints, visible, showJoints} = props
     const {jointPositions, jointAngles} = this.state
+    if (!showJoints) {
+      return <></>
+    }
 
     return _.range(this.joints.length).map(i => {
       return (
@@ -469,7 +473,8 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
   }
 
   render() {
-    const { fillColor, fillColors, onRailPartLeftClick, onRailPartMouseEnter, onRailPartMouseLeave, flowDirections, conductionState, showGap } = this.props
+    const { fillColor, fillColors, onRailPartLeftClick, onRailPartMouseEnter, onRailPartMouseLeave, flowDirections,
+      conductionState, showGap, showJoints } = this.props
 
     const railPart = this.renderRailPart(this.props)
     const extendedRailPart = React.cloneElement(railPart as any, {

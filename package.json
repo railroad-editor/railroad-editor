@@ -77,6 +77,7 @@
     "react-draggable": "^3.0.5",
     "react-fine-uploader": "^1.1.0",
     "react-form-validator-core": "^0.4.4",
+    "react-grid-layout": "^0.16.6",
     "react-material-ui-form-validator": "next",
     "react-paper-bindings": "https://github.com/kota65535/react-paper-bindings.dist#master",
     "react-rnd": "^7.4.0",
