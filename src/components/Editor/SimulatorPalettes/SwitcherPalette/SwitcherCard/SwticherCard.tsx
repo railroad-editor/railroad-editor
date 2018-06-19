@@ -14,17 +14,17 @@ import {LayoutLogicStore} from "store/layoutLogicStore";
 import SwitcherSettingDialog
   from "components/Editor/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwitcherSettingDialog/SwitcherSettingDialog";
 import {
-  ActiveSmallButton,
-  NarrowCardContent, NarrowCardHeader,
+  NarrowCardContent, NarrowCardHeader, ActiveSmallButton,
 } from "components/Editor/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwitchCard.style";
 import DeleteIcon from '@material-ui/icons/Delete';
 import RailIcon from "components/common/RailIcon/RailIcon";
 import {RailComponentClasses, RailData} from "components/rails/index";
-import SimpleTurnout from "components/rails/SimpleTurnout/SimpleTurnout";
-import DoubleCrossTurnout from "components/rails/DoubleCrossTurnout/DoubleCrossTurnout";
+import SimpleTurnout, {SimpleTurnoutProps} from "components/rails/SimpleTurnout/SimpleTurnout";
+import DoubleCrossTurnout, {DoubleCrossTurnoutProps} from "components/rails/DoubleCrossTurnout/DoubleCrossTurnout";
 import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css'
 import {getRailComponent} from "components/rails/utils";
+import ThreeWayTurnout, {ThreeWayTurnoutProps} from "components/rails/ThreeWayTurnout/ThreeWayTurnout";
 
 
 const LOGGER = getLogger(__filename)
@@ -43,7 +43,6 @@ export interface SwitcherCardState {
   sliderDragging: boolean
   direction: boolean
   dialogOpen: boolean
-  stateTableLayout: object
 }
 
 interface InversedConductionStates {
@@ -64,6 +63,7 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
 
   debounceCount: number
   dragging: boolean
+  stateGridLayout: object[]
 
   constructor(props: SwitcherCardProps) {
     super(props)
@@ -73,14 +73,28 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
       sliderDragging: false,
       direction: true,
       dialogOpen: false,
-      stateTableLayout: [
-        {i: '0', x: 0, y: 0, w: 1, h: 1},     // xがswitchStateの値, iがレールのconductionStateに対応する？
-        {i: '1', x: 1, y: 0, w: 1, h: 1},
-      ]
     }
 
     this.dragging = false
     this.debounceCount = 0
+
+    // SwitcherのStateとTurnoutのConductionStateの関連付けを制御するデータ
+    // x がSwitcherのState, i がレールのConductionStateに対応する
+    switch (props.item.type) {
+      case SwitcherType.NORMAL:
+        this.stateGridLayout = [
+          {i: '0', x: 0, y: 0, w: 1, h: 1},
+          {i: '1', x: 1, y: 0, w: 1, h: 1},
+        ]
+        break
+      case SwitcherType.THREE_WAY:
+        this.stateGridLayout = [
+          {i: '0', x: 0, y: 0, w: 1, h: 1},
+          {i: '1', x: 1, y: 0, w: 1, h: 1},
+          {i: '2', x: 2, y: 0, w: 1, h: 1},
+        ]
+        break
+    }
   }
 
   openMenu = (e: React.MouseEvent<HTMLElement>) => {
@@ -112,6 +126,8 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
   }
 
   /**
+   * SwitcherのConductionStatesを、このコンポーネントで表示するための形式に変換する。
+   *
    * {
    *   [railId]: {
    *     [switchState]: [railConductionState],
@@ -126,11 +142,12 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
    *     0: 1,
    *     1: 0
    *   }
+   * }
    *
    * @param {ConductionStates} conductionStates
    * @returns {{}}
    */
-  transformConductionStates = (conductionStates: ConductionStates): InversedConductionStates => {
+  transformSwitcherConductionStates = (conductionStates: ConductionStates): InversedConductionStates => {
     const rails = {}
     _.keys(conductionStates).forEach(stateIdxStr => {
       const stateIdx = Number(stateIdxStr)
@@ -144,7 +161,12 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
     return rails
   }
 
-  detransformConductionStates = (inversedConductionStates: InversedConductionStates): ConductionStates => {
+  /**
+   * 変換したSwitcherのConductionStatesをもとに戻す。
+   * @param {InversedConductionStates} inversedConductionStates
+   * @returns {ConductionStates}
+   */
+  revertSwitcherConductionStates = (inversedConductionStates: InversedConductionStates): ConductionStates => {
     const switchStates = {}
     _.keys(inversedConductionStates).forEach(railIdStr => {
       const railId = Number(railIdStr)
@@ -159,13 +181,11 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
         })
       })
     })
-
     return switchStates
   }
 
 
-
-  onSwitchStateChange = (state: number) => (e) => {
+  onSwitcherStateChange = (state: number) => (e) => {
     // ドラッグ直後のクリックイベントも発生するので、ドラッグ中かどうか判断する
     if (!this.dragging) {
       this.props.layoutLogic.changeSwitcherState(this.props.item.id, state)
@@ -174,23 +194,34 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
     this.debounceCount = 0
   }
 
-  onDisconnectRail = (railId: number) => (e) => {
+  onDisconnect = (railId: number) => (e) => {
     this.props.layoutLogic.disconnectTurnoutFromSwitcher(Number(railId))
   }
 
-  onStateTableChange = (railId: number) => (stateTableLayout) => {
-    LOGGER.info(stateTableLayout)
-    const transformedConductionStates = this.transformConductionStates(this.props.item.conductionStates)
+  onStateGridLayoutChange = (railId: number) => (stateGridLayout) => {
+    LOGGER.info(stateGridLayout)
+    const transformedConductionStates = this.transformSwitcherConductionStates(this.props.item.conductionStates)
 
-    transformedConductionStates[railId] = {
-      0: stateTableLayout[0]['x'],
-      1: stateTableLayout[1]['x']
+    // GridLayoutの変更を、変換されたConductionStatesに反映する
+    switch (this.props.item.type) {
+      case SwitcherType.NORMAL:
+        transformedConductionStates[railId] = {
+          0: stateGridLayout[0]['x'],
+          1: stateGridLayout[1]['x']
+        }
+        break
+      case SwitcherType.THREE_WAY:
+        transformedConductionStates[railId] = {
+          0: stateGridLayout[0]['x'],
+          1: stateGridLayout[1]['x'],
+          2: stateGridLayout[2]['x']
+        }
+        break
     }
 
-    const switchStateTable = this.detransformConductionStates(transformedConductionStates)
-
-    LOGGER.info('rail', railId, 'table changed!!', switchStateTable)
-
+    // LOGGER.info('rail', railId, 'table changed!!', switchStateTable)
+    // ConductionStatesを元に戻し、Switcherの状態を変更する
+    const switchStateTable = this.revertSwitcherConductionStates(transformedConductionStates)
     this.props.layoutLogic.changeSwitcherConductionTable(this.props.item.id, switchStateTable)
   }
 
@@ -207,40 +238,39 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
   createStateTable = (switcher: SwitcherData, rail: RailData) => {
     const railConductionStates = switcher.conductionStates[switcher.currentState]
     // _.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId && cs.conductionState === 0)))
-    LOGGER.info('rail', rail.id, rail.conductionState)
-    LOGGER.info('railConductionStates', railConductionStates)
-    LOGGER.info('active 0', railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === 0))
-    LOGGER.info('active 1', railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === 1))
-    LOGGER.info('onClick 0' , Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === 0)))))
-    LOGGER.info('onClick 1' , Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === 1)))))
-
+    // LOGGER.info('rail', rail.id, rail.conductionState)
+    // LOGGER.info('railConductionStates', railConductionStates)
+    // LOGGER.info('active 0', railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === 0))
+    // LOGGER.info('active 1', railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === 1))
+    // LOGGER.info('onClick 0' , Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === 0)))))
+    // LOGGER.info('onClick 1' , Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === 1)))))
 
     switch (switcher.type) {
       case SwitcherType.NORMAL:
         return (
-          <GridLayout className="layout" layout={this.state.stateTableLayout}
+          <GridLayout className="layout" layout={this.stateGridLayout}
                       cols={2} rowHeight={50} width={120} isResizable={false}
                       compactType="horizontal" margin={[0, 0]}
-                      onLayoutChange={this.onStateTableChange(rail.id)}
+                      onLayoutChange={this.onStateGridLayoutChange(rail.id)}
                       onDrag={this.onDrag}
           >
             {
               _.range(0, 2).map(conductionState => {
                 return (
                   <ActiveSmallButton
-                  // このセルのIdentity、つまりこのレールのConductionState
-                  key={`${conductionState}`}  //`
-                  //
-                  active={!!railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === conductionState)}
-                  onClick={this.onSwitchStateChange(
-                    Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === conductionState)))))}
-                >
-                  <RailIcon
-                    width={30}
-                    height={30}
-                    rail={createRailComponentForIcon(rail, conductionState)}
-                  />
-                </ActiveSmallButton>
+                    // このセルのIdentity、つまりこのレールのConductionState
+                    key={`${conductionState}`}  //`
+                    //
+                    active={!!railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === conductionState)}
+                    onClick={this.onSwitcherStateChange(
+                      Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === conductionState)))))}
+                  >
+                    <RailIcon
+                      width={30}
+                      height={30}
+                      rail={createRailComponentForIcon(rail, conductionState)}
+                    />
+                  </ActiveSmallButton>
                 )
               })
             }
@@ -249,54 +279,41 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
       // TODO: Implement
       case SwitcherType.THREE_WAY:
         return (
-          <GridLayout className="layout" layout={this.state.stateTableLayout}
+          <GridLayout className="layout" layout={this.stateGridLayout}
                       cols={3} rowHeight={50} width={120} isResizable={false}
                       compactType="horizontal" margin={[0, 0]}
-                      onLayoutChange={this.onStateTableChange(rail.id)}
+                      onLayoutChange={this.onStateGridLayoutChange(rail.id)}
+                      onDrag={this.onDrag}
           >
-            <ActiveSmallButton
-              key="a"
-              active={this.props.item.currentState === 0}
-              onClick={this.onSwitchStateChange(0)}
-            >
-              <RailIcon
-                width={30}
-                height={30}
-                rail={createRailComponentForIcon(rail, 0)}
-              />
-            </ActiveSmallButton>
-            <ActiveSmallButton
-              key="b"
-              active={this.props.item.currentState === 1}
-              onClick={this.onSwitchStateChange(1)}
-            >
-              <RailIcon
-                width={30}
-                height={30}
-                rail={createRailComponentForIcon(rail, 1)}
-              />
-            </ActiveSmallButton>
-            <ActiveSmallButton
-              key="c"
-              active={this.props.item.currentState === 2}
-              onClick={this.onSwitchStateChange(2)}
-            >
-              <RailIcon
-                width={30}
-                height={30}
-                rail={createRailComponentForIcon(rail, 2)}
-              />
-            </ActiveSmallButton>
+            {
+              _.range(0, 3).map(conductionState => {
+                return (
+                  <ActiveSmallButton
+                    // このセルのIdentity、つまりこのレールのConductionState
+                    key={`${conductionState}`}  //`
+                    //
+                    active={!!railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === conductionState)}
+                    onClick={this.onSwitcherStateChange(
+                      Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === conductionState)))))}
+                  >
+                    <RailIcon
+                      width={25}
+                      height={25}
+                      rail={createRailComponentForIcon(rail, conductionState)}
+                    />
+                  </ActiveSmallButton>
+                )
+              })
+            }
           </GridLayout>
         )
     }
-
   }
 
 
   render() {
     const {name, type, conductionStates} = this.props.item
-    const transformedConductionStates = this.transformConductionStates(conductionStates)
+    const transformedConductionStates = this.transformSwitcherConductionStates(conductionStates)
 
     LOGGER.info('conductionStates', conductionStates)
     LOGGER.info('transformedConductionStates', transformedConductionStates)
@@ -328,11 +345,11 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
                   <Grid item xs={6}>
                     {this.createStateTable(this.props.item, rail)}
                   </Grid>
-                  <Grid item xs={3}>
-                    <IconButton
-                      onClick={this.onDisconnectRail(railId)}
+                  <Grid item xs={3} justify="flex-end">
+                    <IconButton style={{width: '40px', height: '40px'}}
+                      onClick={this.onDisconnect(railId)}
                     >
-                      <DeleteIcon/>
+                      <DeleteIcon style={{width: '20px', height: '20px'}}/>
                     </IconButton>
                   </Grid>
                 </Grid>
@@ -361,15 +378,23 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
 }
 
 
-const iconizeSimpleTurnoutProps = (props) => {
+const iconizeSimpleTurnoutProps = (props: SimpleTurnoutProps) => {
   props.length = 70
   props.centerAngle = 30
   props.radius = 140
 }
 
-const iconizeDoubleCrossTurnoutProps = (props) => {
+const iconizeDoubleCrossTurnoutProps = (props: DoubleCrossTurnoutProps) => {
   props.length = 70
   props.centerAngle = 60
+}
+
+const iconizeThreeWayTurnoutProps = (props: ThreeWayTurnoutProps) => {
+  props.length = 70
+  props.rightCenterAngle = 30
+  props.rightRadius = 140
+  props.leftCenterAngle = 30
+  props.leftRadius = 140
 }
 
 
@@ -382,10 +407,13 @@ export const createRailComponentForIcon = (item: RailData, conductionState: numb
 
   switch (RailContainer) {
     case SimpleTurnout:
-      iconizeSimpleTurnoutProps(props)
+      iconizeSimpleTurnoutProps(props as SimpleTurnoutProps)
       break
     case DoubleCrossTurnout:
-      iconizeDoubleCrossTurnoutProps(props)
+      iconizeDoubleCrossTurnoutProps(props as DoubleCrossTurnoutProps)
+      break
+    case ThreeWayTurnout:
+      iconizeThreeWayTurnoutProps(props as ThreeWayTurnoutProps)
       break
   }
 

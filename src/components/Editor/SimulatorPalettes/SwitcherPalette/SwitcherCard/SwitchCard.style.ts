@@ -19,7 +19,7 @@ export const Spacer = styled.div`
 
 export const NarrowCardContent = styled(CardContent)`
   && {
-    padding: 8px 6px;
+    padding: 8px 0px 8px 6px
   }
 `
 
