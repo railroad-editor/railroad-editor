@@ -7,5 +7,9 @@ export const StyledTooltip = styled(Tooltip)`
     :hover {
       cursor: move
     }
+    
+    & .tooltip-override {
+      background-color: red;
+    }
   }
 `

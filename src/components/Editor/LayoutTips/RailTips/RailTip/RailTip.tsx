@@ -13,17 +13,25 @@ import TurnoutSettingDialog
   from "components/Editor/LayoutTips/RailTips/RailTip/TurnoutSettingDialog/TurnoutSettingDialog";
 import {RailData} from "components/rails";
 import {normAngle} from "components/rails/utils";
+import {Tooltip, withStyles} from "@material-ui/core";
 
 const LOGGER = getLogger(__filename)
 
+const styles = theme => ({
+  tooltip: {
+    backgroundColor: 'orange'
+  }
+})
 
 export interface FeederTipProps {
   rail: RailData
   switchers: SwitcherData[]
   position: Point
   open: boolean
+  color?: string
   layout?: LayoutStore
   common?: CommonStore
+  classes?: any
 }
 
 export interface FeederTipState {
@@ -79,17 +87,18 @@ export class RailTip extends React.Component<FeederTipProps & WithBuilderPublicP
 
 
   render() {
-    const {rail, switchers, open, position} = this.props
+    const {classes, rail, switchers, open, position, color} = this.props
     const placement = this.getPlacement()
 
     return (
       <>
-        <StyledTooltip open={open} title={rail.name}
+        <Tooltip open={open} title={rail.name}
                        PopperProps={{onClick: this.onClick, style: {cursor: 'pointer', zIndex: '900'}}}
                        placement={placement}
+                 classes={{tooltip: classes.tooltip}}
         >
           <div style={{top: `${position.y}px`, left: `${position.x}px`, width: '5px', height: '5px', position: 'absolute'}}/>
-        </StyledTooltip>
+        </Tooltip>
         <TurnoutSettingDialog
           title={'Turnout Setting'}
           open={this.state.dialogOpen}
@@ -104,4 +113,5 @@ export class RailTip extends React.Component<FeederTipProps & WithBuilderPublicP
 
 
 export default compose<FeederTipProps, FeederTipProps>(
+  withStyles(styles)
 )(RailTip)
