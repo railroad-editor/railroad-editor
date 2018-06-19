@@ -6,6 +6,7 @@ import {ArcDirection} from "components/rails/parts/primitives/ArcPart";
 import StraightRail from "components/rails/StraightRail/StraightRail";
 import CurveRail from "components/rails/CurveRail/CurveRail";
 import SimpleTurnout from "components/rails/SimpleTurnout/SimpleTurnout";
+import ThreeWayTurnout from "components/rails/ThreeWayTurnout/ThreeWayTurnout";
 // import {CurveRail} from "components/Rails/CurveRail";
 // import StraightRail from "components/rails/StraightRail";
 // import CurveRail from "components/rails/CurveRail";
@@ -82,6 +83,21 @@ export default class Case08 extends React.Component<any, any> {
           id={0}
           layerId={1}
           fillColors={{1: 'blue'}}
+        />
+
+        <ThreeWayTurnout
+          pivotJointIndex={1}
+          position={new Point(200,400)}
+          angle={120}
+          length={140}
+          leftStart={0}
+          leftRadius={514}
+          leftCenterAngle={15}
+          rightStart={0}
+          rightRadius={514}
+          rightCenterAngle={15}
+          id={0}
+          layerId={1}
         />
 
         <Tool

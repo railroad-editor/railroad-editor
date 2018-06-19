@@ -7,6 +7,7 @@ import CurveRailPart from "components/rails/parts/CurveRailPart";
 import {ArcDirection} from "components/rails/parts/primitives//ArcPart";
 import SimpleTurnoutRailPart from "components/rails/parts/SimpleTurnoutRailPart";
 import CurvedTurnoutRailPart from "components/rails/parts/CurvedTurnoutRailPart";
+import ThreeWayTurnoutRailPart from "components/rails/parts/ThreeWayTurnoutRailPart";
 
 export default class Case05 extends React.Component<any, any> {
 
@@ -138,6 +139,19 @@ export default class Case05 extends React.Component<any, any> {
           outerRadius={300}
           innerCenterAngle={45}
           outerCenterAngle={30}
+        />
+
+        <ThreeWayTurnoutRailPart
+          pivotJointIndex={1}
+          position={new Point(200,400)}
+          angle={120}
+          length={140}
+          leftStart={0}
+          leftRadius={514}
+          leftCenterAngle={15}
+          rightStart={0}
+          rightRadius={514}
+          rightCenterAngle={15}
         />
 
       </View>

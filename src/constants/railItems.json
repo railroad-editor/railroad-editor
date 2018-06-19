@@ -182,22 +182,24 @@
     {
       "type": "ThreeWayTurnout",
       "name": "PRL541/280-15",
-      "leftStart": 0,
-      "leftRadius": 541,
-      "leftCenterAngle": 15,
+      "length": 140,
       "rightStart": 0,
       "rightRadius": 541,
-      "rightCenterAngle": 15
+      "rightCenterAngle": 15,
+      "leftStart": 0,
+      "leftRadius": 541,
+      "leftCenterAngle": 15
     },
     {
       "type": "ThreeWayTurnout",
       "name": "PLR541/280-15",
-      "leftStart": 0,
-      "leftRadius": 541,
-      "leftCenterAngle": 15,
+      "length": 140,
       "rightStart": 0,
       "rightRadius": 541,
-      "rightCenterAngle": 15
+      "rightCenterAngle": 15,
+      "leftStart": 0,
+      "leftRadius": 541,
+      "leftCenterAngle": 15
     },
     {
       "type": "DoubleCrossTurnout",

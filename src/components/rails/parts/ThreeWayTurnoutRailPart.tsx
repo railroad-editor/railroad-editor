@@ -12,18 +12,21 @@ import getLogger from "logging";
 const LOGGER = getLogger(__filename)
 
 
-interface SimpleTurnoutRailPartProps extends RailPartBaseProps {
+interface ThreeWayTurnoutRailPartProps extends RailPartBaseProps {
   length: number
-  radius: number
-  centerAngle: number
-  direction: ArcDirection
+  rightStart: number
+  rightRadius: number
+  rightCenterAngle: number
+  leftStart: number
+  leftRadius: number
+  leftCenterAngle: number
 }
 
 
-export default class SimpleTurnoutRailPart extends RailPartBase<SimpleTurnoutRailPartProps, {}> {
+export default class ThreeWayTurnoutRailPart extends RailPartBase<ThreeWayTurnoutRailPartProps, {}> {
   public static defaultProps: RailPartBaseDefaultProps = RailPartBase.defaultProps
 
-  constructor(props: SimpleTurnoutRailPartProps) {
+  constructor(props: ThreeWayTurnoutRailPartProps) {
     super(props)
   }
 
@@ -32,12 +35,20 @@ export default class SimpleTurnoutRailPart extends RailPartBase<SimpleTurnoutRai
       [
         {pivotPartIndex: 0, pivot: Pivot.LEFT},
         {pivotPartIndex: 0, pivot: Pivot.RIGHT},
-        {pivotPartIndex: 1, pivot: Pivot.RIGHT}
+        {pivotPartIndex: 1, pivot: Pivot.RIGHT},
+        {pivotPartIndex: 2, pivot: Pivot.RIGHT}
       ],
       [
         {pivotPartIndex: 1, pivot: Pivot.LEFT},
         {pivotPartIndex: 0, pivot: Pivot.RIGHT},
-        {pivotPartIndex: 1, pivot: Pivot.RIGHT}
+        {pivotPartIndex: 1, pivot: Pivot.RIGHT},
+        {pivotPartIndex: 2, pivot: Pivot.RIGHT}
+      ],
+      [
+        {pivotPartIndex: 2, pivot: Pivot.LEFT},
+        {pivotPartIndex: 0, pivot: Pivot.RIGHT},
+        {pivotPartIndex: 1, pivot: Pivot.RIGHT},
+        {pivotPartIndex: 2, pivot: Pivot.RIGHT}
       ]
     ][this.props.conductionState]
   }
@@ -47,12 +58,12 @@ export default class SimpleTurnoutRailPart extends RailPartBase<SimpleTurnoutRai
   }
 
   get conductiveParts() {
-    return [[0], [1]][this.props.conductionState]
+    return [[0], [1], [2]][this.props.conductionState]
   }
 
 
   renderParts = () => {
-    const { length, radius, centerAngle, direction, pivotJointIndex, data, fillColors, flowDirections } = this.props
+    const { length, rightStart, rightRadius, rightCenterAngle, leftStart, leftRadius, leftCenterAngle, pivotJointIndex, data, fillColors, flowDirections } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 
     return (
@@ -72,13 +83,27 @@ export default class SimpleTurnoutRailPart extends RailPartBase<SimpleTurnoutRai
           }}
         />
         <ArcPart
-          direction={direction}
-          radius={radius}
-          centerAngle={centerAngle}
+          position={new Point(rightStart, 0)}
+          direction={ArcDirection.RIGHT}
+          radius={rightRadius}
+          centerAngle={rightCenterAngle}
           width={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
           fillColor={fillColors[1]}
           flowDirection={flowDirections[1]}
+          data={{
+            type: 'Part'
+          }}
+        />
+        <ArcPart
+          position={new Point(leftStart, 0)}
+          direction={ArcDirection.LEFT}
+          radius={leftRadius}
+          centerAngle={leftCenterAngle}
+          width={RAIL_PART_WIDTH}
+          pivot={Pivot.LEFT}
+          fillColor={fillColors[2]}
+          flowDirection={flowDirections[2]}
           data={{
             type: 'Part'
           }}
