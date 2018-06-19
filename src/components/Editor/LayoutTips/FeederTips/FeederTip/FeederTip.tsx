@@ -95,7 +95,7 @@ export class FeederTip extends React.Component<FeederTipProps & WithBuilderPubli
     return (
       <>
         <StyledTooltip open={open} title={feeder.name}
-                       PopperProps={{onClick: this.onClick, style: {cursor: 'pointer', zIndex: '1000'}}}
+                       PopperProps={{onClick: this.onClick, style: {cursor: 'pointer', zIndex: '900'}}}
                        placement={placement}
         >
           <div style={{top: `${position.y}px`, left: `${position.x}px`, width: '1px', height: '1px', position: 'absolute'}}/>

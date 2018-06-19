@@ -41,7 +41,7 @@ export class CommonStore {
     reaction(() => this.zoom,
       () => this.zooming = false,
       {
-        delay: 100
+        delay: 200
       }
     )
 
@@ -49,7 +49,7 @@ export class CommonStore {
     reaction(() => this.pan,
       () => this.panning = false,
       {
-        delay: 100
+        delay: 200
       }
     )
 

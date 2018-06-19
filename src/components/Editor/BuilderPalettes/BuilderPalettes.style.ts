@@ -15,6 +15,7 @@ export const StyledBuilderPalette = styled(BuilderPalette as any)`
   // Rndのインラインスタイルである top:0, left:0 を打ち消す
   top: 10px!important;
   left: 10px!important;
+  z-index: 1000;
   //top: 10px!important;
   //left: 10px!important;
   //width: 200px!important;
@@ -25,6 +26,7 @@ export const StyledLayerPalette = styled(LayerPalette as any)`
   top: 10px!important;
   left: auto!important;
   right: 10px;
+  z-index: 1000;
   //top: 10px!important;
   //left: 10px!important;
   //width: 200px!important;
