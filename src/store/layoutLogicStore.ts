@@ -74,6 +74,16 @@ export class LayoutLogicStore {
   }
 
   /**
+   * フィーダーを削除する。
+   * @param {number} feederId
+   */
+  @action
+  deleteFeeder = (feederId: number) => {
+    this.disconnectFeederFromPowerPack(feederId)
+    layoutStore.deleteFeeder({id: feederId})
+  }
+
+  /**
    * レールを削除する。接続されているフィーダー、ギャップジョイナーも削除する。
    */
   @action
@@ -81,9 +91,11 @@ export class LayoutLogicStore {
     // フィーダーを削除
     layoutStore.currentLayoutData.feeders
       .filter(feeder => feeder.railId === railId)
-      .forEach(feeder => layoutStore.deleteFeeder(feeder))
+      .forEach(feeder => this.deleteFeeder(feeder.id))
     // ジョイントを解除
     this.disconnectJoint(railId)
+    // Switcherに接続されていたら削除
+    this.disconnectTurnoutFromSwitcher(railId)
     layoutStore.deleteRail({id: railId})
   }
 
@@ -522,7 +534,7 @@ export class LayoutLogicStore {
       return
     }
 
-    this.disconnectTurnoutFromSwitcher(railId, switcherId)
+    this.disconnectTurnoutFromSwitcher(railId)
 
     const newConductionStates = target.conductionStates
     _.keys(conductionStates).forEach(idx => {
@@ -536,8 +548,8 @@ export class LayoutLogicStore {
   }
 
   @action
-  disconnectTurnoutFromSwitcher = (railId: number, switcherId: number) => {
-    const target = this.getSwitcherById(switcherId)
+  disconnectTurnoutFromSwitcher = (railId: number) => {
+    const target = this.getSwitcherByRailId(railId)
     if (target == null) {
       return
     }
@@ -548,7 +560,7 @@ export class LayoutLogicStore {
     })
 
     layoutStore.updateSwitcher({
-      id: switcherId,
+      id: target.id,
       conductionStates: newConductionStates
     })
   }
@@ -613,8 +625,15 @@ export class LayoutLogicStore {
   private getPowerPackById = (id: number) => {
     return layoutStore.currentLayoutData.powerPacks.find(p => p.id === id)
   }
+
   private getSwitcherById = (id: number) => {
     return layoutStore.currentLayoutData.switchers.find(p => p.id === id)
+  }
+
+  private getSwitcherByRailId = (id: number) => {
+    return layoutStore.currentLayoutData.switchers.find(sw =>
+      _.flatMap(_.values(sw.conductionStates), cs => cs.slice()).find(cs => cs.railId === id)
+    )
   }
 }
 

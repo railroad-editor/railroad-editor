@@ -175,7 +175,7 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
   }
 
   onDisconnectRail = (railId: number) => (e) => {
-    this.props.layoutLogic.disconnectTurnoutFromSwitcher(Number(railId), this.props.item.id)
+    this.props.layoutLogic.disconnectTurnoutFromSwitcher(Number(railId))
   }
 
   onStateTableChange = (railId: number) => (stateTableLayout) => {
