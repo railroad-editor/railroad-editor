@@ -121,7 +121,9 @@ export class BuilderStore {
     // ツール変更時
     reaction(
       () => this.activeTool,
-      (tool) => this.changeMode(tool)
+      (tool) => {
+        this.changeMode(tool)
+      }
     )
   }
 

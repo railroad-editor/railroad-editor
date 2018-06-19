@@ -39,6 +39,7 @@ export class SimulatorLogicStore {
     reaction(
       () => layoutStore.currentLayoutData.powerPacks.map( p => p.power * (p.direction ? 1 : -1)),
       (data) => {
+        LOGGER.info('reaction 1')
         if (commonStore.editorMode === EditorMode.SIMULATOR) {
           this.startCurrentFlowSimulation()
         }
@@ -47,6 +48,7 @@ export class SimulatorLogicStore {
     reaction(
       () => layoutStore.currentLayoutData.powerPacks.map( p => p.supplyingFeederIds),
       (data) => {
+        LOGGER.info('reaction 2')
         if (commonStore.editorMode === EditorMode.SIMULATOR) {
           this.startCurrentFlowSimulation()
         }
@@ -55,6 +57,7 @@ export class SimulatorLogicStore {
     reaction(
       () => layoutStore.currentLayoutData.switchers.map( p => p.currentState),
       (data) => {
+        LOGGER.info('reaction 3')
         if (commonStore.editorMode === EditorMode.SIMULATOR) {
           this.startCurrentFlowSimulation()
         }
@@ -63,6 +66,7 @@ export class SimulatorLogicStore {
     reaction(
       () => _.flatMap(layoutStore.currentLayoutData.switchers, sw => sw.conductionStates),
       (data) => {
+        LOGGER.info('reaction 4')
         if (commonStore.editorMode === EditorMode.SIMULATOR) {
           this.startCurrentFlowSimulation()
         }
@@ -72,6 +76,7 @@ export class SimulatorLogicStore {
     reaction(
       () => this.activeTool,
       (tool) => {
+        LOGGER.info('reaction 5')
         this.changeMode(tool)
       }
     )
