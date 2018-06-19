@@ -24,6 +24,7 @@ import SimpleTurnout from "components/rails/SimpleTurnout/SimpleTurnout";
 import DoubleCrossTurnout from "components/rails/DoubleCrossTurnout/DoubleCrossTurnout";
 import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css'
+import {getRailComponent} from "components/rails/utils";
 
 
 const LOGGER = getLogger(__filename)
@@ -59,7 +60,10 @@ interface InversedConductionState {
 @observer
 export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCardState> {
 
-  _dragging: boolean
+  static DEBOUNCE_THRESHOLD = 5
+
+  debounceCount: number
+  dragging: boolean
 
   constructor(props: SwitcherCardProps) {
     super(props)
@@ -75,7 +79,8 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
       ]
     }
 
-    this._dragging = false
+    this.dragging = false
+    this.debounceCount = 0
   }
 
   openMenu = (e: React.MouseEvent<HTMLElement>) => {
@@ -162,10 +167,11 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
 
   onSwitchStateChange = (state: number) => (e) => {
     // ドラッグ直後のクリックイベントも発生するので、ドラッグ中かどうか判断する
-    if (!this._dragging) {
+    if (!this.dragging) {
       this.props.layoutLogic.changeSwitcherState(this.props.item.id, state)
     }
-    this._dragging = false
+    this.dragging = false
+    this.debounceCount = 0
   }
 
   onDisconnectRail = (railId: number) => (e) => {
@@ -189,7 +195,12 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
   }
 
   onDrag = (e) => {
-    this._dragging = true
+    // クリックしてから一定以上ドラッグされた時に初めて矩形を表示する
+    if (this.debounceCount < SwitcherCard.DEBOUNCE_THRESHOLD) {
+      this.debounceCount += 1
+      return
+    }
+    this.dragging = true
   }
 
 
@@ -213,32 +224,29 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
                       onLayoutChange={this.onStateTableChange(rail.id)}
                       onDrag={this.onDrag}
           >
-            <ActiveSmallButton
-              // このセルのIdentity、つまりこのレールのConductionState
-              key={"0"}
-              //
-              active={!!railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === 0)}
-              onClick={this.onSwitchStateChange(Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === 0)))))}
-            >
-              <RailIcon
-                width={30}
-                height={30}
-                rail={createRailComponentForIcon(rail, 0)}
-              />
-            </ActiveSmallButton>
-            <ActiveSmallButton
-              key={"1"}  //` このセルのIdentityはレールのConductionStateである
-              active={!!railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === 1)}
-              onClick={this.onSwitchStateChange(Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === 1)))))}
-            >
-              <RailIcon
-                width={30}
-                height={30}
-                rail={createRailComponentForIcon(rail, 1)}
-              />
-            </ActiveSmallButton>
+            {
+              _.range(0, 2).map(conductionState => {
+                return (
+                  <ActiveSmallButton
+                  // このセルのIdentity、つまりこのレールのConductionState
+                  key={`${conductionState}`}  //`
+                  //
+                  active={!!railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === conductionState)}
+                  onClick={this.onSwitchStateChange(
+                    Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === conductionState)))))}
+                >
+                  <RailIcon
+                    width={30}
+                    height={30}
+                    rail={createRailComponentForIcon(rail, conductionState)}
+                  />
+                </ActiveSmallButton>
+                )
+              })
+            }
           </GridLayout>
         )
+      // TODO: Implement
       case SwitcherType.THREE_WAY:
         return (
           <GridLayout className="layout" layout={this.state.stateTableLayout}
@@ -381,11 +389,15 @@ export const createRailComponentForIcon = (item: RailData, conductionState: numb
       break
   }
 
+  const globalAngle = getRailComponent(item.id).railPart.getJointAngleToParent(1)
+  LOGGER.info('angle', globalAngle)
+
   return (
     <RailContainer
       // key={id}
       // id={id}
       {...props}
+      angle={globalAngle}
       conductionState={conductionState}
       fillColors={{[conductionState]: 'orange'}}
       opacity={1.0}
