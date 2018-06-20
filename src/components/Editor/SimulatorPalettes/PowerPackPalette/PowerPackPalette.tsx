@@ -22,6 +22,7 @@ import {
   ScrollablePaper
 } from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackPalette.style";
 import {PowerPackCard} from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard";
+import {StyledTooltip} from "components/Editor/Editor.style";
 
 
 export interface PowerPackPaletteProps {

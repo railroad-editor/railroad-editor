@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import Rnd from "react-rnd"
-import LayerPalette from "components/Editor/BuilderPalettes/LayerPalette/LayerPalette";
-import BuilderPalette from "components/Editor/BuilderPalettes/BuilderPalette/BuilderPalette";
 import PowerPackPalette from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackPalette";
 import SwitcherPalette from "components/Editor/SimulatorPalettes/SwitcherPalette/SwitcherPalette";
 
@@ -17,10 +15,8 @@ export const StyledPowerPackPalette = styled(PowerPackPalette as any)`
   // Rndのインラインスタイルである top:0, left:0 を打ち消す
   top: 10px!important;
   left: 10px!important;
-  z-index: 1000;
-  //top: 10px!important;
-  //left: 10px!important;
-  //width: 200px!important;
+  // AppBarよりも上に置く
+  //z-index: 1100;
 `
 
 export const StyledSwitcherPalette = styled(SwitcherPalette as any)`
@@ -28,8 +24,6 @@ export const StyledSwitcherPalette = styled(SwitcherPalette as any)`
   top: 10px!important;
   left: auto!important;
   right: 10px;
-  z-index: 1000;
-  //top: 10px!important;
-  //left: 10px!important;
-  //width: 200px!important;
+  // AppBarよりも上に置く
+  //z-index: 1100;
 `

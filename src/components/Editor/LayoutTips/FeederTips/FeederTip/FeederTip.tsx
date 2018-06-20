@@ -24,6 +24,7 @@ export interface FeederTipProps {
   position: Point
   angle: number
   open: boolean
+  color?: string
   layout?: LayoutStore
   common?: CommonStore
 }
@@ -89,17 +90,21 @@ export class FeederTip extends React.Component<FeederTipProps & WithBuilderPubli
   }
 
   render() {
-    const {feeder, open, position, angle} = this.props
+    const {feeder, open, position, angle, color} = this.props
     const placement = this.getPlacement()
+
+    const ColoredTooltip = StyledTooltip(color)
 
     return (
       <>
-        <StyledTooltip open={open} title={feeder.name}
-                       PopperProps={{onClick: this.onClick, style: {cursor: 'pointer', zIndex: '900'}}}
+        <ColoredTooltip open={open} title={feeder.name}
+          PopperProps={{style: {cursor: 'pointer', zIndex: '900' }}}
                        placement={placement}
+                       onClick={this.onClick}
+                       classes={{tooltip: 'tooltip'}}
         >
           <div style={{top: `${position.y}px`, left: `${position.x}px`, width: '1px', height: '1px', position: 'absolute'}}/>
-        </StyledTooltip>
+        </ColoredTooltip>
         <FeederSettingDialog
           title={'Feeder Setting'}
           open={this.state.dialogOpen}

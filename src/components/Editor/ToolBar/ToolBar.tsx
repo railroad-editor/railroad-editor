@@ -6,14 +6,13 @@ import {
   ListItemText,
   MenuItem,
   Select,
-  Toolbar as MuiToolbar,
+  Toolbar as MuiToolbar, Tooltip,
   Typography, withStyles
 } from '@material-ui/core'
 import {StyledIconButton} from "./styles";
 import {Tools} from "constants/tools";
 import MenuIcon from "@material-ui/icons/Menu";
 import getLogger from "logging";
-import Tooltip from "@material-ui/core/Tooltip";
 import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
@@ -33,6 +32,7 @@ import BuildIcon from '@material-ui/icons/Build';
 import PlayArrowIcon from '@material-ui/icons/PlayCircleFilled';
 import {PrimaryColorActiveButton} from "components/common/ActiveButton";
 import {PrimaryColorActiveMenuItem} from 'components/common/ActiveMenuItem';
+import {StyledTooltip} from "components/Editor/Editor.style";
 
 const LOGGER = getLogger(__filename)
 

@@ -11,8 +11,19 @@ import simulatorLogicStore from "store/simulatorLogicStore";
 
 
 const INITIAL_STATE = {
-  authData: null,
-  layouts: []
+  layouts: [],
+  userInfo: null,
+  isPaperLoaded: false,
+  initialZoom: DEFAULT_INITIAL_ZOOM,
+  editorMode: EditorMode.BUILDER,
+  zoom: null,
+  zooming: false,
+  pan: null,
+  panning: false,
+  builderPalettePosition: new Point(10, 10),
+  layerPalettePosition: new Point(10, 10),
+  powerPackPalettePosition: new Point(10, 10),
+  switcherPalettePosition: new Point(10, 10)
 }
 
 
@@ -26,16 +37,22 @@ export class CommonStore {
   @observable zooming: boolean
   @observable pan: Point
   @observable panning: boolean
+  @observable builderPalettePosition: Point
+  @observable layerPalettePosition: Point
+  @observable powerPackPalettePosition: Point
+  @observable switcherPalettePosition: Point
 
 
-  constructor({layouts, authData}) {
+  constructor({layouts, userInfo, isPaperLoaded, initialZoom, editorMode, zoom, zooming, pan, panning, }) {
     this.layouts = layouts
-    this.userInfo = authData
-    this.isPaperLoaded = false
-    this.initialZoom = DEFAULT_INITIAL_ZOOM
-    this.editorMode = EditorMode.BUILDER
-    this.zooming = false
-    this.panning = false
+    this.userInfo = userInfo
+    this.isPaperLoaded = isPaperLoaded
+    this.initialZoom = initialZoom
+    this.editorMode = editorMode
+    this.zoom = zoom
+    this.zooming = zooming
+    this.pan = pan
+    this.panning = panning
 
     // zoomがセットされてから少し経ったらzoomingをfalseに戻す
     reaction(() => this.zoom,

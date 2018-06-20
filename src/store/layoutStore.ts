@@ -1,5 +1,5 @@
 import {RailComponentClasses, RailData} from "components/rails";
-import {action, computed, observable, reaction, toJS, extendObservable} from "mobx";
+import {action, computed, observable, reaction, toJS, extendObservable, isComputedProp} from "mobx";
 import builderStore, {PlacingMode} from "./builderStore";
 import {DEFAULT_GRID_SIZE, DEFAULT_PAPER_HEIGHT, DEFAULT_PAPER_WIDTH} from "constants/tools";
 import {getAllOpenCloseJoints} from "components/rails/utils";
@@ -603,6 +603,17 @@ export class LayoutStore {
 
   getGapJoinerDataById = (id: number) => {
     return this.currentLayoutData.gapJoiners.find(item => item.id === id)
+  }
+
+  getSwitcherByRailId = (id: number): SwitcherData => {
+    return computed(() => this.currentLayoutData.switchers.find(sw =>
+      _.flatMap(_.values(sw.conductionStates), cs => cs.slice()).find(cs => cs.railId === id)
+    )).get()
+  }
+
+  getPowerPackByFeederId = (id: number): PowerPackData => {
+    return computed(() => this.currentLayoutData.powerPacks.find(p => p.supplyingFeederIds.includes(id))
+    ).get()
   }
 
 

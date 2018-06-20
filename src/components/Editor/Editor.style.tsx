@@ -1,8 +1,10 @@
+import * as React from 'react'
 import styled from "styled-components";
 import {View} from "react-paper-bindings";
 import Palette from "./BuilderPalettes/BuilderPalettes";
 import ToolBar from "./ToolBar/ToolBar";
-import LayerPalette from "./BuilderPalettes/LayerPalette/LayerPalette";
+import {Tooltip} from "@material-ui/core";
+import {TooltipProps} from "@material-ui/core/Tooltip";
 
 
 export const StyledWrapper = styled.div`
@@ -36,4 +38,20 @@ export const StretchedView = styled(View as any)`
   // Viewのインライン要素の width, height を上書きする
   width: 100%!important;
   height: 100%!important;
+`
+
+
+export const StyledTooltip = styled((props: TooltipProps) => <Tooltip {...props} classes={{tooltip: 'tooltip', popper: 'popper'}} />)`
+  && {
+    .popper {
+      z-index: 18000;
+    }
+    .tooltip {
+      background-color: red;
+      z-index: 19000!important;
+      overflow: visible;
+    }
+    z-index: 1100;
+    overflow: visible;
+  }
 `

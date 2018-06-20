@@ -92,11 +92,11 @@ export default class SwitcherSettingDialog extends FormDialog<SwitcherSettingDia
         </ValidatorForm>
         <Spacer />
 
-        {/* Rail color */}
+        {/* Switcher color */}
         <Grid container justify="center" alignItems="center" spacing={0}>
           <Grid item xs={6}>
             <Typography align="center" variant="body2">
-              Rail Color
+              Switcher Color
             </Typography>
           </Grid>
           <Grid item xs={6}>

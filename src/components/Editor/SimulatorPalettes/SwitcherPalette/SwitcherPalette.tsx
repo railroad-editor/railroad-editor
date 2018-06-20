@@ -21,6 +21,8 @@ import {
 } from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackPalette.style";
 import NewSwitcherDialog from "components/Editor/SimulatorPalettes/SwitcherPalette/NewSwitcherDialog/NewSwitcherDialog";
 import {SwitcherCard} from "components/Editor/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwticherCard";
+import {DEFAULT_SWITCHER_COLOR} from "constants/tools";
+import {StyledTooltip} from "components/Editor/Editor.style";
 
 
 export interface SwitcherPaletteProps {
@@ -78,7 +80,7 @@ export default class SwitcherPalette extends React.Component<SwitcherPaletteProp
       type: type,
       currentState: 0,
       conductionStates: conductionStates,
-      color: 'black'
+      color: DEFAULT_SWITCHER_COLOR
     })
   }
 

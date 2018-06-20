@@ -7,12 +7,14 @@ import getLogger from "logging";
 import {default as withBuilder, WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
-import {BuilderStore} from "store/builderStore";
+import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
+import {BuilderStore, PlacingMode} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import CirclePart from "components/rails/parts/primitives/CirclePart";
 import {RAIL_PUTTER_MARKER_RADIUS, Tools} from "constants/tools";
 import {JOINT_DETECTION_OPACITY_RATE, JOINT_FILL_COLORS} from "constants/parts";
+import {CommonStore} from "store/commonStore";
+import {EditorMode} from "store/uiStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -25,6 +27,7 @@ enum Phase {
 
 export interface FreeRailPlacerProps {
   mousePosition: Point
+  common?: CommonStore
   builder?: BuilderStore
   layout?: LayoutStore
 }
@@ -38,7 +41,7 @@ export interface FreeRailPlacerState {
 type FreeRailPlacerEnhancedProps = FreeRailPlacerProps & WithBuilderPublicProps
 
 
-@inject(STORE_BUILDER, STORE_LAYOUT)
+@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT)
 @observer
 export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps, FreeRailPlacerState> {
 
@@ -142,22 +145,28 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
 
     return (
       <>
-        <CirclePart
-          radius={RAIL_PUTTER_MARKER_RADIUS}
-          position={position}
-          fillColor={JOINT_FILL_COLORS[0]}
-          opacity={JOINT_DETECTION_OPACITY_RATE}
-        />
-        {/* 不可視の四角形、イベントハンドリング用 */}
-        <RectPart
-          width={this.props.layout.config.paperWidth}
-          height={this.props.layout.config.paperHeight}
-          position={position}
-          opacity={0}
-          onLeftClick={this.mouseLeftDown}
-          onRightClick={this.mouseRightDown}
-          onMouseMove={this.onMouseMove}
-        />
+        {
+          this.props.common.editorMode === EditorMode.BUILDER &&
+          this.props.builder.placingMode === PlacingMode.FREE &&
+          <>
+            <CirclePart
+              radius={RAIL_PUTTER_MARKER_RADIUS}
+              position={position}
+              fillColor={JOINT_FILL_COLORS[0]}
+              opacity={JOINT_DETECTION_OPACITY_RATE}
+            />
+            {/* 不可視の四角形、イベントハンドリング用 */}
+            <RectPart
+              width={this.props.layout.config.paperWidth}
+              height={this.props.layout.config.paperHeight}
+              position={position}
+              opacity={0}
+              onLeftClick={this.mouseLeftDown}
+              onRightClick={this.mouseRightDown}
+              onMouseMove={this.onMouseMove}
+            />
+          </>
+        }
       </>
     )
   }

@@ -89,11 +89,11 @@ export default class PowerPackSettingDialog extends FormDialog<PowerPackSettingD
         </ValidatorForm>
         <Spacer />
 
-        {/* Rail color */}
+        {/* Power pack color */}
         <Grid container justify="center" alignItems="center" spacing={0}>
           <Grid item xs={6}>
             <Typography align="center" variant="body2">
-              Rail Color
+              Power Pack Color
             </Typography>
           </Grid>
           <Grid item xs={6}>

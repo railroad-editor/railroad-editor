@@ -16,6 +16,7 @@ import {SecondaryPaletteAddButton} from "components/common/PaletteAddButton/Pale
 import Tooltip from "@material-ui/core/Tooltip";
 import {DEFAULT_LAYER_TRANSLUCENT_OPACITY} from "constants/tools";
 import {LayoutLogicStore} from "store/layoutLogicStore";
+import {StyledTooltip} from "components/Editor/Editor.style";
 
 const LOGGER = getLogger(__filename)
 

@@ -197,7 +197,6 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             <Layout />
 
             {/*/!* 後から書いたコンポーネントの方が前面に配置される *!/*/}
-            {this.props.builder.placingMode === PlacingMode.FREE &&
               <FreeRailPlacer mousePosition={this.state.mousePosition}/>
             }
 

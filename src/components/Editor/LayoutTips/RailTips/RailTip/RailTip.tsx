@@ -89,16 +89,18 @@ export class RailTip extends React.Component<FeederTipProps & WithBuilderPublicP
   render() {
     const {classes, rail, switchers, open, position, color} = this.props
     const placement = this.getPlacement()
+    const ColoredTooltip = StyledTooltip(color)
 
     return (
       <>
-        <Tooltip open={open} title={rail.name}
-                       PopperProps={{onClick: this.onClick, style: {cursor: 'pointer', zIndex: '900'}}}
+        <ColoredTooltip open={open} title={rail.name}
+                       PopperProps={{style: {cursor: 'pointer', zIndex: '900'}}}
                        placement={placement}
-                 classes={{tooltip: classes.tooltip}}
+                       onClick={this.onClick}
+                       classes={{tooltip: 'tooltip'}}
         >
           <div style={{top: `${position.y}px`, left: `${position.x}px`, width: '5px', height: '5px', position: 'absolute'}}/>
-        </Tooltip>
+        </ColoredTooltip>
         <TurnoutSettingDialog
           title={'Turnout Setting'}
           open={this.state.dialogOpen}

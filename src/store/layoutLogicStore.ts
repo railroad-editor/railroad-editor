@@ -1,4 +1,4 @@
-import {action} from "mobx";
+import {action, computed} from "mobx";
 import getLogger from "logging";
 import layoutStore, {ConductionStates, LayoutData, LayoutStore} from "store/layoutStore";
 import builderStore, {BuilderStore} from "store/builderStore";
@@ -549,7 +549,7 @@ export class LayoutLogicStore {
 
   @action
   disconnectTurnoutFromSwitcher = (railId: number) => {
-    const target = this.getSwitcherByRailId(railId)
+    const target = layoutStore.getSwitcherByRailId(railId)
     if (target == null) {
       return
     }
@@ -630,11 +630,6 @@ export class LayoutLogicStore {
     return layoutStore.currentLayoutData.switchers.find(p => p.id === id)
   }
 
-  private getSwitcherByRailId = (id: number) => {
-    return layoutStore.currentLayoutData.switchers.find(sw =>
-      _.flatMap(_.values(sw.conductionStates), cs => cs.slice()).find(cs => cs.railId === id)
-    )
-  }
 }
 
 export default new LayoutLogicStore()
