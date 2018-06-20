@@ -28,7 +28,7 @@ import PowerPackSettingDialog
   from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackSettingDialog/PowerPackSettingDialog";
 import {
   NarrowCardContent,
-  NarrowCardHeader, StyledList, StyledSlider
+  NarrowCardHeader, StyledList, StyledSlider, Triangle
 } from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard.style";
 
 const LOGGER = getLogger(__filename)
@@ -137,11 +137,12 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
 
 
   render() {
-    const {name, direction, power, supplyingFeederIds} = this.props.item
+    const {name, direction, power, supplyingFeederIds, color} = this.props.item
 
     return (
       <>
         <Card>
+          <Triangle color={color}/>
           <NarrowCardHeader
             title={name}
             action={

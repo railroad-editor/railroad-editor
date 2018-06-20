@@ -94,9 +94,9 @@ export class RailTip extends React.Component<FeederTipProps & WithBuilderPublicP
     return (
       <>
         <ColoredTooltip open={open} title={rail.name}
-                       PopperProps={{style: {cursor: 'pointer', zIndex: '900'}}}
+                       PopperProps={{onClick: this.onClick, style: {cursor: 'pointer', zIndex: '900'}}}
                        placement={placement}
-                       onClick={this.onClick}
+
                        classes={{tooltip: 'tooltip'}}
         >
           <div style={{top: `${position.y}px`, left: `${position.x}px`, width: '5px', height: '5px', position: 'absolute'}}/>

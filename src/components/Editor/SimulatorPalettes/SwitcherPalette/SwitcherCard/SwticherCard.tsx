@@ -20,6 +20,7 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import 'react-grid-layout/css/styles.css'
 import {TurnoutStateTable} from "components/Editor/SimulatorPalettes/SwitcherPalette/SwitcherCard/TurnoutStateTable/TurnoutStateTable";
+import {Triangle} from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard.style";
 
 
 const LOGGER = getLogger(__filename)
@@ -137,7 +138,7 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
 
 
   render() {
-    const {name, conductionStates} = this.props.item
+    const {name, conductionStates, color} = this.props.item
     const transformedConductionStates = this.transformSwitcherConductionStates(conductionStates)
 
     LOGGER.info('conductionStates', conductionStates)
@@ -147,6 +148,7 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
     return (
       <>
         <Card>
+          <Triangle color={color}/>
           <NarrowCardHeader
             title={name}
             action={

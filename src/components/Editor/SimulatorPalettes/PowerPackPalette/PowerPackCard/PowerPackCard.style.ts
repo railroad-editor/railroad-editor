@@ -35,5 +35,14 @@ export const StyledList = styled(List)`
     margin-right: -16px;
     margin-left: -16px;
   }
-
 `
+
+export const Triangle = styled.div`
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 20px solid transparent;
+  border-top: 20px solid ${props => props.color};
+  border-left: 20px solid ${props => props.color};
+`
+
