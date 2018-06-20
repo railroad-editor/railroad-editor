@@ -8,10 +8,10 @@ import Button from "@material-ui/core/Button";
 import styled from "styled-components";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import {Spacer} from "components/Editor/BuilderPalettes/LayerPalette/LayerSettingDialog/styles";
 import Image from 'material-ui-image'
 import CancelIcon from '@material-ui/icons/Cancel'
 import IconButton from "@material-ui/core/IconButton";
+import {Spacer} from "components/Editor/Palettes/BuilderPalettes/LayerPalette/LayerSettingDialog/styles";
 
 const DeleteIconButton = styled(IconButton)`
   && {

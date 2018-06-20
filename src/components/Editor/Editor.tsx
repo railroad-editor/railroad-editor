@@ -32,11 +32,11 @@ import {
 import FreeRailPlacer from "components/Editor/FreeRailPlacer/FreeRailPlacer";
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {getAllRailComponents} from "components/rails/utils";
-import BuilderPalettes from "components/Editor/BuilderPalettes/BuilderPalettes";
-import SimulatorPalettes from "components/Editor/SimulatorPalettes/SimulatorPalettes";
 import LayoutTips from "components/Editor/LayoutTips/LayoutTips";
 import {EditorMode} from "store/uiStore";
 import {SimulatorLogicStore} from "store/simulatorLogicStore";
+import BuilderPalettes from "components/Editor/Palettes/BuilderPalettes/BuilderPalettes";
+import SimulatorPalettes from "components/Editor/Palettes/SimulatorPalettes/SimulatorPalettes";
 
 const LOGGER = getLogger(__filename)
 

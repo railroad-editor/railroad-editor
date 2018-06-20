@@ -1,7 +1,6 @@
 import * as React from 'react'
 import styled from "styled-components";
 import {View} from "react-paper-bindings";
-import Palette from "./BuilderPalettes/BuilderPalettes";
 import ToolBar from "./ToolBar/ToolBar";
 import {Tooltip} from "@material-ui/core";
 import {TooltipProps} from "@material-ui/core/Tooltip";
@@ -23,21 +22,7 @@ export const EditorBody = styled.div`
 `
 
 
-export const StyledPalette = styled(Palette as any)`
-  // Rndのインラインスタイルである top:0, left:0 を上書きする
-  top: 10px!important;
-  left: 10px!important;
-  width: 200px;
-`
-
 export const StyledToolBar = styled(ToolBar as any)`
-`
-
-
-export const StretchedView = styled(View as any)`
-  // Viewのインライン要素の width, height を上書きする
-  width: 100%!important;
-  height: 100%!important;
 `
 
 
