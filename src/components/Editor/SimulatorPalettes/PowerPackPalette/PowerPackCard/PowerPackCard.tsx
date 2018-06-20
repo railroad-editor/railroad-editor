@@ -1,9 +1,10 @@
 import * as React from 'react'
 import {
+  Button,
   CardContent,
   CardHeader,
   Divider,
-  FormControlLabel,
+  FormControlLabel, Grid,
   List,
   ListItem,
   ListItemIcon, ListItemSecondaryAction, ListItemText,
@@ -28,7 +29,7 @@ import PowerPackSettingDialog
   from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackSettingDialog/PowerPackSettingDialog";
 import {
   NarrowCardContent,
-  NarrowCardHeader, StyledList, StyledSlider, Triangle
+  NarrowCardHeader, SmallButton, StyledList, StyledSlider, Triangle
 } from "components/Editor/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard.style";
 
 const LOGGER = getLogger(__filename)
@@ -66,6 +67,34 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
     }
   }
 
+  openMenu = (e: React.MouseEvent<HTMLElement>) => {
+    this.setState({anchorEl: e.currentTarget});
+  }
+
+  onMenuClose = (e: React.MouseEvent<HTMLElement>) => {
+    this.setState({anchorEl: null})
+  }
+
+  onSetting = (e: React.MouseEvent<HTMLElement>) => {
+    this.setState({
+      dialogOpen: true
+    })
+    this.onMenuClose(e)
+  }
+
+  onSettingDialogClosed = () => {
+    this.setState({
+      dialogOpen: false
+    })
+  }
+
+  onDelete = (e: React.MouseEvent<HTMLElement>) => {
+    this.props.layout.deletePowerPack({
+      id: this.props.item.id
+    })
+    this.onMenuClose(e)
+  }
+
   onSliderDragStart = (e) => {
     this.setState({
       sliderDragging: true
@@ -96,43 +125,31 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
   }
 
   onDirectionChange = (e) => {
-    this.setState({ direction: e.target.checked });
+    // TODO: 電流を自動で0にするかどうかは設定で変えられるようにすべき
+    this.setState({
+      // sliderValue: 0,
+      direction: e.target.checked
+    });
+
     this.props.layout.updatePowerPack({
       id: this.props.item.id,
-      direction: e.target.checked
+      // power: 0,
+      direction: e.target.checked,
     })
-  }
-
-  openMenu = (e: React.MouseEvent<HTMLElement>) => {
-    this.setState({anchorEl: e.currentTarget});
-  }
-
-  onMenuClose = (e: React.MouseEvent<HTMLElement>) => {
-    this.setState({anchorEl: null})
-  }
-
-  onSetting = (e: React.MouseEvent<HTMLElement>) => {
-    this.setState({
-      dialogOpen: true
-    })
-    this.onMenuClose(e)
-  }
-
-  onSettingDialogClosed = () => {
-    this.setState({
-      dialogOpen: false
-    })
-  }
-
-  onDelete = (e: React.MouseEvent<HTMLElement>) => {
-    this.props.layout.deletePowerPack({
-      id: this.props.item.id
-    })
-    this.onMenuClose(e)
   }
 
   onDisconnectFeeder = (id) => (e) => {
     this.props.layoutLogic.disconnectFeederFromPowerPack(id)
+  }
+
+  onStop = (e) => {
+    this.setState({
+      sliderValue: 0
+    })
+    this.props.layout.updatePowerPack({
+      id: this.props.item.id,
+      power: 0
+    })
   }
 
 
@@ -155,11 +172,23 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
             // style={{paddingTop: '16px', paddingBottom: '8px'}}
           />
           <NarrowCardContent>
-            <Switch
-              checked={this.state.direction}
-              onChange={this.onDirectionChange}
-              value="checkedA"
-            />
+            <Grid container alignItems="center" justify="space-between" spacing={0}>
+              <Grid item xs>
+                <SmallButton
+                  onClick={this.onStop}
+                  variant="outlined"
+                >
+                  STOP
+                </SmallButton>
+              </Grid>
+              <Grid item xs>
+                <Switch
+                  checked={this.state.direction}
+                  onChange={this.onDirectionChange}
+                  value="checkedA"
+                />
+              </Grid>
+            </Grid>
             <StyledSlider
               value={this.state.sliderValue}
               onChange={this.onSliderChange}

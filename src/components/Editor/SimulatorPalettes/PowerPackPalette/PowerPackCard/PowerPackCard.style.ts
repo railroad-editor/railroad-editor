@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {CardContent, CardHeader, List, ListItem} from '@material-ui/core';
+import {Button, CardContent, CardHeader, List, ListItem} from '@material-ui/core';
 import Slider from '@material-ui/lab/Slider';
 
 
@@ -44,5 +44,14 @@ export const Triangle = styled.div`
   border: 20px solid transparent;
   border-top: 20px solid ${props => props.color};
   border-left: 20px solid ${props => props.color};
+`
+
+export const SmallButton = styled(Button)`
+  && {
+    min-width: 50px;
+    //width: 50px;
+    display: block;   // for centerize to parent div
+    margin: 0 auto;   // for centerize to parent div
+  }
 `
 
