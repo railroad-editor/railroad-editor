@@ -22,6 +22,7 @@ import {
 } from "components/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackPalette.style";
 import {PowerPackCard} from "components/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard";
 import {TitleDiv, TitleTypography} from "components/Editor/Palettes/Palettes.style";
+import {DEFAULT_POWER_PACK_COLOR} from "constants/tools";
 
 
 export interface PowerPackPaletteProps {
@@ -70,7 +71,7 @@ export default class PowerPackPalette extends React.Component<PowerPackPalettePr
       power: 0,
       direction: true,
       supplyingFeederIds: [],
-      color: 'black'
+      color: DEFAULT_POWER_PACK_COLOR
     })
   }
 
