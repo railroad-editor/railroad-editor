@@ -71,14 +71,16 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
   }
 
   onRemoteConnect = async (e) => {
-    // const session = await SessionAPI.fetchSession(this.props.common.userInfo.username)
-    //   .catch((reason) => {
-    //     this.props.snackbar.showMessage('No session yet.')
-    //   })
-    //
-    // if (!session) {
-    //   return
-    // }
+    const session = await SessionAPI.fetchSession(
+      this.props.common.userInfo.username,
+      this.props.layout.meta.id)
+      .catch((reason) => {
+        this.props.snackbar.showMessage('No session yet.')
+      })
+
+    if (!session) {
+      return
+    }
 
     this.peer = new Peer({
       key: SKYWAY_API_KEY,

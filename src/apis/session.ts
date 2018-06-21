@@ -1,6 +1,9 @@
 import {API} from "aws-amplify";
 import * as moment from "moment";
 
+export interface Sessions {
+  sessions: number[]
+}
 
 export interface Session {
   layoutId: string
@@ -8,28 +11,30 @@ export interface Session {
   timestamp: number
 }
 
-const fetchSession = async (userId: string): Promise<Session> => {
-  const result = await API.get('Layout', `/users/${userId}/session`, {headers: {}})
-  return result
+const fetchSessions = async (userId: string): Promise<Sessions> => {
+  return await API.get('Layout', `/users/${userId}/sessions`, {headers: {}})
+}
+
+const fetchSession = async (userId: string, layoutId: string): Promise<Session> => {
+  return await API.get('Layout', `/users/${userId}/sessions/${layoutId}`, {headers: {}})
 }
 
 const createSession = async (userId: string, layoutId: string, peerId: string) => {
-  return await API.put('Layout', `/users/${userId}/session`, {
+  return await API.put('Layout', `/users/${userId}/sessions/${layoutId}`, {
     headers: {},
     body: {
-      layoutId,
       peerId,
-      timestamp: moment.valueOf()
     }
   })
 }
 
-const deleteSession =  async (userId: string) => {
-  return await API.del('Layout', `/users/${userId}/session`, {headers: {}})
+const deleteSession =  async (userId: string, layoutId: string) => {
+  return await API.del('Layout', `/users/${userId}/sessions/${layoutId}`, {headers: {}})
 }
 
 
 export default {
+  fetchSessions,
   fetchSession,
   createSession,
   deleteSession,
