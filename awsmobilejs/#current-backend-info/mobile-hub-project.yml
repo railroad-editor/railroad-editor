@@ -14,6 +14,7 @@ features:
           /confirm: !com.amazonaws.mobilehub.v0.Function {}
           "/users/{userId}/layouts": !com.amazonaws.mobilehub.v0.Function {}
           "/users/{userId}/layouts/{layoutId}": !com.amazonaws.mobilehub.v0.Function {}
+          "/users/{userId}/session": !com.amazonaws.mobilehub.v0.Function {}
   content-delivery: !com.amazonaws.mobilehub.v0.ContentDelivery
     attributes: 
       enabled: true

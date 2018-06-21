@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {Grid, Tooltip} from '@material-ui/core'
-import {Tools} from "constants/tools";
+import {SKYWAY_API_KEY, Tools} from "constants/tools";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_COMMON, STORE_SIMULATOR_LOGIC} from "constants/stores";
@@ -11,6 +11,7 @@ import withMoveTool from "components/hoc/withMoveTool";
 import {StyledIconButton} from "components/Editor/ToolBar/styles";
 import AspectRatioIcon from "@material-ui/icons/AspectRatio";
 import PanToolIcon from '@material-ui/icons/PanTool'
+import SettingsRemoteIcon from '@material-ui/icons/SettingsRemote'
 import * as classNames from "classnames"
 import {BuilderStore} from "store/builderStore";
 import {SimulatorLogicStore} from "store/simulatorLogicStore";
@@ -53,19 +54,6 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
     }
   }
 
-  componentDidMount() {
-    this.peer = new Peer({
-      key: '423ec210-715b-4916-971f-bd800a835414',
-      debug: 3,
-    });
-    // Show this peer's ID.
-    this.peer.on('open', id => {
-      this.myPeerId = id
-      console.log('open', this.myPeerId)
-    });
-
-  }
-
   openSettingsDialog = (e) => {
     this.setState({
       openSettings: true
@@ -77,6 +65,19 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
       openSettings: false
     })
   }
+
+  onRemoteConnect = (e) => {
+    this.peer = new Peer({
+      key: SKYWAY_API_KEY,
+      debug: 3,
+    });
+    // Show this peer's ID.
+    this.peer.on('open', id => {
+      this.myPeerId = id
+      console.log('open', this.myPeerId)
+    });
+  }
+
 
   connectWebRTC = () => {
     const connectedPeers = {};
@@ -128,7 +129,22 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
             <AspectRatioIcon/>
           </StyledIconButton>
         </Tooltip>
-
+        <Tooltip title={Tools.RESET_VIEW}>
+          <StyledIconButton
+            onClick={this.onRemoteConnect}
+          >
+            <SettingsRemoteIcon/>
+          </StyledIconButton>
+        </Tooltip>
+        {/*<SimulatorSettingsDialog*/}
+          {/*title={'Settings'}*/}
+          {/*open={this.state.openSettings}*/}
+          {/*onClose={this.closeSettingsDialog}*/}
+          {/*config={this.props.layout.config}*/}
+          {/*setConfig={this.props.layout.setConfig}*/}
+          {/*userInfo={this.props.common.userInfo}*/}
+          {/*layoutMeta={this.props.layout.meta}*/}
+        {/*/>*/}
       </Grid>
     )
   }

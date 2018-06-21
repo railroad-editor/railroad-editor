@@ -22,6 +22,13 @@ const API_ENDPOINTS = {
 }
 
 aws_exports.aws_cloud_logic_custom[0].endpoint = API_ENDPOINTS[process.env.REACT_APP_ENV]
+aws_exports.aws_cloud_logic_custom[0].custom_header = async () => {
+  console.log('api', process.env.REACT_APP_AWS_API_KEY)
+  return {'x-api-key': process.env.REACT_APP_AWS_API_KEY}
+}
+
+console.log('api', process.env.REACT_APP_AWS_API_KEY)
+
 Amplify.configure(aws_exports)
 
 const LOGGER = getLogger(__filename)
