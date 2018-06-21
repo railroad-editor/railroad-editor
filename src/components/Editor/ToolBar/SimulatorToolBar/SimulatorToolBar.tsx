@@ -3,7 +3,7 @@ import {Grid, Tooltip} from '@material-ui/core'
 import {SKYWAY_API_KEY, Tools} from "constants/tools";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_COMMON, STORE_SIMULATOR_LOGIC} from "constants/stores";
+import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_SIMULATOR_LOGIC} from "constants/stores";
 import {CommonStore} from "store/commonStore";
 import {compose} from "recompose";
 import Peer from 'skyway-js';
@@ -15,6 +15,9 @@ import SettingsRemoteIcon from '@material-ui/icons/SettingsRemote'
 import * as classNames from "classnames"
 import {BuilderStore} from "store/builderStore";
 import {SimulatorLogicStore} from "store/simulatorLogicStore";
+import SessionAPI from "apis/session"
+import {withSnackbar} from 'material-ui-snackbar-provider'
+import {LayoutStore} from "store/layoutStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -25,6 +28,7 @@ export interface SimulatorToolBarProps {
   resetViewPosition: () => void
   snackbar: any
   builder?: BuilderStore
+  layout?: LayoutStore
   simulatorLogic?: SimulatorLogicStore
 }
 
@@ -37,7 +41,7 @@ type EnhancedSimulatorToolBarProps = SimulatorToolBarProps
 
 
 
-@inject(STORE_COMMON, STORE_BUILDER, STORE_SIMULATOR_LOGIC)
+@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_SIMULATOR_LOGIC)
 @observer
 export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarProps, SimulatorToolBarState> {
 
@@ -66,7 +70,16 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
     })
   }
 
-  onRemoteConnect = (e) => {
+  onRemoteConnect = async (e) => {
+    // const session = await SessionAPI.fetchSession(this.props.common.userInfo.username)
+    //   .catch((reason) => {
+    //     this.props.snackbar.showMessage('No session yet.')
+    //   })
+    //
+    // if (!session) {
+    //   return
+    // }
+
     this.peer = new Peer({
       key: SKYWAY_API_KEY,
       debug: 3,
@@ -75,31 +88,28 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
     this.peer.on('open', id => {
       this.myPeerId = id
       console.log('open', this.myPeerId)
+      SessionAPI.createSession(
+        this.props.common.userInfo.username,
+        this.props.layout.meta.id,
+        id)
     });
+
+    // this.conn = this.peer.connect(session.peerId, {
+    //   label:    'chat',
+    //   metadata: {message: 'hi i want to chat with you!'},
+    // });
+    // this.conn.on('open', (id) => {
+    //   console.log('open', id)
+    // });
+    // this.conn.on('error', err => alert(err));
+    //
+    // this.conn.on('data', data => {
+    //   console.log('data', data)
+    // });
+    // this.conn.on('close', () => {
+    // });
   }
 
-
-  connectWebRTC = () => {
-    const connectedPeers = {};
-    const requestedPeer = "C1yv3nGCQGzgdcFs"
-    if (!connectedPeers[requestedPeer]) {
-      this.conn = this.peer.connect(requestedPeer, {
-        label:    'chat',
-        metadata: {message: 'hi i want to chat with you!'},
-      });
-      this.conn.on('open', (id) => {
-        console.log('open', id)
-      });
-      this.conn.on('error', err => alert(err));
-
-      this.conn.on('data', data => {
-        console.log('data', data)
-      });
-
-      this.conn.on('close', () => {
-      });
-    }
-  }
 
   sendSomething = () => {
     this.conn.send('hello!')
@@ -152,5 +162,6 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
 
 
 export default compose<SimulatorToolBarProps, SimulatorToolBarProps|any>(
-  withMoveTool
+  withMoveTool,
+  withSnackbar()
 )(SimulatorToolBar)
