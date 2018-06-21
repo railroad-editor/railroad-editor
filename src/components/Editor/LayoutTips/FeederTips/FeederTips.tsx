@@ -48,7 +48,8 @@ export class FeederTips extends React.Component<FeederTipProps & WithBuilderPubl
             const c = getRailComponent(feeder.railId)
             const positionOnCanvas = c.feeders[feeder.socketId].part.getGlobalPosition(Pivot.CENTER)
             const position = window.PAPER_SCOPE.view.projectToView(positionOnCanvas)
-            const color = this.props.layout.getPowerPackByFeederId(feeder.id)!.color
+            const powerPack = this.props.layout.getPowerPackByFeederId(feeder.id)
+            const color = powerPack ? powerPack.color : null
             return (
               <FeederTip open={true} position={position} angle={c.props.angle} feeder={feeder} color={color}/>
             )

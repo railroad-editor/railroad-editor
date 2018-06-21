@@ -50,7 +50,8 @@ export class RailTips extends React.Component<RailTipProps & WithBuilderPublicPr
             const c = getRailComponent(rail.id)
             const tipPos = c.railPart.getPivotPositionToParent(c.railPart.tip)
             const position = window.PAPER_SCOPE.view.projectToView(tipPos)
-            const color = this.props.layout.getSwitcherByRailId(rail.id)!.color
+            const switcher = this.props.layout.getSwitcherByRailId(rail.id)
+            const color = switcher ? switcher.color : null
             return (
               <RailTip
                 open={true}

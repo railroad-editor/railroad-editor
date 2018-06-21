@@ -8,7 +8,7 @@ import {inject, observer} from "mobx-react";
 import {LayoutStore, SwitcherData} from "store/layoutStore";
 import {CommonStore} from "store/commonStore";
 import {Point} from "paper";
-import {StyledTooltip} from "components/Editor/LayoutTips/FeederTips/FeederTip/FeederTip.style";
+import {StyledTooltip} from "components/Editor/LayoutTips/LayoutTips.style";
 import TurnoutSettingDialog
   from "components/Editor/LayoutTips/RailTips/RailTip/TurnoutSettingDialog/TurnoutSettingDialog";
 import {RailData} from "components/rails";

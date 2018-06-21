@@ -13,7 +13,7 @@ import {Point} from "paper";
 import FeederSettingDialog
   from "components/Editor/LayoutTips/FeederTips/FeederTip/FeederSettingDialog/FeederSettingDialog";
 import {FeederInfo} from "components/rails/RailBase";
-import {StyledTooltip} from "components/Editor/LayoutTips/FeederTips/FeederTip/FeederTip.style";
+import {StyledTooltip} from "components/Editor/LayoutTips/LayoutTips.style";
 import {FlowDirection} from "components/rails/parts/primitives/PartBase";
 
 const LOGGER = getLogger(__filename)

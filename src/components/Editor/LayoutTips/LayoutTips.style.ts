@@ -5,7 +5,7 @@ import {Tooltip} from "@material-ui/core";
 export const StyledTooltip = (color) => styled(Tooltip)`
   && {
     :hover {
-      cursor: move
+      cursor: pointer;
     }
     .tooltip {
       background-color: ${color};
