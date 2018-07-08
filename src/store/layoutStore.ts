@@ -56,6 +56,7 @@ export interface PowerPackData {
   direction: boolean
   supplyingFeederIds: number[]
   color: string
+  isError: boolean
 }
 
 export enum SwitcherType {
@@ -553,6 +554,11 @@ export class LayoutStore {
       ...target,
       ...item
     }
+  }
+
+  @action
+  updatePowerPacks = (items: Partial<PowerPackData>[]) => {
+    items.forEach(item => this.updatePowerPack(item))
   }
 
   @action

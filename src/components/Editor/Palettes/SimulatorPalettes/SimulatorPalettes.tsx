@@ -4,10 +4,8 @@ import {STORE_COMMON, STORE_LAYOUT} from "constants/stores";
 import {compose} from "recompose";
 import {LayoutStore} from "store/layoutStore";
 import {withSnackbar} from 'material-ui-snackbar-provider'
-import PowerPackPalette from './PowerPackPalette/PowerPackPalette';
 import {CommonStore} from "store/commonStore";
 import {EditorMode} from "store/uiStore";
-import SwitcherPalette from "components/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherPalette";
 import {
   StyledPowerPackPalette,
   StyledSwitcherPalette

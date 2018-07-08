@@ -31,6 +31,7 @@ import {
   NarrowCardContent,
   NarrowCardHeader, SmallButton, StyledList, StyledSlider, Triangle
 } from "components/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard.style";
+import {comparer, reaction} from "mobx";
 
 const LOGGER = getLogger(__filename)
 
@@ -64,6 +65,13 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
       sliderDragging: false,
       direction: true,
       dialogOpen: false,
+    }
+  }
+
+  componentDidUpdate() {
+    // スライダーの電流値がショートなどの原因で反映されなかった場合、元の値に戻す
+    if (this.props.item.power !== this.state.sliderValue) {
+      this.setState({sliderValue: this.props.item.power})
     }
   }
 
@@ -142,6 +150,10 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
     this.props.layoutLogic.disconnectFeederFromPowerPack(id)
   }
 
+  /**
+   * STOPボタンが押されたら電流をゼロにする
+   * @param e
+   */
   onStop = (e) => {
     this.setState({
       sliderValue: 0
@@ -154,7 +166,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
 
 
   render() {
-    const {name, direction, power, supplyingFeederIds, color} = this.props.item
+    const {name, direction, power, supplyingFeederIds, color, isError} = this.props.item
 
     return (
       <>

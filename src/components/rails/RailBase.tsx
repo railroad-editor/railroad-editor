@@ -31,6 +31,7 @@ export interface FeederInfo {
   visible: boolean
   name: string
   powerPackId?: number
+  isError: boolean
 }
 
 export interface GapJoinerInfo {

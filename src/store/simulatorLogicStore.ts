@@ -32,28 +32,43 @@ export class SimulatorLogicStore {
 
   @observable activeTool: Tools
   @observable temporaryRailFlows: TemporaryRailFlows
+  errorPowerPacks: PowerPackData[]
+  errorRails: any[]
 
   constructor() {
     // シミュレーション更新タイミング
     // TODO: もっと簡潔に書けないのか？
+    // 電流に変更があれば更新
     reaction(
       () => layoutStore.currentLayoutData.powerPacks.map( p => p.power * (p.direction ? 1 : -1)),
       (data) => {
-        LOGGER.info('reaction 1')
+        LOGGER.info('reaction 1', data)
         if (commonStore.editorMode === EditorMode.SIMULATOR) {
           this.startCurrentFlowSimulation()
         }
       },
+      {
+        equals: (v1, v2) => {
+          return comparer.structural(v1, v2)
+        }
+      }
     )
+    // パワーパックに接続されたフィーダーが変更されたら更新
     reaction(
       () => layoutStore.currentLayoutData.powerPacks.map( p => p.supplyingFeederIds),
       (data) => {
-        LOGGER.info('reaction 2')
+        LOGGER.info('reaction 2', data)
         if (commonStore.editorMode === EditorMode.SIMULATOR) {
           this.startCurrentFlowSimulation()
         }
       },
+      {
+        equals: (v1, v2) => {
+          return comparer.structural(v1, v2)
+        }
+      }
     )
+    // スイッチが切り替わったら更新
     reaction(
       () => layoutStore.currentLayoutData.switchers.map( p => p.currentState),
       (data) => {
@@ -63,6 +78,7 @@ export class SimulatorLogicStore {
         }
       }
     )
+    // スイッチに接続されたポイントが変更されたら更新
     reaction(
       () => _.flatMap(layoutStore.currentLayoutData.switchers, sw => sw.conductionStates),
       (data) => {
@@ -82,6 +98,8 @@ export class SimulatorLogicStore {
     )
 
     this.activeTool = Tools.PAN
+    this.errorRails = []
+    this.errorPowerPacks = []
   }
 
   @action
@@ -95,20 +113,7 @@ export class SimulatorLogicStore {
     this.activeTool = tool
   }
 
-  // shouldUpdateSimulation = (value: PowerPackData[], nextValue: PowerPackData[]) => {
-  //   if (value.length !== nextValue.length) {
-  //     return true
-  //   }
-  //   LOGGER.info(value[0], nextValue[0])
-  //   for (let i=0 ; i < value.length ; ++i) {
-  //     if (value[i].direction !== nextValue[i].direction
-  //       || value[i].power !== nextValue[i].power) {
-  //       return true
-  //     }
-  //   }
-  //   return false
-  //   // return deepEqual(value, nextValue)
-  // }
+
 
   /**
    * 全てのフィーダーに通電し、レール電流のシミュレーションを開始する
@@ -130,6 +135,18 @@ export class SimulatorLogicStore {
         this.setFlow(Number(railId), Number(partId), this.temporaryRailFlows[railId][partId])
       })
     })
+
+    layoutStore.updateRails(this.errorRails.map(r => {
+      return {
+        id: r.id,
+        flowDirections: {
+          [r.partId]: FlowDirection.ILLEGAL
+        }
+      }
+    }))
+    layoutStore.updatePowerPacks(this.errorPowerPacks.map(p => {
+      return {id: p.id, power: 0, isError: true}
+    }))
   }
 
   /**
@@ -149,6 +166,13 @@ export class SimulatorLogicStore {
         flowDirections: null  // reset
       }
     }))
+    layoutStore.updatePowerPacks(layoutStore.currentLayoutData.powerPacks.map(p => {
+      return {
+        id: p.id,
+        isError: false
+      }
+    }))
+    this.errorPowerPacks = []
   }
 
 
@@ -194,6 +218,7 @@ export class SimulatorLogicStore {
         return
       }
 
+      // 再帰的に処理する
       const joint = joints[jointId]
       const isGoing = this.isCurrentGoing(joint.pivot, flowDirection)
       this.setCurrentFlowToRail(opposingJoint.railId, opposingJoint.jointId, feederId, isGoing)
@@ -301,6 +326,15 @@ export class SimulatorLogicStore {
         [partId]: direction
       }
     })
+
+    if (direction === FlowDirection.ILLEGAL) {
+      this.errorRails.push({id: railId, partId: partId})
+      const errorPowerPacks = tempFlows.map(tf => tf.feederId)
+        .map(fid => layoutStore.getPowerPackByFeederId(fid))
+      this.errorPowerPacks = _.unionWith(this.errorPowerPacks, errorPowerPacks,  (p1, p2) => p1.id === p2.id)
+    } else {
+      _.remove(this.errorRails, r => _.isEqual(r, {id: railId, partId: partId}))
+    }
   }
 
   @action

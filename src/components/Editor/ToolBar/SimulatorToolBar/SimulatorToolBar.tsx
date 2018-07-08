@@ -90,11 +90,32 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
     this.peer.on('open', id => {
       this.myPeerId = id
       console.log('open', this.myPeerId)
-      SessionAPI.createSession(
-        this.props.common.userInfo.username,
-        this.props.layout.meta.id,
-        id)
+
+      // connect to controller
+      this.conn = this.peer.connect(session.peerId, {
+        label: 'aa',
+        metadata: {}
+      })
+
+      this.conn.on('open', () => onConnectionOpen(this.conn));
+
+      this.conn.on('error', (err) => {
+        console.log(err)
+      })
+
+      const onConnectionOpen = (conn) => {
+        conn.on('data', data => {
+          console.log(`DATA: ${data}`)   //`
+        });
+        conn.on('close', () => {
+          console.log('Connection closed.')
+        });
+        conn.on('error', err => {
+          console.log(err)
+        });
+      }
     });
+
 
     // this.conn = this.peer.connect(session.peerId, {
     //   label:    'chat',
@@ -141,9 +162,16 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
             <AspectRatioIcon/>
           </StyledIconButton>
         </Tooltip>
-        <Tooltip title={Tools.RESET_VIEW}>
+        <Tooltip title={"Remote"}>
           <StyledIconButton
             onClick={this.onRemoteConnect}
+          >
+            <SettingsRemoteIcon/>
+          </StyledIconButton>
+        </Tooltip>
+        <Tooltip title={"Remote"}>
+          <StyledIconButton
+            onClick={this.sendSomething}
           >
             <SettingsRemoteIcon/>
           </StyledIconButton>

@@ -357,7 +357,10 @@ export class LayoutLogicStore {
     const feederIds = layoutStore.currentLayoutData.feeders
       .filter(feeder => feeder.selected)
       .map(feeder => feeder.id)
-    feederIds.forEach(id => layoutStore.deleteFeeder({id}))
+    feederIds.forEach(id => {
+      this.disconnectFeederFromPowerPack(id)
+      layoutStore.deleteFeeder({id})
+    })
   }
 
   @action

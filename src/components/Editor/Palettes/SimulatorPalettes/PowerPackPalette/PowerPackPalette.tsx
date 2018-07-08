@@ -71,7 +71,8 @@ export default class PowerPackPalette extends React.Component<PowerPackPalettePr
       power: 0,
       direction: true,
       supplyingFeederIds: [],
-      color: DEFAULT_POWER_PACK_COLOR
+      color: DEFAULT_POWER_PACK_COLOR,
+      isError: false,
     })
   }
 
