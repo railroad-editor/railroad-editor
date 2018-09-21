@@ -8,7 +8,6 @@ import {inject, observer} from "mobx-react";
 import {LayoutStore, SwitcherData} from "store/layoutStore";
 import {CommonStore} from "store/commonStore";
 import {Point} from "paper";
-import {StyledTooltip} from "components/Editor/LayoutTips/LayoutTips.style";
 import TurnoutSettingDialog
   from "components/Editor/LayoutTips/RailTips/RailTip/TurnoutSettingDialog/TurnoutSettingDialog";
 import {RailData} from "components/rails";
@@ -17,11 +16,13 @@ import {Tooltip, withStyles} from "@material-ui/core";
 
 const LOGGER = getLogger(__filename)
 
-const styles = theme => ({
+const createColoredTooltip = (color: string) => withStyles({
   tooltip: {
-    backgroundColor: 'orange'
+    backgroundColor: color
   }
-})
+})(Tooltip);
+
+
 
 export interface FeederTipProps {
   rail: RailData
@@ -31,7 +32,6 @@ export interface FeederTipProps {
   color?: string
   layout?: LayoutStore
   common?: CommonStore
-  classes?: any
 }
 
 export interface FeederTipState {
@@ -85,22 +85,19 @@ export class RailTip extends React.Component<FeederTipProps & WithBuilderPublicP
     }
   }
 
-
   render() {
-    const {classes, rail, switchers, open, position, color} = this.props
+    const {rail, switchers, open, position, color} = this.props
     const placement = this.getPlacement()
-    const ColoredTooltip = StyledTooltip(color)
+    const StyledTooltip = createColoredTooltip(color)
 
     return (
       <>
-        <ColoredTooltip open={open} title={rail.name}
-                       PopperProps={{onClick: this.onClick, style: {cursor: 'pointer', zIndex: '900', backgroundColor: color}}}
+        <StyledTooltip open={open} title={rail.name}
+                       PopperProps={{onClick: this.onClick, style: {cursor: 'pointer', zIndex: '900'}}}
                        placement={placement}
-
-                       classes={{tooltip: 'tooltip'}}
         >
           <div style={{top: `${position.y}px`, left: `${position.x}px`, width: '5px', height: '5px', position: 'absolute'}}/>
-        </ColoredTooltip>
+        </StyledTooltip>
         <TurnoutSettingDialog
           title={'Turnout Setting'}
           open={this.state.dialogOpen}
@@ -115,5 +112,4 @@ export class RailTip extends React.Component<FeederTipProps & WithBuilderPublicP
 
 
 export default compose<FeederTipProps, FeederTipProps>(
-  withStyles(styles)
 )(RailTip)

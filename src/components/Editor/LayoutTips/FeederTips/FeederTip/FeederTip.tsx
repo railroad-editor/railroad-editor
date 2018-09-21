@@ -1,22 +1,28 @@
 import * as React from "react";
 import {Layer} from "react-paper-bindings";
-import {getRailComponent, normAngle} from "components/rails/utils";
+import {normAngle} from "components/rails/utils";
 import getLogger from "logging";
 import {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {compose} from "recompose";
 import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
 import {inject, observer} from "mobx-react";
 import {LayoutStore} from "store/layoutStore";
-import {Tooltip} from "@material-ui/core";
+import {Tooltip, withStyles} from "@material-ui/core";
 import {CommonStore} from "store/commonStore";
 import {Point} from "paper";
 import FeederSettingDialog
   from "components/Editor/LayoutTips/FeederTips/FeederTip/FeederSettingDialog/FeederSettingDialog";
 import {FeederInfo} from "components/rails/RailBase";
-import {StyledTooltip} from "components/Editor/LayoutTips/LayoutTips.style";
 import {FlowDirection} from "components/rails/parts/primitives/PartBase";
 
 const LOGGER = getLogger(__filename)
+
+const createColoredTooltip = (color: string) => withStyles({
+  tooltip: {
+    backgroundColor: color
+  }
+})(Tooltip);
+
 
 
 export interface FeederTipProps {
@@ -92,18 +98,17 @@ export class FeederTip extends React.Component<FeederTipProps & WithBuilderPubli
   render() {
     const {feeder, open, position, angle, color} = this.props
     const placement = this.getPlacement()
-
-    const ColoredTooltip = StyledTooltip(color)
+    const StyledTooltip = createColoredTooltip(color)
 
     return (
       <>
-        <ColoredTooltip open={open} title={feeder.name}
+        <StyledTooltip open={open} title={feeder.name}
           PopperProps={{onClick: this.onClick, style: {cursor: 'pointer', zIndex: '900'}}}
                        placement={placement}
                        classes={{tooltip: 'tooltip'}}
         >
           <div style={{top: `${position.y}px`, left: `${position.x}px`, width: '1px', height: '1px', position: 'absolute'}}/>
-        </ColoredTooltip>
+        </StyledTooltip>
         <FeederSettingDialog
           title={'Feeder Setting'}
           open={this.state.dialogOpen}
