@@ -98,7 +98,7 @@ export class FeederTip extends React.Component<FeederTipProps & WithBuilderPubli
     return (
       <>
         <ColoredTooltip open={open} title={feeder.name}
-          PopperProps={{onClick: this.onClick, style: {cursor: 'pointer', zIndex: '900' }}}
+          PopperProps={{onClick: this.onClick, style: {cursor: 'pointer', zIndex: '900'}}}
                        placement={placement}
                        classes={{tooltip: 'tooltip'}}
         >

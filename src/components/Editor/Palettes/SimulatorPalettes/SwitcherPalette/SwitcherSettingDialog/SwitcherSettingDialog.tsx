@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import {LayoutStore, SwitcherData} from "store/layoutStore";
+import {LayoutStore, SwitcherData, SwitcherType} from "store/layoutStore";
 import {
   SmallButton,
   Spacer
@@ -85,6 +85,7 @@ export default class SwitcherSettingDialog extends FormDialog<SwitcherSettingDia
   }
 
   renderContent = () => {
+
     return (
       <>
         <ValidatorForm
@@ -110,7 +111,7 @@ export default class SwitcherSettingDialog extends FormDialog<SwitcherSettingDia
             onChange={this.onChange('dPin1')}
             onKeyPress={this.onKeyPress}
             validatorListener={this.handleValidation}
-            validators={['matchRegexp:^[0-9]*$']}
+            validators={['matchRegexp:^[0-9]*\s*$']}
             errorMessages={['value must be a number']}
           />
           <TextValidator
@@ -121,9 +122,37 @@ export default class SwitcherSettingDialog extends FormDialog<SwitcherSettingDia
             onChange={this.onChange('dPin2')}
             onKeyPress={this.onKeyPress}
             validatorListener={this.handleValidation}
-            validators={['matchRegexp:^[0-9]*$']}
+            validators={['matchRegexp:^[0-9]*\s*$']}
             errorMessages={['value must be a number']}
           />
+          {
+            this.props.switcher.type === SwitcherType.THREE_WAY &&
+              <>
+                <br />
+                <TextValidator
+                  label="Digital Pin 3"
+                  name="dPin3"
+                  key="dPin3"
+                  value={this.state.inputs.dPin3}
+                  onChange={this.onChange('dPin3')}
+                  onKeyPress={this.onKeyPress}
+                  validatorListener={this.handleValidation}
+                  validators={['matchRegexp:^[0-9]*\s*$']}
+                  errorMessages={['value must be a number']}
+                />
+                <TextValidator
+                  label="Digital Pin 4"
+                  name="dPin4"
+                  key="dPin4"
+                  value={this.state.inputs.dPin4}
+                  onChange={this.onChange('dPin4')}
+                  onKeyPress={this.onKeyPress}
+                  validatorListener={this.handleValidation}
+                  validators={['matchRegexp:^[0-9]*\s*$']}
+                  errorMessages={['value must be a number']}
+                />
+              </>
+          }
         </ValidatorForm>
         <Spacer />
 

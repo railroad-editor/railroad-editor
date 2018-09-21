@@ -68,23 +68,23 @@ class TrainController {
     this.send(`config ${JSON.stringify(config)}`)
   }
 
-  setPowerPackValue = (powerPackId: number, value: string) => {
+  setPowerPackValue = (powerPackId: number, value: number) => {
     this.send(`p ${powerPackId} v ${value}`)
   }
 
-  setPowerPackDirection = (powerPackId: number, direction: number) => {
-    this.send(`p ${powerPackId} d ${direction}`)
+  setPowerPackDirection = (powerPackId: number, direction: boolean) => {
+    this.send(`p ${powerPackId} d ${Number(direction)}`)
   }
 
   togglePowerDirection = (powerPackId: number) => {
     this.send(`p ${powerPackId} d`)
   }
 
-  setSwitcherDirection = (switcherId: number, direction: number) => {
-    this.send(`s ${switcherId} d ${direction}`)
+  setSwitcherState = (switcherId: number, state: number) => {
+    this.send(`s ${switcherId} d ${state}`)
   }
 
-  toggleSwitcherDirection = (switcherId: number) => {
+  toggleSwitcherState = (switcherId: number) => {
     this.send(`s ${switcherId} d`)
   }
 

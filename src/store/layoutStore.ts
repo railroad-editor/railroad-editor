@@ -8,6 +8,7 @@ import * as uuidv4 from "uuid/v4";
 import * as moment from "moment";
 import {FeederInfo, GapJoinerInfo} from "components/rails/RailBase";
 import simulatorLogicStore from "store/simulatorLogicStore";
+import TrainController from "components/Editor/ToolBar/SimulatorToolBar/TrainController";
 
 const LOGGER = getLogger(__filename)
 
@@ -570,16 +571,27 @@ export class LayoutStore {
   @action
   addPowerPack = (item: PowerPackData) => {
     // IDはここで発行
+    const id = this.nextPowerPackId
     this.currentLayoutData.powerPacks.push({
       ...item,
-      id: this.nextPowerPackId,
+      id: id
     })
+    // コントローラー側も初期化
+    TrainController.setPowerPackDirection(id, item.direction)
+    TrainController.setPowerPackValue(id, item.power)
   }
 
   @action
   updatePowerPack = (item: Partial<PowerPackData>) => {
     const index = this.currentLayoutData.powerPacks.findIndex(feeder => feeder.id === item.id)
     const target = this.currentLayoutData.powerPacks[index]
+
+    if (item.direction != null && item.direction !== target.direction) {
+      item.power = 0
+      TrainController.setPowerPackDirection(target.id, item.direction)
+    } else if (item.power != null && item.power !== target.power) {
+      TrainController.setPowerPackValue(target.id, item.power)
+    }
 
     this.currentLayoutData.powerPacks[index] = {
       ...target,
@@ -604,17 +616,23 @@ export class LayoutStore {
   @action
   addSwitcher = (item: SwitcherData) => {
     // IDはここで発行
+    const id = this.nextSwitcherId
     this.currentLayoutData.switchers.push({
       ...item,
-      id: this.nextSwitcherId,
+      id: id,
       conductionStates: observable({0: [], 1:[], 2: []})
     })
+    TrainController.setSwitcherState(id, item.currentState)
   }
 
   @action
   updateSwitcher = (item: Partial<SwitcherData>) => {
     const index = this.currentLayoutData.switchers.findIndex(sw => sw.id === item.id)
     const target = this.currentLayoutData.switchers[index]
+
+    if (item.currentState != null && item.currentState !== target.currentState) {
+      TrainController.setSwitcherState(target.id, item.currentState)
+    }
 
     this.currentLayoutData.switchers[index] = {
       ...target,
@@ -626,8 +644,6 @@ export class LayoutStore {
   deleteSwitcher = (item: Partial<SwitcherData>) => {
     this.currentLayoutData.switchers = this.currentLayoutData.switchers.filter(feeder => feeder.id !== item.id)
   }
-
-
 
 
   getRailDataById = (id: number) => {

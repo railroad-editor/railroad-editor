@@ -69,7 +69,7 @@ export default class PowerPackPalette extends React.Component<PowerPackPalettePr
       id: 0,
       name: name,
       power: 0,
-      direction: true,
+      direction: false,
       supplyingFeederIds: [],
       color: DEFAULT_POWER_PACK_COLOR,
       isError: false,

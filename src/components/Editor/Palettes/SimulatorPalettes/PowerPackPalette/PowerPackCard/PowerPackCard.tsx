@@ -32,6 +32,7 @@ import {
   NarrowCardHeader, SmallButton, StyledList, StyledSlider, Triangle
 } from "components/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard.style";
 import {comparer, reaction} from "mobx";
+import TrainController from "components/Editor/ToolBar/SimulatorToolBar/TrainController";
 
 const LOGGER = getLogger(__filename)
 
@@ -121,13 +122,14 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
   }
 
   onSliderChange = (e, value) => {
+    const intValue = Math.round(value)
     this.setState({
-      sliderValue: value
+      sliderValue: intValue
     })
     if (! this.state.sliderDragging) {
       this.props.layout.updatePowerPack({
         id: this.props.item.id,
-        power: value
+        power: intValue
       })
     }
   }
