@@ -18,7 +18,8 @@
 //    "noUnusedLocals": true
     "baseUrl": "src",
     "experimentalDecorators": true,
-    "noErrorTruncation": true
+    "noErrorTruncation": true,
+    "skipLibCheck": true
   },
   "exclude": [
     "node_modules",
