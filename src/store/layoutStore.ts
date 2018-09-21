@@ -93,8 +93,7 @@ export interface SwitcherData {
   currentState: number
   conductionStates: ConductionStates
   color: string
-  dPin1?: number
-  dPin2?: number
+  dPins?: number[]
 }
 
 export interface ConductionStates {
@@ -104,6 +103,20 @@ export interface ConductionStates {
 export interface ConductionState {
   railId: number
   conductionState: number
+}
+
+export interface TrainControllerConfig {
+  powerPacks: PowerPackPinConfig[]
+  switchers: SwitcherPinConfig[]
+}
+
+export interface PowerPackPinConfig {
+  pPin: number
+  dPin: number
+}
+
+export interface SwitcherPinConfig {
+  dPins: number[]
 }
 
 
@@ -261,6 +274,20 @@ export class LayoutStore {
       .map(r => r.turnoutId)
     return ids.length > 0 ? Math.max(...ids) + 1 : 1
   }
+
+  @computed
+  get trainControllerConfig(): TrainControllerConfig {
+    return {
+      powerPacks: this.currentLayoutData.powerPacks.map(p => {
+        return { dPin: p.dPin, pPin: p.pPin }
+      }),
+      switchers: this.currentLayoutData.switchers.map(s => {
+        return { dPins: s.dPins }
+      })
+    }
+  }
+
+
   /**
    * レール系 Add/Update/Delete
    */

@@ -6,16 +6,21 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import {SwitcherData} from "store/layoutStore";
+import {LayoutStore, SwitcherData} from "store/layoutStore";
 import {
   SmallButton,
   Spacer
-} from "components/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwitcherSettingDialog/styles";
+} from "components/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherSettingDialog/styles";
+import TrainController from "components/Editor/ToolBar/SimulatorToolBar/TrainController";
+import {inject, observer} from "mobx-react";
+import {STORE_LAYOUT} from "constants/stores";
 
 
 export interface SwitcherSettingDialogProps extends FormDialogProps {
   switcher: SwitcherData
   updateSwitcher: (item: Partial<SwitcherData>) => void
+
+  layout?: LayoutStore
 }
 
 export interface SwitcherSettingDialogState extends FormDialogState {
@@ -24,6 +29,8 @@ export interface SwitcherSettingDialogState extends FormDialogState {
 }
 
 
+@inject(STORE_LAYOUT)
+@observer
 export default class SwitcherSettingDialog extends FormDialog<SwitcherSettingDialogProps, SwitcherSettingDialogState> {
 
   anchorEl: any
@@ -47,9 +54,12 @@ export default class SwitcherSettingDialog extends FormDialog<SwitcherSettingDia
       ...this.props.switcher,
       name: this.state.inputs.name,
       color: this.state.inputs.color,
-      dPin1: Number(this.state.inputs.dPin1),
-      dPin2: Number(this.state.inputs.dPin2)
+      dPins: [
+        Number(this.state.inputs.dPin1),
+        Number(this.state.inputs.dPin2),
+      ]
     })
+    TrainController.configure(this.props.layout.trainControllerConfig)
     this.onClose()
   }
 

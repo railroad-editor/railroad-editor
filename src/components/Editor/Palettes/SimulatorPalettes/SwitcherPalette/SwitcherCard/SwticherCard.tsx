@@ -12,7 +12,7 @@ import {inject, observer} from 'mobx-react';
 import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import SwitcherSettingDialog
-  from "components/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwitcherSettingDialog/SwitcherSettingDialog";
+  from "components/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherSettingDialog/SwitcherSettingDialog";
 import {
   NarrowCardContent,
   NarrowCardHeader,
