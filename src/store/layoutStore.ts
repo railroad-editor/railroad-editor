@@ -57,6 +57,8 @@ export interface PowerPackData {
   supplyingFeederIds: number[]
   color: string
   isError: boolean
+  pPin?: number
+  dPin?: number
 }
 
 export enum SwitcherType {
@@ -91,6 +93,8 @@ export interface SwitcherData {
   currentState: number
   conductionStates: ConductionStates
   color: string
+  dPin1?: number
+  dPin2?: number
 }
 
 export interface ConductionStates {

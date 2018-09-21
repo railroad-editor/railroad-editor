@@ -47,6 +47,8 @@ export default class SwitcherSettingDialog extends FormDialog<SwitcherSettingDia
       ...this.props.switcher,
       name: this.state.inputs.name,
       color: this.state.inputs.color,
+      dPin1: Number(this.state.inputs.dPin1),
+      dPin2: Number(this.state.inputs.dPin2)
     })
     this.onClose()
   }
@@ -88,6 +90,29 @@ export default class SwitcherSettingDialog extends FormDialog<SwitcherSettingDia
             validatorListener={this.handleValidation}
             validators={['required']}
             errorMessages={['this field is required']}
+          />
+          <br />
+          <TextValidator
+            label="Digital Pin 1"
+            name="dPin1"
+            key="dPin1"
+            value={this.state.inputs.dPin1}
+            onChange={this.onChange('dPin1')}
+            onKeyPress={this.onKeyPress}
+            validatorListener={this.handleValidation}
+            validators={['matchRegexp:^[0-9]*$']}
+            errorMessages={['value must be a number']}
+          />
+          <TextValidator
+            label="Digital Pin 2"
+            name="dPin2"
+            key="dPin2"
+            value={this.state.inputs.dPin2}
+            onChange={this.onChange('dPin2')}
+            onKeyPress={this.onKeyPress}
+            validatorListener={this.handleValidation}
+            validators={['matchRegexp:^[0-9]*$']}
+            errorMessages={['value must be a number']}
           />
         </ValidatorForm>
         <Spacer />

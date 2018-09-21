@@ -44,6 +44,8 @@ export default class PowerPackSettingDialog extends FormDialog<PowerPackSettingD
       ...this.props.powerPack,
       name: this.state.inputs.name,
       color: this.state.inputs.color,
+      pPin: Number(this.state.inputs.pPin),
+      dPin: Number(this.state.inputs.dPin)
     })
     this.onClose()
   }
@@ -85,6 +87,29 @@ export default class PowerPackSettingDialog extends FormDialog<PowerPackSettingD
             validatorListener={this.handleValidation}
             validators={['required']}
             errorMessages={['this field is required']}
+          />
+          <br />
+          <TextValidator
+            label="PWM Pin"
+            name="pPin"
+            key="pPin"
+            value={this.state.inputs.pPin}
+            onChange={this.onChange('pPin')}
+            onKeyPress={this.onKeyPress}
+            validatorListener={this.handleValidation}
+            validators={['matchRegexp:^[0-9]*$']}
+            errorMessages={['value must be a number']}
+          />
+          <TextValidator
+            label="Digital Pin"
+            name="dPin"
+            key="dPin"
+            value={this.state.inputs.dPin}
+            onChange={this.onChange('dPin')}
+            onKeyPress={this.onKeyPress}
+            validatorListener={this.handleValidation}
+            validators={['matchRegexp:^[0-9]*$']}
+            errorMessages={['value must be a number']}
           />
         </ValidatorForm>
         <Spacer />
