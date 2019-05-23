@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {compose} from 'recompose'
 
-import {Layer, Raster, Rectangle, Tool, View} from 'react-paper-bindings'
+import {Tool} from 'react-paper-bindings'
 
 import {WithFullscreenProps} from '../hoc/withFullscreen'
 import withTools, {WithToolsPrivateProps} from '../hoc/withTools'
@@ -13,7 +13,6 @@ import './Paper.css'
 import withBuilder, {WithBuilderPublicProps} from "../hoc/withBuilder";
 import getLogger from "logging";
 import withSelectTool, {WithSelectToolPublicProps} from "components/hoc/withSelectTool";
-import {withSnackbar} from 'material-ui-snackbar-provider'
 import {Point} from "paper";
 import {inject, observer} from "mobx-react";
 import {CommonStore} from "store/commonStore";
@@ -30,13 +29,11 @@ import {
   Tools
 } from "constants/tools";
 import FreeRailPlacer from "components/Editor/FreeRailPlacer/FreeRailPlacer";
-import {BuilderStore, PlacingMode} from "store/builderStore";
+import {BuilderStore} from "store/builderStore";
 import {getAllRailComponents} from "components/rails/utils";
 import LayoutTips from "components/Editor/LayoutTips/LayoutTips";
 import {EditorMode} from "store/uiStore";
 import {SimulatorLogicStore} from "store/simulatorLogicStore";
-import BuilderPalettes from "components/Editor/Palettes/BuilderPalettes/BuilderPalettes";
-import SimulatorPalettes from "components/Editor/Palettes/SimulatorPalettes/SimulatorPalettes";
 import Palettes from "./Palettes/Palettes";
 
 const LOGGER = getLogger(__filename)
