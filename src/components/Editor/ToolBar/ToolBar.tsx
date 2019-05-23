@@ -6,8 +6,8 @@ import {
   ListItemText,
   MenuItem,
   Select,
-  Toolbar as MuiToolbar, Tooltip,
-  Typography, withStyles
+  Toolbar as MuiToolbar,
+  Tooltip
 } from '@material-ui/core'
 import {StyledIconButton} from "./styles";
 import {Tools} from "constants/tools";
@@ -19,7 +19,7 @@ import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {CommonStore} from "store/commonStore";
-import MenuDrawer from "components/Editor/MenuDrawer/MenuDrawer";
+import MenuDrawer from "components/Editor/ToolBar/MenuDrawer/MenuDrawer";
 import {compose} from "recompose";
 import {EditableTypography} from "components/common/EditableTypography/EditableTypography";
 import Peer from 'skyway-js';
@@ -30,9 +30,6 @@ import SimulatorToolBar from "components/Editor/ToolBar/SimulatorToolBar/Simulat
 import {EditorMode} from "store/uiStore";
 import BuildIcon from '@material-ui/icons/Build';
 import PlayArrowIcon from '@material-ui/icons/PlayCircleFilled';
-import {PrimaryColorActiveButton} from "components/common/ActiveButton";
-import {PrimaryColorActiveMenuItem} from 'components/common/ActiveMenuItem';
-import {StyledTooltip} from "components/Editor/Editor.style";
 
 const LOGGER = getLogger(__filename)
 

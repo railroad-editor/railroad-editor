@@ -9,7 +9,7 @@ import SigninIcon from "@material-ui/icons/PermIdentity";
 import LoginIcon from "@material-ui/icons/LockOpen";
 import LogoutIcon from "@material-ui/icons/Lock";
 import ArchiveIcon from "@material-ui/icons/Archive";
-import OpenLayoutsDialog from "components/Editor/MenuDrawer/OpenLayoutsDialog/OpenLayoutsDialog";
+import OpenLayoutsDialog from "components/Editor/ToolBar/MenuDrawer/OpenLayoutsDialog/OpenLayoutsDialog";
 import Auth from "aws-amplify/lib/Auth";
 import StorageAPI from "apis/storage"
 import Divider from "@material-ui/core/Divider";
@@ -19,7 +19,7 @@ import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI}
 import {CommonStore} from "store/commonStore";
 import {LayoutConfig, LayoutData, LayoutMeta, LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
-import SaveLayoutDialog from "components/Editor/MenuDrawer/SaveLayoutDialog/SaveLayoutDialog";
+import SaveLayoutDialog from "components/Editor/ToolBar/MenuDrawer/SaveLayoutDialog/SaveLayoutDialog";
 import * as moment from "moment";
 import {withSnackbar} from 'material-ui-snackbar-provider'
 import {compose} from "recompose";

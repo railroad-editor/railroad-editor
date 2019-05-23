@@ -6,7 +6,7 @@ import {S3Image} from 'aws-amplify-react';
 import LayoutAPI from "apis/layout"
 import getLogger from "logging";
 import {getLayoutImageFileName} from "apis/storage";
-import {LayoutCard} from "components/Editor/MenuDrawer/OpenLayoutsDialog/LayoutCard/LayoutCard";
+import {LayoutCard} from "components/Editor/ToolBar/MenuDrawer/OpenLayoutsDialog/LayoutCard/LayoutCard";
 import {LayoutMeta} from "store/layoutStore";
 import Grid from "@material-ui/core/Grid";
 import {ConfirmationDialog} from "components/Editor/Palettes/BuilderPalettes/LayerPalette/ConfirmationDialog/ConfirmationDialog";
