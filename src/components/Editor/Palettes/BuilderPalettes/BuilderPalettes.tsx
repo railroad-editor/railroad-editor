@@ -1,43 +1,28 @@
 import * as React from 'react'
-import {inject, observer} from "mobx-react";
-import {STORE_COMMON} from "constants/stores";
 import {compose} from "recompose";
-import {withSnackbar} from 'material-ui-snackbar-provider'
-import BuilderPalette from "components/Editor/Palettes/BuilderPalettes/RailPalettes/RailPalettes";
-import {StyledBuilderPalette, StyledLayerPalette} from "components/Editor/Palettes/BuilderPalettes/BuilderPalettes.style";
-import {EditorMode} from "store/uiStore";
-import {CommonStore} from "store/commonStore";
+import {StyledLayerPalette, StyledRailPalette} from "components/Editor/Palettes/BuilderPalettes/BuilderPalettes.style";
 
 
-export interface PaletteProps {
-  common?: CommonStore
+export interface BuilderPalettesProps {
 }
 
-export interface PaletteState {
-}
+export class BuilderPalettes extends React.Component<BuilderPalettesProps> {
 
-
-@inject(STORE_COMMON)
-@observer
-export class BuilderPalettes extends React.Component<PaletteProps, PaletteState> {
-
-  constructor(props: PaletteProps) {
+  constructor(props: BuilderPalettesProps) {
     super(props)
-    this.state = {
-    }
   }
 
   render() {
     return (
-      <div hidden={this.props.common.editorMode !== EditorMode.BUILDER}>
-        <StyledBuilderPalette />
+      <>
+        <StyledRailPalette />
         <StyledLayerPalette />
-      </div>
+      </>
     )
   }
 }
 
 
-export default compose<PaletteProps, PaletteProps>(
+export default compose<BuilderPalettesProps, BuilderPalettesProps>(
 )(BuilderPalettes)
 

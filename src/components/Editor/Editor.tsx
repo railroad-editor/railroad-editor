@@ -37,6 +37,7 @@ import {EditorMode} from "store/uiStore";
 import {SimulatorLogicStore} from "store/simulatorLogicStore";
 import BuilderPalettes from "components/Editor/Palettes/BuilderPalettes/BuilderPalettes";
 import SimulatorPalettes from "components/Editor/Palettes/SimulatorPalettes/SimulatorPalettes";
+import Palettes from "./Palettes/Palettes";
 
 const LOGGER = getLogger(__filename)
 
@@ -174,9 +175,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
       <StyledWrapper onContextMenu={this.noopContextMenu}>
         <StyledToolBar resetViewPosition={this.props.resetViewPosition} />
         <EditorBody>
-          <BuilderPalettes />
-          <SimulatorPalettes />
-
+          <Palettes />
           <LayoutTips />
 
           <GridPaper
