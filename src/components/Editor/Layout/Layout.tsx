@@ -3,9 +3,7 @@ import {Layer} from "react-paper-bindings";
 import {
   createFeederComponent,
   createRailComponent,
-  createRailOrRailGroupComponent,
-  getAllOpenCloseJoints
-} from "components/rails/utils";
+  createRailOrRailGroupComponent} from "components/rails/utils";
 import getLogger from "logging";
 import {default as withBuilder, WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {compose} from "recompose";
@@ -14,7 +12,6 @@ import {inject, observer} from "mobx-react";
 import {LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
 import {DEFAULT_SELECTED_COLOR, DEFAULT_SELECTED_WIDTH} from "constants/tools";
-import {reaction} from "mobx";
 
 const LOGGER = getLogger(__filename)
 

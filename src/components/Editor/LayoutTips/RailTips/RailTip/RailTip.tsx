@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Layer} from "react-paper-bindings";
 import getLogger from "logging";
 import {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {compose} from "recompose";
