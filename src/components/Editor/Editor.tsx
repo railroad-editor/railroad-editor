@@ -35,6 +35,8 @@ import LayoutTips from "components/Editor/LayoutTips/LayoutTips";
 import {EditorMode} from "store/uiStore";
 import {SimulatorLogicStore} from "store/simulatorLogicStore";
 import Palettes from "./Palettes/Palettes";
+import {DiffRailPlacer} from "./DiffRailPlacer/DiffRailPlacer";
+import TemporaryLayer from "./TemporaryLayer/TemporaryLayer";
 
 const LOGGER = getLogger(__filename)
 
@@ -174,6 +176,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
         <EditorBody>
           <Palettes />
           <LayoutTips />
+          <DiffRailPlacer />
 
           <GridPaper
             viewWidth={DEFAULT_VIEW_WIDTH}
@@ -190,12 +193,12 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             matrix={matrix}
             setPaperLoaded={this.props.common.setPaperLoaded}
           >
-            <Layout />
-
             {/*/!* 後から書いたコンポーネントの方が前面に配置される *!/*/}
-              <FreeRailPlacer mousePosition={this.state.mousePosition}/>
-            }
+            <TemporaryLayer />
 
+            <FreeRailPlacer mousePosition={this.state.mousePosition}/>
+
+            <Layout />
 
             <Tool
               active={this.isActive(

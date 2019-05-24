@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Point} from "paper";
-import {Rectangle, Tool} from "react-paper-bindings";
+import {Layer} from "react-paper-bindings";
 import RectPart from "../../rails/parts/primitives/RectPart";
 import {getClosest} from "constants/utils";
 import getLogger from "logging";
@@ -12,7 +12,7 @@ import {BuilderStore, PlacingMode} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import CirclePart from "components/rails/parts/primitives/CirclePart";
 import {RAIL_PUTTER_MARKER_RADIUS, Tools} from "constants/tools";
-import {JOINT_DETECTION_OPACITY_RATE, JOINT_FILL_COLORS} from "constants/parts";
+import {JOINT_DETECTION_OPACITY_RATE, JOINT_FILL_COLORS, JOINT_HIT_RADIUS} from "constants/parts";
 import {CommonStore} from "store/commonStore";
 import {EditorMode} from "store/uiStore";
 
@@ -35,7 +35,6 @@ export interface FreeRailPlacerProps {
 export interface FreeRailPlacerState {
   fixedPosition: Point
   phase: Phase
-
 }
 
 type FreeRailPlacerEnhancedProps = FreeRailPlacerProps & WithBuilderPublicProps
@@ -116,7 +115,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
   }
 
   onMouseMove = (e: MouseEvent|any) => {
-    // Ctrlキーを押している間はグリッド設置モードに移行する
+    // Shiftキーを押している間はグリッド設置モードに移行する
     if (! e.modifiers.shift && this.state.phase === Phase.SET_POSITION_GRID) {
       this.setState({phase: Phase.SET_POSITION})
     }
@@ -130,12 +129,25 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
 
 
   render() {
-    let position
-    // 位置が定まっていたらもう動かさない
-    if (this.state.phase === Phase.SET_ANGLE) {
-      position = this.state.fixedPosition
-    } else {
-      position = this.getMarkerPosition()
+    let radius, position, opacity
+
+    switch (this.state.phase) {
+      case Phase.SET_POSITION:
+        radius = 0
+        position = this.getMarkerPosition()
+        opacity = 0
+        break
+      case Phase.SET_POSITION_GRID:
+        radius = RAIL_PUTTER_MARKER_RADIUS
+        position = this.getMarkerPosition()
+        opacity = JOINT_DETECTION_OPACITY_RATE
+        break
+      case Phase.SET_ANGLE:
+        radius = RAIL_PUTTER_MARKER_RADIUS
+        // 位置が定まっていたらもう動かさない
+        position = this.state.fixedPosition
+        opacity = JOINT_DETECTION_OPACITY_RATE
+        break
     }
 
     // パンツール使用中は何もしない
@@ -144,30 +156,30 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
     }
 
     return (
-      <>
-        {
-          this.props.common.editorMode === EditorMode.BUILDER &&
-          this.props.builder.placingMode === PlacingMode.FREE &&
-          <>
-            <CirclePart
-              radius={RAIL_PUTTER_MARKER_RADIUS}
-              position={position}
-              fillColor={JOINT_FILL_COLORS[0]}
-              opacity={JOINT_DETECTION_OPACITY_RATE}
-            />
-            {/* 不可視の四角形、イベントハンドリング用 */}
-            <RectPart
-              width={this.props.layout.config.paperWidth}
-              height={this.props.layout.config.paperHeight}
-              position={position}
-              opacity={0}
-              onLeftClick={this.mouseLeftDown}
-              onRightClick={this.mouseRightDown}
-              onMouseMove={this.onMouseMove}
-            />
-          </>
-        }
-      </>
+        <Layer name={'freeRailPlacer'}>
+          {
+            this.props.common.editorMode === EditorMode.BUILDER &&
+            this.props.builder.placingMode === PlacingMode.FREE &&
+            <>
+              <CirclePart
+                  radius={radius}
+                  position={position}
+                  fillColor={JOINT_FILL_COLORS[0]}
+                  opacity={opacity}
+              />
+              {/* 不可視の四角形、イベントハンドリング用 */}
+              <RectPart
+                  width={this.props.layout.config.paperWidth}
+                  height={this.props.layout.config.paperHeight}
+                  position={position}
+                  opacity={0}
+                  onLeftClick={this.mouseLeftDown}
+                  onRightClick={this.mouseRightDown}
+                  onMouseMove={this.onMouseMove}
+              />
+            </>
+          }
+        </Layer>
     )
   }
 

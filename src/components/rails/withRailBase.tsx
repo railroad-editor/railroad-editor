@@ -1,11 +1,10 @@
 import * as React from "react";
-import {Rectangle} from "react-paper-bindings";
 import getLogger from "logging";
 import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {RailBase, RailBaseProps, RailBaseState} from "components/rails/RailBase";
-import {RailData} from "components/rails/index";
+import {RailData} from "./index";
 import {compose} from "recompose";
-import {BuilderStore} from "store/builderStore";
+import {BuilderStore, PlacingMode} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
@@ -270,6 +269,8 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
       // 矩形選択中は仮レールを表示させない
       if (this.props.builder.selecting) return
 
+      if (this.props.builder.placingMode == PlacingMode.FREE) return
+
       if (this.props.builder.getRailGroupItemData()) {
         this.showTemporaryRailGroup(jointId)
       } else if (this.props.builder.getRailItemData()) {
@@ -313,6 +314,12 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * @param {MouseEvent} e
      */
     onJointLeftClick = (jointId: number, e: MouseEvent) => {
+      if (this.props.builder.placingMode == PlacingMode.FREE) {
+        this.props.builder.setFreePlacingDialog(true)
+        return false
+      }
+      // Joint Placing Mode
+
       // 仮レールがこのレイヤーの他のレールと重なっていたら、何もせずに返る
       if (this.props.builder.intersects) {
         // ジョイントの検出状態を変更させない

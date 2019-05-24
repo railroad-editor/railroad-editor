@@ -6,6 +6,7 @@ import {Tools} from "constants/tools";
 import builderPaletteData from "constants/builderPaletteItems.json"
 import layoutLogicStore from "store/layoutLogicStore";
 import railItems from "constants/railItems.json"
+import {Point} from "paper";
 
 
 export interface PresetPaletteItems {
@@ -38,6 +39,8 @@ export interface BuilderStoreState {
   activeTool: string
   selecting: boolean
   temporaryFeeder: FeederInfo
+  freePlacingDialog: boolean
+  freePlacingPosition: Point
 }
 
 export enum PlacingMode {
@@ -66,7 +69,9 @@ export const INITIAL_STATE: BuilderStoreState = {
   userRails: [],
   activeTool: null,   // 後でreactionを起こさせるためにここではnullにしておく
   selecting: false,
-  temporaryFeeder: null
+  temporaryFeeder: null,
+  freePlacingDialog: false,
+  freePlacingPosition: new Point(0, 0)
 }
 
 
@@ -101,9 +106,12 @@ export class BuilderStore {
   // 仮フィーダー
   @observable temporaryFeeder: FeederInfo
 
+  @observable freePlacingDialog: boolean
+
+  @observable freePlacingPosition: Point
 
   constructor({ presetPaletteItems, paletteItem, lastPaletteItems, placingMode, activeLayerId, temporaryRails, temporaryRailGroup, userRailGroups,
-                userRails, activeTool, selecting, temporaryFeeder}) {
+                userRails, activeTool, selecting, temporaryFeeder, freePlacingDialog, freePlacingPosition}) {
     this.presetPaletteItems = presetPaletteItems
     this.paletteItem = paletteItem
     this.lastPaletteItems = lastPaletteItems
@@ -117,6 +125,8 @@ export class BuilderStore {
     this.activeTool = activeTool
     this.selecting = selecting
     this.temporaryFeeder = temporaryFeeder
+    this.freePlacingDialog = freePlacingDialog
+    this.freePlacingPosition = freePlacingPosition
 
     // ツール変更時
     reaction(
@@ -402,6 +412,16 @@ export class BuilderStore {
       default:
         document.body.style.cursor = 'crosshair'
     }
+  }
+
+  @action
+  setFreePlacingDialog = (open: boolean) => {
+    this.freePlacingDialog = open
+  }
+
+  @action
+  setFreePlacingPosition = (position: Point) => {
+    this.freePlacingPosition = position
   }
 }
 

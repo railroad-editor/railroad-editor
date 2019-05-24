@@ -1,9 +1,6 @@
 import * as React from "react";
 import {Layer} from "react-paper-bindings";
-import {
-  createFeederComponent,
-  createRailComponent,
-  createRailOrRailGroupComponent} from "components/rails/utils";
+import {createRailComponent} from "components/rails/utils";
 import getLogger from "logging";
 import {default as withBuilder, WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {compose} from "recompose";
@@ -36,34 +33,12 @@ export class Layout extends React.Component<LayoutProps & WithBuilderPublicProps
 
 
   render() {
-    const {temporaryRails, temporaryRailGroup, temporaryFeeder} = this.props.builder
-    const {currentLayoutData, activeLayerData} = this.props.layout;
-    const temporaryLayer = {
-      id: -1,
-      name: 'Temporary',
-      color: activeLayerData.color,
-      visible: undefined,   // TemporaryRailはLayerとは無関係に状態を切り替えたいので、undefinedを入れる
-      opacity: undefined    // 同上
-    }
+    const {currentLayoutData} = this.props.layout;
 
     LOGGER.debug('Layout render()')
 
     return (
       <>
-        <Layer
-          key={-1}
-          data={{id: -1, name: 'TemporaryLayer'}}
-        >
-          {
-            temporaryRails.length > 0 &&
-            createRailOrRailGroupComponent(temporaryRailGroup, temporaryRails, temporaryLayer)
-          }
-          {
-            temporaryFeeder &&
-            createFeederComponent(temporaryFeeder)
-          }
-        </Layer>
-
         {
           currentLayoutData.layers.map(layer =>
             <Layer
