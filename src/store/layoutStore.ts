@@ -1,5 +1,5 @@
 import {RailComponentClasses, RailData} from "components/rails";
-import {action, computed, observable, reaction, toJS, extendObservable, isComputedProp} from "mobx";
+import {action, computed, observable, toJS} from "mobx";
 import builderStore, {PlacingMode} from "./builderStore";
 import {DEFAULT_GRID_SIZE, DEFAULT_PAPER_HEIGHT, DEFAULT_PAPER_WIDTH} from "constants/tools";
 import {getAllOpenCloseJoints} from "components/rails/utils";
@@ -7,8 +7,8 @@ import getLogger from "logging";
 import * as uuidv4 from "uuid/v4";
 import * as moment from "moment";
 import {FeederInfo, GapJoinerInfo} from "components/rails/RailBase";
-import simulatorLogicStore from "store/simulatorLogicStore";
 import TrainController from "components/Editor/ToolBar/SimulatorToolBar/TrainController";
+import {reactionWithOldValue} from "./utils";
 
 const LOGGER = getLogger(__filename)
 
@@ -179,12 +179,14 @@ export class LayoutStore {
     this.meta = meta
     this.config = config
 
-    reaction(
+    reactionWithOldValue(
       () => this.currentLayoutData.rails.length,
-      (data) => {
-        if (this.isLayoutEmpty) {
+      (newValue, oldValue) => {
+        if (newValue === 0) {
+          // レイアウトが空ならFree Placing Mode
           builderStore.setPlacingMode(PlacingMode.FREE)
-        } else {
+        } else if (newValue === 1 && oldValue === 0) {
+          // 最初のレールを置いたらJoint Placing Modeに自動的に移行する
           builderStore.setPlacingMode(PlacingMode.JOINT)
         }
       }
@@ -280,10 +282,10 @@ export class LayoutStore {
   get trainControllerConfig(): TrainControllerConfig {
     return {
       powerPacks: this.currentLayoutData.powerPacks.map(p => {
-        return { dPin: p.dPin, pPin: p.pPin }
+        return {dPin: p.dPin, pPin: p.pPin}
       }),
       switchers: this.currentLayoutData.switchers.map(s => {
-        return { dPins: s.dPins }
+        return {dPins: s.dPins}
       })
     }
   }
@@ -389,7 +391,7 @@ export class LayoutStore {
   commit = () => {
     const layout = toJS(this.currentLayoutData)
     LOGGER.info('LayoutStore#commit', layout)
-    this.histories[this.historyIndex+1] = layout
+    this.histories[this.historyIndex + 1] = layout
     this.historyIndex += 1
   }
 
@@ -620,7 +622,7 @@ export class LayoutStore {
     this.currentLayoutData.switchers.push({
       ...item,
       id: id,
-      conductionStates: observable({0: [], 1:[], 2: []})
+      conductionStates: observable({0: [], 1: [], 2: []})
     })
     TrainController.setSwitcherState(id, item.currentState)
   }

@@ -4,9 +4,12 @@ import {FormDialog, FormDialogProps, FormDialogState} from "components/common/Fo
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER} from "constants/stores";
+import {BuilderStore} from "../../../../store/builderStore";
+import {Point} from "paper";
 
 
 export interface FreePlacingDialogProps extends FormDialogProps {
+  builder?: BuilderStore
 }
 
 export interface FreePlacingDialogState extends FormDialogState {
@@ -23,7 +26,6 @@ export default class FreePlacingDialog extends FormDialog<FreePlacingDialogProps
     this.state = this.getInitialState()
   }
 
-
   getInitialState = () => {
     return {
       inputs: {
@@ -35,6 +37,9 @@ export default class FreePlacingDialog extends FormDialog<FreePlacingDialogProps
   }
 
   onOK = (e) => {
+    let diff = new Point(Number(this.state.inputs.x), Number(this.state.inputs.y))
+    let newPosition = this.props.builder.freePlacingPosition.add(diff)
+    this.props.builder.setFreePlacingPosition(newPosition)
     this.onClose()
   }
 

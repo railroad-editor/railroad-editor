@@ -37,7 +37,7 @@ export interface WithRailBaseProps {
   onFeederMouseLeave: (id: number, e: MouseEvent) => void
 
   onGapJoinerSocketMouseEnter: (jointId: number, e: MouseEvent) => void
-  onGapJoinerSocketMouseLeave:(jointId: number, e: MouseEvent) => void
+  onGapJoinerSocketMouseLeave: (jointId: number, e: MouseEvent) => void
   onGapJoinerSocketLeftClick: (jointId: number, e: MouseEvent) => void
   onGapJoinerLeftClick: (id: number, e: MouseEvent) => void
   onGapJoinerMouseEnter: (id: number, e: MouseEvent) => void
@@ -203,7 +203,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * @param {MouseEvent} e
      */
     onFeederMouseLeave = (id: number, e: MouseEvent) => {
-        this.props.builder.setCursorShape(this.props.builder.activeTool)
+      this.props.builder.setCursorShape(this.props.builder.activeTool)
     }
 
     /**
@@ -315,6 +315,8 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      */
     onJointLeftClick = (jointId: number, e: MouseEvent) => {
       if (this.props.builder.placingMode == PlacingMode.FREE) {
+        // クリックしたジョイントの位置を記録し、ダイアログを表示する
+        this.props.builder.setClickedJointPosition(this.joints[jointId].globalPosition)
         this.props.builder.setFreePlacingDialog(true)
         return false
       }
@@ -373,7 +375,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * Shiftを押している場合: それ以外のレールの選択状態を解除しない
      * @param {MouseEvent} e
      */
-    onRailPartLeftClick(e: MouseEvent|any) {
+    onRailPartLeftClick(e: MouseEvent | any) {
       // レールの選択状態をトグルする
       if (this.props.builder.isRailMode) {
         this.props.layoutLogic.toggleSelectRail(this.props.id)
@@ -513,7 +515,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
 
   }
 
-  return compose<WithRailBaseProps, WithRailBaseProps|any>(
+  return compose<WithRailBaseProps, WithRailBaseProps | any>(
     withBuilder,
   )(WithRailBase)
 }

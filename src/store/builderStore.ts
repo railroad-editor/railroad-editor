@@ -41,6 +41,7 @@ export interface BuilderStoreState {
   temporaryFeeder: FeederInfo
   freePlacingDialog: boolean
   freePlacingPosition: Point
+  clickedJointPosition: Point
 }
 
 export enum PlacingMode {
@@ -71,7 +72,8 @@ export const INITIAL_STATE: BuilderStoreState = {
   selecting: false,
   temporaryFeeder: null,
   freePlacingDialog: false,
-  freePlacingPosition: new Point(0, 0)
+  freePlacingPosition: new Point(0, 0),
+  clickedJointPosition: new Point(0, 0)
 }
 
 
@@ -110,8 +112,12 @@ export class BuilderStore {
 
   @observable freePlacingPosition: Point
 
-  constructor({ presetPaletteItems, paletteItem, lastPaletteItems, placingMode, activeLayerId, temporaryRails, temporaryRailGroup, userRailGroups,
-                userRails, activeTool, selecting, temporaryFeeder, freePlacingDialog, freePlacingPosition}) {
+  @observable clickedJointPosition: Point
+
+  constructor({
+                presetPaletteItems, paletteItem, lastPaletteItems, placingMode, activeLayerId, temporaryRails, temporaryRailGroup, userRailGroups,
+                userRails, activeTool, selecting, temporaryFeeder, freePlacingDialog, freePlacingPosition, clickedJointPosition
+              }) {
     this.presetPaletteItems = presetPaletteItems
     this.paletteItem = paletteItem
     this.lastPaletteItems = lastPaletteItems
@@ -127,6 +133,7 @@ export class BuilderStore {
     this.temporaryFeeder = temporaryFeeder
     this.freePlacingDialog = freePlacingDialog
     this.freePlacingPosition = freePlacingPosition
+    this.clickedJointPosition = clickedJointPosition
 
     // ツール変更時
     reaction(
@@ -156,7 +163,7 @@ export class BuilderStore {
 
   @computed
   get isRailMode() {
-    return ![Tools.FEEDERS, Tools.GAP_JOINERS].includes(this.activeTool)
+    return ! [Tools.FEEDERS, Tools.GAP_JOINERS].includes(this.activeTool)
   }
 
   @computed
@@ -173,7 +180,7 @@ export class BuilderStore {
     const temporaryRailGroup = this.temporaryRailGroup
     const userRailGroupData = this.paletteRailGroupData
     if (! (temporaryRailGroup && userRailGroupData)) {
-      return { railId: 0, jointId: 0 }
+      return {railId: 0, jointId: 0}
     }
     const currentIndex = _.indexOf(userRailGroupData.openJoints, temporaryRailGroup.pivotJointInfo)
     const nextIndex = (currentIndex + 1) % userRailGroupData.openJoints.length
@@ -209,7 +216,7 @@ export class BuilderStore {
    */
   getRailItemData(name?: string) {
     return computed(() => {
-      if (!name) {
+      if (! name) {
         name = this.paletteItem.name
       }
       const presetItem = railItems.items.find(item => item.name === name)
@@ -232,7 +239,7 @@ export class BuilderStore {
    */
   getRailGroupItemData = (name?: string) => {
     return computed(() => {
-      if (!name) {
+      if (! name) {
         name = this.paletteItem.name
         if (this.paletteItem.type !== 'RailGroup') {
           return null
@@ -284,7 +291,7 @@ export class BuilderStore {
   updateTemporaryRail = (item: Partial<RailData>) => {
     const newTemporaryRails = this.temporaryRails.map(r => {
       // payloadのidと一致、もしくはpayloadが idを含まない場合
-      if ((! item.id) ||  r.id === item.id) {
+      if ((! item.id) || r.id === item.id) {
         // opposingJoints がnullか空のオブジェクトなら全削除
         let opposingJoints
         if (_.isEmpty(item.opposingJoints)) {
@@ -422,6 +429,11 @@ export class BuilderStore {
   @action
   setFreePlacingPosition = (position: Point) => {
     this.freePlacingPosition = position
+  }
+
+  @action
+  setClickedJointPosition = (position: Point) => {
+    this.clickedJointPosition = position
   }
 }
 

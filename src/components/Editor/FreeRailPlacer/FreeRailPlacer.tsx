@@ -12,9 +12,10 @@ import {BuilderStore, PlacingMode} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import CirclePart from "components/rails/parts/primitives/CirclePart";
 import {RAIL_PUTTER_MARKER_RADIUS, Tools} from "constants/tools";
-import {JOINT_DETECTION_OPACITY_RATE, JOINT_FILL_COLORS, JOINT_HIT_RADIUS} from "constants/parts";
+import {JOINT_DETECTION_OPACITY_RATE, JOINT_FILL_COLORS} from "constants/parts";
 import {CommonStore} from "store/commonStore";
 import {EditorMode} from "store/uiStore";
+import {reaction} from "mobx";
 
 const LOGGER = getLogger(__filename)
 
@@ -52,9 +53,19 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
     }
 
     this.onClick = this.onClick.bind(this)
+
+    reaction(() => this.props.builder.freePlacingPosition,
+      (position) => {
+        let newPosition = this.props.builder.clickedJointPosition.add(position)
+        this.setState({
+          fixedPosition: newPosition,
+          phase: Phase.SET_ANGLE
+        })
+      }
+    )
   }
 
-  onClick = (e: MouseEvent|any) => {
+  onClick = (e: MouseEvent | any) => {
     switch (e.event.button) {
       case 0:
         this.mouseLeftDown(e)
@@ -114,7 +125,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
     this.addRail()
   }
 
-  onMouseMove = (e: MouseEvent|any) => {
+  onMouseMove = (e: MouseEvent | any) => {
     // Shiftキーを押している間はグリッド設置モードに移行する
     if (! e.modifiers.shift && this.state.phase === Phase.SET_POSITION_GRID) {
       this.setState({phase: Phase.SET_POSITION})
@@ -156,18 +167,18 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
     }
 
     return (
-        <Layer name={'freeRailPlacer'}>
-          {
-            this.props.common.editorMode === EditorMode.BUILDER &&
-            this.props.builder.placingMode === PlacingMode.FREE &&
-            <>
+      <Layer name={'freeRailPlacer'}>
+        {
+          this.props.common.editorMode === EditorMode.BUILDER &&
+          this.props.builder.placingMode === PlacingMode.FREE &&
+          <>
               <CirclePart
                   radius={radius}
                   position={position}
                   fillColor={JOINT_FILL_COLORS[0]}
                   opacity={opacity}
               />
-              {/* 不可視の四角形、イベントハンドリング用 */}
+            {/* 不可視の四角形、イベントハンドリング用 */}
               <RectPart
                   width={this.props.layout.config.paperWidth}
                   height={this.props.layout.config.paperHeight}
@@ -177,9 +188,9 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
                   onRightClick={this.mouseRightDown}
                   onMouseMove={this.onMouseMove}
               />
-            </>
-          }
-        </Layer>
+          </>
+        }
+      </Layer>
     )
   }
 
@@ -283,6 +294,6 @@ const getFirstRailAngle = (anchor: Point, cursor: Point, step: number = 45) => {
 }
 
 
-export default compose<FreeRailPlacerProps, FreeRailPlacerProps|any>(
+export default compose<FreeRailPlacerProps, FreeRailPlacerProps | any>(
   withBuilder,
 )(FreeRailPlacer)
