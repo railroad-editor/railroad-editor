@@ -1,13 +1,13 @@
 import * as React from 'react'
 import LayersIcon from '@material-ui/icons/Layers';
 import {Checkbox, Grid} from '@material-ui/core'
-import {ScrollablePaper} from "./styles";
+import {ScrollablePaper} from "./LayerPalette.style";
 import Rnd from 'react-rnd'
 import {LayerListItem} from "components/Editor/Palettes/BuilderPalettes/LayerPalette/LayerListItem/LayerListItem";
 import getLogger from "logging";
-import LayerSettingDialog from "components/Editor/Palettes/BuilderPalettes/LayerPalette/LayerSettingDialog/LayerSettingDialog";
+import LayerSettingDialog
+  from "components/Editor/Palettes/BuilderPalettes/LayerPalette/LayerSettingDialog/LayerSettingDialog";
 import {ConfirmationDialog} from "components/Editor/Palettes/BuilderPalettes/LayerPalette/ConfirmationDialog/ConfirmationDialog";
-import Typography from "@material-ui/core/Typography";
 import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {inject, observer} from "mobx-react";
 import {DEFAULT_LAYER_DATA, LayoutStore} from "store/layoutStore";
@@ -67,7 +67,7 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
     if (visible && opacity < 1) {
       return LayerStates.INVISIBLE
     }
-    if (!visible) {
+    if (! visible) {
       return LayerStates.VISIBLE
     }
     // fallback
@@ -151,13 +151,13 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
       >
         <ScrollablePaper>
           <TitleDiv className='Layers__title'>
-            <LayersIcon />
+            <LayersIcon/>
             {/* プラスアイコンを右端に配置するためのスタイル */}
             <TitleTypography variant="subheading" color="inherit">
               Layers
             </TitleTypography>
             <Tooltip title="Add Layer">
-            <SecondaryPaletteAddButton onClick={this.openAddDialog}/>
+              <SecondaryPaletteAddButton onClick={this.openAddDialog}/>
             </Tooltip>
           </TitleDiv>
 
@@ -165,7 +165,7 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
             <Grid container justify="center" wrap="nowrap" spacing={0} key={`layer-${idx}`}>
               <Grid
                 item xs={3}
-                style={{  minWidth: '48px' }}
+                style={{minWidth: '48px'}}
               >
                 <Checkbox
                   checked={layers[idx].visible}
@@ -209,7 +209,7 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
         />
         <ConfirmationDialog
           title={'Delete Layer'}
-          text={`Are you OK to delete "${activeLayer ? activeLayer.name: ''}"? \nAll rails on the layer are deleted.`}
+          text={`Are you OK to delete "${activeLayer ? activeLayer.name : ''}"? \nAll rails on the layer are deleted.`}
           open={this.state.deleteDialogOpen}
           onOK={this.deleteLayer}
           onClose={this.closeDeleteDialog}

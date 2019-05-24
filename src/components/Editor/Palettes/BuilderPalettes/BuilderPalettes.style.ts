@@ -13,17 +13,17 @@ export const StyledRnd = styled(Rnd as any)`
 
 export const StyledRailPalette = styled(RailPalettes as any)`
   // Rndのインラインスタイルである top:0, left:0 を打ち消す
-  top: 10px!important;
-  left: 10px!important;
+  top: 15px!important;
+  left: 15px!important;
   // AppBarよりも上に置く
   //z-index: 1100;
 `
 
 export const StyledLayerPalette = styled(LayerPalette as any)`
   // Rndのインラインスタイルである top:0, left:0 を打ち消す
-  top: 10px!important;
+  top: 15px!important;
   left: auto!important;
-  right: 10px;
+  right: 15px;
   // AppBarよりも上に置く
   //z-index: 1100;
 `
