@@ -8,20 +8,20 @@ import {BuilderStore} from "../../../../store/builderStore";
 import {Point} from "paper";
 
 
-export interface FreePlacingDialogProps extends FormDialogProps {
+export interface DistantPlacingDialogProps extends FormDialogProps {
   builder?: BuilderStore
 }
 
-export interface FreePlacingDialogState extends FormDialogState {
+export interface DistantPlacingDialogState extends FormDialogState {
 }
 
 
 
 @inject(STORE_BUILDER)
 @observer
-export default class FreePlacingDialog extends FormDialog<FreePlacingDialogProps, FreePlacingDialogState> {
+export default class DistantPlacingDialog extends FormDialog<DistantPlacingDialogProps, DistantPlacingDialogState> {
 
-  constructor(props: FreePlacingDialogProps) {
+  constructor(props: DistantPlacingDialogProps) {
     super(props)
     this.state = this.getInitialState()
   }
@@ -33,7 +33,7 @@ export default class FreePlacingDialog extends FormDialog<FreePlacingDialogProps
         y: '0',
       },
       disabled: true
-    } as FreePlacingDialogState
+    } as DistantPlacingDialogState
   }
 
   onOK = (e) => {

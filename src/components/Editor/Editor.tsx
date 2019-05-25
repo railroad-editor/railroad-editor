@@ -35,7 +35,7 @@ import LayoutTips from "components/Editor/LayoutTips/LayoutTips";
 import {EditorMode} from "store/uiStore";
 import {SimulatorLogicStore} from "store/simulatorLogicStore";
 import Palettes from "./Palettes/Palettes";
-import {DiffRailPlacer} from "./DiffRailPlacer/DiffRailPlacer";
+import {DistantRailPlacer} from "./DistantRailPlacer/DistantRailPlacer";
 import TemporaryLayer from "./TemporaryLayer/TemporaryLayer";
 
 const LOGGER = getLogger(__filename)
@@ -178,7 +178,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
         <EditorBody>
           <Palettes />
           <LayoutTips />
-          <DiffRailPlacer />
+          <DistantRailPlacer />
 
           <GridPaper
             viewWidth={DEFAULT_VIEW_WIDTH}

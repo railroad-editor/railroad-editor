@@ -7,24 +7,24 @@ import {BuilderStore, PlacingMode} from "store/builderStore";
 import {Tools} from "constants/tools";
 import {CommonStore} from "store/commonStore";
 import {EditorMode} from "store/uiStore";
-import FreePlacingDialog from "./FreePlacingDialog/FreePlacingDialog";
+import DistantPlacingDialog from "./DistantPlacingDialog/DistantPlacingDialog";
 
 const LOGGER = getLogger(__filename)
 
-export interface DiffRailPlacerProps {
+export interface DistantRailPlacerProps {
     common?: CommonStore
     builder?: BuilderStore
 }
 
-export interface DiffRailPlacerState {
+export interface DistantRailPlacerState {
 }
 
 
 @inject(STORE_COMMON, STORE_BUILDER)
 @observer
-export class DiffRailPlacer extends React.Component<DiffRailPlacerProps, DiffRailPlacerState> {
+export class DistantRailPlacer extends React.Component<DistantRailPlacerProps, DistantRailPlacerState> {
 
-    constructor(props: DiffRailPlacerProps) {
+    constructor(props: DistantRailPlacerProps) {
         super(props)
         this.state = {
         }
@@ -47,8 +47,8 @@ export class DiffRailPlacer extends React.Component<DiffRailPlacerProps, DiffRai
                 {
                     this.props.common.editorMode === EditorMode.BUILDER &&
                     this.props.builder.placingMode === PlacingMode.FREE &&
-                    <FreePlacingDialog
-                        title={'Difference'}
+                    <DistantPlacingDialog
+                        title={'Distance from the joint'}
                         open={this.props.builder.freePlacingDialog}
                         onClose={this.onCloseDialog}
                     />
@@ -57,5 +57,5 @@ export class DiffRailPlacer extends React.Component<DiffRailPlacerProps, DiffRai
     }
 }
 
-export default compose<DiffRailPlacerProps, DiffRailPlacerProps|any>(
-)(DiffRailPlacer)
+export default compose<DistantRailPlacerProps, DistantRailPlacerProps|any>(
+)(DistantRailPlacer)
