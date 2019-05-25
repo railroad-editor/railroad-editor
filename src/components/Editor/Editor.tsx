@@ -79,8 +79,10 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
   async componentDidMount() {
     this.props.resetViewPosition()
     this.props.builder.setActiveTool(Tools.STRAIGHT_RAILS)
+    window.onbeforeunload = () => {
+      return "Dude, are you sure you want to leave? Think of the kittens!";
+    }
   }
-
 
   isActive = (... tools: string[]) => {
     if (this.props.common.editorMode === EditorMode.BUILDER) {
