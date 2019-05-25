@@ -4,7 +4,7 @@
 	"region": "ap-northeast-1",
 	"state": "NORMAL",
 	"createdDate": "2018-04-28T08:32:11.825Z",
-	"lastUpdatedDate": "2018-06-21T16:01:33.733Z",
+	"lastUpdatedDate": "2019-05-24T18:41:31.341Z",
 	"consoleUrl": "https://console.aws.amazon.com/mobilehub/home#/afb78a90-fb33-4b35-aabb-2be1304f8015/build",
 	"resources": [
 		{
@@ -25,7 +25,7 @@
 			"feature": "user-data",
 			"attributes": {
 				"authType": "authenticated",
-				"lastUpdateRequestID": "aeabdb4f-4b08-11e8-b92c-dbcfed40b68f",
+				"lastUpdateRequestID": "aaefcda1-9ef8-4ab3-95a9-e038537bd42e",
 				"role": "railroadeditor_auth_MOBILEHUB_69379349"
 			}
 		},
@@ -36,7 +36,7 @@
 			"feature": "user-data",
 			"attributes": {
 				"authType": "unauthenticated",
-				"lastUpdateRequestID": "aeabdb4f-4b08-11e8-b92c-dbcfed40b68f",
+				"lastUpdateRequestID": "aaefcda1-9ef8-4ab3-95a9-e038537bd42e",
 				"role": "railroadeditor_unauth_MOBILEHUB_69379349"
 			}
 		},
@@ -112,7 +112,7 @@
 			"feature": "analytics",
 			"attributes": {
 				"authType": "authenticated",
-				"lastUpdateRequestID": "aeabdb4f-4b08-11e8-b92c-dbcfed40b68f",
+				"lastUpdateRequestID": "aaefcda1-9ef8-4ab3-95a9-e038537bd42e",
 				"role": "railroadeditor_auth_MOBILEHUB_69379349"
 			}
 		},
@@ -123,7 +123,7 @@
 			"feature": "analytics",
 			"attributes": {
 				"authType": "unauthenticated",
-				"lastUpdateRequestID": "aeabdb4f-4b08-11e8-b92c-dbcfed40b68f",
+				"lastUpdateRequestID": "aaefcda1-9ef8-4ab3-95a9-e038537bd42e",
 				"role": "railroadeditor_unauth_MOBILEHUB_69379349"
 			}
 		},
@@ -156,7 +156,7 @@
 			"feature": "hosting",
 			"attributes": {
 				"authType": "authenticated",
-				"lastUpdateRequestID": "aeabdb4f-4b08-11e8-b92c-dbcfed40b68f",
+				"lastUpdateRequestID": "aaefcda1-9ef8-4ab3-95a9-e038537bd42e",
 				"role": "railroadeditor_auth_MOBILEHUB_69379349"
 			}
 		},
@@ -167,7 +167,7 @@
 			"feature": "hosting",
 			"attributes": {
 				"authType": "unauthenticated",
-				"lastUpdateRequestID": "aeabdb4f-4b08-11e8-b92c-dbcfed40b68f",
+				"lastUpdateRequestID": "aaefcda1-9ef8-4ab3-95a9-e038537bd42e",
 				"role": "railroadeditor_unauth_MOBILEHUB_69379349"
 			}
 		},
@@ -210,10 +210,10 @@
 				"cfLogicalID": "CloudLogic",
 				"cfPhysicalID": "arn:aws:cloudformation:ap-northeast-1:561678142736:stack/MOBILEHUB-69379349-Development-CloudLogic-6B7R6ZEGATWA/ba7a02e0-4b08-11e8-a219-503a6ff78e62",
 				"deeplinkURL": "https://console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stack/detail?stackId=arn:aws:cloudformation:ap-northeast-1:561678142736:stack/MOBILEHUB-69379349-Development-CloudLogic-6B7R6ZEGATWA/ba7a02e0-4b08-11e8-a219-503a6ff78e62",
-				"lastUpdateTimestamp": "1524936197920",
+				"lastUpdateTimestamp": "1558723281820",
 				"reason": "none",
 				"region": "ap-northeast-1",
-				"status": "CREATE_COMPLETE"
+				"status": "UPDATE_COMPLETE"
 			}
 		},
 		{
@@ -265,7 +265,7 @@
 				"region": "ap-northeast-1",
 				"stack-arn": "arn:aws:cloudformation:ap-northeast-1:561678142736:stack/MOBILEHUB-69379349-Development/b7c73ef0-4b08-11e8-8bcf-50fa13f4ec75",
 				"stateDetails": "none",
-				"stateSummary": "CREATE_COMPLETE"
+				"stateSummary": "UPDATE_COMPLETE"
 			}
 		}
 	]
