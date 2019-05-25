@@ -8,6 +8,7 @@ import SaveIcon from "@material-ui/icons/Save";
 import SigninIcon from "@material-ui/icons/PermIdentity";
 import LoginIcon from "@material-ui/icons/LockOpen";
 import LogoutIcon from "@material-ui/icons/Lock";
+import HelpIcon from "@material-ui/icons/Help";
 import OpenLayoutsDialog from "components/Editor/ToolBar/MenuDrawer/OpenLayoutsDialog/OpenLayoutsDialog";
 import Auth from "aws-amplify/lib/Auth";
 import Divider from "@material-ui/core/Divider";
@@ -135,6 +136,10 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
     this.props.onClose()
   }
 
+  onOpenHelp = () => {
+    this.props.onClose()
+  }
+
   /**
    * レイアウトをSVGファイルに変換し、ダウンロードする。
    * 現在、実行後に画面に何も表示されなくなる問題を調査中。
@@ -245,6 +250,14 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
                 <SaveIcon/>
               </ListItemIcon>
               <ListItemText primary="Save As..."/>
+            </ListItem>
+            <ListItem button component="a" target="_blank"  href="http://d2t6ssvra5p03o.cloudfront.net/index.html"
+                      onClick={this.onOpenHelp}
+            >
+              <ListItemIcon>
+                <HelpIcon/>
+              </ListItemIcon>
+              <ListItemText primary="User Manual"/>
             </ListItem>
             {/*<ListItem button onClick={this.downloadAsSVG}>*/}
               {/*<ListItemIcon>*/}
