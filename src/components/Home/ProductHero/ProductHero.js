@@ -14,10 +14,9 @@ const styles = theme => ({
     backgroundPosition: 'center',
   },
   button: {
-    marginTop: theme.spacing.unit * 4,
+    marginTop: theme.spacing.unit * 6,
     minWidth: 200,
-    primaryTextColor: 'black',
-    fontSize: '1em'
+    fontSize: '1.2em'
   },
   h2: {
     marginTop: theme.spacing.unit * 4,
@@ -32,7 +31,11 @@ const styles = theme => ({
     fontWeight: 500
   },
   more: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing.unit * 4,
+    color: 'white',
+    fontWeight: 500,
+    textDecoration: 'underline',
+    fontSize: '1.2em'
   },
 });
 
@@ -68,6 +71,11 @@ function ProductHero(props) {
       >
         Launch Railroad Editor
       </StyledButton>
+      <Link target="_blank" href="http://d2t6ssvra5p03o.cloudfront.net/index.html">
+        <Typography variant="subtitle1" className={classes.more}>
+          User Manual
+        </Typography>
+      </Link>
     </ProductHeroLayout>
   );
 }
