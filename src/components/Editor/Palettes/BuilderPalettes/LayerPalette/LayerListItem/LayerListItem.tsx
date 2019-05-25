@@ -63,7 +63,8 @@ export class LayerListItem extends React.Component<LayerListItemProps, LayerList
             style={{
               width: '20px',
               height: '20px',
-              fontSize: '20px'
+              fontSize: '20px',
+              marginTop: '-18px'
             }}
             onClick={this.openMenu}
           >

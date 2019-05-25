@@ -251,6 +251,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
               </ListItemIcon>
               <ListItemText primary="Save As..."/>
             </ListItem>
+            <Divider />
             <ListItem button component="a" target="_blank"  href="http://d2t6ssvra5p03o.cloudfront.net/index.html"
                       onClick={this.onOpenHelp}
             >
