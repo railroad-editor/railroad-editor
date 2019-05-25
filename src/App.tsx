@@ -15,6 +15,7 @@ import withRoot from './withRoot';
 import getLogger from "logging";
 import 'typeface-roboto'
 import './App.css'
+import Home from "./components/Home/Home";
 
 const API_ENDPOINTS = {
   beta: "https://foo866bgvk.execute-api.ap-northeast-1.amazonaws.com/beta",
@@ -48,10 +49,6 @@ class App extends React.Component<AppProps, {}> {
   }
 
   componentDidMount() {
-    // リロード時に警告を出す
-    window.onbeforeunload = () => {
-      return "Dude, are you sure you want to leave? Think of the kittens!";
-    }
     document.title = "Railroad Editor (Beta)"
   }
 
@@ -72,7 +69,8 @@ class App extends React.Component<AppProps, {}> {
       <div className='App'>
         <Router>
           <div>
-            <Route exact path="/" render={() => <Editor width={6000} height={4000} /> }/>
+            <Route exact path="/" render={() => <Home /> }/>
+            <Route path="/editor" render={() => <Editor width={6000} height={4000} /> }/>
             <Route path="/reset-password" render={({location, ...rest}) => {
               const params =qs.parse(location.search)
               if (params.user_name && params.confirmation_code) {
