@@ -30,6 +30,7 @@ export const PrimaryPaletteAddButton = styled(PaletteAddButton)`
     &.active, &:active {
         color: #FFC700
     }
+    margin-top: -11px;
     margin-left: 10px;
   }
 `
@@ -45,6 +46,7 @@ export const SecondaryPaletteAddButton = styled(PaletteAddButton)`
     &.active, &:active {
         color: #FF9400
     }
+    margin-top: -11px;
     margin-left: 10px;
   }
 `
