@@ -174,6 +174,24 @@
       "branchDirection": "Left"
     },
     {
+      "type": "CurvedTurnout",
+      "name": "CPR317/280-45",
+      "outerRadius": 317,
+      "innerRadius": 280,
+      "outerCenterAngle": 45,
+      "innerCenterAngle": 45,
+      "branchDirection": "Right"
+    },
+    {
+      "type": "CurvedTurnout",
+      "name": "CPL317/280-45",
+      "outerRadius": 317,
+      "innerRadius": 280,
+      "outerCenterAngle": 45,
+      "innerCenterAngle": 45,
+      "branchDirection": "Left"
+    },
+    {
       "type": "WyeTurnout",
       "name": "PY280-15",
       "radius": 280,
