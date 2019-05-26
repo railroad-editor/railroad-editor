@@ -7,6 +7,7 @@ import StraightRail from "components/rails/StraightRail/StraightRail";
 import CurveRail from "components/rails/CurveRail/CurveRail";
 import SimpleTurnout from "components/rails/SimpleTurnout/SimpleTurnout";
 import ThreeWayTurnout from "components/rails/ThreeWayTurnout/ThreeWayTurnout";
+import CurvedTurnout from "../rails/CurvedTurnout/CurvedTurnout";
 // import {CurveRail} from "components/Rails/CurveRail";
 // import StraightRail from "components/rails/StraightRail";
 // import CurveRail from "components/rails/CurveRail";
@@ -96,6 +97,32 @@ export default class Case08 extends React.Component<any, any> {
           rightStart={0}
           rightRadius={514}
           rightCenterAngle={15}
+          id={0}
+          layerId={1}
+        />
+
+        <CurvedTurnout
+          pivotJointIndex={0}
+          position={new Point(400,400)}
+          angle={30}
+          outerRadius={317}
+          innerRadius={280}
+          innerCenterAngle={45}
+          outerCenterAngle={45}
+          branchDirection={ArcDirection.LEFT}
+          id={0}
+          layerId={1}
+        />
+
+        <CurvedTurnout
+          pivotJointIndex={0}
+          position={new Point(400,400)}
+          angle={30}
+          outerRadius={317}
+          innerRadius={280}
+          innerCenterAngle={45}
+          outerCenterAngle={45}
+          branchDirection={ArcDirection.RIGHT}
           id={0}
           layerId={1}
         />

@@ -14,6 +14,8 @@ import SimpleTurnout, {SimpleTurnoutProps} from "components/rails/SimpleTurnout/
 import SimpleTurnoutContainer from "components/rails/SimpleTurnout";
 import WyeTurnout, {WyeTurnoutProps} from "components/rails/WyeTurnout/WyeTurnout";
 import WyeTurnoutContainer from "components/rails/WyeTurnout";
+import CurvedTurnout from "components/rails/CurvedTurnout/CurvedTurnout";
+import CurvedTurnoutContainer from "components/rails/CurvedTurnout";
 import ThreeWayTurnout, {ThreeWayTurnoutProps} from "components/rails/ThreeWayTurnout/ThreeWayTurnout";
 import ThreeWayTurnoutContainer from "components/rails/ThreeWayTurnout";
 import {RailBaseProps} from "components/rails/RailBase";
@@ -33,6 +35,7 @@ import WyeTurnoutRailPart from "components/rails/parts/WyeTurnoutRailPart";
 import DoubleCrossTurnoutRailPart from "components/rails/parts/DoubleCrossTurnoutRailPart";
 import CrossingRailPart from "components/rails/parts/CrossingRailPart";
 import ThreeWayTurnoutRailPart from "components/rails/parts/ThreeWayTurnoutRailPart";
+import CurvedTurnoutRailPart from "components/rails/parts/CurvedTurnoutRailPart";
 
 // クラス名の文字列とクラスオブジェクトを関連付ける連想配列
 // 新しいレールクラスを作成したらここに追加する必要がある
@@ -43,6 +46,7 @@ const RailContainerClasses = {
   DoubleCurveRail: DoubleCurveRailContainer,
   SimpleTurnout: SimpleTurnoutContainer,
   WyeTurnout: WyeTurnoutContainer,
+  CurvedTurnout: CurvedTurnoutContainer,
   ThreeWayTurnout: ThreeWayTurnoutContainer,
   DoubleCrossTurnout: DoubleCrossTurnoutContainer,
   EndRail: EndRailContainer,
@@ -59,6 +63,7 @@ export const RailComponentClasses = {
   DoubleCurveRail,
   SimpleTurnout,
   WyeTurnout,
+  CurvedTurnout,
   ThreeWayTurnout,
   DoubleCrossTurnout,
   EndRail,
@@ -73,6 +78,7 @@ export const RailPartComponentClasses = {
   DoubleCurveRail: DoubleCurveRailPart,
   SimpleTurnout: SimpleTurnoutRailPart,
   WyeTurnout: WyeTurnoutRailPart,
+  CurvedTurnout: CurvedTurnoutRailPart,
   ThreeWayTurnout: ThreeWayTurnoutRailPart,
   DoubleCrossTurnout: DoubleCrossTurnoutRailPart,
   EndRail: StraightRailPart,

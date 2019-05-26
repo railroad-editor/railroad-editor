@@ -117,6 +117,14 @@
       "type": "WyeTurnout"
     },
     {
+      "name": "CPR317/280-45",
+      "type": "CurvedTurnout"
+    },
+    {
+      "name": "CPL317/280-45",
+      "type": "CurvedTurnout"
+    },
+    {
       "name": "PRL541/280-15",
       "type": "ThreeWayTurnout"
     },
