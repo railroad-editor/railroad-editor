@@ -1,7 +1,5 @@
 import * as React from "react";
 import {Point} from "paper";
-import {Rectangle} from "react-paper-bindings";
-import DetectablePart from "./primitives/DetectablePart";
 import getLogger from "logging";
 import TrianglePart from "components/rails/parts/primitives/TrianglePart";
 import {FEEDER_HEIGHT, FEEDER_SOCKET_FILL_COLORS, FEEDER_WIDTH} from "constants/parts";

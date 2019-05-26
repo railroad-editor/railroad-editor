@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import {ListItem, MenuItem} from '@material-ui/core';
+import {MenuItem} from '@material-ui/core';
 import {ListItemProps} from "@material-ui/core/ListItem";
 import styled from "styled-components";
 import {theme} from "withRoot";

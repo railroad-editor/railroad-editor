@@ -1,7 +1,6 @@
 import {SKYWAY_API_KEY} from "constants/tools";
 import Peer from 'skyway-js';
 import SessionAPI from "apis/session"
-import {withSnackbar} from 'material-ui-snackbar-provider'
 import getLogger from "logging";
 import {TrainControllerConfig} from "store/layoutStore";
 

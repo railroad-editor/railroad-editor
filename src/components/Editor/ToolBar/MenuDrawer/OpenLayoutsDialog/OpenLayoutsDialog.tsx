@@ -2,7 +2,6 @@ import * as React from 'react'
 import {DialogContent, DialogTitle} from '@material-ui/core'
 import Dialog from "@material-ui/core/Dialog";
 import Typography from "@material-ui/core/Typography";
-import {S3Image} from 'aws-amplify-react';
 import LayoutAPI from "apis/layout"
 import getLogger from "logging";
 import {getLayoutImageFileName} from "apis/storage";

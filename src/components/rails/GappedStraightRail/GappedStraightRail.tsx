@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Rectangle} from "react-paper-bindings";
 import GappedStraightRailPart from "components/rails/parts/GappedStraightRailPart";
 import {RailBase, RailBaseDefaultProps, RailBaseProps, RailBaseState} from "components/rails/RailBase";
 

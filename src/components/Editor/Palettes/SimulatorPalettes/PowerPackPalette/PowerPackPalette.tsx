@@ -7,7 +7,6 @@ import * as classNames from "classnames"
 import {PrimaryPaletteAddButton} from "components/common/PaletteAddButton/PaletteAddButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import {Scrollbars} from 'react-custom-scrollbars';
 // import PowerIcon from '@material-ui/icons/Power';
 import PowerIcon from '@material-ui/icons/PowerSettingsNew';
 import NewPowerPackDialog

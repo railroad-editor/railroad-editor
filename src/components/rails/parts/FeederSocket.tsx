@@ -1,9 +1,8 @@
 import * as React from "react";
 import {Point} from "paper";
-import {Rectangle} from "react-paper-bindings";
 import DetectablePart from "./primitives/DetectablePart";
 import CirclePart from "./primitives/CirclePart";
-import {FlowDirection, Pivot} from "components/rails/parts/primitives/PartBase";
+import {Pivot} from "components/rails/parts/primitives/PartBase";
 import {
   FEEDER_SOCKET_DETECTION_OPACITY_RATE,
   FEEDER_SOCKET_FILL_COLORS,

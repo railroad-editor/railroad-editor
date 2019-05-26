@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import Button from "@material-ui/core/Button";
-import ActiveButton, {SecondaryColorActiveButton} from "components/common/ActiveButton/index";
+import {SecondaryColorActiveButton} from "components/common/ActiveButton/index";
 import {CardContent, CardHeader} from "@material-ui/core";
 
 

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import {S3Image} from 'aws-amplify-react';
 import getLogger from "logging";
 import {ConductionStates, LayoutStore, SwitcherData, SwitcherType} from "store/layoutStore";
 import {inject, observer} from 'mobx-react';

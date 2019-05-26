@@ -1,7 +1,5 @@
 import * as React from "react";
 import {Point} from "paper";
-import {Rectangle} from "react-paper-bindings";
-import DetectablePart from "./primitives/DetectablePart";
 import RectPart from "components/rails/parts/primitives/RectPart";
 import getLogger from "logging";
 import {GAP_FILL_COLOR, GAP_HEIGHT, GAP_WIDTH} from "constants/parts";

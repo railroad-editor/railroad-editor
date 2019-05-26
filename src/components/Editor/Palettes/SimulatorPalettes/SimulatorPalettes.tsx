@@ -2,8 +2,8 @@ import * as React from 'react'
 import {compose} from "recompose";
 import {LayoutStore} from "store/layoutStore";
 import {
-    StyledPowerPackPalette,
-    StyledSwitcherPalette
+  StyledPowerPackPalette,
+  StyledSwitcherPalette
 } from "components/Editor/Palettes/SimulatorPalettes/SimulatorPalettes.style";
 
 

@@ -1,7 +1,7 @@
-import {action, computed} from "mobx";
+import {action} from "mobx";
 import getLogger from "logging";
-import layoutStore, {ConductionStates, LayoutData, LayoutStore} from "store/layoutStore";
-import builderStore, {BuilderStore} from "store/builderStore";
+import layoutStore, {ConductionStates} from "store/layoutStore";
+import builderStore from "store/builderStore";
 import {JointPair} from "components/hoc/withBuilder";
 import {Tools} from "constants/tools";
 import {getRailComponent} from "components/rails/utils";

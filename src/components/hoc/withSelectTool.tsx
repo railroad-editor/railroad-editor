@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {Layer, Path, Point, ToolEvent} from 'paper'
-import {Rectangle} from "react-paper-bindings";
 import getLogger from "logging";
 import {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {DEFAULT_SELECTION_RECT_COLOR, DEFAULT_SELECTION_RECT_OPACITY, Tools} from "constants/tools";

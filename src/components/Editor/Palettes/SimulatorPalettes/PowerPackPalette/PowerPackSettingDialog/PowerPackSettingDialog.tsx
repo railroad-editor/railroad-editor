@@ -7,7 +7,10 @@ import Grid from "@material-ui/core/Grid";
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {PowerPackData} from "store/layoutStore";
-import {SmallButton, Spacer} from "components/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackSettingDialog/styles";
+import {
+  SmallButton,
+  Spacer
+} from "components/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackSettingDialog/styles";
 
 
 export interface PowerPackSettingDialogProps extends FormDialogProps {

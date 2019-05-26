@@ -14,7 +14,8 @@ import CustomCurveRailDialog
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
-import NewRailGroupDialog from "components/Editor/Palettes/BuilderPalettes/RailPalettes/RailPalette/NewRailGroupDialog/NewRailGroupDialog";
+import NewRailGroupDialog
+  from "components/Editor/Palettes/BuilderPalettes/RailPalettes/RailPalette/NewRailGroupDialog/NewRailGroupDialog";
 import {compose} from "recompose";
 import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {LayoutStore} from "store/layoutStore";

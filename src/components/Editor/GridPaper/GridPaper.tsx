@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Layer, Line, Path, Raster, Rectangle, Tool, View} from 'react-paper-bindings'
+import {Layer, Line, Raster, Rectangle, View} from 'react-paper-bindings'
 import {Point} from 'paper';
 import * as _ from "lodash";
 

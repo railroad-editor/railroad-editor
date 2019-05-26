@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Point} from "paper";
-import {Rectangle} from "react-paper-bindings";
 import DetectablePart from "./primitives/DetectablePart";
 import CirclePart from "./primitives/CirclePart";
 import {JointMeta} from "components/rails/parts/types";

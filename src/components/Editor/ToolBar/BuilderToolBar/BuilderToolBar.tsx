@@ -16,7 +16,6 @@ import CopyIcon from "@material-ui/icons/ContentCopy";
 import CutIcon from "@material-ui/icons/ContentCut";
 import FreePlacingModeIcon from "@material-ui/icons/LocationOn";
 import ConnectModeIcon from "@material-ui/icons/CompareArrows";
-import FeederIcon from "../Icon/Feeder";
 import GapIcon from "../Icon/Gap";
 import getLogger from "logging";
 import * as classNames from "classnames"

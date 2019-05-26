@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Layer} from "react-paper-bindings";
 import {normAngle} from "components/rails/utils";
 import getLogger from "logging";
 import {WithBuilderPublicProps} from "components/hoc/withBuilder";

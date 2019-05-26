@@ -1,8 +1,6 @@
 import * as React from "react";
 import {Layer} from "react-paper-bindings";
-import {
-  createFeederComponent,
-  createRailOrRailGroupComponent} from "components/rails/utils";
+import {createFeederComponent, createRailOrRailGroupComponent} from "components/rails/utils";
 import getLogger from "logging";
 import {default as withBuilder, WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {compose} from "recompose";

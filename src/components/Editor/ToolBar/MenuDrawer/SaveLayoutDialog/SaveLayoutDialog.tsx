@@ -1,11 +1,10 @@
 import * as React from 'react'
 import * as md5 from "js-md5";
-import StorageAPI from "apis/storage"
 import getLogger from "logging";
 import * as moment from "moment";
 import {default as AutoFocusTextValidator} from "components/common/AutoFocusTextValidator";
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
-import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
+import {ValidatorForm} from 'react-material-ui-form-validator';
 import {LayoutConfig, LayoutMeta} from "store/layoutStore";
 import * as uuidv4 from "uuid/v4";
 

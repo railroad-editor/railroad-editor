@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Group as GroupComponent, Rectangle} from "react-paper-bindings";
+import {Group as GroupComponent} from "react-paper-bindings";
 import getLogger from "logging";
 import {JointInfo, RailBase} from "components/rails/RailBase";
 import {Group, Point} from "paper";

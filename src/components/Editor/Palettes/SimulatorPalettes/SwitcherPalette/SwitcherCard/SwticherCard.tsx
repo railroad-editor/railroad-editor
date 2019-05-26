@@ -1,6 +1,5 @@
 import * as React from 'react'
 import {Grid, MenuItem, Typography} from '@material-ui/core'
-import {S3Image} from 'aws-amplify-react';
 import getLogger from "logging";
 import Menu from "@material-ui/core/Menu";
 import MoreVertIcon from '@material-ui/icons/MoreVert';

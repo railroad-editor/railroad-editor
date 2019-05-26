@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Point} from "paper";
-import {Rectangle} from "react-paper-bindings";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
 import {GAP_JOINER_HEIGHT, GAP_JOINER_SOCKET_FILL_COLORS, GAP_JOINER_WIDTH} from "constants/parts";
 import RectPart from "components/rails/parts/primitives/RectPart";

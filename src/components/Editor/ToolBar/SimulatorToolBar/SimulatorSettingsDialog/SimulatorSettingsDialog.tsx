@@ -1,17 +1,9 @@
 import * as React from 'react'
 import getLogger from "logging";
 import {LayoutConfig, LayoutMeta} from "store/layoutStore";
-import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
+import {ValidatorForm} from 'react-material-ui-form-validator';
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
 import "react-fine-uploader/gallery/gallery.css";
-import Button from "@material-ui/core/Button";
-import styled from "styled-components";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Image from 'material-ui-image'
-import CancelIcon from '@material-ui/icons/Cancel'
-import IconButton from "@material-ui/core/IconButton";
-import {Spacer} from "components/Editor/Palettes/BuilderPalettes/LayerPalette/LayerSettingDialog/styles";
 
 
 const LOGGER = getLogger(__filename)

@@ -1,5 +1,4 @@
 import {API} from "aws-amplify";
-import * as moment from "moment";
 
 export interface Sessions {
   sessions: number[]

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {List, ListItemText, MenuItem} from '@material-ui/core'
+import {ListItemText, MenuItem} from '@material-ui/core'
 import {PrimaryColorActiveListItem} from "components/common/ActiveListItem/index";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from '@material-ui/icons/MoreVert';

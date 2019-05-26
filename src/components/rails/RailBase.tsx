@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Point} from "paper";
-import {Rectangle} from "react-paper-bindings";
 import Joint from "./parts/Joint";
 import {anglesEqual, pointsEqual} from "components/rails/utils";
 import * as _ from "lodash";

@@ -1,8 +1,7 @@
 import * as React from "react";
 import {Point} from "paper";
-import {Rectangle} from "react-paper-bindings";
 import RectPart from "./primitives/RectPart";
-import {RAIL_PART_FILL_COLORS, RAIL_PART_WIDTH} from "constants/parts";
+import {RAIL_PART_WIDTH} from "constants/parts";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
 import PartGroup from "components/rails/parts/primitives/PartGroup";
 import RailPartBase, {RailPartBaseDefaultProps, RailPartBaseProps} from "components/rails/parts/RailPartBase";

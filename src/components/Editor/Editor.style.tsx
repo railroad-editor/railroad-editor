@@ -1,6 +1,5 @@
 import * as React from 'react'
 import styled from "styled-components";
-import {View} from "react-paper-bindings";
 import ToolBar from "./ToolBar/ToolBar";
 import {Tooltip} from "@material-ui/core";
 import {TooltipProps} from "@material-ui/core/Tooltip";

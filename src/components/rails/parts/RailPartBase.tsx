@@ -1,12 +1,8 @@
 import * as React from "react";
 import {Point} from "paper";
-import {Rectangle} from "react-paper-bindings";
-import DetectablePart from "./primitives/DetectablePart";
-import {RAIL_PART_FILL_COLORS} from "constants/parts";
 import {RailPartMeta} from "components/rails/parts/types";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
 import getLogger from "logging";
-import {ReactElement} from "react";
 import {normAngle} from "components/rails/utils";
 import {FlowDirections} from "components/rails/RailBase";
 import PartGroup from "components/rails/parts/primitives/PartGroup";

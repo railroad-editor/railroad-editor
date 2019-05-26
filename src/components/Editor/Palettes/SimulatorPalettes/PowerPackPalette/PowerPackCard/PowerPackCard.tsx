@@ -1,18 +1,6 @@
 import * as React from 'react'
-import {
-  Button,
-  CardContent,
-  CardHeader,
-  Divider,
-  FormControlLabel, Grid,
-  List,
-  ListItem,
-  ListItemIcon, ListItemSecondaryAction, ListItemText,
-  MenuItem,
-  Switch
-} from '@material-ui/core'
+import {Grid, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, MenuItem, Switch} from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
-import {S3Image} from 'aws-amplify-react';
 import getLogger from "logging";
 import Menu from "@material-ui/core/Menu";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -20,7 +8,6 @@ import IconButton from "@material-ui/core/IconButton";
 import PowerIcon from "@material-ui/icons/Power";
 import Card from "@material-ui/core/Card";
 import {LayoutStore, PowerPackData} from "store/layoutStore";
-import Slider from '@material-ui/lab/Slider';
 import {FeederInfo} from "components/rails/RailBase";
 import {inject, observer} from 'mobx-react';
 import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
@@ -29,10 +16,12 @@ import PowerPackSettingDialog
   from "components/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackSettingDialog/PowerPackSettingDialog";
 import {
   NarrowCardContent,
-  NarrowCardHeader, SmallButton, StyledList, StyledSlider, Triangle
+  NarrowCardHeader,
+  SmallButton,
+  StyledList,
+  StyledSlider,
+  Triangle
 } from "components/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard.style";
-import {comparer, reaction} from "mobx";
-import TrainController from "components/Editor/ToolBar/SimulatorToolBar/TrainController";
 
 const LOGGER = getLogger(__filename)
 
