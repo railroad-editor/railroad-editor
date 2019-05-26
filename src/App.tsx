@@ -16,6 +16,8 @@ import getLogger from "logging";
 import 'typeface-roboto'
 import './App.css'
 import Home from "./components/Home/Home";
+import {Helmet} from "react-helmet";
+
 
 const API_ENDPOINTS = {
   beta: "https://foo866bgvk.execute-api.ap-northeast-1.amazonaws.com/beta",
@@ -48,10 +50,6 @@ class App extends React.Component<AppProps, {}> {
     super(props)
   }
 
-  componentDidMount() {
-    document.title = "Railroad Editor (Beta)"
-  }
-
   async componentWillMount() {
     // セッションストレージからユーザー情報を取り出す
     const session = await Auth.currentSession()
@@ -67,6 +65,10 @@ class App extends React.Component<AppProps, {}> {
     console.log(process.env)
     return (
       <div className='App'>
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>Railroad Editor (Beta)</title>
+        </Helmet>
         <Router>
           <div>
             <Route exact path="/" render={() => <Home /> }/>
