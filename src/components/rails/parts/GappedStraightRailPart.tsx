@@ -51,8 +51,8 @@ export default class GappedStraightRailPart extends RailPartBase<GappedStraightR
         data={data}
       >
         <RectPart
-          width={length / 2}
-          height={RAIL_PART_WIDTH}
+          width={RAIL_PART_WIDTH}
+          height={length / 2}
           pivot={Pivot.LEFT}
           fillColor={fillColors[0]}
           flowDirection={flowDirections[0]}
@@ -62,8 +62,8 @@ export default class GappedStraightRailPart extends RailPartBase<GappedStraightR
         />
         <RectPart
           position={new Point(length / 2, 0)}
-          width={length / 2}
-          height={RAIL_PART_WIDTH}
+          width={RAIL_PART_WIDTH}
+          height={length / 2}
           pivot={Pivot.LEFT}
           fillColor={fillColors[0]}
           flowDirection={flowDirections[1]}

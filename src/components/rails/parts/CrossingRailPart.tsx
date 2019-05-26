@@ -51,8 +51,8 @@ export default class CrossingRailPart extends RailPartBase<CrossingRailPartProps
       >
         <RectPart
           position={new Point(0, 0)}
-          width={length}
-          height={RAIL_PART_WIDTH}
+          width={RAIL_PART_WIDTH}
+          height={length}
           pivot={Pivot.CENTER}
           fillColor={fillColors[0]}
           flowDirection={flowDirections[0]}
@@ -63,8 +63,8 @@ export default class CrossingRailPart extends RailPartBase<CrossingRailPartProps
         <RectPart
           position={new Point(0, 0)}
           angle={crossAngle}
-          width={length}
-          height={RAIL_PART_WIDTH}
+          width={RAIL_PART_WIDTH}
+          height={length}
           pivot={Pivot.CENTER}
           fillColor={fillColors[0]}
           flowDirection={flowDirections[1]}

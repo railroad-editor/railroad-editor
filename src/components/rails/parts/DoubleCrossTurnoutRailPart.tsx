@@ -64,8 +64,8 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
         data={data}
       >
         <RectPart
-          width={length / 2}
-          height={RAIL_PART_WIDTH}
+          width={RAIL_PART_WIDTH}
+          height={length / 2}
           pivot={Pivot.LEFT}
           fillColor={fillColors[0]}
           flowDirection={flowDirections[0]}
@@ -75,8 +75,8 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
         />
         <RectPart
           position={new Point(length / 2, 0)}
-          width={length / 2}
-          height={RAIL_PART_WIDTH}
+          width={RAIL_PART_WIDTH}
+          height={length / 2}
           pivot={Pivot.LEFT}
           fillColor={fillColors[0]}
           flowDirection={flowDirections[1]}
@@ -86,8 +86,8 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
         />
         <RectPart
           position={new Point(0, RAIL_SPACE)}
-          width={length / 2}
-          height={RAIL_PART_WIDTH}
+          width={RAIL_PART_WIDTH}
+          height={length / 2}
           pivot={Pivot.LEFT}
           fillColor={fillColors[0]}
           flowDirection={flowDirections[2]}
@@ -97,8 +97,8 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
         />
         <RectPart
           position={new Point(length / 2, RAIL_SPACE)}
-          width={length / 2}
-          height={RAIL_PART_WIDTH}
+          width={RAIL_PART_WIDTH}
+          height={length / 2}
           pivot={Pivot.LEFT}
           fillColor={fillColors[0]}
           flowDirection={flowDirections[3]}
