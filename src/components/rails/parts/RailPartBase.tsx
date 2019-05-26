@@ -224,6 +224,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     if (! isArray(parts)) {
       parts = [parts]
     }
+    // Create detection parts
     let detectionParts = parts.map(c => React.cloneElement(c, {
       width: RAIL_PART_WIDTH / 2,
       data: {

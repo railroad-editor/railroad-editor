@@ -43,7 +43,8 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
 
 
   renderParts = () => {
-    const {length, pivotJointIndex, data, fillColor, fillColors, flowDirections} = this.props
+    const {length, fillColors, flowDirections} = this.props
+
     return (
       <>
         <RectPart

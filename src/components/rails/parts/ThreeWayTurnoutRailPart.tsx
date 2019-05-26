@@ -61,8 +61,7 @@ export default class ThreeWayTurnoutRailPart extends RailPartBase<ThreeWayTurnou
 
 
   renderParts = () => {
-    const {length, rightStart, rightRadius, rightCenterAngle, leftStart, leftRadius, leftCenterAngle, pivotJointIndex, data, fillColors, flowDirections} = this.props
-    const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
+    const {length, rightStart, rightRadius, rightCenterAngle, leftStart, leftRadius, leftCenterAngle, fillColors, flowDirections} = this.props
 
     return (
       <>
