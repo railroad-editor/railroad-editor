@@ -36,6 +36,7 @@ export interface FreeRailPlacerProps {
 export interface FreeRailPlacerState {
   fixedPosition: Point
   phase: Phase
+  isError: boolean
 }
 
 type FreeRailPlacerEnhancedProps = FreeRailPlacerProps & WithBuilderPublicProps
@@ -45,14 +46,15 @@ type FreeRailPlacerEnhancedProps = FreeRailPlacerProps & WithBuilderPublicProps
 @observer
 export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps, FreeRailPlacerState> {
 
+  marker: CirclePart
+
   constructor(props: FreeRailPlacerEnhancedProps) {
     super(props)
     this.state = {
       fixedPosition: null,
-      phase: Phase.SET_POSITION
+      phase: Phase.SET_POSITION,
+      isError: false
     }
-
-    this.onClick = this.onClick.bind(this)
 
     reaction(() => this.props.builder.freePlacingPosition,
       (position) => {
@@ -65,21 +67,23 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
     )
   }
 
-  onClick = (e: MouseEvent | any) => {
-    switch (e.event.button) {
-      case 0:
-        this.mouseLeftDown(e)
-        break
-      case 2:
-        this.mouseRightDown(e)
-        break
+  mouseLeftDownOnPaper = (e: MouseEvent) => {
+    // このハンドラはSET_ANGLE フェーズのみで呼び出される
+    // 位置が決定済みかつ設置可能ならば角度を決定する
+    if (this.state.phase === Phase.SET_ANGLE) {
+      if (! this.state.isError) {
+        this.onSetAngle()
+      }
+    } else {
+      // そうでなければ位置を決定する
+      this.onSetPosition()
     }
   }
 
-  mouseLeftDown = (e: MouseEvent) => {
+  mouseLeftDownOnMarker = (e: MouseEvent) => {
     if (this.state.phase === Phase.SET_ANGLE) {
-      // 位置が決定済みならば角度を決定する
-      this.onSetAngle()
+      // 位置が決定済みならば、マーカー上で左クリックすると設置をキャンセルする
+      this.onResetPosition()
     } else {
       // そうでなければ位置を決定する
       this.onSetPosition()
@@ -121,6 +125,14 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
     })
   }
 
+  onResetPosition = () => {
+    this.setState({
+      fixedPosition: null,
+      phase: Phase.SET_POSITION
+    })
+    this.props.builder.deleteTemporaryRail()
+  }
+
   onSetAngle = () => {
     this.addRail()
   }
@@ -133,8 +145,16 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
     if (e.modifiers.shift && this.state.phase === Phase.SET_POSITION) {
       this.setState({phase: Phase.SET_POSITION_GRID})
     }
+    // 角度決定フェーズでは仮レールを表示する
     if (this.state.phase === Phase.SET_ANGLE) {
       this.showTemporaryRailOrRailGroup()
+      // もし仮レールが既存のレールと衝突する場合はマーカーをエラー表示にする
+      if (this.props.builder.intersects) {
+        this.setState({isError: true})
+        this.marker.path.bringToFront()
+      } else {
+        this.setState({isError: false})
+      }
     }
   }
 
@@ -167,30 +187,40 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
     }
 
     return (
-      <Layer name={'freeRailPlacer'}>
+      <>
+        <Layer name={'freeRailPlacer'}>
+          {
+            /* 不可視の四角形、イベントハンドリング用 */
+            this.props.common.editorMode === EditorMode.BUILDER &&
+            this.props.builder.placingMode === PlacingMode.FREE &&
+            <RectPart
+              width={this.props.layout.config.paperWidth / 2}
+              height={this.props.layout.config.paperHeight / 2}
+              position={position}
+              opacity={0}
+              onLeftClick={this.mouseLeftDownOnPaper}
+              onRightClick={this.mouseRightDown}
+              onMouseMove={this.onMouseMove}
+            />
+          }
+        </Layer>
         {
+          /* マーカー */
           this.props.common.editorMode === EditorMode.BUILDER &&
           this.props.builder.placingMode === PlacingMode.FREE &&
-          <>
-              <CirclePart
-                  radius={radius}
-                  position={position}
-                  fillColor={JOINT_FILL_COLORS[0]}
-                  opacity={opacity}
-              />
-            {/* 不可視の四角形、イベントハンドリング用 */}
-              <RectPart
-                  width={this.props.layout.config.paperWidth}
-                  height={this.props.layout.config.paperHeight}
-                  position={position}
-                  opacity={0}
-                  onLeftClick={this.mouseLeftDown}
-                  onRightClick={this.mouseRightDown}
-                  onMouseMove={this.onMouseMove}
-              />
-          </>
+          this.state.phase == Phase.SET_ANGLE &&
+          <CirclePart
+            radius={radius}
+            position={position}
+            fillColor={this.state.isError ? 'red' : JOINT_FILL_COLORS[2]}
+            opacity={opacity}
+            onLeftClick={this.mouseLeftDownOnMarker}
+            onRightClick={this.mouseRightDown}
+            onMouseMove={this.onMouseMove}
+            ref={r => this.marker = r}
+          />
         }
-      </Layer>
+      </>
     )
   }
 
@@ -281,7 +311,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
  * @param {number} step
  * @returns {number}
  */
-const getFirstRailAngle = (anchor: Point, cursor: Point, step: number = 45) => {
+const getFirstRailAngle = (anchor: Point, cursor: Point, step: number = 15) => {
   const diffX = cursor.x - anchor.x
   const diffY = cursor.y - anchor.y
   const angle = Math.atan2(diffY, diffX) * 180 / Math.PI
