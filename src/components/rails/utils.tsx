@@ -10,7 +10,11 @@ import RailGroup from "components/rails/RailGroup/RailGroup";
 import * as _ from 'lodash';
 import 'lodash.combinations';
 import 'lodash.product';
-import {FEEDER_SOCKET_FILL_COLORS} from "constants/parts";
+import {
+  CLOSED_JOINT_ANGLE_TORELANCE,
+  CLOSED_JOINT_DISTANCE_TORELANCE,
+  FEEDER_SOCKET_FILL_COLORS
+} from "constants/parts";
 import Feeder from "components/rails/parts/Feeder";
 
 const LOGGER = getLogger(__filename)
@@ -240,11 +244,11 @@ export const getCloseJointsBetween = (r1: number, r2: number): JointPair[] => {
     // }
     // LOGGER.debug(cmb[0].props.data.railId, cmb[0].globalPosition, cmb[0].globalAngle, cmb[1].props.data.railId, cmb[1].globalPosition, cmb[1].globalAngle)
     // ジョイント同士が十分近く、かつ角度が一致していればリストに加える
-    const isClose = pointsEqual(cmb[0].globalPosition, cmb[1].globalPosition, 5)
+    const isClose = pointsEqual(cmb[0].globalPosition, cmb[1].globalPosition, CLOSED_JOINT_DISTANCE_TORELANCE)
     if (! isClose) {
       return
     }
-    const isSameAngle = anglesEqual(cmb[0].globalAngle, cmb[1].globalAngle + 180, 5)
+    const isSameAngle = anglesEqual(cmb[0].globalAngle, cmb[1].globalAngle + 180, CLOSED_JOINT_ANGLE_TORELANCE)
     if (! isSameAngle) {
       return
     }

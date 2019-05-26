@@ -1,6 +1,6 @@
 import * as React from "react";
 import ArcPart, {ArcDirection} from "./primitives/ArcPart";
-import {RAIL_PART_WIDTH} from "constants/parts";
+import {CURVED_TURNOUT_ANGLE_DEVIATION, RAIL_PART_WIDTH} from "constants/parts";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
 import RailPartBase, {RailPartBaseDefaultProps, RailPartBaseProps} from "components/rails/parts/RailPartBase";
 import getLogger from "logging";
@@ -65,6 +65,7 @@ export default class CurvedTurnoutRailPart extends RailPartBase<CurvedTurnoutRai
           }}
         />
         <ArcPart
+          angle={direction === ArcDirection.RIGHT ? CURVED_TURNOUT_ANGLE_DEVIATION : -CURVED_TURNOUT_ANGLE_DEVIATION}
           direction={direction}
           radius={innerRadius}
           centerAngle={innerCenterAngle}

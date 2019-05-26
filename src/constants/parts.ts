@@ -41,3 +41,8 @@ export const GAP_JOINER_SOCKET_FILL_COLORS = ['red', 'red', 'deepskyblue', 'red'
 
 export const GAP_JOINER_WIDTH = 28
 export const GAP_JOINER_HEIGHT = 12
+
+export const CURVED_TURNOUT_ANGLE_DEVIATION = 2
+
+export const CLOSED_JOINT_DISTANCE_TORELANCE = 5
+export const CLOSED_JOINT_ANGLE_TORELANCE = 5
