@@ -57,7 +57,7 @@ export default class DistantPlacingDialog extends FormDialog<DistantPlacingDialo
                 onChange={this.onChange('x')}
                 onKeyPress={this.onKeyPress}
                 validatorListener={this.handleValidation}
-                validators={['matchRegexp:^[0-9]*\s*$']}
+                validators={['matchRegexp:^-?[0-9]*\s*$']}
                 errorMessages={['value must be a number']}
             />
             <TextValidator
@@ -68,7 +68,7 @@ export default class DistantPlacingDialog extends FormDialog<DistantPlacingDialo
                 onChange={this.onChange('y')}
                 onKeyPress={this.onKeyPress}
                 validatorListener={this.handleValidation}
-                validators={['matchRegexp:^[0-9]*\s*$']}
+                validators={['matchRegexp:^-?[0-9]*\s*$']}
                 errorMessages={['value must be a number']}
             />
           </ValidatorForm>
