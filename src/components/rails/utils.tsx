@@ -189,8 +189,14 @@ export const hasOpenJoint = (rail: RailData): boolean => {
  * @returns {any}
  */
 export const intersectsBetween = (r1: number, r2: number): boolean => {
-  const r1Paths = getRailComponent(r1).railPart.path.children
-  const r2Paths = getRailComponent(r2).railPart.path.children
+  let r1Paths = getRailComponent(r1).railPart.path.children.filter(p => p.data.type == 'Detect')
+  if (r1Paths.length === 0) {
+    r1Paths = getRailComponent(r1).railPart.path.children
+  }
+  let r2Paths = getRailComponent(r2).railPart.path.children.filter(p => p.data.type == 'Detect')
+  if (r2Paths.length === 0) {
+    r2Paths = getRailComponent(r2).railPart.path.children
+  }
 
   const combinations = (_ as any).product(r1Paths, r2Paths)
   const result = combinations.map(cmb => cmb[0].intersects(cmb[1])).some(e => e)

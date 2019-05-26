@@ -2,7 +2,6 @@ import * as React from "react";
 import {Point} from "paper";
 import {RAIL_PART_WIDTH, RAIL_SPACE} from "constants/parts";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
-import PartGroup from "components/rails/parts/primitives/PartGroup";
 import RailPartBase, {RailPartBaseDefaultProps, RailPartBaseProps} from "components/rails/parts/RailPartBase";
 import getLogger from "logging";
 import {ArcDirection, default as ArcPart} from "components/rails/parts/primitives/ArcPart";
@@ -46,8 +45,7 @@ export default class DoubleCurveRailPart extends RailPartBase<DoubleCurveRailPar
 
 
   renderParts = () => {
-    const {innerRadius, outerRadius, centerAngle, direction, pivotJointIndex, data, fillColors, flowDirections} = this.props
-    const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
+    const {innerRadius, outerRadius, centerAngle, direction, fillColors, flowDirections} = this.props
 
     let radius1, radius2
     switch (this.props.direction) {
@@ -62,11 +60,7 @@ export default class DoubleCurveRailPart extends RailPartBase<DoubleCurveRailPar
     }
 
     return (
-      <PartGroup
-        pivotPartIndex={pivotPartIndex}
-        pivot={Pivot.LEFT}
-        data={data}
-      >
+      <>
         <ArcPart
           pivot={Pivot.LEFT}
           direction={direction}
@@ -92,7 +86,7 @@ export default class DoubleCurveRailPart extends RailPartBase<DoubleCurveRailPar
             type: 'Part'
           }}
         />
-      </PartGroup>
+      </>
     )
   }
 }

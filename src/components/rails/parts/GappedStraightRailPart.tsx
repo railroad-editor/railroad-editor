@@ -3,7 +3,6 @@ import {Point} from "paper";
 import RectPart from "./primitives/RectPart";
 import {RAIL_PART_WIDTH} from "constants/parts";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
-import PartGroup from "components/rails/parts/primitives/PartGroup";
 import RailPartBase, {RailPartBaseDefaultProps, RailPartBaseProps} from "components/rails/parts/RailPartBase";
 import getLogger from "logging";
 import 'lodash.combinations';
@@ -42,14 +41,10 @@ export default class GappedStraightRailPart extends RailPartBase<GappedStraightR
 
 
   renderParts = () => {
-    const {length, pivotJointIndex, data, fillColors, flowDirections, showGap} = this.props
-    const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
+    const {length, fillColors, flowDirections, showGap} = this.props
+
     return (
-      <PartGroup
-        pivotPartIndex={pivotPartIndex}
-        pivot={Pivot.LEFT}
-        data={data}
-      >
+      <>
         <RectPart
           width={RAIL_PART_WIDTH}
           height={length / 2}
@@ -78,7 +73,7 @@ export default class GappedStraightRailPart extends RailPartBase<GappedStraightR
             type: 'Gap',
           }}
         />
-      </PartGroup>
+      </>
     )
   }
 }

@@ -6,6 +6,8 @@ import getLogger from "logging";
 import {normAngle} from "components/rails/utils";
 import {FlowDirections} from "components/rails/RailBase";
 import PartGroup from "components/rails/parts/primitives/PartGroup";
+import {RAIL_PART_WIDTH} from "../../../constants/parts";
+import {isArray} from "util";
 
 const logger = getLogger(__filename)
 
@@ -217,26 +219,42 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
       name, data, onLeftClick, onRightClick, visible, opacity, onMouseEnter, onMouseLeave
     } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
-    const extendedPart = React.cloneElement(this.renderParts(), {
-      position,
-      angle,
-      pivot,
-      pivotPartIndex,
-      fillColor,
-      visible,
-      opacity,
-      selected,
-      name,
-      data,
-      onLeftClick,
-      onRightClick,
-      onMouseEnter,
-      onMouseLeave,
-      ref: this.getRef
-    })
+
+    let parts = this.renderParts().props.children
+    if (! isArray(parts)) {
+      parts = [parts]
+    }
+    // Create detection parts
+    let detectionParts = parts.map(c => React.cloneElement(c, {
+      width: RAIL_PART_WIDTH / 2,
+      data: {
+        type: 'Detect'
+      }
+    }))
 
 
-    return extendedPart
+    return (
+      <PartGroup
+        position={position}
+        angle={angle}
+        pivot={pivot}
+        pivotPartIndex={pivotPartIndex}
+        fillColor={fillColor}
+        visible={visible}
+        opacity={opacity}
+        selected={selected}
+        name={name}
+        data={data}
+        onLeftClick={onLeftClick}
+        onRightClick={onRightClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        ref={this.getRef}
+      >
+        {parts}
+        {detectionParts}
+      </PartGroup>
+    )
   }
 
 

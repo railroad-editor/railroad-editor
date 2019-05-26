@@ -2,7 +2,6 @@ import * as React from "react";
 import ArcPart, {ArcDirection} from "./primitives/ArcPart";
 import {RAIL_PART_WIDTH} from "constants/parts";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
-import PartGroup from "components/rails/parts/primitives/PartGroup";
 import RailPartBase, {RailPartBaseDefaultProps, RailPartBaseProps} from "components/rails/parts/RailPartBase";
 import getLogger from "logging";
 
@@ -41,15 +40,10 @@ export default class CurveRailPart extends RailPartBase<CurveRailPartProps, {}> 
 
 
   renderParts = () => {
-    const {radius, centerAngle, direction, pivotJointIndex, data, fillColors, flowDirections} = this.props
-    const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
+    const {radius, centerAngle, direction, fillColors, flowDirections} = this.props
 
     return (
-      <PartGroup
-        pivotPartIndex={pivotPartIndex}
-        pivot={Pivot.LEFT}
-        data={data}
-      >
+      <>
         <ArcPart
           pivot={Pivot.LEFT}
           direction={direction}
@@ -62,7 +56,7 @@ export default class CurveRailPart extends RailPartBase<CurveRailPartProps, {}> 
             type: 'Part'
           }}
         />
-      </PartGroup>
+      </>
     )
   }
 }

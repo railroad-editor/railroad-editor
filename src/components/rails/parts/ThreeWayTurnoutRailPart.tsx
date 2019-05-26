@@ -4,7 +4,6 @@ import RectPart from "./primitives/RectPart";
 import ArcPart, {ArcDirection} from "./primitives/ArcPart";
 import {RAIL_PART_WIDTH} from "constants/parts";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
-import PartGroup from "components/rails/parts/primitives/PartGroup";
 import RailPartBase, {RailPartBaseDefaultProps, RailPartBaseProps} from "components/rails/parts/RailPartBase";
 import getLogger from "logging";
 
@@ -62,15 +61,10 @@ export default class ThreeWayTurnoutRailPart extends RailPartBase<ThreeWayTurnou
 
 
   renderParts = () => {
-    const {length, rightStart, rightRadius, rightCenterAngle, leftStart, leftRadius, leftCenterAngle, pivotJointIndex, data, fillColors, flowDirections} = this.props
-    const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
+    const {length, rightStart, rightRadius, rightCenterAngle, leftStart, leftRadius, leftCenterAngle, fillColors, flowDirections} = this.props
 
     return (
-      <PartGroup
-        pivotPartIndex={pivotPartIndex}
-        pivot={pivot}
-        data={data}
-      >
+      <>
         <RectPart
           width={RAIL_PART_WIDTH}
           height={length}
@@ -107,7 +101,7 @@ export default class ThreeWayTurnoutRailPart extends RailPartBase<ThreeWayTurnou
             type: 'Part'
           }}
         />
-      </PartGroup>
+      </>
     )
   }
 }
