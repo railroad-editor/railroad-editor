@@ -16,7 +16,10 @@ const styles = theme => ({
   button: {
     marginTop: theme.spacing.unit * 6,
     minWidth: 200,
-    fontSize: '1.2em'
+    fontSize: '1.2em',
+    "&:hover": {
+      cursor: "pointer"
+    }
   },
   h2: {
     marginTop: theme.spacing.unit * 4,
@@ -30,13 +33,15 @@ const styles = theme => ({
     },
     fontWeight: 500
   },
-  more: {
+  link: {
     marginTop: theme.spacing.unit * 4,
+  },
+  subtitle1: {
     color: 'white',
     fontWeight: 500,
     textDecoration: 'underline',
     fontSize: '1.2em'
-  },
+  }
 });
 
 
@@ -68,11 +73,14 @@ function ProductHero(props) {
         component={linkProps => (
           <Link {...linkProps} href="/editor" variant="button" />
         )}
+        disableRipple={true}
       >
         Launch Railroad Editor
       </StyledButton>
-      <Link target="_blank" href="http://d2t6ssvra5p03o.cloudfront.net/index.html">
-        <Typography variant="subtitle1" className={classes.more}>
+      <Link target="_blank" href="http://d2t6ssvra5p03o.cloudfront.net/index.html"
+       className={classes.link}
+      >
+        <Typography variant="subtitle1" className={classes.subtitle1}>
           User Manual
         </Typography>
       </Link>
