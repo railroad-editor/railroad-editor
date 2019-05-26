@@ -208,7 +208,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
           /* マーカー */
           this.props.common.editorMode === EditorMode.BUILDER &&
           this.props.builder.placingMode === PlacingMode.FREE &&
-          this.state.phase == Phase.SET_ANGLE &&
+          this.state.phase != Phase.SET_POSITION &&
           <CirclePart
             radius={radius}
             position={position}
