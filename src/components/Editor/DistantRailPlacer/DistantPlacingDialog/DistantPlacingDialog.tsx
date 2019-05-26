@@ -37,8 +37,7 @@ export default class DistantPlacingDialog extends FormDialog<DistantPlacingDialo
 
   onOK = (e) => {
     let diff = new Point(Number(this.state.inputs.x), Number(this.state.inputs.y))
-    let newPosition = this.props.builder.freePlacingPosition.add(diff)
-    this.props.builder.setFreePlacingPosition(newPosition)
+    this.props.builder.setFreePlacingPosition(diff)
     this.onClose()
   }
 
