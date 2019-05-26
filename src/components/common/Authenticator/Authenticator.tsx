@@ -55,7 +55,9 @@ export default class Authenticator extends React.Component<AuthenticatorProps, A
 
   handleStateChange(state, data) {
     logger.debug('authenticator state change ' + state, data);
-    if (state === this.state.auth) { return; }
+    if (state === this.state.auth) {
+      return;
+    }
 
     if (state === AuthState.SIGNED_OUT) {
       state = AuthState.SIGN_IN
@@ -73,21 +75,21 @@ export default class Authenticator extends React.Component<AuthenticatorProps, A
   handleAuthEvent(state, event) {
     if (event.type === 'error') {
       const map = this.props.errorMessage || AmplifyMessageMap;
-      const message = (typeof map === 'string')? map : map(event.data);
-      this.setState({ error: message });
+      const message = (typeof map === 'string') ? map : map(event.data);
+      this.setState({error: message});
     }
   }
 
   render() {
-    const { auth, authData } = this.state;
+    const {auth, authData} = this.state;
     const messageMap = this.props.errorMessage
 
-    let { federated } = this.props;
+    let {federated} = this.props;
     const props_children = this.props.children || [];
     const default_children = [
       <SignIn federated={federated}/>,
-      <SignUp />,
-      <ForgotPassword />,
+      <SignUp/>,
+      <ForgotPassword/>,
       <ConfirmEmail
         title="Sign Up"
         validAuthStates={[AuthState.CONFIRM_SIGN_UP]}

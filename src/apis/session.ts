@@ -1,5 +1,4 @@
 import {API} from "aws-amplify";
-import * as moment from "moment";
 
 export interface Sessions {
   sessions: number[]
@@ -28,7 +27,7 @@ const createSession = async (userId: string, layoutId: string, peerId: string) =
   })
 }
 
-const deleteSession =  async (userId: string, layoutId: string) => {
+const deleteSession = async (userId: string, layoutId: string) => {
   return await API.del('Layout', `/users/${userId}/sessions/${layoutId}`, {headers: {}})
 }
 

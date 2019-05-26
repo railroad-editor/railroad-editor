@@ -1,7 +1,6 @@
 import * as React from "react";
 import {Point} from "paper";
-import {Rectangle} from "react-paper-bindings";
-import {RAIL_PART_FILL_COLORS, RAIL_PART_WIDTH, RAIL_SPACE} from "constants/parts";
+import {RAIL_PART_WIDTH, RAIL_SPACE} from "constants/parts";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
 import PartGroup from "components/rails/parts/primitives/PartGroup";
 import RailPartBase, {RailPartBaseDefaultProps, RailPartBaseProps} from "components/rails/parts/RailPartBase";
@@ -47,7 +46,7 @@ export default class DoubleCurveRailPart extends RailPartBase<DoubleCurveRailPar
 
 
   renderParts = () => {
-    const { innerRadius, outerRadius, centerAngle, direction, pivotJointIndex, data, fillColors, flowDirections } = this.props
+    const {innerRadius, outerRadius, centerAngle, direction, pivotJointIndex, data, fillColors, flowDirections} = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 
     let radius1, radius2

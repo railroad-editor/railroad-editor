@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Rectangle} from "react-paper-bindings";
 import {RailBase, RailBaseDefaultProps, RailBaseProps, RailBaseState} from "components/rails/RailBase";
 import WyeTurnoutRailPart from "components/rails/parts/WyeTurnoutRailPart";
 
@@ -41,7 +40,7 @@ export default class WyeTurnout extends RailBase<WyeTurnoutProps, RailBaseState>
         selected={selected}
         opacity={opacity}
         visible={visible}
-        fillColors={_.fill(Array(4),  fillColor)}
+        fillColors={_.fill(Array(4), fillColor)}
         data={{
           type: 'RailPart',
           railId: id,

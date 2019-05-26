@@ -23,7 +23,6 @@ export interface TurnoutSettingDialogState extends FormDialogState {
 }
 
 
-
 @inject(STORE_LAYOUT, STORE_LAYOUT_LOGIC)
 @observer
 export default class TurnoutSettingDialog extends FormDialog<TurnoutSettingDialogProps, TurnoutSettingDialogState> {
@@ -45,7 +44,7 @@ export default class TurnoutSettingDialog extends FormDialog<TurnoutSettingDialo
       _.keys(sw.conductionStates).forEach(idx => {
         const state = sw.conductionStates[idx].find(state => state.railId === rail.id)
         if (state) {
-          if (!conductionStates[idx]) {
+          if (! conductionStates[idx]) {
             conductionStates[idx] = []
           }
           conductionStates[idx].push(state)

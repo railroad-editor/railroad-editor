@@ -23,7 +23,6 @@ const DeleteIconButton = styled(IconButton)`
 `
 
 
-
 const Thumbnail = styled(Image)`
   && {
     width: 100px;
@@ -139,23 +138,23 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
               Upload File
               <input
                 onChange={this.readImageFile}
-                style={{ display: 'none' }}
+                style={{display: 'none'}}
                 type="file"
               />
             </Button>
           </Grid>
           <Grid item xs={4}>
             {this.state.inputs['backgroundImageUrl'] &&
-              <div style={{position: 'relative'}}>
-                <>
-                  <Thumbnail src={this.state.inputs['backgroundImageUrl']}/>
-                  <DeleteIconButton
-                    onClick={this.deleteImage}
-                  >
-                    <CancelIcon/>
-                  </DeleteIconButton>
-                </>
-              </div>
+            <div style={{position: 'relative'}}>
+              <>
+                <Thumbnail src={this.state.inputs['backgroundImageUrl']}/>
+                <DeleteIconButton
+                  onClick={this.deleteImage}
+                >
+                  <CancelIcon/>
+                </DeleteIconButton>
+              </>
+            </div>
             }
           </Grid>
         </Grid>

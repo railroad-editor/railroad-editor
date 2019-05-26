@@ -1,9 +1,6 @@
 import * as React from "react";
 import {ReactEventHandler} from "react";
-import {
-  ActiveListItemProps,
-  SecondaryColorActiveListItem
-} from "components/common/ActiveListItem/index";
+import {ActiveListItemProps, SecondaryColorActiveListItem} from "components/common/ActiveListItem/index";
 import {ListItemText, MenuItem} from '@material-ui/core';
 import Menu from "@material-ui/core/Menu";
 import IconButton from "@material-ui/core/IconButton";
@@ -33,7 +30,7 @@ export class LayerListItem extends React.Component<LayerListItemProps, LayerList
   }
 
   openMenu = (e: React.MouseEvent<HTMLElement>) => {
-    this.setState({ anchorEl: e.currentTarget });
+    this.setState({anchorEl: e.currentTarget});
   }
 
   onMenuClose = (e: React.MouseEvent<HTMLElement>) => {
@@ -50,7 +47,7 @@ export class LayerListItem extends React.Component<LayerListItemProps, LayerList
     this.onMenuClose(e)
   }
 
-  render () {
+  render() {
     const {text, onRename, onDelete, isDeletable, ...otherProps} = this.props
 
     return (

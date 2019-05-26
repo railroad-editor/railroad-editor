@@ -14,7 +14,8 @@ import CustomCurveRailDialog
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
-import NewRailGroupDialog from "components/Editor/Palettes/BuilderPalettes/RailPalettes/RailPalette/NewRailGroupDialog/NewRailGroupDialog";
+import NewRailGroupDialog
+  from "components/Editor/Palettes/BuilderPalettes/RailPalettes/RailPalette/NewRailGroupDialog/NewRailGroupDialog";
 import {compose} from "recompose";
 import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {LayoutStore} from "store/layoutStore";
@@ -33,7 +34,6 @@ export interface PaletteState {
 }
 
 type EnhancedPaletteProps = PaletteProps & WithBuilderPublicProps & WithSnackbarProps
-
 
 
 @inject(STORE_BUILDER, STORE_LAYOUT)
@@ -73,10 +73,14 @@ export class RailPalettes extends React.Component<EnhancedPaletteProps, PaletteS
     const customCurveRails = this.props.builder.userRails.filter(c => c.paletteName === Tools.CURVE_RAILS)
     const customRailGroups = this.props.builder.userRailGroups
       .filter(rg => rg.name !== 'Clipboard')
-      .map(rg => { return {name: rg.name, type: 'RailGroup'} })
+      .map(rg => {
+        return {name: rg.name, type: 'RailGroup'}
+      })
     const clipboard = this.props.builder.userRailGroups
       .filter(rg => rg.name === 'Clipboard')
-      .map(rg => { return {name: rg.name, type: 'RailGroup'} })
+      .map(rg => {
+        return {name: rg.name, type: 'RailGroup'}
+      })
 
     return (
       <Rnd
@@ -158,7 +162,7 @@ export class RailPalettes extends React.Component<EnhancedPaletteProps, PaletteS
 }
 
 
-export default compose<PaletteProps, EnhancedPaletteProps|any>(
+export default compose<PaletteProps, EnhancedPaletteProps | any>(
   withBuilder,
   withSnackbar()
 )(RailPalettes)

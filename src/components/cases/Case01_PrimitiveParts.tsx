@@ -1,7 +1,7 @@
 import * as React from "react";
 import RectPart from "components/rails/parts/primitives/RectPart";
 import {Point} from "paper";
-import {Circle, Tool, View} from "react-paper-bindings";
+import {Tool, View} from "react-paper-bindings";
 import {createGridLines} from "./common";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
 import CirclePart from "components/rails/parts/primitives/CirclePart";
@@ -123,8 +123,8 @@ export default class Case01 extends React.Component<any, any> {
         />
         {/*{this.r &&*/}
         {/*<CirclePart*/}
-          {/*radius={5}*/}
-          {/*position={this.r.getPivotPositionForGlobal(Pivot.RIGHT)}*/}
+        {/*radius={5}*/}
+        {/*position={this.r.getPivotPositionForGlobal(Pivot.RIGHT)}*/}
         {/*/>}*/}
 
         <ArcPart

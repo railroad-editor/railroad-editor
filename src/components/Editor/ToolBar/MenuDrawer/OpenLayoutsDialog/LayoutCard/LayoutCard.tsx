@@ -8,7 +8,6 @@ import * as moment from "moment";
 import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import styled from "styled-components";
 import IconButton from "@material-ui/core/IconButton";
 import Card from "@material-ui/core/Card";
 
@@ -40,7 +39,7 @@ export class LayoutCard extends React.Component<LayoutCardProps, LayoutCardState
   }
 
   openMenu = (e: React.MouseEvent<HTMLElement>) => {
-    this.setState({ anchorEl: e.currentTarget });
+    this.setState({anchorEl: e.currentTarget});
   }
 
   onMenuClose = (e: React.MouseEvent<HTMLElement>) => {
@@ -76,12 +75,12 @@ export class LayoutCard extends React.Component<LayoutCardProps, LayoutCardState
           <Button
             onClick={this.props.onClick}
           >
-          <CardContent>
-            <S3Image level={'private'} imgKey={imgKey}/>
-            <Typography align="left" variant="body2">
-              Last modified: {moment(lastModified).format('YYYY/MM/DD, hh:mm')}
-            </Typography>
-          </CardContent>
+            <CardContent>
+              <S3Image level={'private'} imgKey={imgKey}/>
+              <Typography align="left" variant="body2">
+                Last modified: {moment(lastModified).format('YYYY/MM/DD, hh:mm')}
+              </Typography>
+            </CardContent>
           </Button>
         </Card>
         <Menu

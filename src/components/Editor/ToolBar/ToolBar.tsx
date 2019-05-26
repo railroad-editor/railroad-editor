@@ -163,7 +163,7 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
             <Grid container justify="space-between" spacing={0}>
               <Grid xs justify="flex-start" alignItems="center" style={{display: 'flex'}}>
                 <Tooltip title={"Menu"}>
-                  <StyledIconButton onClick={this.openMenu} >
+                  <StyledIconButton onClick={this.openMenu}>
                     <MenuIcon/>
                   </StyledIconButton>
                 </Tooltip>
@@ -181,11 +181,11 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
 
               {
                 this.props.common.editorMode === EditorMode.BUILDER &&
-                <BuilderToolBar />
+                <BuilderToolBar/>
               }
               {
                 this.props.common.editorMode === EditorMode.SIMULATOR &&
-                <SimulatorToolBar />
+                <SimulatorToolBar/>
               }
 
 

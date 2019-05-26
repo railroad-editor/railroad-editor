@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Point} from "paper";
-import {Rectangle} from "react-paper-bindings";
 import Joint from "./parts/Joint";
 import {anglesEqual, pointsEqual} from "components/rails/utils";
 import * as _ from "lodash";
@@ -129,7 +128,7 @@ export interface RailBaseDefaultProps {
   onFeederMouseLeave: (id: number, e: MouseEvent) => void
 
   onGapJoinerSocketMouseEnter: (jointId: number, e: MouseEvent) => void
-  onGapJoinerSocketMouseLeave:(jointId: number, e: MouseEvent) => void
+  onGapJoinerSocketMouseLeave: (jointId: number, e: MouseEvent) => void
   onGapJoinerSocketLeftClick: (jointId: number, e: MouseEvent) => void
   onGapJoinerLeftClick: (id: number, e: MouseEvent) => void
   onGapJoinerMouseEnter: (id: number, e: MouseEvent) => void
@@ -179,26 +178,44 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     onRailPartMouseEnter: (e: MouseEvent) => false,
     onRailPartMouseLeave: (e: MouseEvent) => false,
 
-    onJointLeftClick: (jointId: number, e: MouseEvent) => {},
-    onJointRightClick: (jointId: number, e: MouseEvent) => {},
-    onJointMouseMove: (jointId: number, e: MouseEvent) => {},
-    onJointMouseEnter: (jointId: number, e: MouseEvent) => {},
-    onJointMouseLeave: (jointId: number, e: MouseEvent) => {},
+    onJointLeftClick: (jointId: number, e: MouseEvent) => {
+    },
+    onJointRightClick: (jointId: number, e: MouseEvent) => {
+    },
+    onJointMouseMove: (jointId: number, e: MouseEvent) => {
+    },
+    onJointMouseEnter: (jointId: number, e: MouseEvent) => {
+    },
+    onJointMouseLeave: (jointId: number, e: MouseEvent) => {
+    },
 
-    onFeederSocketMouseEnter: (feederId: number, e: MouseEvent) => {},
-    onFeederSocketMouseLeave: (feederId: number, e: MouseEvent) => {},
-    onFeederSocketLeftClick: (feederId: number, e: MouseEvent) => {},
-    onFeederSocketRightClick: (feederId: number, e: MouseEvent) => {},
-    onFeederMouseEnter: (id: number, e: MouseEvent) => {},
-    onFeederMouseLeave: (id: number, e: MouseEvent) => {},
-    onFeederLeftClick: (id: number, e: MouseEvent) => {},
+    onFeederSocketMouseEnter: (feederId: number, e: MouseEvent) => {
+    },
+    onFeederSocketMouseLeave: (feederId: number, e: MouseEvent) => {
+    },
+    onFeederSocketLeftClick: (feederId: number, e: MouseEvent) => {
+    },
+    onFeederSocketRightClick: (feederId: number, e: MouseEvent) => {
+    },
+    onFeederMouseEnter: (id: number, e: MouseEvent) => {
+    },
+    onFeederMouseLeave: (id: number, e: MouseEvent) => {
+    },
+    onFeederLeftClick: (id: number, e: MouseEvent) => {
+    },
 
-    onGapJoinerSocketMouseEnter: (feederId: number, e: MouseEvent) => {},
-    onGapJoinerSocketMouseLeave: (feederId: number, e: MouseEvent) => {},
-    onGapJoinerSocketLeftClick: (feederId: number, e: MouseEvent) => {},
-    onGapJoinerMouseEnter: (id: number, e: MouseEvent) => {},
-    onGapJoinerMouseLeave: (id: number, e: MouseEvent) => {},
-    onGapJoinerLeftClick: (id: number, e: MouseEvent) => {},
+    onGapJoinerSocketMouseEnter: (feederId: number, e: MouseEvent) => {
+    },
+    onGapJoinerSocketMouseLeave: (feederId: number, e: MouseEvent) => {
+    },
+    onGapJoinerSocketLeftClick: (feederId: number, e: MouseEvent) => {
+    },
+    onGapJoinerMouseEnter: (id: number, e: MouseEvent) => {
+    },
+    onGapJoinerMouseLeave: (id: number, e: MouseEvent) => {
+    },
+    onGapJoinerLeftClick: (id: number, e: MouseEvent) => {
+    },
   }
 
   railPart: RailPartBase<any, any>
@@ -268,7 +285,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
   protected renderJoints = (props: P) => {
     const {id, opacity, opposingJoints, enableJoints, visible, showJoints} = props
     const {jointPositions, jointAngles} = this.state
-    if (!showJoints) {
+    if (! showJoints) {
       return <></>
     }
 
@@ -292,7 +309,9 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
           onMouseMove={this.props.onJointMouseMove.bind(this, i)}
           onMouseEnter={this.props.onJointMouseEnter.bind(this, i)}
           onMouseLeave={this.props.onJointMouseLeave.bind(this, i)}
-          ref={(joint) => {if (joint) this.joints[i] = joint}}
+          ref={(joint) => {
+            if (joint) this.joints[i] = joint
+          }}
         />
       )
     })
@@ -308,25 +327,27 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     const feederSocketComponents = _.range(this.feederSockets.length).map(i => {
       const hasFeeder = feeders.map(feeder => feeder.socketId).includes(i)
       return (
-          <FeederSocket
-            key={`fs-${i}`} //`
-            position={feederSocketPositions[i]}
-            angle={feederSocketAngles[i]}
-            opacity={opacity}
-            visible={visible && enableFeederSockets}
-            detectionEnabled={enableFeederSockets && !hasFeeder}
-            hasFeeder={hasFeeder}
-            data={{
-              type: 'FeederSocket',
-              partId: i,
-              railId: id,
-            }}
-            onLeftClick={this.props.onFeederSocketLeftClick.bind(this, i)}
-            onRightClick={this.props.onFeederSocketRightClick.bind(this, i)}
-            onMouseEnter={this.props.onFeederSocketMouseEnter.bind(this, i)}
-            onMouseLeave={this.props.onFeederSocketMouseLeave.bind(this, i)}
-            ref={(fs) => {if (fs) this.feederSockets[i] = fs}}
-          />
+        <FeederSocket
+          key={`fs-${i}`} //`
+          position={feederSocketPositions[i]}
+          angle={feederSocketAngles[i]}
+          opacity={opacity}
+          visible={visible && enableFeederSockets}
+          detectionEnabled={enableFeederSockets && ! hasFeeder}
+          hasFeeder={hasFeeder}
+          data={{
+            type: 'FeederSocket',
+            partId: i,
+            railId: id,
+          }}
+          onLeftClick={this.props.onFeederSocketLeftClick.bind(this, i)}
+          onRightClick={this.props.onFeederSocketRightClick.bind(this, i)}
+          onMouseEnter={this.props.onFeederSocketMouseEnter.bind(this, i)}
+          onMouseLeave={this.props.onFeederSocketMouseLeave.bind(this, i)}
+          ref={(fs) => {
+            if (fs) this.feederSockets[i] = fs
+          }}
+        />
       )
     })
 
@@ -345,7 +366,9 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
           onLeftClick={this.props.onFeederLeftClick.bind(this, feeder.id)}
           onMouseEnter={this.props.onFeederMouseEnter.bind(this, feeder.id)}
           onMouseLeave={this.props.onFeederMouseLeave.bind(this, feeder.id)}
-          ref={(r) => {if (r) this.feeders[feeder.socketId] = r}}
+          ref={(r) => {
+            if (r) this.feeders[feeder.socketId] = r
+          }}
         />
       )
     })
@@ -369,24 +392,26 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
       if (opposingJoints[i] && id < opposingJoints[i].railId) {
         const hasGapJoiner = gapJoiners.map(gapJoiner => gapJoiner.jointId).includes(i)
         return (
-            <GapJoinerSocket
-              key={`gj-${i}`}  //`
-              position={jointPositions[i]}
-              angle={jointAngles[i]}
-              opacity={opacity}
-              visible={visible && enableGapJoinerSockets}
-              detectionEnabled={enableGapJoinerSockets && !hasGapJoiner}
-              hasGapJoiner={hasGapJoiner}
-              data={{
-                type: 'GapJoinerSocket',
-                partId: i,
-                railId: id,
-              }}
-              onLeftClick={this.props.onGapJoinerSocketLeftClick.bind(this, i)}
-              onMouseEnter={this.props.onGapJoinerSocketMouseEnter.bind(this, i)}
-              onMouseLeave={this.props.onGapJoinerSocketMouseLeave.bind(this, i)}
-              ref={(r) => {if (r) this.gapJoinerSockets[i] = r}}
-            />
+          <GapJoinerSocket
+            key={`gj-${i}`}  //`
+            position={jointPositions[i]}
+            angle={jointAngles[i]}
+            opacity={opacity}
+            visible={visible && enableGapJoinerSockets}
+            detectionEnabled={enableGapJoinerSockets && ! hasGapJoiner}
+            hasGapJoiner={hasGapJoiner}
+            data={{
+              type: 'GapJoinerSocket',
+              partId: i,
+              railId: id,
+            }}
+            onLeftClick={this.props.onGapJoinerSocketLeftClick.bind(this, i)}
+            onMouseEnter={this.props.onGapJoinerSocketMouseEnter.bind(this, i)}
+            onMouseLeave={this.props.onGapJoinerSocketMouseLeave.bind(this, i)}
+            ref={(r) => {
+              if (r) this.gapJoinerSockets[i] = r
+            }}
+          />
         )
       } else {
         return <></>
@@ -407,7 +432,9 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
           onLeftClick={this.props.onGapJoinerLeftClick.bind(this, gapJoiner.id)}
           onMouseEnter={this.props.onGapJoinerMouseEnter.bind(this, gapJoiner.id)}
           onMouseLeave={this.props.onGapJoinerMouseLeave.bind(this, gapJoiner.id)}
-          ref={(r) => {if (r) this.gapJoiners[gapJoiner.jointId] = r}}
+          ref={(r) => {
+            if (r) this.gapJoiners[gapJoiner.jointId] = r
+          }}
         />
       )
     })
@@ -419,7 +446,6 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
       </>
     )
   }
-
 
 
   /**
@@ -474,8 +500,10 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
   }
 
   render() {
-    const { fillColor, fillColors, onRailPartLeftClick, onRailPartMouseEnter, onRailPartMouseLeave, flowDirections,
-      conductionState, showGap, showJoints } = this.props
+    const {
+      fillColor, fillColors, onRailPartLeftClick, onRailPartMouseEnter, onRailPartMouseLeave, flowDirections,
+      conductionState, showGap, showJoints
+    } = this.props
 
     const railPart = this.renderRailPart(this.props)
     const extendedRailPart = React.cloneElement(railPart as any, {

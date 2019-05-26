@@ -1,8 +1,6 @@
 import * as React from "react";
 import {Layer} from "react-paper-bindings";
-import {
-  createFeederComponent,
-  createRailOrRailGroupComponent} from "components/rails/utils";
+import {createFeederComponent, createRailOrRailGroupComponent} from "components/rails/utils";
 import getLogger from "logging";
 import {default as withBuilder, WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {compose} from "recompose";
@@ -45,24 +43,24 @@ export class TemporaryLayer extends React.Component<TemporaryLayerProps & WithBu
     }
 
     return (
-        <Layer
-          key={-1}
-          data={{id: -1, name: 'TemporaryLayer'}}
-        >
-          {
-            temporaryRails.length > 0 &&
-            createRailOrRailGroupComponent(temporaryRailGroup, temporaryRails, temporaryLayer)
-          }
-          {
-            temporaryFeeder &&
-            createFeederComponent(temporaryFeeder)
-          }
-        </Layer>
+      <Layer
+        key={-1}
+        data={{id: -1, name: 'TemporaryLayer'}}
+      >
+        {
+          temporaryRails.length > 0 &&
+          createRailOrRailGroupComponent(temporaryRailGroup, temporaryRails, temporaryLayer)
+        }
+        {
+          temporaryFeeder &&
+          createFeederComponent(temporaryFeeder)
+        }
+      </Layer>
     )
   }
 }
 
 
-export default compose<TemporaryLayerProps, TemporaryLayerProps|any>(
+export default compose<TemporaryLayerProps, TemporaryLayerProps | any>(
   withBuilder,
 )(TemporaryLayer)

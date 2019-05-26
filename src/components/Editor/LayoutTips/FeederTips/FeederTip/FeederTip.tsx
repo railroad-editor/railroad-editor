@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Layer} from "react-paper-bindings";
 import {normAngle} from "components/rails/utils";
 import getLogger from "logging";
 import {WithBuilderPublicProps} from "components/hoc/withBuilder";
@@ -22,7 +21,6 @@ const createColoredTooltip = (color: string) => withStyles({
     backgroundColor: color
   }
 })(Tooltip);
-
 
 
 export interface FeederTipProps {
@@ -103,11 +101,17 @@ export class FeederTip extends React.Component<FeederTipProps & WithBuilderPubli
     return (
       <>
         <StyledTooltip open={open} title={feeder.name}
-          PopperProps={{onClick: this.onClick, style: {cursor: 'pointer', zIndex: '900'}}}
+                       PopperProps={{onClick: this.onClick, style: {cursor: 'pointer', zIndex: '900'}}}
                        placement={placement}
                        classes={{tooltip: 'tooltip'}}
         >
-          <div style={{top: `${position.y}px`, left: `${position.x}px`, width: '1px', height: '1px', position: 'absolute'}}/>
+          <div style={{
+            top: `${position.y}px`,
+            left: `${position.x}px`,
+            width: '1px',
+            height: '1px',
+            position: 'absolute'
+          }}/>
         </StyledTooltip>
         <FeederSettingDialog
           title={'Feeder Setting'}

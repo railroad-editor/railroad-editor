@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Group as GroupComponent, Rectangle} from "react-paper-bindings";
+import {Group as GroupComponent} from "react-paper-bindings";
 import getLogger from "logging";
 import {JointInfo, RailBase} from "components/rails/RailBase";
 import {Group, Point} from "paper";
@@ -37,8 +37,13 @@ export default class RailGroup extends React.Component<RailGroupProps, {}> {
   pivotPosition: Point
   pivotAngle: number
 
-  get children() { return this._children }
-  get group() { return this._group }
+  get children() {
+    return this._children
+  }
+
+  get group() {
+    return this._group
+  }
 
   constructor(props: RailGroupProps) {
     super(props)

@@ -3,7 +3,7 @@ import {DialogActions, DialogContent, DialogTitle} from '@material-ui/core'
 import Dialog from "@material-ui/core/Dialog";
 import Button from "@material-ui/core/Button";
 import getLogger from "logging";
-import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
+import {ValidatorForm} from 'react-material-ui-form-validator';
 
 const LOGGER = getLogger(__filename)
 
@@ -73,7 +73,7 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
   }
 
   onKeyPress = (e) => {
-    if ( (! this.state.disabled) && e.key === 'Enter') {
+    if ((! this.state.disabled) && e.key === 'Enter') {
       this.onOK(e)
       e.preventDefault()
     }
@@ -89,7 +89,7 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
       >
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-            {this.renderContent()}
+          {this.renderContent()}
         </DialogContent>
         <DialogActions>
           <Button variant="raised" color="primary"

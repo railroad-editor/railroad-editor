@@ -17,17 +17,17 @@ export default class Case05 extends React.Component<any, any> {
     this.state = {
       count: 0,
       pivot: 0,
-      position: new Point(200,200),
+      position: new Point(200, 200),
     }
   }
 
   componentDidMount() {
-    assert(pointsEqual(this.s.getGlobalJointPosition(0), new Point(200,200)))
-    assert(pointsEqual(this.s.getGlobalJointPosition(1), new Point(400,200)))
+    assert(pointsEqual(this.s.getGlobalJointPosition(0), new Point(200, 200)))
+    assert(pointsEqual(this.s.getGlobalJointPosition(1), new Point(400, 200)))
     assert(this.s.getGlobalJointAngle(0) === 180)
     assert(this.s.getGlobalJointAngle(1) === 0)
 
-    assert(pointsEqual(this.c.getGlobalJointPosition(0), new Point(200,200)))
+    assert(pointsEqual(this.c.getGlobalJointPosition(0), new Point(200, 200)))
     // assert(pointsEqual(this.c.getGlobalJointPosition(1), new Point(400,200)))
     assert(this.c.getGlobalJointAngle(0) === 180)
     assert(this.c.getGlobalJointAngle(1) === 45)
@@ -59,7 +59,6 @@ export default class Case05 extends React.Component<any, any> {
         break
     }
   }
-
 
 
   render() {

@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Rectangle} from "react-paper-bindings";
 import {RailBase, RailBaseDefaultProps, RailBaseProps, RailBaseState} from "components/rails/RailBase";
 import CrossingRailPart from "components/rails/parts/CrossingRailPart";
 
@@ -41,7 +40,7 @@ export default class CrossingRail extends RailBase<CrossingRailProps, RailBaseSt
         selected={selected}
         opacity={opacity}
         visible={visible}
-        fillColors={_.fill(Array(4),  fillColor)}
+        fillColors={_.fill(Array(4), fillColor)}
         data={{
           type: 'RailPart',
           railId: id,

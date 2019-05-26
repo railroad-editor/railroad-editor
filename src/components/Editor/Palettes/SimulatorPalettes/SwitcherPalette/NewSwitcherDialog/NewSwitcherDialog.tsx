@@ -2,16 +2,16 @@ import * as React from 'react'
 import getLogger from "logging";
 import AutoFocusTextValidator from "components/common/AutoFocusTextValidator";
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
-import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
+import {ValidatorForm} from 'react-material-ui-form-validator';
 import {compose} from "recompose";
 import {withSnackbar} from 'material-ui-snackbar-provider'
-import {InputLabel, MenuItem, Select, FormControl} from "@material-ui/core";
+import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
 import {SwitcherType} from "store/layoutStore";
 
 const LOGGER = getLogger(__filename)
 
 export interface NewSwitcherDialogProps extends FormDialogProps {
-  addSwitcher:(name: string, type: SwitcherType) => void
+  addSwitcher: (name: string, type: SwitcherType) => void
   snackbar: any
 }
 
@@ -74,6 +74,6 @@ export class NewSwitcherDialog extends FormDialog<NewSwitcherDialogProps, FormDi
 }
 
 
-export default compose<NewSwitcherDialogProps, NewSwitcherDialogProps|any>(
+export default compose<NewSwitcherDialogProps, NewSwitcherDialogProps | any>(
   withSnackbar()
 )(NewSwitcherDialog)

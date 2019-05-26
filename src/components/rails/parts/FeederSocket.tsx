@@ -1,9 +1,8 @@
 import * as React from "react";
 import {Point} from "paper";
-import {Rectangle} from "react-paper-bindings";
 import DetectablePart from "./primitives/DetectablePart";
 import CirclePart from "./primitives/CirclePart";
-import {FlowDirection, Pivot} from "components/rails/parts/primitives/PartBase";
+import {Pivot} from "components/rails/parts/primitives/PartBase";
 import {
   FEEDER_SOCKET_DETECTION_OPACITY_RATE,
   FEEDER_SOCKET_FILL_COLORS,
@@ -116,7 +115,7 @@ export default class FeederSocket extends React.Component<FeederSocketProps, {}>
         fillColors={fillColors}
         visible={visible}
         selected={selected}
-        detectionEnabled={detectionEnabled && !hasFeeder}
+        detectionEnabled={detectionEnabled && ! hasFeeder}
         pivotPartIndex={0}
         name={name}
         data={data}
@@ -125,7 +124,9 @@ export default class FeederSocket extends React.Component<FeederSocketProps, {}>
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onMouseMove={onMouseMove}
-        ref={(part) => {if (part) this.part = part}}
+        ref={(part) => {
+          if (part) this.part = part
+        }}
       />
     )
   }

@@ -4,7 +4,7 @@ import CurveRail, {CurveRailProps} from "components/rails/CurveRail/CurveRail";
 import CurveRailContainer from "components/rails/CurveRail";
 import DoubleStraightRail, {DoubleStraightRailProps} from "components/rails/DoubleStraightRail/DoubleStraightRail";
 import DoubleStraightRailContainer from "components/rails/DoubleStraightRail";
-import GappedStraightRail, {GappedStraightRailProps} from "./GappedStraightRail/GappedStraightRail";
+import GappedStraightRail from "./GappedStraightRail/GappedStraightRail";
 import GappedStraightRailContainer from "components/rails/GappedStraightRail";
 import DoubleCurveRail from "components/rails/DoubleCurveRail/DoubleCurveRail";
 import DoubleCurveRailContainer from "components/rails/DoubleCurveRail";
@@ -12,11 +12,11 @@ import DoubleCrossTurnout, {DoubleCrossTurnoutProps} from "components/rails/Doub
 import DoubleCrossTurnoutContainer from "components/rails/DoubleCrossTurnout";
 import SimpleTurnout, {SimpleTurnoutProps} from "components/rails/SimpleTurnout/SimpleTurnout";
 import SimpleTurnoutContainer from "components/rails/SimpleTurnout";
-import WyeTurnout, {WyeTurnoutProps} from "components/rails/WyeTurnout/WyeTurnout";
+import WyeTurnout from "components/rails/WyeTurnout/WyeTurnout";
 import WyeTurnoutContainer from "components/rails/WyeTurnout";
 import CurvedTurnout from "components/rails/CurvedTurnout/CurvedTurnout";
 import CurvedTurnoutContainer from "components/rails/CurvedTurnout";
-import ThreeWayTurnout, {ThreeWayTurnoutProps} from "components/rails/ThreeWayTurnout/ThreeWayTurnout";
+import ThreeWayTurnout from "components/rails/ThreeWayTurnout/ThreeWayTurnout";
 import ThreeWayTurnoutContainer from "components/rails/ThreeWayTurnout";
 import {RailBaseProps} from "components/rails/RailBase";
 import EndRailContainer from "components/rails/EndRail";
@@ -89,7 +89,13 @@ export default RailContainerClasses
 
 
 // TODO: RailProps の方がわかりやすい名前では？
-export type RailData = RailBaseProps | StraightRailProps | CurveRailProps | SimpleTurnoutProps | DoubleStraightRailProps | DoubleCrossTurnoutProps
+export type RailData =
+  RailBaseProps
+  | StraightRailProps
+  | CurveRailProps
+  | SimpleTurnoutProps
+  | DoubleStraightRailProps
+  | DoubleCrossTurnoutProps
 
 
 export interface RailGroupData extends RailGroupProps {
@@ -99,5 +105,6 @@ export interface RailGroupData extends RailGroupProps {
 export interface RailItemData {
   type: string
   name: string
+
   [x: string]: any
 }

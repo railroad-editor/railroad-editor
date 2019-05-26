@@ -16,7 +16,6 @@ import CopyIcon from "@material-ui/icons/ContentCopy";
 import CutIcon from "@material-ui/icons/ContentCut";
 import FreePlacingModeIcon from "@material-ui/icons/LocationOn";
 import ConnectModeIcon from "@material-ui/icons/CompareArrows";
-import FeederIcon from "../Icon/Feeder";
 import GapIcon from "../Icon/Gap";
 import getLogger from "logging";
 import * as classNames from "classnames"
@@ -53,7 +52,6 @@ export interface BuilderToolBarState {
 }
 
 type EnhancedBuilderToolBarProps = BuilderToolBarProps & WithBuilderPublicProps
-
 
 
 @inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
@@ -281,7 +279,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
 }
 
 
-export default compose<BuilderToolBarProps, BuilderToolBarProps|any>(
+export default compose<BuilderToolBarProps, BuilderToolBarProps | any>(
   withBuilder,
   withMoveTool
 )(BuilderToolBar)

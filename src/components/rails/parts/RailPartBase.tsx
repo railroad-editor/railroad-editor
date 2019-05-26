@@ -1,12 +1,8 @@
 import * as React from "react";
 import {Point} from "paper";
-import {Rectangle} from "react-paper-bindings";
-import DetectablePart from "./primitives/DetectablePart";
-import {RAIL_PART_FILL_COLORS} from "constants/parts";
 import {RailPartMeta} from "components/rails/parts/types";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
 import getLogger from "logging";
-import {ReactElement} from "react";
 import {normAngle} from "components/rails/utils";
 import {FlowDirections} from "components/rails/RailBase";
 import PartGroup from "components/rails/parts/primitives/PartGroup";
@@ -65,7 +61,9 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     super(props)
   }
 
-  get path() { return this.partGroup.path }
+  get path() {
+    return this.partGroup.path
+  }
 
   componentDidUpdate() {
     logger.trace('updated')
@@ -214,7 +212,8 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
 
 
   render() {
-    const { position, angle, pivotJointIndex, selected, fillColor,
+    const {
+      position, angle, pivotJointIndex, selected, fillColor,
       name, data, onLeftClick, onRightClick, visible, opacity, onMouseEnter, onMouseLeave
     } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)

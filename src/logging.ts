@@ -6,7 +6,7 @@ import * as loglevel from 'loglevel'
 import * as logdown from 'logdown'
 
 // Loglevelを使う場合
-function initLoglevel (name) {
+function initLoglevel(name) {
   let logger = loglevel.getLogger(name)
   if (process.env.REACT_APP_ENV === 'beta') {
     logger.setLevel('DEBUG')
@@ -19,12 +19,13 @@ function initLoglevel (name) {
 // Logdownを使う場合
 // 全てのログインスタンスを有効にする
 localStorage.debug = '*'
-function initLogdown (name) {
+
+function initLogdown(name) {
   let logger = logdown(name)
   return logger
 }
 
-export default function getLogger (name) {
+export default function getLogger(name) {
   // let logger = initLogdown(name);
   let logger = initLoglevel(name)
 

@@ -33,11 +33,11 @@ export default class SignUp extends AuthPiece<AuthPieceProps, SignUpState> {
 
   componentWillMount() {
     // custom rule will have name 'isPasswordMatch'
-    ValidatorForm.addValidationRule('isPasswordMatch', (value) => value === this.state.inputs.password );
+    ValidatorForm.addValidationRule('isPasswordMatch', (value) => value === this.state.inputs.password);
   }
 
   signUp() {
-    const { email, password } = this.state.inputs;
+    const {email, password} = this.state.inputs;
     Auth.signUp({
       username: email,
       password: password,
@@ -54,7 +54,7 @@ export default class SignUp extends AuthPiece<AuthPieceProps, SignUpState> {
   }
 
   onKeyPress = (e) => {
-    if ( (! this.state.disabled) && e.key === 'Enter') {
+    if ((! this.state.disabled) && e.key === 'Enter') {
       this.signUp()
       e.preventDefault()
     }
@@ -84,7 +84,7 @@ export default class SignUp extends AuthPiece<AuthPieceProps, SignUpState> {
                   errorMessages={['this field is required', 'email is not valid']}
                   fullWidth
                 />
-                <br />
+                <br/>
                 <TextValidator
                   label="Password"
                   name="password"
@@ -98,7 +98,7 @@ export default class SignUp extends AuthPiece<AuthPieceProps, SignUpState> {
                   errorMessages={['this field is required']}
                   fullWidth
                 />
-                <br />
+                <br/>
                 <TextValidator
                   label="Confirm Password"
                   name="confirmPassword"

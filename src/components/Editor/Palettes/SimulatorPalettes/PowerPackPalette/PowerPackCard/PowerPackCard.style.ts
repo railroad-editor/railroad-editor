@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {Button, CardContent, CardHeader, List, ListItem} from '@material-ui/core';
+import {Button, CardContent, CardHeader, List} from '@material-ui/core';
 import Slider from '@material-ui/lab/Slider';
 
 

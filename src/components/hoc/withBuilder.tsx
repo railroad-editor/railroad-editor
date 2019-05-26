@@ -33,8 +33,8 @@ const LOGGER = getLogger(__filename)
 export interface WithBuilderPublicProps {
   // builderMouseDown: (e: ToolEvent|any) => void
   // builderMouseMove: (e: ToolEvent|any) => void
-  builderKeyDown: (e: ToolEvent|any) => void
-  builderKeyUp: (e: ToolEvent|any) => void
+  builderKeyDown: (e: ToolEvent | any) => void
+  builderKeyUp: (e: ToolEvent | any) => void
   builderChangeJointState: (pairs: JointPair[], state: DetectionState, isError?: boolean) => void
   builderSetTemporaryRail: (railData: Partial<RailData>) => void
   builderAddRail: () => void
@@ -42,7 +42,6 @@ export interface WithBuilderPublicProps {
   builderRegisterRailGroup: (name: string, shouldDelete: boolean) => void
   snackbar: any
 }
-
 
 
 interface WithBuilderPrivateProps {
@@ -435,7 +434,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
         // このレールのジョイント数を取得し、未接続ジョイントのIDをリストアップする
         const numJoints = getRailComponent(rail.id).props.numJoints
         const openJointIds = _.without(_.range(numJoints), ...opposingJointIds)
-        openJointIds.forEach(id => openJoints.push({ railId: idx, jointId: id }))
+        openJointIds.forEach(id => openJoints.push({railId: idx, jointId: id}))
       })
       // レールグループメンバー
       let newRails = rails.map((rail, idx) => {

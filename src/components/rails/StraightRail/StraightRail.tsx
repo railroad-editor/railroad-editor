@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Rectangle} from "react-paper-bindings";
 import StraightRailPart from "../parts/StraightRailPart";
 import {RailBase, RailBaseDefaultProps, RailBaseProps, RailBaseState} from "components/rails/RailBase";
 
@@ -25,7 +24,7 @@ export default class StraightRail extends RailBase<StraightRailProps, RailBaseSt
 
 
   renderRailPart = () => {
-    const { position, angle, length, id, selected, pivotJointIndex, opacity, visible} = this.props
+    const {position, angle, length, id, selected, pivotJointIndex, opacity, visible} = this.props
 
     return (
       <StraightRailPart

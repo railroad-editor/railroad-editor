@@ -46,12 +46,12 @@ export class ResetPassword extends AuthPiece<ResetPasswordProps & RouteComponent
 
   componentWillMount() {
     // custom rule will have name 'isPasswordMatch'
-    ValidatorForm.addValidationRule('isPasswordMatch', (value) => value === this.state.inputs.password );
+    ValidatorForm.addValidationRule('isPasswordMatch', (value) => value === this.state.inputs.password);
   }
 
   submit = () => {
-    const { code, userName } = this.props
-    const { password } = this.state.inputs
+    const {code, userName} = this.props
+    const {password} = this.state.inputs
     Auth.forgotPasswordSubmit(userName, code, password)
       .then(data => {
         this.setState({success: true})
@@ -63,7 +63,7 @@ export class ResetPassword extends AuthPiece<ResetPasswordProps & RouteComponent
   }
 
   onKeyPress = (e) => {
-    if ( (! this.state.disabled) && e.key === 'Enter') {
+    if ((! this.state.disabled) && e.key === 'Enter') {
       this.submit()
       e.preventDefault()
     }
@@ -104,7 +104,7 @@ export class ResetPassword extends AuthPiece<ResetPasswordProps & RouteComponent
                 errorMessages={['this field is required']}
                 fullWidth
               />
-              <br />
+              <br/>
               <TextValidator
                 label="Confirm Password"
                 name="confirmPassword"

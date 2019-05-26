@@ -10,7 +10,6 @@ import * as classNames from "classnames"
 import {PrimaryPaletteAddButton} from "components/common/PaletteAddButton/PaletteAddButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import {Scrollbars} from 'react-custom-scrollbars';
 import {TitleDiv, TitleTypography} from "components/Editor/Palettes/Palettes.style";
 
 
@@ -72,7 +71,8 @@ export default class RailPalette extends React.Component<RailPaletteProps, {}> {
           <Divider/>
           <CenteredDiv>
             <Typography align="left">
-              {splitMessages[0]} <AddBoxIcon color="primary" style={{fontSize: '16px', marginBottom: '-3px'}}/> {splitMessages[1]}
+              {splitMessages[0]} <AddBoxIcon color="primary"
+                                             style={{fontSize: '16px', marginBottom: '-3px'}}/> {splitMessages[1]}
             </Typography>
           </CenteredDiv>
         </>

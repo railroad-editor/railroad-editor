@@ -18,9 +18,9 @@ export default class Case03 extends React.Component<any, any> {
       // pivot: undefined,
       pivot: Pivot.LEFT,
       pivotPart: 0,
-      position: new Point(200,200),
-      child_position_1: new Point(200,100),
-      child_position_2: new Point(300,100)
+      position: new Point(200, 200),
+      child_position_1: new Point(200, 100),
+      child_position_2: new Point(300, 100)
     }
   }
 

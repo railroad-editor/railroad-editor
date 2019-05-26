@@ -2,7 +2,7 @@ import * as React from 'react'
 import getLogger from "logging";
 import AutoFocusTextValidator from "components/common/AutoFocusTextValidator";
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
-import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
+import {ValidatorForm} from 'react-material-ui-form-validator';
 import {compose} from "recompose";
 import {withSnackbar} from 'material-ui-snackbar-provider'
 
@@ -64,6 +64,6 @@ export class NewRailGroupDialog extends FormDialog<NewRailGroupDialogProps, Form
 }
 
 
-export default compose<NewRailGroupDialogProps, NewRailGroupDialogProps|any>(
+export default compose<NewRailGroupDialogProps, NewRailGroupDialogProps | any>(
   withSnackbar()
 )(NewRailGroupDialog)

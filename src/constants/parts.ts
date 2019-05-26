@@ -1,4 +1,3 @@
-
 export const RAIL_PART_WIDTH = 14
 // export const RAIL_PART_FILL_COLORS = ['black', 'black', 'deepskyblue', 'black']
 export const RAIL_PART_FILL_COLORS = [undefined, undefined, undefined, undefined]

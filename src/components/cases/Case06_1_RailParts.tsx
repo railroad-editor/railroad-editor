@@ -38,19 +38,19 @@ export default class Case05 extends React.Component<any, any> {
         <StraightRailPart
           pivotJointIndex={0}
           angle={30}
-          position={new Point(200,200)}
+          position={new Point(200, 200)}
           length={200}
         />
         <StraightRailPart
           pivotJointIndex={1}
           angle={-30}
-          position={new Point(200,200)}
+          position={new Point(200, 200)}
           length={200}
         />
 
         <CurveRailPart
           pivotJointIndex={0}
-          position={new Point(400,200)}
+          position={new Point(400, 200)}
           direction={ArcDirection.LEFT}
           angle={30}
           radius={100}
@@ -58,7 +58,7 @@ export default class Case05 extends React.Component<any, any> {
         />
         <CurveRailPart
           pivotJointIndex={1}
-          position={new Point(400,200)}
+          position={new Point(400, 200)}
           direction={ArcDirection.LEFT}
           angle={30}
           radius={100}
@@ -66,7 +66,7 @@ export default class Case05 extends React.Component<any, any> {
         />
         <CurveRailPart
           pivotJointIndex={0}
-          position={new Point(600,200)}
+          position={new Point(600, 200)}
           direction={ArcDirection.RIGHT}
           angle={30}
           radius={100}
@@ -74,7 +74,7 @@ export default class Case05 extends React.Component<any, any> {
         />
         <CurveRailPart
           pivotJointIndex={1}
-          position={new Point(600,200)}
+          position={new Point(600, 200)}
           direction={ArcDirection.RIGHT}
           angle={30}
           radius={100}
@@ -83,7 +83,7 @@ export default class Case05 extends React.Component<any, any> {
 
         <SimpleTurnoutRailPart
           pivotJointIndex={0}
-          position={new Point(200,400)}
+          position={new Point(200, 400)}
           direction={ArcDirection.RIGHT}
           angle={30}
           length={140}
@@ -93,7 +93,7 @@ export default class Case05 extends React.Component<any, any> {
         />
         <SimpleTurnoutRailPart
           pivotJointIndex={1}
-          position={new Point(200,400)}
+          position={new Point(200, 400)}
           direction={ArcDirection.RIGHT}
           angle={120}
           length={140}
@@ -102,7 +102,7 @@ export default class Case05 extends React.Component<any, any> {
         />
         <SimpleTurnoutRailPart
           pivotJointIndex={2}
-          position={new Point(200,400)}
+          position={new Point(200, 400)}
           direction={ArcDirection.RIGHT}
           angle={210}
           length={140}
@@ -112,7 +112,7 @@ export default class Case05 extends React.Component<any, any> {
 
         <CurvedTurnoutRailPart
           pivotJointIndex={0}
-          position={new Point(400,400)}
+          position={new Point(400, 400)}
           direction={ArcDirection.RIGHT}
           angle={30}
           innerRadius={200}
@@ -122,7 +122,7 @@ export default class Case05 extends React.Component<any, any> {
         />
         <CurvedTurnoutRailPart
           pivotJointIndex={1}
-          position={new Point(400,400)}
+          position={new Point(400, 400)}
           direction={ArcDirection.RIGHT}
           angle={120}
           innerRadius={200}
@@ -132,7 +132,7 @@ export default class Case05 extends React.Component<any, any> {
         />
         <CurvedTurnoutRailPart
           pivotJointIndex={2}
-          position={new Point(400,400)}
+          position={new Point(400, 400)}
           direction={ArcDirection.RIGHT}
           angle={210}
           innerRadius={200}
@@ -143,7 +143,7 @@ export default class Case05 extends React.Component<any, any> {
 
         <ThreeWayTurnoutRailPart
           pivotJointIndex={1}
-          position={new Point(200,400)}
+          position={new Point(200, 400)}
           angle={120}
           length={140}
           leftStart={0}

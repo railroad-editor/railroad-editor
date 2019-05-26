@@ -1,6 +1,5 @@
 import * as React from 'react'
 import {Grid, MenuItem, Typography} from '@material-ui/core'
-import {S3Image} from 'aws-amplify-react';
 import getLogger from "logging";
 import Menu from "@material-ui/core/Menu";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -48,7 +47,6 @@ export interface InversedConductionStates {
 export interface InversedConductionState {
   [switchState: number]: number     // Rail's conductionState
 }
-
 
 
 @inject(STORE_LAYOUT_LOGIC, STORE_LAYOUT)
@@ -170,11 +168,11 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
                     <Typography align="center"> {rail.name} </Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <TurnoutStateTable switcher={this.props.item} rail={rail} />
+                    <TurnoutStateTable switcher={this.props.item} rail={rail}/>
                   </Grid>
                   <Grid item xs={3} justify="flex-end">
                     <IconButton style={{width: '40px', height: '40px'}}
-                      onClick={this.onDisconnect(railId)}
+                                onClick={this.onDisconnect(railId)}
                     >
                       <DeleteIcon style={{width: '20px', height: '20px'}}/>
                     </IconButton>

@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Rectangle} from "react-paper-bindings";
 import RectPart from "./primitives/RectPart";
 import {RAIL_PART_WIDTH} from "constants/parts";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
@@ -45,7 +44,7 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
 
 
   renderParts = () => {
-    const { length, pivotJointIndex, data, fillColor, fillColors, flowDirections } = this.props
+    const {length, pivotJointIndex, data, fillColor, fillColors, flowDirections} = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
     return (
       <PartGroup

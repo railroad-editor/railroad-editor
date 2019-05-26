@@ -7,7 +7,6 @@ import * as classNames from "classnames"
 import {PrimaryPaletteAddButton} from "components/common/PaletteAddButton/PaletteAddButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import {Scrollbars} from 'react-custom-scrollbars';
 // import PowerIcon from '@material-ui/icons/Power';
 import PowerIcon from '@material-ui/icons/PowerSettingsNew';
 import NewPowerPackDialog
@@ -37,7 +36,6 @@ export interface PowerPackPaletteProps {
 export interface PowerPackPaletteState {
   dialogOpen: boolean
 }
-
 
 
 @inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
@@ -101,7 +99,8 @@ export default class PowerPackPalette extends React.Component<PowerPackPalettePr
           <Divider/>
           <CenteredDiv>
             <Typography align="left">
-              {splitMessages[0]} <AddBoxIcon color="primary" style={{fontSize: '16px', marginBottom: '-3px'}}/> {splitMessages[1]}
+              {splitMessages[0]} <AddBoxIcon color="primary"
+                                             style={{fontSize: '16px', marginBottom: '-3px'}}/> {splitMessages[1]}
             </Typography>
           </CenteredDiv>
         </>
@@ -120,7 +119,7 @@ export default class PowerPackPalette extends React.Component<PowerPackPalettePr
           >
             <PaletteBodyPaper>
               <TitleDiv className='Palette__title'>
-                <PowerIcon />
+                <PowerIcon/>
                 <TitleTypography variant="subheading" color="inherit">
                   {'Power Packs'}
                 </TitleTypography>

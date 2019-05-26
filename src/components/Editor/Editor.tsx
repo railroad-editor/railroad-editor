@@ -72,7 +72,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
   constructor(props: EnhancedEditorProps) {
     super(props)
     this.state = {
-      mousePosition: new Point(0,0)
+      mousePosition: new Point(0, 0)
     }
   }
 
@@ -84,7 +84,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
     }
   }
 
-  isActive = (... tools: string[]) => {
+  isActive = (...tools: string[]) => {
     if (this.props.common.editorMode === EditorMode.BUILDER) {
       return tools.includes(this.props.builder.activeTool)
     } else {
@@ -174,11 +174,11 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
     return (
       <StyledWrapper onContextMenu={this.noopContextMenu}>
-        <StyledToolBar resetViewPosition={this.props.resetViewPosition} />
+        <StyledToolBar resetViewPosition={this.props.resetViewPosition}/>
         <EditorBody>
-          <Palettes />
-          <LayoutTips />
-          <DistantRailPlacer />
+          <Palettes/>
+          <LayoutTips/>
+          <DistantRailPlacer/>
 
           <GridPaper
             viewWidth={DEFAULT_VIEW_WIDTH}
@@ -196,11 +196,11 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             setPaperLoaded={this.props.common.setPaperLoaded}
           >
             {/*/!* 後から書いたコンポーネントの方が前面に配置される *!/*/}
-            <TemporaryLayer />
+            <TemporaryLayer/>
 
             <FreeRailPlacer mousePosition={this.state.mousePosition}/>
 
-            <Layout />
+            <Layout/>
 
             <Tool
               active={this.isActive(
@@ -231,7 +231,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 }
 
 
-export default compose<EditorProps|any, EditorProps|any>(
+export default compose<EditorProps | any, EditorProps | any>(
   withBuilder,
   // withFullscreen,
   withTools,

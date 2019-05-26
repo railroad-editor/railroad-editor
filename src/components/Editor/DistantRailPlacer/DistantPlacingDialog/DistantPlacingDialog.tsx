@@ -16,7 +16,6 @@ export interface DistantPlacingDialogState extends FormDialogState {
 }
 
 
-
 @inject(STORE_BUILDER)
 @observer
 export default class DistantPlacingDialog extends FormDialog<DistantPlacingDialogProps, DistantPlacingDialogState> {
@@ -45,34 +44,34 @@ export default class DistantPlacingDialog extends FormDialog<DistantPlacingDialo
 
   renderContent = () => {
     return (
-        <>
-          <ValidatorForm
-              ref={(form) => this._form = form}
-          >
-            <AutoFocusTextValidator
-                label="X"
-                name="x"
-                key="x"
-                value={this.state.inputs.x}
-                onChange={this.onChange('x')}
-                onKeyPress={this.onKeyPress}
-                validatorListener={this.handleValidation}
-                validators={['matchRegexp:^-?[0-9]*\s*$']}
-                errorMessages={['value must be a number']}
-            />
-            <TextValidator
-                label="Y"
-                name="y"
-                key="y"
-                value={this.state.inputs.y}
-                onChange={this.onChange('y')}
-                onKeyPress={this.onKeyPress}
-                validatorListener={this.handleValidation}
-                validators={['matchRegexp:^-?[0-9]*\s*$']}
-                errorMessages={['value must be a number']}
-            />
-          </ValidatorForm>
-        </>
+      <>
+        <ValidatorForm
+          ref={(form) => this._form = form}
+        >
+          <AutoFocusTextValidator
+            label="X"
+            name="x"
+            key="x"
+            value={this.state.inputs.x}
+            onChange={this.onChange('x')}
+            onKeyPress={this.onKeyPress}
+            validatorListener={this.handleValidation}
+            validators={['matchRegexp:^-?[0-9]*\s*$']}
+            errorMessages={['value must be a number']}
+          />
+          <TextValidator
+            label="Y"
+            name="y"
+            key="y"
+            value={this.state.inputs.y}
+            onChange={this.onChange('y')}
+            onKeyPress={this.onKeyPress}
+            validatorListener={this.handleValidation}
+            validators={['matchRegexp:^-?[0-9]*\s*$']}
+            errorMessages={['value must be a number']}
+          />
+        </ValidatorForm>
+      </>
     )
   }
 }

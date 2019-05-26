@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Layer, Line, Path, Raster, Rectangle, Tool, View} from 'react-paper-bindings'
+import {Layer, Line, Raster, Rectangle, View} from 'react-paper-bindings'
 import {Point} from 'paper';
 import * as _ from "lodash";
 
@@ -67,7 +67,7 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
         <Line
           key={`h-line${i}`}  //`
           from={new Point(0, gridSize * i)}
-          to={new Point(paperWidth,gridSize * i)}
+          to={new Point(paperWidth, gridSize * i)}
           data={{type: 'GridLine'}}
           // strokeColor={i % 10 === 0 ? 'white' : 'red'}
           strokeColor={lineColor}
@@ -103,8 +103,8 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
     // いったんスケールを元に戻す。２回目のロード時に必要
     instance.scale(1 / instance.scaling.x, 1 / instance.scaling.y)
     const {paperWidth, paperHeight} = this.props
-    const scaleX =  paperWidth / instance.width
-    const scaleY =  paperHeight / instance.height
+    const scaleX = paperWidth / instance.width
+    const scaleY = paperHeight / instance.height
     // Paperのサイズに合うようにスケールする
     instance.scale(scaleX, scaleY)
   }

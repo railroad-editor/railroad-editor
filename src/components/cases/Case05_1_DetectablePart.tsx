@@ -36,14 +36,14 @@ export default class Case05 extends React.Component<any, any> {
         <DetectablePart
           mainPart={
             <RectPart
-              position={new Point(0,0)}
+              position={new Point(0, 0)}
               width={50}
               height={50}
             />
           }
           detectionPart={
             <RectPart
-              position={new Point(0,0)}
+              position={new Point(0, 0)}
               width={70}
               height={70}
               opacity={0.5}
@@ -59,7 +59,7 @@ export default class Case05 extends React.Component<any, any> {
         />
 
         <Joint
-          position={new Point(400,300)}
+          position={new Point(400, 300)}
           angle={50}
           // ref={(r) => this.r = r}
         />

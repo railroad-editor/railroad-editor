@@ -47,7 +47,7 @@ export default class ArcPart extends PartBase<ArcPartProps, {}> {
       case Pivot.RIGHT:
         return getEndPoint(width, radius, centerAngle, this.props.direction)
       case Pivot.CENTER:
-        return getEndPoint(width, radius, centerAngle/2, this.props.direction)
+        return getEndPoint(width, radius, centerAngle / 2, this.props.direction)
       default:
         return new Point(0, 0)
     }
@@ -62,7 +62,7 @@ export default class ArcPart extends PartBase<ArcPartProps, {}> {
           case ArcDirection.RIGHT:
             return this.props.centerAngle
           case ArcDirection.LEFT:
-            return - this.props.centerAngle
+            return -this.props.centerAngle
           default:
             throw Error(`Invalid direction ${this.props.direction} for ${this.constructor.name}`)
         }
@@ -71,7 +71,7 @@ export default class ArcPart extends PartBase<ArcPartProps, {}> {
           case ArcDirection.RIGHT:
             return this.props.centerAngle / 2
           case ArcDirection.LEFT:
-            return - this.props.centerAngle / 2
+            return -this.props.centerAngle / 2
           default:
             throw Error(`Invalid direction ${this.props.direction} for ${this.constructor.name}`)
         }
@@ -130,7 +130,7 @@ const createArcPathRight = (width: number, radius: number, centerAngle: number) 
   A ${radius + width / 2} ${radius + width / 2}, 0, 0, 1, ${outerEndX} ${outerEndY}
   L ${(outerEndX + innerEndX) / 2} ${(outerEndY + innerEndY) / 2} 
   L ${innerEndX} ${innerEndY} 
-  A ${radius - width / 2} ${radius - width / 2} 0, 0, 0, 0 ${ width / 2} Z`
+  A ${radius - width / 2} ${radius - width / 2} 0, 0, 0, 0 ${width / 2} Z`
   return pathData
 }
 

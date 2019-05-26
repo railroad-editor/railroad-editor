@@ -32,7 +32,7 @@ export class RailTips extends React.Component<RailTipProps & WithBuilderPublicPr
     super(props)
 
     reaction(() => this.props.common.zooming,
-      () => this.forceUpdate() )
+      () => this.forceUpdate())
   }
 
 
@@ -67,5 +67,5 @@ export class RailTips extends React.Component<RailTipProps & WithBuilderPublicPr
 }
 
 
-export default compose<RailTipProps, RailTipProps|any>(
+export default compose<RailTipProps, RailTipProps | any>(
 )(RailTips)

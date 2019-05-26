@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import LayoutBody from "../../common/LayoutBody";
 
 const styles = theme => ({
@@ -50,14 +50,14 @@ const styles = theme => ({
 });
 
 function ProductHeroLayout(props) {
-  const { backgroundClassName, children, classes } = props;
+  const {backgroundClassName, children, classes} = props;
 
   return (
     <section className={classes.root}>
       <LayoutBody className={classes.layoutBody} width="full">
         {children}
-        <div className={classes.backdrop} />
-        <div className={classNames(classes.background, backgroundClassName)} />
+        <div className={classes.backdrop}/>
+        <div className={classNames(classes.background, backgroundClassName)}/>
       </LayoutBody>
     </section>
   );

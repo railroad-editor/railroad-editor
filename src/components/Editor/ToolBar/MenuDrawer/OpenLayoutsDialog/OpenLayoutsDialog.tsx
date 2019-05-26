@@ -2,7 +2,6 @@ import * as React from 'react'
 import {DialogContent, DialogTitle} from '@material-ui/core'
 import Dialog from "@material-ui/core/Dialog";
 import Typography from "@material-ui/core/Typography";
-import {S3Image} from 'aws-amplify-react';
 import LayoutAPI from "apis/layout"
 import getLogger from "logging";
 import {getLayoutImageFileName} from "apis/storage";
@@ -93,22 +92,22 @@ export default class OpenLayoutsDialog extends React.Component<OpenLayoutDialogP
             You have {this.props.layouts.length} layouts.
           </Typography>
           <Grid container spacing={24}>
-          {sortedLayouts.map((meta, idx) => {
-            const layoutImageFile = getLayoutImageFileName(this.props.authData.username, meta.id)
-            return (
-              <Grid item xs={4}>
-                <LayoutCard
-                  key={`card-${idx}`}
-                  imgKey={layoutImageFile}
-                  title={meta.name}
-                  lastModified={meta.lastModified}
-                  onClick={this.onClick(meta)}
-                  onDelete={this.openDeleteDialog(meta.id)}
-                  onRename={this.openDeleteDialog(meta.id)}
-                />
-              </Grid>
-            )
-          })}
+            {sortedLayouts.map((meta, idx) => {
+              const layoutImageFile = getLayoutImageFileName(this.props.authData.username, meta.id)
+              return (
+                <Grid item xs={4}>
+                  <LayoutCard
+                    key={`card-${idx}`}
+                    imgKey={layoutImageFile}
+                    title={meta.name}
+                    lastModified={meta.lastModified}
+                    onClick={this.onClick(meta)}
+                    onDelete={this.openDeleteDialog(meta.id)}
+                    onRename={this.openDeleteDialog(meta.id)}
+                  />
+                </Grid>
+              )
+            })}
           </Grid>
         </DialogContent>
         <ConfirmationDialog

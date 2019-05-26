@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Rectangle} from "react-paper-bindings";
 import {RailBase, RailBaseDefaultProps, RailBaseProps, RailBaseState} from "components/rails/RailBase";
 import DoubleCurveRailPart from "components/rails/parts/DoubleCurveRailPart";
 import {ArcDirection} from "components/rails/parts/primitives/ArcPart";
@@ -46,7 +45,7 @@ export default class DoubleCurveRail extends RailBase<DoubleCurveRailProps, Rail
         selected={selected}
         opacity={opacity}
         visible={visible}
-        fillColors={_.fill(Array(4),  fillColor)}
+        fillColors={_.fill(Array(4), fillColor)}
         data={{
           type: 'RailPart',
           railId: id,

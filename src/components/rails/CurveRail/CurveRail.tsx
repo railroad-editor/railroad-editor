@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Rectangle} from "react-paper-bindings";
 import CurveRailPart from "../parts/CurveRailPart";
 import {ArcDirection} from "../parts/primitives/ArcPart";
 import {RailBase, RailBaseDefaultProps, RailBaseProps, RailBaseState} from "components/rails/RailBase";
@@ -43,7 +42,7 @@ export default class CurveRail extends RailBase<CurveRailProps, RailBaseState> {
         selected={selected}
         opacity={opacity}
         visible={visible}
-        fillColors={_.fill(Array(4),  fillColor)}
+        fillColors={_.fill(Array(4), fillColor)}
         data={{
           type: 'RailPart',
           railId: id,

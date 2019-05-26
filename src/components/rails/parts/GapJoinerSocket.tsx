@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Point} from "paper";
-import {Rectangle} from "react-paper-bindings";
 import DetectablePart from "./primitives/DetectablePart";
 import CirclePart from "./primitives/CirclePart";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
@@ -87,9 +86,9 @@ export default class GapJoinerSocket extends React.Component<GapJoinerSocketProp
     return (
       <DetectablePart
         mainPart={
-            <CirclePart
-              radius={0}
-            />
+          <CirclePart
+            radius={0}
+          />
         }
         detectionPart={
           <PartGroup
@@ -107,7 +106,7 @@ export default class GapJoinerSocket extends React.Component<GapJoinerSocketProp
         fillColors={fillColors}
         visible={visible}
         selected={selected}
-        detectionEnabled={detectionEnabled && !hasGapJoiner}
+        detectionEnabled={detectionEnabled && ! hasGapJoiner}
         pivotPartIndex={0}
         name={name}
         data={data}
@@ -116,7 +115,9 @@ export default class GapJoinerSocket extends React.Component<GapJoinerSocketProp
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onMouseMove={onMouseMove}
-        ref={(part) => {if (part) this.part = part}}
+        ref={(part) => {
+          if (part) this.part = part
+        }}
       />
     )
   }

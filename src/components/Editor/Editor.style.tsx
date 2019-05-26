@@ -1,6 +1,5 @@
 import * as React from 'react'
 import styled from "styled-components";
-import {View} from "react-paper-bindings";
 import ToolBar from "./ToolBar/ToolBar";
 import {Tooltip} from "@material-ui/core";
 import {TooltipProps} from "@material-ui/core/Tooltip";
@@ -26,7 +25,10 @@ export const StyledToolBar = styled(ToolBar as any)`
 `
 
 
-export const StyledTooltip = styled((props: TooltipProps) => <Tooltip {...props} classes={{tooltip: 'tooltip', popper: 'popper'}} />)`
+export const StyledTooltip = styled((props: TooltipProps) => <Tooltip {...props} classes={{
+  tooltip: 'tooltip',
+  popper: 'popper'
+}}/>)`
   && {
     .popper {
       z-index: 18000;

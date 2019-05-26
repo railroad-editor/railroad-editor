@@ -20,7 +20,7 @@ export default class Case09 extends React.Component<any, any> {
     this.state = {
       count: 0,
       pivotJoint: 0,
-      position: new Point(200,200),
+      position: new Point(200, 200),
     }
   }
 
@@ -56,7 +56,7 @@ export default class Case09 extends React.Component<any, any> {
 
         <RailGroup
           id={-1}
-          position={new Point(300,300)}
+          position={new Point(300, 300)}
           angle={30}
           pivotJointInfo={{
             railId: 0,
@@ -65,7 +65,7 @@ export default class Case09 extends React.Component<any, any> {
           ref={(group) => this.group = group}
         >
           <StraightRail
-            position={new Point(200,150)}
+            position={new Point(200, 150)}
             pivotJointIndex={0}
             length={200}
             angle={0}
@@ -73,7 +73,7 @@ export default class Case09 extends React.Component<any, any> {
             layerId={1}
           />
           <StraightRail
-            position={new Point(200,200)}
+            position={new Point(200, 200)}
             pivotJointIndex={0}
             length={200}
             angle={0}
@@ -81,7 +81,7 @@ export default class Case09 extends React.Component<any, any> {
             layerId={1}
           />
           <CurveRail
-            position={new Point(400,200)}
+            position={new Point(400, 200)}
             pivotJointIndex={0}
             angle={0}
             radius={200}

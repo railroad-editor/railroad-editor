@@ -1,6 +1,4 @@
 import * as React from "react";
-import {Rectangle} from "react-paper-bindings";
-import {ArcDirection} from "components/rails/parts/primitives/ArcPart";
 import {RailBase, RailBaseDefaultProps, RailBaseProps, RailBaseState} from "components/rails/RailBase";
 import ThreeWayTurnoutRailPart from "components/rails/parts/ThreeWayTurnoutRailPart";
 

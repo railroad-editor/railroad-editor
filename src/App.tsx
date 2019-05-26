@@ -66,19 +66,19 @@ class App extends React.Component<AppProps, {}> {
     return (
       <div className='App'>
         <Helmet>
-          <meta charSet="utf-8" />
+          <meta charSet="utf-8"/>
           <title>Railroad Editor (Beta)</title>
         </Helmet>
         <Router>
           <div>
-            <Route exact path="/" render={() => <Home /> }/>
-            <Route path="/editor" render={() => <Editor width={6000} height={4000} /> }/>
+            <Route exact path="/" render={() => <Home/>}/>
+            <Route path="/editor" render={() => <Editor width={6000} height={4000}/>}/>
             <Route path="/reset-password" render={({location, ...rest}) => {
-              const params =qs.parse(location.search)
+              const params = qs.parse(location.search)
               if (params.user_name && params.confirmation_code) {
-                return <ResetPassword userName={params.user_name} code={params.confirmation_code} />
+                return <ResetPassword userName={params.user_name} code={params.confirmation_code}/>
               } else {
-                return <Redirect push to={"/"} />
+                return <Redirect push to={"/"}/>
               }
             }}
             />

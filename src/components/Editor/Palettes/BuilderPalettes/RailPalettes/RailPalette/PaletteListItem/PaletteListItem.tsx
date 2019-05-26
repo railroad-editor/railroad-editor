@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {List, ListItemText, MenuItem} from '@material-ui/core'
+import {ListItemText, MenuItem} from '@material-ui/core'
 import {PrimaryColorActiveListItem} from "components/common/ActiveListItem/index";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -27,7 +27,7 @@ export default class PaletteListItem extends React.Component<PaletteListItemProp
   }
 
   openMenu = (e: React.MouseEvent<HTMLElement>) => {
-    this.setState({ anchorEl: e.currentTarget });
+    this.setState({anchorEl: e.currentTarget});
   }
 
   onMenuClose = (e: React.MouseEvent<HTMLElement>) => {

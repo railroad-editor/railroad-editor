@@ -7,7 +7,10 @@ import Grid from "@material-ui/core/Grid";
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {PowerPackData} from "store/layoutStore";
-import {SmallButton, Spacer} from "components/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackSettingDialog/styles";
+import {
+  SmallButton,
+  Spacer
+} from "components/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackSettingDialog/styles";
 
 
 export interface PowerPackSettingDialogProps extends FormDialogProps {
@@ -88,7 +91,7 @@ export default class PowerPackSettingDialog extends FormDialog<PowerPackSettingD
             validators={['required']}
             errorMessages={['this field is required']}
           />
-          <br />
+          <br/>
           <TextValidator
             label="PWM Pin"
             name="pPin"
@@ -112,7 +115,7 @@ export default class PowerPackSettingDialog extends FormDialog<PowerPackSettingD
             errorMessages={['value must be a number']}
           />
         </ValidatorForm>
-        <Spacer />
+        <Spacer/>
 
         {/* Power pack color */}
         <Grid container justify="center" alignItems="center" spacing={0}>
@@ -141,8 +144,8 @@ export default class PowerPackSettingDialog extends FormDialog<PowerPackSettingD
           }}
         >
           <ChromePicker
-            color={ this.state.inputs.color }
-            onChangeComplete={ this.onColorChange }
+            color={this.state.inputs.color}
+            onChangeComplete={this.onColorChange}
           />
         </Popover>
       </>

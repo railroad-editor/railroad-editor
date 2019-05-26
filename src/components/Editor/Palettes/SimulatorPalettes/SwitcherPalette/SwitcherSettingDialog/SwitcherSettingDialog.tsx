@@ -102,7 +102,7 @@ export default class SwitcherSettingDialog extends FormDialog<SwitcherSettingDia
             validators={['required']}
             errorMessages={['this field is required']}
           />
-          <br />
+          <br/>
           <TextValidator
             label="Digital Pin 1"
             name="dPin1"
@@ -127,34 +127,34 @@ export default class SwitcherSettingDialog extends FormDialog<SwitcherSettingDia
           />
           {
             this.props.switcher.type === SwitcherType.THREE_WAY &&
-              <>
-                <br />
-                <TextValidator
-                  label="Digital Pin 3"
-                  name="dPin3"
-                  key="dPin3"
-                  value={this.state.inputs.dPin3}
-                  onChange={this.onChange('dPin3')}
-                  onKeyPress={this.onKeyPress}
-                  validatorListener={this.handleValidation}
-                  validators={['matchRegexp:^[0-9]*\s*$']}
-                  errorMessages={['value must be a number']}
-                />
-                <TextValidator
-                  label="Digital Pin 4"
-                  name="dPin4"
-                  key="dPin4"
-                  value={this.state.inputs.dPin4}
-                  onChange={this.onChange('dPin4')}
-                  onKeyPress={this.onKeyPress}
-                  validatorListener={this.handleValidation}
-                  validators={['matchRegexp:^[0-9]*\s*$']}
-                  errorMessages={['value must be a number']}
-                />
-              </>
+            <>
+              <br/>
+              <TextValidator
+                label="Digital Pin 3"
+                name="dPin3"
+                key="dPin3"
+                value={this.state.inputs.dPin3}
+                onChange={this.onChange('dPin3')}
+                onKeyPress={this.onKeyPress}
+                validatorListener={this.handleValidation}
+                validators={['matchRegexp:^[0-9]*\s*$']}
+                errorMessages={['value must be a number']}
+              />
+              <TextValidator
+                label="Digital Pin 4"
+                name="dPin4"
+                key="dPin4"
+                value={this.state.inputs.dPin4}
+                onChange={this.onChange('dPin4')}
+                onKeyPress={this.onKeyPress}
+                validatorListener={this.handleValidation}
+                validators={['matchRegexp:^[0-9]*\s*$']}
+                errorMessages={['value must be a number']}
+              />
+            </>
           }
         </ValidatorForm>
-        <Spacer />
+        <Spacer/>
 
         {/* Switcher color */}
         <Grid container justify="center" alignItems="center" spacing={0}>
@@ -183,8 +183,8 @@ export default class SwitcherSettingDialog extends FormDialog<SwitcherSettingDia
           }}
         >
           <ChromePicker
-            color={ this.state.inputs.color }
-            onChangeComplete={ this.onColorChange }
+            color={this.state.inputs.color}
+            onChangeComplete={this.onColorChange}
           />
         </Popover>
       </>

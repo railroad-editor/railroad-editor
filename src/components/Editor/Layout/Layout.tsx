@@ -63,6 +63,6 @@ export class Layout extends React.Component<LayoutProps & WithBuilderPublicProps
 }
 
 
-export default compose<LayoutProps, LayoutProps|any>(
+export default compose<LayoutProps, LayoutProps | any>(
   withBuilder,
 )(Layout)

@@ -1,7 +1,5 @@
 import * as React from "react";
 import {Point} from "paper";
-import {Rectangle} from "react-paper-bindings";
-import DetectablePart from "./primitives/DetectablePart";
 import RectPart from "components/rails/parts/primitives/RectPart";
 import getLogger from "logging";
 import {GAP_FILL_COLOR, GAP_HEIGHT, GAP_WIDTH} from "constants/parts";
@@ -47,7 +45,7 @@ export default class Gap extends React.Component<GapProps, {}> {
   }
 
   render() {
-    const { position, angle, opacity, fillColor, visible } = this.props
+    const {position, angle, opacity, fillColor, visible} = this.props
 
     return (
       <RectPart
@@ -60,7 +58,9 @@ export default class Gap extends React.Component<GapProps, {}> {
         visible={visible}
         fillColor={fillColor}
         name={name}
-        ref={(r) => {if (r) this.part = r}}
+        ref={(r) => {
+          if (r) this.part = r
+        }}
       />
     )
   }

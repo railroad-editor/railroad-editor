@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Layer} from "react-paper-bindings";
 import {getRailComponent} from "components/rails/utils";
 import getLogger from "logging";
 import {WithBuilderPublicProps} from "components/hoc/withBuilder";
@@ -7,7 +6,6 @@ import {compose} from "recompose";
 import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
 import {inject, observer} from "mobx-react";
 import {LayoutStore} from "store/layoutStore";
-import {Tooltip} from "@material-ui/core";
 import {CommonStore} from "store/commonStore";
 import {reaction} from "mobx";
 import FeederTip from "components/Editor/LayoutTips/FeederTips/FeederTip/FeederTip";
@@ -33,7 +31,7 @@ export class FeederTips extends React.Component<FeederTipProps & WithBuilderPubl
   constructor(props: FeederTipProps & WithBuilderPublicProps) {
     super(props)
     reaction(() => this.props.common.zooming,
-      () => this.forceUpdate() )
+      () => this.forceUpdate())
   }
 
 
@@ -61,5 +59,5 @@ export class FeederTips extends React.Component<FeederTipProps & WithBuilderPubl
 }
 
 
-export default compose<FeederTipProps, FeederTipProps|any>(
+export default compose<FeederTipProps, FeederTipProps | any>(
 )(FeederTips)

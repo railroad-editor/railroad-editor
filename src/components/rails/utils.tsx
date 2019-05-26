@@ -113,8 +113,6 @@ export const createRailGroupComponent = (item: RailGroupData, children: RailData
 }
 
 
-
-
 /**
  * Point同士を比較し、一致したらtrueを返す
  * @param p1 {Point}
@@ -125,7 +123,7 @@ export const createRailGroupComponent = (item: RailGroupData, children: RailData
 export const pointsEqual = (p1, p2, tolerance = 0.0000001) => {
   if (p1 && p2) {
     return (Math.abs(p1.x - p2.x) < tolerance && Math.abs(p1.y - p2.y) < tolerance)
-  } else if (!p1 && !p2) {
+  } else if (! p1 && ! p2) {
     return true
   } else {
     return false
@@ -228,7 +226,7 @@ export const getCloseJointsBetween = (r1: number, r2: number): JointPair[] => {
   combinations.forEach(cmb => {
     // 両方が未接続でなければ抜ける
     if (cmb[0].props.hasOpposingJoint && cmb[1].props.hasOpposingJoint
-      || (! cmb[0].props.visible || ! cmb[1].props.visible) ) {
+      || (! cmb[0].props.visible || ! cmb[1].props.visible)) {
       return
     }
     // if ( ! cmb[0].props.visible || ! cmb[1].props.visible ) {
@@ -291,7 +289,7 @@ export const getAllCloseJoints = (rails: RailData[]): JointPair[] => {
  * @param {RailData[]} rails
  * @returns {any[]}
  */
-export const getAllOpenCloseJoints = (rails: RailData[]): JointPair[]  => {
+export const getAllOpenCloseJoints = (rails: RailData[]): JointPair[] => {
   const railsWithOpenJoints = rails.filter(r => hasOpenJoint(r))
   if (railsWithOpenJoints.length < 2) {
     return []

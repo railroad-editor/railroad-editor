@@ -40,10 +40,10 @@ export default class RailIcon extends React.Component<RailIconProps, RailIconSta
   }
 
   render() {
-    const {width, height, rail } = this.props
+    const {width, height, rail} = this.props
     const matrix = {
-      sx: width/2, // scale center x
-      sy: height/2, // scale center y
+      sx: width / 2, // scale center x
+      sy: height / 2, // scale center y
       tx: 0, // translate x
       ty: 0, // translate y
       x: 0,
@@ -53,7 +53,7 @@ export default class RailIcon extends React.Component<RailIconProps, RailIconSta
 
     const extendedRail = React.cloneElement(rail as any, {
       ...rail.props,
-      position: new Point(width/2, height/2),
+      position: new Point(width / 2, height / 2),
       enableJoints: false,
       pivotJointIndex: undefined,
       ref: (r) => {
@@ -73,7 +73,9 @@ export default class RailIcon extends React.Component<RailIconProps, RailIconSta
             settings={{
               applyMatrix: false
             }}
-            ref={(v) => { if (v) this._ref = v}}
+            ref={(v) => {
+              if (v) this._ref = v
+            }}
       >
         {extendedRail}
       </View>
