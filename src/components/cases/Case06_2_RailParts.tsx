@@ -32,31 +32,31 @@ export default class Case05 extends React.Component<any, any> {
         {createGridLines(800, 600, 100)}
 
         {/*<DoubleStraightRailPart*/}
-          {/*pivotJointIndex={0}*/}
-          {/*angle={30}*/}
-          {/*position={new Point(100,200)}*/}
-          {/*length={200}*/}
+        {/*pivotJointIndex={0}*/}
+        {/*angle={30}*/}
+        {/*position={new Point(100,200)}*/}
+        {/*length={200}*/}
         {/*/>*/}
 
         {/*<DoubleStraightRailPart*/}
-          {/*pivotJointIndex={1}*/}
-          {/*angle={30}*/}
-          {/*position={new Point(200,200)}*/}
-          {/*length={200}*/}
+        {/*pivotJointIndex={1}*/}
+        {/*angle={30}*/}
+        {/*position={new Point(200,200)}*/}
+        {/*length={200}*/}
         {/*/>*/}
 
         {/*<DoubleStraightRailPart*/}
-          {/*pivotJointIndex={2}*/}
-          {/*angle={30}*/}
-          {/*position={new Point(300,200)}*/}
-          {/*length={200}*/}
+        {/*pivotJointIndex={2}*/}
+        {/*angle={30}*/}
+        {/*position={new Point(300,200)}*/}
+        {/*length={200}*/}
         {/*/>*/}
 
         {/*<DoubleStraightRailPart*/}
-          {/*pivotJointIndex={3}*/}
-          {/*angle={30}*/}
-          {/*position={new Point(400,200)}*/}
-          {/*length={200}*/}
+        {/*pivotJointIndex={3}*/}
+        {/*angle={30}*/}
+        {/*position={new Point(400,200)}*/}
+        {/*length={200}*/}
         {/*/>*/}
 
         <DoubleCurveRailPart
@@ -65,23 +65,23 @@ export default class Case05 extends React.Component<any, any> {
           outerRadius={240}
           centerAngle={45}
           direction={ArcDirection.LEFT}
-          position={new Point(400,200)}
+          position={new Point(400, 200)}
         />
 
         {/*<DoubleCrossTurnoutRailPart*/}
-          {/*pivotJointIndex={0}*/}
-          {/*angle={30}*/}
-          {/*position={new Point(100,400)}*/}
-          {/*length={200}*/}
-          {/*onFixed={() => console.log("FIXED!")}*/}
+        {/*pivotJointIndex={0}*/}
+        {/*angle={30}*/}
+        {/*position={new Point(100,400)}*/}
+        {/*length={200}*/}
+        {/*onFixed={() => console.log("FIXED!")}*/}
         {/*/>*/}
 
         {/*<DoubleCrossTurnoutRailPart*/}
-          {/*pivotJointIndex={1}*/}
-          {/*angle={30}*/}
-          {/*position={new Point(200,400)}*/}
-          {/*length={200}*/}
-          {/*onFixed={() => console.log("FIXED!")}*/}
+        {/*pivotJointIndex={1}*/}
+        {/*angle={30}*/}
+        {/*position={new Point(200,400)}*/}
+        {/*length={200}*/}
+        {/*onFixed={() => console.log("FIXED!")}*/}
         {/*/>*/}
 
       </View>

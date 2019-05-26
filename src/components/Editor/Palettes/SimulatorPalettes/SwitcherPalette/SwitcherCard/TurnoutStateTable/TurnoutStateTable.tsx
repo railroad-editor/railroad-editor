@@ -123,7 +123,7 @@ export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {
 
   onSwitcherStateChange = (state: number) => (e) => {
     // ドラッグ直後のクリックイベントも発生するので、ドラッグ中かどうか判断する
-    if (!this.dragging) {
+    if (! this.dragging) {
       this.props.layoutLogic.changeSwitcherState(this.props.switcher.id, state)
     }
     this.dragging = false
@@ -133,7 +133,7 @@ export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {
   onStateGridLayoutChange = (railId: number) => (stateGridLayout) => {
     LOGGER.info(stateGridLayout)
     // レイアウトが変わらない場合でもここが呼ばれてしまうので、差分があるのか調べる
-    const isEqual =_.isEqualWith(this.stateGridLayout, stateGridLayout, (value, newValue) =>
+    const isEqual = _.isEqualWith(this.stateGridLayout, stateGridLayout, (value, newValue) =>
       _.range(value.length).map(i => _.isEqual(_.pick(value[i], 'i', 'x'), _.pick(newValue[i], 'i', 'x'))).every(e => e))
 
     if (isEqual) {
@@ -204,7 +204,7 @@ export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {
                     // このセルのIdentity、つまりこのレールのConductionState
                     key={`${conductionState}`}  //`
                     //
-                    active={!!railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === conductionState)}
+                    active={!! railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === conductionState)}
                     onClick={this.onSwitcherStateChange(
                       Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === conductionState)))))}
                   >
@@ -235,7 +235,7 @@ export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {
                     // このセルのIdentity、つまりこのレールのConductionState
                     key={`${conductionState}`}  //`
                     //
-                    active={!!railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === conductionState)}
+                    active={!! railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === conductionState)}
                     onClick={this.onSwitcherStateChange(
                       Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === conductionState)))))}
                   >
@@ -275,7 +275,7 @@ export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {
                     // このセルのIdentity、つまりこのレールのConductionState
                     key={`${conductionState}`}  //`
                     //
-                    active={!!railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === conductionState)}
+                    active={!! railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === conductionState)}
                     onClick={this.onSwitcherStateChange(
                       Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === conductionState)))))}
                   >
@@ -306,7 +306,7 @@ export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {
                     // このセルのIdentity、つまりこのレールのConductionState
                     key={`${conductionState}`}  //`
                     //
-                    active={!!railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === conductionState)}
+                    active={!! railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === conductionState)}
                     onClick={this.onSwitcherStateChange(
                       Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === conductionState)))))}
                   >

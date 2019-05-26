@@ -15,8 +15,8 @@ export class BuilderPalettes extends React.Component<BuilderPalettesProps> {
   render() {
     return (
       <>
-        <StyledRailPalette />
-        <StyledLayerPalette />
+        <StyledRailPalette/>
+        <StyledLayerPalette/>
       </>
     )
   }

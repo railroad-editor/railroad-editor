@@ -64,6 +64,6 @@ export class NewRailGroupDialog extends FormDialog<NewRailGroupDialogProps, Form
 }
 
 
-export default compose<NewRailGroupDialogProps, NewRailGroupDialogProps|any>(
+export default compose<NewRailGroupDialogProps, NewRailGroupDialogProps | any>(
   withSnackbar()
 )(NewRailGroupDialog)

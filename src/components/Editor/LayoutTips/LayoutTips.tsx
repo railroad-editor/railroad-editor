@@ -33,10 +33,10 @@ export class LayoutTips extends React.Component<RailTipsProps & WithBuilderPubli
     return (
       <>
         {
-          editorMode === EditorMode.SIMULATOR && !zooming && !panning &&
+          editorMode === EditorMode.SIMULATOR && ! zooming && ! panning &&
           <>
-            <FeederTips />
-            <RailTips />
+            <FeederTips/>
+            <RailTips/>
           </>
         }
       </>
@@ -45,5 +45,5 @@ export class LayoutTips extends React.Component<RailTipsProps & WithBuilderPubli
 }
 
 
-export default compose<RailTipsProps, RailTipsProps|any>(
+export default compose<RailTipsProps, RailTipsProps | any>(
 )(LayoutTips)

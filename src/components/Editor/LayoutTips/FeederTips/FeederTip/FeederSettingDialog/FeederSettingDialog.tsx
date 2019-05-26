@@ -22,7 +22,6 @@ export interface FeederSettingDialogState extends FormDialogState {
 }
 
 
-
 @inject(STORE_LAYOUT, STORE_LAYOUT_LOGIC)
 @observer
 export default class FeederSettingDialog extends FormDialog<FeederSettingDialogProps, FeederSettingDialogState> {

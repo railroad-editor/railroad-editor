@@ -12,7 +12,9 @@ export default class AutoFocusTextValidator extends React.Component<any, {}> {
     return (
       <TextValidator
         {...this.props}
-        inputRef={(input) => { if (input) setTimeout(() => input.focus(), delay)}}
+        inputRef={(input) => {
+          if (input) setTimeout(() => input.focus(), delay)
+        }}
       >
       </TextValidator>
     )

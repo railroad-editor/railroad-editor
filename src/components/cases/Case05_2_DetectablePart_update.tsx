@@ -75,9 +75,9 @@ export default class Case05 extends React.Component<any, any> {
         />
 
         {/*<Joint*/}
-          {/*position={new Point(400,300)}*/}
-          {/*angle={50}*/}
-          {/*// ref={(r) => this.r = r}*/}
+        {/*position={new Point(400,300)}*/}
+        {/*angle={50}*/}
+        {/*// ref={(r) => this.r = r}*/}
         {/*/>*/}
 
 

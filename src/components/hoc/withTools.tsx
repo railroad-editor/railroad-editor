@@ -16,7 +16,7 @@ export interface WithToolsPublicProps {
   // None
 }
 
-type WithToolsProps =  WithToolsPublicProps & WithToolsPrivateProps
+type WithToolsProps = WithToolsPublicProps & WithToolsPrivateProps
 
 
 /**
@@ -51,7 +51,7 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
     }
 
 
-    keyDown = (e: KeyboardEvent|any) => {
+    keyDown = (e: KeyboardEvent | any) => {
       if (this.dialogExists()) return
 
       // これらのModifierのショートカットキーは現状扱わない

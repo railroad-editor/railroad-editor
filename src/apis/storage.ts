@@ -12,7 +12,7 @@ const saveBackgroundImage = async (userId: string, layoutId: string, dataUrl: st
   return await Storage.put(backGroundImageName(userId, layoutId), blobData, {level: 'private'})
 }
 
-const fetchLayoutImage =  async (userId: string, layoutId: string) => {
+const fetchLayoutImage = async (userId: string, layoutId: string) => {
   return await Storage.get(getLayoutImageFileName(userId, layoutId), {level: 'private'})
 }
 
@@ -29,7 +29,7 @@ export const backGroundImageName = (userId: string, layoutId: string) => {
 const dataURItoBlob = (dataURI) => {
   let binary = atob(dataURI.split(',')[1]);
   let array = [];
-  for(let i = 0; i < binary.length; i++) {
+  for (let i = 0; i < binary.length; i++) {
     array.push(binary.charCodeAt(i));
   }
   return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});

@@ -15,9 +15,9 @@ export default class Case03 extends React.Component<any, any> {
     super(props)
     this.state = {
       count: 0,
-      position: new Point(200,200),
-      child_position_1: new Point(200,100),
-      child_position_2: new Point(300,100)
+      position: new Point(200, 200),
+      child_position_1: new Point(200, 100),
+      child_position_2: new Point(300, 100)
     }
     this.g = null
   }
@@ -92,8 +92,8 @@ export default class Case03 extends React.Component<any, any> {
                 // GroupのBoundingBoxが変化したので、Pivotとなる中心点も変わる。
                 this.setState({
                   count: this.state.count + 1,
-                  position: new Point(300,300),
-                  child_position_2: new Point(500,100)
+                  position: new Point(300, 300),
+                  child_position_2: new Point(500, 100)
                 })
                 break
             }

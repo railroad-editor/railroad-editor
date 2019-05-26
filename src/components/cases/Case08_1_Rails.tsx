@@ -22,7 +22,7 @@ export default class Case08 extends React.Component<any, any> {
     this.state = {
       count: 0,
       pivotJoint: 0,
-      position: new Point(200,200),
+      position: new Point(200, 200),
     }
   }
 
@@ -88,7 +88,7 @@ export default class Case08 extends React.Component<any, any> {
 
         <ThreeWayTurnout
           pivotJointIndex={1}
-          position={new Point(200,400)}
+          position={new Point(200, 400)}
           angle={120}
           length={140}
           leftStart={0}
@@ -103,7 +103,7 @@ export default class Case08 extends React.Component<any, any> {
 
         <CurvedTurnout
           pivotJointIndex={0}
-          position={new Point(400,400)}
+          position={new Point(400, 400)}
           angle={30}
           outerRadius={317}
           innerRadius={280}
@@ -116,7 +116,7 @@ export default class Case08 extends React.Component<any, any> {
 
         <CurvedTurnout
           pivotJointIndex={0}
-          position={new Point(400,400)}
+          position={new Point(400, 400)}
           angle={30}
           outerRadius={317}
           innerRadius={280}

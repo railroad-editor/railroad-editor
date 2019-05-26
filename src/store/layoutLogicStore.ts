@@ -22,7 +22,7 @@ const LOGGER = getLogger(__filename)
  * ロジックをこのStoreに集中させた。
  */
 export class LayoutLogicStore {
-  
+
   constructor() {
   }
 
@@ -227,7 +227,7 @@ export class LayoutLogicStore {
 
     layoutStore.updateRail({
       id: target.id,
-      selected: !target.selected,
+      selected: ! target.selected,
     })
   }
 
@@ -262,7 +262,7 @@ export class LayoutLogicStore {
       return
     }
     this.selectAllRails(false)
-    this.selectRail(railId, !target.selected)
+    this.selectRail(railId, ! target.selected)
   }
 
 
@@ -296,7 +296,7 @@ export class LayoutLogicStore {
       return
     }
     this.selectAllFeeders(false)
-    this.selectFeeder(feederId, !target.selected)
+    this.selectFeeder(feederId, ! target.selected)
   }
 
   @action
@@ -329,7 +329,7 @@ export class LayoutLogicStore {
       return
     }
     this.selectAllGapJoiners(false)
-    this.selectGapJoiner(gapJoinerId, !target.selected)
+    this.selectGapJoiner(gapJoinerId, ! target.selected)
   }
 
   @action
@@ -435,7 +435,7 @@ export class LayoutLogicStore {
     // このパーツに接続されているジョイントの先のレールに電流を設定
     _.range(railPart.joints.length).forEach(jointId => {
       const opposingJoint = rail.opposingJoints[jointId]
-      if (!opposingJoint) {
+      if (! opposingJoint) {
         return
       }
       const joint = railPart.joints[jointId]
@@ -482,10 +482,10 @@ export class LayoutLogicStore {
       }
     })
 
-    const anotherJointId = railPart.joints.findIndex(j=> j.pivotPartIndex === partId && j.pivot !== joint.pivot)
+    const anotherJointId = railPart.joints.findIndex(j => j.pivotPartIndex === partId && j.pivot !== joint.pivot)
     const anotherJoint = railPart.joints[anotherJointId]
     const opposingJoint = rail.opposingJoints[anotherJointId]
-    if (!opposingJoint) {
+    if (! opposingJoint) {
       return
     }
     const nextIsComing = this.isCurrentComing(anotherJoint.pivot, direction)
@@ -519,7 +519,7 @@ export class LayoutLogicStore {
       return
     }
 
-    if (!target.supplyingFeederIds.includes(feederId)) {
+    if (! target.supplyingFeederIds.includes(feederId)) {
       return
     }
 

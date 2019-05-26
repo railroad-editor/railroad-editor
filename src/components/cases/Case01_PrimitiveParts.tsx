@@ -123,8 +123,8 @@ export default class Case01 extends React.Component<any, any> {
         />
         {/*{this.r &&*/}
         {/*<CirclePart*/}
-          {/*radius={5}*/}
-          {/*position={this.r.getPivotPositionForGlobal(Pivot.RIGHT)}*/}
+        {/*radius={5}*/}
+        {/*position={this.r.getPivotPositionForGlobal(Pivot.RIGHT)}*/}
         {/*/>}*/}
 
         <ArcPart

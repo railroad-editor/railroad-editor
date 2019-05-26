@@ -91,7 +91,7 @@ export default class PowerPackSettingDialog extends FormDialog<PowerPackSettingD
             validators={['required']}
             errorMessages={['this field is required']}
           />
-          <br />
+          <br/>
           <TextValidator
             label="PWM Pin"
             name="pPin"
@@ -115,7 +115,7 @@ export default class PowerPackSettingDialog extends FormDialog<PowerPackSettingD
             errorMessages={['value must be a number']}
           />
         </ValidatorForm>
-        <Spacer />
+        <Spacer/>
 
         {/* Power pack color */}
         <Grid container justify="center" alignItems="center" spacing={0}>
@@ -144,8 +144,8 @@ export default class PowerPackSettingDialog extends FormDialog<PowerPackSettingD
           }}
         >
           <ChromePicker
-            color={ this.state.inputs.color }
-            onChangeComplete={ this.onColorChange }
+            color={this.state.inputs.color}
+            onChangeComplete={this.onColorChange}
           />
         </Popover>
       </>

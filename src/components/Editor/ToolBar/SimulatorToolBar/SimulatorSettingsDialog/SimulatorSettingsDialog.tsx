@@ -50,40 +50,40 @@ export class SimulatorSettingsDialog extends FormDialog<SettingsDialogProps, For
           ref={(form) => this._form = form}
         >
           {/*<TextValidator*/}
-            {/*label="Paper Width"*/}
-            {/*type="number"*/}
-            {/*name="paperWidth"*/}
-            {/*key="paperWidth"*/}
-            {/*value={this.state.inputs.paperWidth}*/}
-            {/*onChange={this.onChange('paperWidth')}*/}
-            {/*onKeyPress={this.onKeyPress}*/}
-            {/*validatorListener={this.handleValidation}*/}
-            {/*validators={['required']}*/}
-            {/*errorMessages={['this field is required']}*/}
+          {/*label="Paper Width"*/}
+          {/*type="number"*/}
+          {/*name="paperWidth"*/}
+          {/*key="paperWidth"*/}
+          {/*value={this.state.inputs.paperWidth}*/}
+          {/*onChange={this.onChange('paperWidth')}*/}
+          {/*onKeyPress={this.onKeyPress}*/}
+          {/*validatorListener={this.handleValidation}*/}
+          {/*validators={['required']}*/}
+          {/*errorMessages={['this field is required']}*/}
           {/*/>*/}
           {/*<TextValidator*/}
-            {/*label="Paper Height"*/}
-            {/*type="number"*/}
-            {/*name="paperHeight"*/}
-            {/*key="paperHeight"*/}
-            {/*value={this.state.inputs.paperHeight}*/}
-            {/*onChange={this.onChange('paperHeight')}*/}
-            {/*onKeyPress={this.onKeyPress}*/}
-            {/*validatorListener={this.handleValidation}*/}
-            {/*validators={['required']}*/}
-            {/*errorMessages={['this field is required']}*/}
+          {/*label="Paper Height"*/}
+          {/*type="number"*/}
+          {/*name="paperHeight"*/}
+          {/*key="paperHeight"*/}
+          {/*value={this.state.inputs.paperHeight}*/}
+          {/*onChange={this.onChange('paperHeight')}*/}
+          {/*onKeyPress={this.onKeyPress}*/}
+          {/*validatorListener={this.handleValidation}*/}
+          {/*validators={['required']}*/}
+          {/*errorMessages={['this field is required']}*/}
           {/*/>*/}
           {/*<TextValidator*/}
-            {/*label="Grid Size"*/}
-            {/*type="number"*/}
-            {/*name="gridSize"*/}
-            {/*key="gridSize"*/}
-            {/*value={this.state.inputs.gridSize}*/}
-            {/*onChange={this.onChange('gridSize')}*/}
-            {/*onKeyPress={this.onKeyPress}*/}
-            {/*validatorListener={this.handleValidation}*/}
-            {/*validators={['required']}*/}
-            {/*errorMessages={['this field is required']}*/}
+          {/*label="Grid Size"*/}
+          {/*type="number"*/}
+          {/*name="gridSize"*/}
+          {/*key="gridSize"*/}
+          {/*value={this.state.inputs.gridSize}*/}
+          {/*onChange={this.onChange('gridSize')}*/}
+          {/*onKeyPress={this.onKeyPress}*/}
+          {/*validatorListener={this.handleValidation}*/}
+          {/*validators={['required']}*/}
+          {/*errorMessages={['this field is required']}*/}
           {/*/>*/}
         </ValidatorForm>
       </>

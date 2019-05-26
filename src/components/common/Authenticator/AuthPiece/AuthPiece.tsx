@@ -55,18 +55,24 @@ export default abstract class AuthPiece<P extends AuthPieceProps, S extends Auth
   }
 
 
-  errorMessage(err: string|any) {
-    if (typeof err === 'string') { return err; }
-    return err.message? err.message : JSON.stringify(err);
+  errorMessage(err: string | any) {
+    if (typeof err === 'string') {
+      return err;
+    }
+    return err.message ? err.message : JSON.stringify(err);
   }
 
   triggerAuthEvent(event) {
     const state = this.props.authState;
-    if (this.props.onAuthEvent) { this.props.onAuthEvent(state, event); }
+    if (this.props.onAuthEvent) {
+      this.props.onAuthEvent(state, event);
+    }
   }
 
   changeState(state: AuthState, data?: any) {
-    if (this.props.onStateChange) { this.props.onStateChange(state, data); }
+    if (this.props.onStateChange) {
+      this.props.onStateChange(state, data);
+    }
 
     this.triggerAuthEvent({
       type: 'stateChange',
@@ -82,7 +88,7 @@ export default abstract class AuthPiece<P extends AuthPieceProps, S extends Auth
   }
 
   handleInputChange = (evt) => {
-    const { name, value, type, checked } = evt.target;
+    const {name, value, type, checked} = evt.target;
     const check_type = ['radio', 'checkbox'].includes(type);
     this.setState({
       inputs: {
@@ -99,7 +105,7 @@ export default abstract class AuthPiece<P extends AuthPieceProps, S extends Auth
   }
 
   render() {
-    if (!this._validAuthStates.includes(this.props.authState)) {
+    if (! this._validAuthStates.includes(this.props.authState)) {
       this._isHidden = true;
       return null;
     }

@@ -27,7 +27,7 @@ export class ConfirmationDialog extends React.Component<RenameLayerDialogProps, 
 
 
   render() {
-    const { open, onClose, title } = this.props
+    const {open, onClose, title} = this.props
 
     return (
       <Dialog

@@ -15,11 +15,11 @@ export default class Case04 extends React.Component<any, any> {
     this.state = {
       count: 0,
       pivotPart: 0,
-      g1_position: new Point(200,200),
-      g2_position: new Point(250,200),
-      c1_position: new Point(200,100),
-      c2_position: new Point(300,100),
-      c3_position: new Point(350,200),
+      g1_position: new Point(200, 200),
+      g2_position: new Point(250, 200),
+      c1_position: new Point(200, 100),
+      c2_position: new Point(300, 100),
+      c3_position: new Point(350, 200),
     }
   }
 

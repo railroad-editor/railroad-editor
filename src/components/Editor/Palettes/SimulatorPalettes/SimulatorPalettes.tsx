@@ -19,20 +19,20 @@ export class SimulatorPalettes extends React.Component<SimulatorPalettesProps> {
 
   render() {
     return (
-        <>
-            <StyledPowerPackPalette
-                // active={this.props.common.EditorMode.SIMULATOR}
-                active={true}
-                items={this.props.layout.currentLayoutData.powerPacks}
-                helpMessage={'Click + to add a power unit.'}
-            />
-            <StyledSwitcherPalette
-                // active={this.props.common.EditorMode.SIMULATOR}
-                active={true}
-                items={this.props.layout.currentLayoutData.switchers}
-                helpMessage={'Click + to add a turnout switcher.'}
-            />
-        </>
+      <>
+        <StyledPowerPackPalette
+          // active={this.props.common.EditorMode.SIMULATOR}
+          active={true}
+          items={this.props.layout.currentLayoutData.powerPacks}
+          helpMessage={'Click + to add a power unit.'}
+        />
+        <StyledSwitcherPalette
+          // active={this.props.common.EditorMode.SIMULATOR}
+          active={true}
+          items={this.props.layout.currentLayoutData.switchers}
+          helpMessage={'Click + to add a turnout switcher.'}
+        />
+      </>
     )
   }
 }

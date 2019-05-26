@@ -38,7 +38,6 @@ export interface PowerPackPaletteState {
 }
 
 
-
 @inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
 @observer
 export default class SwitcherPalette extends React.Component<SwitcherPaletteProps, PowerPackPaletteState> {
@@ -67,10 +66,10 @@ export default class SwitcherPalette extends React.Component<SwitcherPaletteProp
     let conductionStates
     switch (type) {
       case SwitcherType.NORMAL:
-        conductionStates = { 0: [], 1: [] }
+        conductionStates = {0: [], 1: []}
         break
       case SwitcherType.THREE_WAY:
-        conductionStates = { 0: [], 1: [], 2: [] }
+        conductionStates = {0: [], 1: [], 2: []}
         break
     }
     this.props.layout.addSwitcher({
@@ -110,7 +109,8 @@ export default class SwitcherPalette extends React.Component<SwitcherPaletteProp
           <Divider/>
           <CenteredDiv>
             <Typography align="left">
-              {splitMessages[0]} <AddBoxIcon color="primary" style={{fontSize: '16px', marginBottom: '-3px'}}/> {splitMessages[1]}
+              {splitMessages[0]} <AddBoxIcon color="primary"
+                                             style={{fontSize: '16px', marginBottom: '-3px'}}/> {splitMessages[1]}
             </Typography>
           </CenteredDiv>
         </>
@@ -129,7 +129,7 @@ export default class SwitcherPalette extends React.Component<SwitcherPaletteProp
           >
             <PaletteBodyPaper>
               <TitleDiv className='Palette__title'>
-                <CallSplitIcon />
+                <CallSplitIcon/>
                 <TitleTypography variant="subheading" color="inherit">
                   {'Switchers'}
                 </TitleTypography>

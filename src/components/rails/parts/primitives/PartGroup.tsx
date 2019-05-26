@@ -64,7 +64,9 @@ export default class PartGroup extends PartBase<PartGroupProps, PartGroupState> 
       position=${this.group.position}, pivot=${this.group.pivot}, bounds=${this.group.bounds}`)
   }
 
-  createPathData = (props) => { return null }
+  createPathData = (props) => {
+    return null
+  }
 
   render() {
     const {

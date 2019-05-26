@@ -17,7 +17,6 @@ export interface CustomStraightRailDialogState extends FormDialogState {
 }
 
 
-
 export default class CustomStraightRailDialog extends FormDialog<CustomStraightRailDialogProps, CustomStraightRailDialogState> {
 
   constructor(props: CustomStraightRailDialogProps) {
@@ -55,7 +54,7 @@ export default class CustomStraightRailDialog extends FormDialog<CustomStraightR
   }
 
 
-  onDoubleChange = (e: React.SyntheticEvent<HTMLInputElement|any>) => {
+  onDoubleChange = (e: React.SyntheticEvent<HTMLInputElement | any>) => {
     this.setState({
       isDouble: ! this.state.isDouble,
     });
@@ -63,45 +62,45 @@ export default class CustomStraightRailDialog extends FormDialog<CustomStraightR
 
   renderContent = () => {
     return (
-        <ValidatorForm
-          ref={(form) => this._form = form}
-        >
-          <AutoFocusTextValidator
-            autoFocus
-            label="Length"
-            type="number"
-            name="length"
-            key="length"
-            value={this.state.inputs.length}
-            onChange={this.onChange('length')}
-            onKeyPress={this.onKeyPress}
-            validatorListener={this.handleValidation}
-            validators={['required']}
-            errorMessages={['this field is required']}
-          />
-          <br/>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={this.state.isDouble}
-                onChange={this.onDoubleChange}
-              />
-            }
-            label={"Double"}
-          />
-          <br/>
-          <TextValidator
-            label="Name"
-            name="name"
-            key="name"
-            value={this.state.inputs.name}
-            onChange={this.onChange('name')}
-            onKeyPress={this.onKeyPress}
-            validatorListener={this.handleValidation}
-            validators={['required', 'isUniqueName']}
-            errorMessages={['this field is required', 'The name already exists.']}
-          />
-        </ValidatorForm>
+      <ValidatorForm
+        ref={(form) => this._form = form}
+      >
+        <AutoFocusTextValidator
+          autoFocus
+          label="Length"
+          type="number"
+          name="length"
+          key="length"
+          value={this.state.inputs.length}
+          onChange={this.onChange('length')}
+          onKeyPress={this.onKeyPress}
+          validatorListener={this.handleValidation}
+          validators={['required']}
+          errorMessages={['this field is required']}
+        />
+        <br/>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={this.state.isDouble}
+              onChange={this.onDoubleChange}
+            />
+          }
+          label={"Double"}
+        />
+        <br/>
+        <TextValidator
+          label="Name"
+          name="name"
+          key="name"
+          value={this.state.inputs.name}
+          onChange={this.onChange('name')}
+          onKeyPress={this.onKeyPress}
+          validatorListener={this.handleValidation}
+          validators={['required', 'isUniqueName']}
+          errorMessages={['this field is required', 'The name already exists.']}
+        />
+      </ValidatorForm>
     )
   }
 }

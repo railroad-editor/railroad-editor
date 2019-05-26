@@ -16,9 +16,9 @@ export default class Case03 extends React.Component<any, any> {
     this.state = {
       count: 0,
       pivot: Pivot.LEFT,
-      position: new Point(200,200),
-      child_position_1: new Point(200,100),
-      child_position_2: new Point(300,100)
+      position: new Point(200, 200),
+      child_position_1: new Point(200, 100),
+      child_position_2: new Point(300, 100)
     }
   }
 
@@ -95,8 +95,8 @@ export default class Case03 extends React.Component<any, any> {
                 // TODO: Bounds のキャッシュが更新されず、古いままのものを使う不具合あり？
                 this.setState({
                   count: this.state.count + 1,
-                  position: new Point(300,300),
-                  child_position_1: new Point(500,100)
+                  position: new Point(300, 300),
+                  child_position_1: new Point(500, 100)
                   // child_position_2: new Point(500,100)
                 })
                 break
@@ -104,7 +104,7 @@ export default class Case03 extends React.Component<any, any> {
                 // 子とGroupの位置を変更
                 this.setState({
                   count: this.state.count + 1,
-                  position: new Point(300,400),
+                  position: new Point(300, 400),
                 })
                 break
             }

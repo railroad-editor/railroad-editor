@@ -20,7 +20,7 @@ export default class Case08 extends React.Component<any, any> {
     this.state = {
       count: 0,
       pivotJoint: 0,
-      position: new Point(200,200),
+      position: new Point(200, 200),
     }
   }
 

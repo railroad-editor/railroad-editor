@@ -36,7 +36,6 @@ export interface PaletteState {
 type EnhancedPaletteProps = PaletteProps & WithBuilderPublicProps & WithSnackbarProps
 
 
-
 @inject(STORE_BUILDER, STORE_LAYOUT)
 @observer
 export class RailPalettes extends React.Component<EnhancedPaletteProps, PaletteState> {
@@ -74,10 +73,14 @@ export class RailPalettes extends React.Component<EnhancedPaletteProps, PaletteS
     const customCurveRails = this.props.builder.userRails.filter(c => c.paletteName === Tools.CURVE_RAILS)
     const customRailGroups = this.props.builder.userRailGroups
       .filter(rg => rg.name !== 'Clipboard')
-      .map(rg => { return {name: rg.name, type: 'RailGroup'} })
+      .map(rg => {
+        return {name: rg.name, type: 'RailGroup'}
+      })
     const clipboard = this.props.builder.userRailGroups
       .filter(rg => rg.name === 'Clipboard')
-      .map(rg => { return {name: rg.name, type: 'RailGroup'} })
+      .map(rg => {
+        return {name: rg.name, type: 'RailGroup'}
+      })
 
     return (
       <Rnd
@@ -159,7 +162,7 @@ export class RailPalettes extends React.Component<EnhancedPaletteProps, PaletteS
 }
 
 
-export default compose<PaletteProps, EnhancedPaletteProps|any>(
+export default compose<PaletteProps, EnhancedPaletteProps | any>(
   withBuilder,
   withSnackbar()
 )(RailPalettes)

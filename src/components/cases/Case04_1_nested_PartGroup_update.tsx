@@ -15,11 +15,11 @@ export default class Case04 extends React.Component<any, any> {
     this.state = {
       count: 0,
       pivot: 0,
-      g1_position: new Point(200,200),
-      g2_position: new Point(250,200),
-      c1_position: new Point(200,100),
-      c2_position: new Point(300,100),
-      c3_position: new Point(350,200),
+      g1_position: new Point(200, 200),
+      g2_position: new Point(250, 200),
+      c1_position: new Point(200, 100),
+      c2_position: new Point(300, 100),
+      c3_position: new Point(350, 200),
     }
   }
 
@@ -102,7 +102,7 @@ export default class Case04 extends React.Component<any, any> {
                 // Groupの位置を変更
                 this.setState({
                   count: this.state.count + 1,
-                  g1_position: new Point(300,300),
+                  g1_position: new Point(300, 300),
                 })
                 break
               case 1:
@@ -111,9 +111,9 @@ export default class Case04 extends React.Component<any, any> {
                 // g1_positionを変更しない場合、Groupの位置は変わらない。
                 this.setState({
                   count: this.state.count + 1,
-                  g1_position: new Point(300,400),
-                  c2_position: new Point(300,200),
-                  c3_position: new Point(550,200)
+                  g1_position: new Point(300, 400),
+                  c2_position: new Point(300, 200),
+                  c3_position: new Point(550, 200)
                 })
                 break
             }

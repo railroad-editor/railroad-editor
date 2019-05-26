@@ -9,7 +9,7 @@ import {withSnackbar} from 'material-ui-snackbar-provider'
 const LOGGER = getLogger(__filename)
 
 export interface NewPowerPackDialogProps extends FormDialogProps {
-  addPowerPack:(name: string) => void
+  addPowerPack: (name: string) => void
   snackbar: any
 }
 
@@ -50,6 +50,6 @@ export class NewPowerPackDialog extends FormDialog<NewPowerPackDialogProps, Form
 }
 
 
-export default compose<NewPowerPackDialogProps, NewPowerPackDialogProps|any>(
+export default compose<NewPowerPackDialogProps, NewPowerPackDialogProps | any>(
   withSnackbar()
 )(NewPowerPackDialog)

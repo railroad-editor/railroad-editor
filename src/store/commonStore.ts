@@ -43,7 +43,7 @@ export class CommonStore {
   @observable switcherPalettePosition: Point
 
 
-  constructor({layouts, userInfo, isPaperLoaded, initialZoom, editorMode, zoom, zooming, pan, panning, }) {
+  constructor({layouts, userInfo, isPaperLoaded, initialZoom, editorMode, zoom, zooming, pan, panning,}) {
     this.layouts = layouts
     this.userInfo = userInfo
     this.isPaperLoaded = isPaperLoaded
@@ -127,7 +127,7 @@ export class CommonStore {
   }
 
   @action
-  setZoom =  (zoom: number) => {
+  setZoom = (zoom: number) => {
     this.zoom = zoom
     this.zooming = true
   }

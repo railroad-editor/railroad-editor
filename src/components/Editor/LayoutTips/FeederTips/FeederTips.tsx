@@ -31,7 +31,7 @@ export class FeederTips extends React.Component<FeederTipProps & WithBuilderPubl
   constructor(props: FeederTipProps & WithBuilderPublicProps) {
     super(props)
     reaction(() => this.props.common.zooming,
-      () => this.forceUpdate() )
+      () => this.forceUpdate())
   }
 
 
@@ -59,5 +59,5 @@ export class FeederTips extends React.Component<FeederTipProps & WithBuilderPubl
 }
 
 
-export default compose<FeederTipProps, FeederTipProps|any>(
+export default compose<FeederTipProps, FeederTipProps | any>(
 )(FeederTips)

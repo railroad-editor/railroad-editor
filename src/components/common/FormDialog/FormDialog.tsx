@@ -73,7 +73,7 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
   }
 
   onKeyPress = (e) => {
-    if ( (! this.state.disabled) && e.key === 'Enter') {
+    if ((! this.state.disabled) && e.key === 'Enter') {
       this.onOK(e)
       e.preventDefault()
     }
@@ -89,7 +89,7 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
       >
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-            {this.renderContent()}
+          {this.renderContent()}
         </DialogContent>
         <DialogActions>
           <Button variant="raised" color="primary"

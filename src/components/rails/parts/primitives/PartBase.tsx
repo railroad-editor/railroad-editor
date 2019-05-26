@@ -218,7 +218,8 @@ export default abstract class PartBase<P extends PartBaseProps, S> extends React
   }
 
   render() {
-    const { position, angle, pivot, fillColor, visible, opacity, selected, name, data,
+    const {
+      position, angle, pivot, fillColor, visible, opacity, selected, name, data,
       onMouseDown, onMouseDrag, onMouseUp, onDoubleClick, onMouseMove, onMouseEnter, onMouseLeave
     } = this.props
 

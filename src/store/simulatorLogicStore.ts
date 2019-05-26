@@ -25,7 +25,6 @@ export interface TemporaryRailFlows {
 }
 
 
-
 export class SimulatorLogicStore {
 
   @observable activeTool: Tools
@@ -38,7 +37,7 @@ export class SimulatorLogicStore {
     // TODO: もっと簡潔に書けないのか？
     // 電流に変更があれば更新
     reaction(
-      () => layoutStore.currentLayoutData.powerPacks.map( p => p.power * (p.direction ? 1 : -1)),
+      () => layoutStore.currentLayoutData.powerPacks.map(p => p.power * (p.direction ? 1 : -1)),
       (data) => {
         LOGGER.info('reaction 1', data)
         if (commonStore.editorMode === EditorMode.SIMULATOR) {
@@ -53,7 +52,7 @@ export class SimulatorLogicStore {
     )
     // パワーパックに接続されたフィーダーが変更されたら更新
     reaction(
-      () => layoutStore.currentLayoutData.powerPacks.map( p => p.supplyingFeederIds),
+      () => layoutStore.currentLayoutData.powerPacks.map(p => p.supplyingFeederIds),
       (data) => {
         LOGGER.info('reaction 2', data)
         if (commonStore.editorMode === EditorMode.SIMULATOR) {
@@ -68,7 +67,7 @@ export class SimulatorLogicStore {
     )
     // スイッチが切り替わったら更新
     reaction(
-      () => layoutStore.currentLayoutData.switchers.map( p => p.currentState),
+      () => layoutStore.currentLayoutData.switchers.map(p => p.currentState),
       (data) => {
         LOGGER.info('reaction 3')
         if (commonStore.editorMode === EditorMode.SIMULATOR) {
@@ -110,7 +109,6 @@ export class SimulatorLogicStore {
   setActiveTool = (tool: Tools) => {
     this.activeTool = tool
   }
-
 
 
   /**
@@ -187,7 +185,7 @@ export class SimulatorLogicStore {
   simulateFeederCurrentFlow = (feederId: number, powerPacks: PowerPackData[]) => {
     // パワーパックに接続されてないか、電流が0なら何もしない
     const powerPack = powerPacks.find(p => p.supplyingFeederIds.includes(feederId))
-    if (!powerPack || powerPack.power === 0) {
+    if (! powerPack || powerPack.power === 0) {
       return
     }
 
@@ -208,7 +206,7 @@ export class SimulatorLogicStore {
     _.range(joints.length).forEach(jointId => {
       // 対向ジョイントが無ければ終了
       const opposingJoint = rail.opposingJoints[jointId]
-      if (!opposingJoint) {
+      if (! opposingJoint) {
         return
       }
       // このジョイントか、対向ジョイントがギャップジョイナーなら終了
@@ -226,7 +224,7 @@ export class SimulatorLogicStore {
   isGapJoiner = (railId: number, jointId: number) => {
     const gapJoiner = layoutStore.currentLayoutData.gapJoiners.find(gj =>
       gj.railId === railId && gj.jointId === jointId)
-    return !!gapJoiner
+    return !! gapJoiner
   }
 
 
@@ -236,7 +234,7 @@ export class SimulatorLogicStore {
     const joint = railPart.joints[jointId]
     const partId = joint.pivotPartIndex
     // パーツが通電可能であるかを確認
-    if (!railPart.conductiveParts.includes(partId)) {
+    if (! railPart.conductiveParts.includes(partId)) {
       return
     }
 
@@ -248,11 +246,11 @@ export class SimulatorLogicStore {
     }
 
     // もう一方のジョイントがあれば、他のレールに接続されているか確認する
-    const anotherJointId = railPart.joints.findIndex(j=> j.pivotPartIndex === partId && j.pivot !== joint.pivot)
+    const anotherJointId = railPart.joints.findIndex(j => j.pivotPartIndex === partId && j.pivot !== joint.pivot)
     const anotherJoint = railPart.joints[anotherJointId]
     const opposingJoint = rail.opposingJoints[anotherJointId]
     // 接続されていなければ終了
-    if (!opposingJoint) {
+    if (! opposingJoint) {
       return
     }
 
@@ -288,10 +286,10 @@ export class SimulatorLogicStore {
 
   setTemporaryFlow = (railId: number, partId: number, feederId: number, direction: FlowDirection) => {
 
-    if (!this.temporaryRailFlows[railId]) {
+    if (! this.temporaryRailFlows[railId]) {
       this.temporaryRailFlows[railId] = {}
     }
-    if (!this.temporaryRailFlows[railId][partId]) {
+    if (! this.temporaryRailFlows[railId][partId]) {
       this.temporaryRailFlows[railId][partId] = []
     }
 
@@ -329,7 +327,7 @@ export class SimulatorLogicStore {
       this.errorRails.push({id: railId, partId: partId})
       const errorPowerPacks = tempFlows.map(tf => tf.feederId)
         .map(fid => layoutStore.getPowerPackByFeederId(fid))
-      this.errorPowerPacks = _.unionWith(this.errorPowerPacks, errorPowerPacks,  (p1, p2) => p1.id === p2.id)
+      this.errorPowerPacks = _.unionWith(this.errorPowerPacks, errorPowerPacks, (p1, p2) => p1.id === p2.id)
     } else {
       _.remove(this.errorRails, r => _.isEqual(r, {id: railId, partId: partId}))
     }

@@ -27,7 +27,7 @@ const createSession = async (userId: string, layoutId: string, peerId: string) =
   })
 }
 
-const deleteSession =  async (userId: string, layoutId: string) => {
+const deleteSession = async (userId: string, layoutId: string) => {
   return await API.del('Layout', `/users/${userId}/sessions/${layoutId}`, {headers: {}})
 }
 

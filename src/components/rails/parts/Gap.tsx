@@ -45,7 +45,7 @@ export default class Gap extends React.Component<GapProps, {}> {
   }
 
   render() {
-    const { position, angle, opacity, fillColor, visible } = this.props
+    const {position, angle, opacity, fillColor, visible} = this.props
 
     return (
       <RectPart
@@ -58,7 +58,9 @@ export default class Gap extends React.Component<GapProps, {}> {
         visible={visible}
         fillColor={fillColor}
         name={name}
-        ref={(r) => {if (r) this.part = r}}
+        ref={(r) => {
+          if (r) this.part = r
+        }}
       />
     )
   }

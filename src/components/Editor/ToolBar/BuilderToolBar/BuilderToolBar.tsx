@@ -54,7 +54,6 @@ export interface BuilderToolBarState {
 type EnhancedBuilderToolBarProps = BuilderToolBarProps & WithBuilderPublicProps
 
 
-
 @inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
 @observer
 export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps, BuilderToolBarState> {
@@ -280,7 +279,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
 }
 
 
-export default compose<BuilderToolBarProps, BuilderToolBarProps|any>(
+export default compose<BuilderToolBarProps, BuilderToolBarProps | any>(
   withBuilder,
   withMoveTool
 )(BuilderToolBar)

@@ -100,7 +100,7 @@ export default class LayerSettingDialog extends FormDialog<LayerSettingDialogPro
             errorMessages={['this field is required']}
           />
         </ValidatorForm>
-        <Spacer />
+        <Spacer/>
 
         {/* Rail color */}
         <Grid container justify="center" alignItems="center" spacing={0}>
@@ -129,8 +129,8 @@ export default class LayerSettingDialog extends FormDialog<LayerSettingDialogPro
           }}
         >
           <ChromePicker
-            color={ this.state.inputs.color }
-            onChangeComplete={ this.onColorChange }
+            color={this.state.inputs.color}
+            onChangeComplete={this.onColorChange}
           />
         </Popover>
       </>

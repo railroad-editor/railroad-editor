@@ -61,7 +61,9 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     super(props)
   }
 
-  get path() { return this.partGroup.path }
+  get path() {
+    return this.partGroup.path
+  }
 
   componentDidUpdate() {
     logger.trace('updated')
@@ -210,7 +212,8 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
 
 
   render() {
-    const { position, angle, pivotJointIndex, selected, fillColor,
+    const {
+      position, angle, pivotJointIndex, selected, fillColor,
       name, data, onLeftClick, onRightClick, visible, opacity, onMouseEnter, onMouseLeave
     } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)

@@ -38,7 +38,6 @@ export interface PowerPackPaletteState {
 }
 
 
-
 @inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
 @observer
 export default class PowerPackPalette extends React.Component<PowerPackPaletteProps, PowerPackPaletteState> {
@@ -100,7 +99,8 @@ export default class PowerPackPalette extends React.Component<PowerPackPalettePr
           <Divider/>
           <CenteredDiv>
             <Typography align="left">
-              {splitMessages[0]} <AddBoxIcon color="primary" style={{fontSize: '16px', marginBottom: '-3px'}}/> {splitMessages[1]}
+              {splitMessages[0]} <AddBoxIcon color="primary"
+                                             style={{fontSize: '16px', marginBottom: '-3px'}}/> {splitMessages[1]}
             </Typography>
           </CenteredDiv>
         </>
@@ -119,7 +119,7 @@ export default class PowerPackPalette extends React.Component<PowerPackPalettePr
           >
             <PaletteBodyPaper>
               <TitleDiv className='Palette__title'>
-                <PowerIcon />
+                <PowerIcon/>
                 <TitleTypography variant="subheading" color="inherit">
                   {'Power Packs'}
                 </TitleTypography>

@@ -89,7 +89,13 @@ export default RailContainerClasses
 
 
 // TODO: RailProps の方がわかりやすい名前では？
-export type RailData = RailBaseProps | StraightRailProps | CurveRailProps | SimpleTurnoutProps | DoubleStraightRailProps | DoubleCrossTurnoutProps
+export type RailData =
+  RailBaseProps
+  | StraightRailProps
+  | CurveRailProps
+  | SimpleTurnoutProps
+  | DoubleStraightRailProps
+  | DoubleCrossTurnoutProps
 
 
 export interface RailGroupData extends RailGroupProps {
@@ -99,5 +105,6 @@ export interface RailGroupData extends RailGroupProps {
 export interface RailItemData {
   type: string
   name: string
+
   [x: string]: any
 }

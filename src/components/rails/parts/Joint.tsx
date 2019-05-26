@@ -105,7 +105,7 @@ export default class Joint extends React.Component<JointProps, {}> {
         pivot={pivot}
         fillColors={fillColors}
         visible={visible}
-        detectionEnabled={detectionEnabled && !hasOpposingJoint}
+        detectionEnabled={detectionEnabled && ! hasOpposingJoint}
         name={name}
         data={data}
         onLeftClick={onLeftClick}
@@ -113,7 +113,9 @@ export default class Joint extends React.Component<JointProps, {}> {
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onMouseMove={onMouseMove}
-        ref={(part) => {if (part) this.part = part}}
+        ref={(part) => {
+          if (part) this.part = part
+        }}
       />
     )
   }

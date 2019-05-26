@@ -19,7 +19,7 @@ export const createGridLines = (width, height, gridSize) => {
     return (
       <Line
         from={new Point(0, gridSize * i)}
-        to={new Point(width,gridSize * i)}
+        to={new Point(width, gridSize * i)}
         strokeColor={'red'}
       />)
   })

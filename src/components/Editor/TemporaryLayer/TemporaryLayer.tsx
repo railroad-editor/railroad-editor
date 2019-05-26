@@ -43,24 +43,24 @@ export class TemporaryLayer extends React.Component<TemporaryLayerProps & WithBu
     }
 
     return (
-        <Layer
-          key={-1}
-          data={{id: -1, name: 'TemporaryLayer'}}
-        >
-          {
-            temporaryRails.length > 0 &&
-            createRailOrRailGroupComponent(temporaryRailGroup, temporaryRails, temporaryLayer)
-          }
-          {
-            temporaryFeeder &&
-            createFeederComponent(temporaryFeeder)
-          }
-        </Layer>
+      <Layer
+        key={-1}
+        data={{id: -1, name: 'TemporaryLayer'}}
+      >
+        {
+          temporaryRails.length > 0 &&
+          createRailOrRailGroupComponent(temporaryRailGroup, temporaryRails, temporaryLayer)
+        }
+        {
+          temporaryFeeder &&
+          createFeederComponent(temporaryFeeder)
+        }
+      </Layer>
     )
   }
 }
 
 
-export default compose<TemporaryLayerProps, TemporaryLayerProps|any>(
+export default compose<TemporaryLayerProps, TemporaryLayerProps | any>(
   withBuilder,
 )(TemporaryLayer)

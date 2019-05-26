@@ -25,14 +25,14 @@ export default class ForgotPassword extends AuthPiece<any, any> {
 
 
   sendEmail = () => {
-    const { email } = this.state.inputs;
+    const {email} = this.state.inputs;
     Auth.forgotPassword(email)
       .then(data => this.changeState(AuthState.CONFIRM_FORGOT_PASSWORD, null))
       .catch(err => this.error(err));
   }
 
   onKeyPress = (e) => {
-    if ( (! this.state.disabled) && e.key === 'Enter') {
+    if ((! this.state.disabled) && e.key === 'Enter') {
       this.sendEmail()
       e.preventDefault()
     }

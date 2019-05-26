@@ -27,7 +27,7 @@ export default class PaletteListItem extends React.Component<PaletteListItemProp
   }
 
   openMenu = (e: React.MouseEvent<HTMLElement>) => {
-    this.setState({ anchorEl: e.currentTarget });
+    this.setState({anchorEl: e.currentTarget});
   }
 
   onMenuClose = (e: React.MouseEvent<HTMLElement>) => {

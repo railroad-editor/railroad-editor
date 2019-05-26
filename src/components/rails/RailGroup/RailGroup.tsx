@@ -37,8 +37,13 @@ export default class RailGroup extends React.Component<RailGroupProps, {}> {
   pivotPosition: Point
   pivotAngle: number
 
-  get children() { return this._children }
-  get group() { return this._group }
+  get children() {
+    return this._children
+  }
+
+  get group() {
+    return this._group
+  }
 
   constructor(props: RailGroupProps) {
     super(props)

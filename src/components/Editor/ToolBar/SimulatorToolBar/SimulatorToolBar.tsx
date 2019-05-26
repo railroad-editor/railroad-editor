@@ -39,7 +39,6 @@ export interface SimulatorToolBarState {
 type EnhancedSimulatorToolBarProps = SimulatorToolBarProps
 
 
-
 @inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_SIMULATOR_LOGIC)
 @observer
 export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarProps, SimulatorToolBarState> {
@@ -100,13 +99,13 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
           </StyledIconButton>
         </Tooltip>
         {/*<SimulatorSettingsDialog*/}
-          {/*title={'Settings'}*/}
-          {/*open={this.state.openSettings}*/}
-          {/*onClose={this.closeSettingsDialog}*/}
-          {/*config={this.props.layout.config}*/}
-          {/*setConfig={this.props.layout.setConfig}*/}
-          {/*userInfo={this.props.common.userInfo}*/}
-          {/*layoutMeta={this.props.layout.meta}*/}
+        {/*title={'Settings'}*/}
+        {/*open={this.state.openSettings}*/}
+        {/*onClose={this.closeSettingsDialog}*/}
+        {/*config={this.props.layout.config}*/}
+        {/*setConfig={this.props.layout.setConfig}*/}
+        {/*userInfo={this.props.common.userInfo}*/}
+        {/*layoutMeta={this.props.layout.meta}*/}
         {/*/>*/}
       </Grid>
     )
@@ -114,7 +113,7 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
 }
 
 
-export default compose<SimulatorToolBarProps, SimulatorToolBarProps|any>(
+export default compose<SimulatorToolBarProps, SimulatorToolBarProps | any>(
   withMoveTool,
   withSnackbar()
 )(SimulatorToolBar)

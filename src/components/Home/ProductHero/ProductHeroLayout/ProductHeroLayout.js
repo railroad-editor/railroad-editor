@@ -50,14 +50,14 @@ const styles = theme => ({
 });
 
 function ProductHeroLayout(props) {
-  const { backgroundClassName, children, classes } = props;
+  const {backgroundClassName, children, classes} = props;
 
   return (
     <section className={classes.root}>
       <LayoutBody className={classes.layoutBody} width="full">
         {children}
-        <div className={classes.backdrop} />
-        <div className={classNames(classes.background, backgroundClassName)} />
+        <div className={classes.backdrop}/>
+        <div className={classNames(classes.background, backgroundClassName)}/>
       </LayoutBody>
     </section>
   );

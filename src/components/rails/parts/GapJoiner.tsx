@@ -48,7 +48,7 @@ export default class GapJoiner extends React.Component<GapJoinerProps, {}> {
   }
 
   render() {
-    const { position, angle, pivot, fillColor, opacity, visible, selected, data, onLeftClick, onMouseEnter, onMouseLeave } = this.props
+    const {position, angle, pivot, fillColor, opacity, visible, selected, data, onLeftClick, onMouseEnter, onMouseLeave} = this.props
 
     return (
       <RectPart
@@ -65,7 +65,9 @@ export default class GapJoiner extends React.Component<GapJoinerProps, {}> {
         onLeftClick={onLeftClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        ref={(r) => {if (r) this.part = r}}
+        ref={(r) => {
+          if (r) this.part = r
+        }}
       />
     )
   }

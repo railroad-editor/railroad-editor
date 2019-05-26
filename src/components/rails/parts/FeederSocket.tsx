@@ -115,7 +115,7 @@ export default class FeederSocket extends React.Component<FeederSocketProps, {}>
         fillColors={fillColors}
         visible={visible}
         selected={selected}
-        detectionEnabled={detectionEnabled && !hasFeeder}
+        detectionEnabled={detectionEnabled && ! hasFeeder}
         pivotPartIndex={0}
         name={name}
         data={data}
@@ -124,7 +124,9 @@ export default class FeederSocket extends React.Component<FeederSocketProps, {}>
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onMouseMove={onMouseMove}
-        ref={(part) => {if (part) this.part = part}}
+        ref={(part) => {
+          if (part) this.part = part
+        }}
       />
     )
   }

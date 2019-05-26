@@ -39,7 +39,7 @@ export class LayoutCard extends React.Component<LayoutCardProps, LayoutCardState
   }
 
   openMenu = (e: React.MouseEvent<HTMLElement>) => {
-    this.setState({ anchorEl: e.currentTarget });
+    this.setState({anchorEl: e.currentTarget});
   }
 
   onMenuClose = (e: React.MouseEvent<HTMLElement>) => {
@@ -75,12 +75,12 @@ export class LayoutCard extends React.Component<LayoutCardProps, LayoutCardState
           <Button
             onClick={this.props.onClick}
           >
-          <CardContent>
-            <S3Image level={'private'} imgKey={imgKey}/>
-            <Typography align="left" variant="body2">
-              Last modified: {moment(lastModified).format('YYYY/MM/DD, hh:mm')}
-            </Typography>
-          </CardContent>
+            <CardContent>
+              <S3Image level={'private'} imgKey={imgKey}/>
+              <Typography align="left" variant="body2">
+                Last modified: {moment(lastModified).format('YYYY/MM/DD, hh:mm')}
+              </Typography>
+            </CardContent>
           </Button>
         </Card>
         <Menu

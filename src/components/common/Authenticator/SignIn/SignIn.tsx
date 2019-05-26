@@ -37,7 +37,7 @@ export default class SignIn extends AuthPiece<SignInProps, AuthPieceState> {
   checkContact = (user) => {
     Auth.verifiedContact(user)
       .then(data => {
-        if (!JS.isEmpty(data.verified)) {
+        if (! JS.isEmpty(data.verified)) {
           this.changeState(AuthState.SIGNED_IN, user);
         } else {
           user = Object.assign(user, data);
@@ -47,7 +47,7 @@ export default class SignIn extends AuthPiece<SignInProps, AuthPieceState> {
   }
 
   signIn = () => {
-    const { email, password } = this.state.inputs;
+    const {email, password} = this.state.inputs;
     Auth.signIn(email, password)
       .then(user => {
         logger.debug(user);
@@ -60,8 +60,7 @@ export default class SignIn extends AuthPiece<SignInProps, AuthPieceState> {
         } else if (user.challengeName === 'MFA_SETUP') {
           logger.debug('TOTP setup', user.challengeParam);
           this.changeState(AuthState.TOTP_SETUP, user);
-        }
-        else {
+        } else {
           this.checkContact(user);
         }
       })
@@ -71,14 +70,14 @@ export default class SignIn extends AuthPiece<SignInProps, AuthPieceState> {
   }
 
   onKeyPress = (e) => {
-    if ( (! this.state.disabled) && e.key === 'Enter') {
+    if ((! this.state.disabled) && e.key === 'Enter') {
       this.signIn()
       e.preventDefault()
     }
   }
 
   showComponent() {
-    const { authState, federated, onStateChange } = this.props;
+    const {authState, federated, onStateChange} = this.props;
 
     return (
       <div>
@@ -102,7 +101,7 @@ export default class SignIn extends AuthPiece<SignInProps, AuthPieceState> {
                   errorMessages={['this field is required', 'email is not valid']}
                   fullWidth
                 />
-                <br />
+                <br/>
                 <TextValidator
                   label="Password"
                   name="password"
@@ -140,6 +139,6 @@ export default class SignIn extends AuthPiece<SignInProps, AuthPieceState> {
           </Grid>
         </StyledDialogContent>
       </div>
-  )
+    )
   }
-  }
+}

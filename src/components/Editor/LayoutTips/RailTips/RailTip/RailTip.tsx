@@ -22,7 +22,6 @@ const createColoredTooltip = (color: string) => withStyles({
 })(Tooltip);
 
 
-
 export interface FeederTipProps {
   rail: RailData
   switchers: SwitcherData[]
@@ -95,7 +94,13 @@ export class RailTip extends React.Component<FeederTipProps & WithBuilderPublicP
                        PopperProps={{onClick: this.onClick, style: {cursor: 'pointer', zIndex: '900'}}}
                        placement={placement}
         >
-          <div style={{top: `${position.y}px`, left: `${position.x}px`, width: '5px', height: '5px', position: 'absolute'}}/>
+          <div style={{
+            top: `${position.y}px`,
+            left: `${position.x}px`,
+            width: '5px',
+            height: '5px',
+            position: 'absolute'
+          }}/>
         </StyledTooltip>
         <TurnoutSettingDialog
           title={'Turnout Setting'}

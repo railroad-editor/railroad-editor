@@ -21,7 +21,7 @@ class TrainController {
         LOGGER.error('No session yet.')
       })
 
-    if (!session) {
+    if (! session) {
       return
     }
 

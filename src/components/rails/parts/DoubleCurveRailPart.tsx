@@ -46,7 +46,7 @@ export default class DoubleCurveRailPart extends RailPartBase<DoubleCurveRailPar
 
 
   renderParts = () => {
-    const { innerRadius, outerRadius, centerAngle, direction, pivotJointIndex, data, fillColors, flowDirections } = this.props
+    const {innerRadius, outerRadius, centerAngle, direction, pivotJointIndex, data, fillColors, flowDirections} = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 
     let radius1, radius2

@@ -13,7 +13,7 @@ export const StyledIconButton = styled(IconButton as any)`
     color: #FFC700
   }
   &.disabled {
-    color: ${theme.palette.primary['700'] 
+    color: ${theme.palette.primary['700']
   }
 `
 

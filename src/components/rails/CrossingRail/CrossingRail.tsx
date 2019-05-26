@@ -40,7 +40,7 @@ export default class CrossingRail extends RailBase<CrossingRailProps, RailBaseSt
         selected={selected}
         opacity={opacity}
         visible={visible}
-        fillColors={_.fill(Array(4),  fillColor)}
+        fillColors={_.fill(Array(4), fillColor)}
         data={{
           type: 'RailPart',
           railId: id,

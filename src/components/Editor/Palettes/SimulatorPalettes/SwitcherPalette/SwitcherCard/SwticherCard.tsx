@@ -49,7 +49,6 @@ export interface InversedConductionState {
 }
 
 
-
 @inject(STORE_LAYOUT_LOGIC, STORE_LAYOUT)
 @observer
 export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCardState> {
@@ -169,11 +168,11 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
                     <Typography align="center"> {rail.name} </Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <TurnoutStateTable switcher={this.props.item} rail={rail} />
+                    <TurnoutStateTable switcher={this.props.item} rail={rail}/>
                   </Grid>
                   <Grid item xs={3} justify="flex-end">
                     <IconButton style={{width: '40px', height: '40px'}}
-                      onClick={this.onDisconnect(railId)}
+                                onClick={this.onDisconnect(railId)}
                     >
                       <DeleteIcon style={{width: '20px', height: '20px'}}/>
                     </IconButton>

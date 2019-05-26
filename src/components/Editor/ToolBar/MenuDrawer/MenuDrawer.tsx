@@ -149,7 +149,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
     const basename = this.props.layout.meta.name
     const fileName = `${basename}-${moment().format('YYYYMMDD')}`  //`
 
-    const svg = window.PAPER_SCOPE.project.exportSVG({asString:true})
+    const svg = window.PAPER_SCOPE.project.exportSVG({asString: true})
     const url = "data:image/svg+xml;utf8," + encodeURIComponent(svg)
     const link = document.createElement("a");
     link.download = fileName;
@@ -159,7 +159,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
 
 
   render() {
-    const { open, onClose, ui }  = this.props
+    const {open, onClose, ui} = this.props
 
     let authMenu, dialogs
     if (this.props.common.isAuth) {
@@ -223,7 +223,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
 
             {authMenu}
 
-            <Divider />
+            <Divider/>
             <ListItem button onClick={this.openLayoutsDialog}>
               <ListItemIcon>
                 <CloudIcon/>
@@ -251,8 +251,8 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
               </ListItemIcon>
               <ListItemText primary="Save As..."/>
             </ListItem>
-            <Divider />
-            <ListItem button component="a" target="_blank"  href="http://d2t6ssvra5p03o.cloudfront.net/index.html"
+            <Divider/>
+            <ListItem button component="a" target="_blank" href="http://d2t6ssvra5p03o.cloudfront.net/index.html"
                       onClick={this.onOpenHelp}
             >
               <ListItemIcon>
@@ -261,10 +261,10 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
               <ListItemText primary="User Manual"/>
             </ListItem>
             {/*<ListItem button onClick={this.downloadAsSVG}>*/}
-              {/*<ListItemIcon>*/}
-                {/*<ArchiveIcon/>*/}
-              {/*</ListItemIcon>*/}
-              {/*<ListItemText primary="Export as SVG"/>*/}
+            {/*<ListItemIcon>*/}
+            {/*<ArchiveIcon/>*/}
+            {/*</ListItemIcon>*/}
+            {/*<ListItemText primary="Export as SVG"/>*/}
             {/*</ListItem>*/}
           </List>
 
@@ -297,6 +297,6 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
 }
 
 
-export default compose<MenuDrawerProps, MenuDrawerProps|any>(
+export default compose<MenuDrawerProps, MenuDrawerProps | any>(
   withSnackbar()
 )(MenuDrawer)

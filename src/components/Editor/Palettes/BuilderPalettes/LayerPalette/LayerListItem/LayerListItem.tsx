@@ -30,7 +30,7 @@ export class LayerListItem extends React.Component<LayerListItemProps, LayerList
   }
 
   openMenu = (e: React.MouseEvent<HTMLElement>) => {
-    this.setState({ anchorEl: e.currentTarget });
+    this.setState({anchorEl: e.currentTarget});
   }
 
   onMenuClose = (e: React.MouseEvent<HTMLElement>) => {
@@ -47,7 +47,7 @@ export class LayerListItem extends React.Component<LayerListItemProps, LayerList
     this.onMenuClose(e)
   }
 
-  render () {
+  render() {
     const {text, onRename, onDelete, isDeletable, ...otherProps} = this.props
 
     return (

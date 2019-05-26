@@ -14,7 +14,7 @@ export default class RectPart extends PartBase<RectPartProps, {}> {
   }
 
   createPathData = (props) => {
-    const { width, height } = props
+    const {width, height} = props
     return createRectPath(width, height)
   }
 

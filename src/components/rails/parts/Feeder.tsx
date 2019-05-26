@@ -59,7 +59,7 @@ export default class Feeder extends React.Component<FeederProps, {}> {
   }
 
   render() {
-    const { position, opacity, fillColor, visible, selected, data, onLeftClick, onMouseEnter, onMouseLeave } = this.props
+    const {position, opacity, fillColor, visible, selected, data, onLeftClick, onMouseEnter, onMouseLeave} = this.props
     const angle = this.getAngle()
 
     return (
@@ -77,7 +77,9 @@ export default class Feeder extends React.Component<FeederProps, {}> {
         onLeftClick={onLeftClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        ref={(r) => {if (r) this.part = r}}
+        ref={(r) => {
+          if (r) this.part = r
+        }}
       />
     )
   }

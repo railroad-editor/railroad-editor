@@ -42,7 +42,6 @@ export interface PowerPackCardState {
 }
 
 
-
 @inject(STORE_LAYOUT_LOGIC, STORE_LAYOUT)
 @observer
 export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPackCardState> {
@@ -206,9 +205,9 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
                   return (
                     <ListItem>
                       <ListItemIcon>
-                        <PowerIcon />
+                        <PowerIcon/>
                       </ListItemIcon>
-                      <ListItemText primary={feeder.name} />
+                      <ListItemText primary={feeder.name}/>
                       <ListItemSecondaryAction>
                         <IconButton>
                           <DeleteIcon onClick={this.onDisconnectFeeder(id)}/>

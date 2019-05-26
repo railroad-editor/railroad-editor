@@ -78,7 +78,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
      * そのままドラッグすると矩形選択を開始する。
      * @param {paper.ToolEvent | any} e
      */
-    mouseDown = (e: ToolEvent|any) => {
+    mouseDown = (e: ToolEvent | any) => {
       // Shiftが押されておらず、RailPart上で無ければ選択状態をリセットする
       const isNotOnRailPart = (! e.item) || ! (['RailPart', 'Feeder', 'GapJoiner'].includes(e.item.data.type))
       if ((! e.modifiers.shift) && isNotOnRailPart) {
@@ -93,7 +93,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
      * ドラッグ中は、矩形選択の開始地点からマウスカーソルに至る矩形を表示し続ける。
      * @param {paper.ToolEvent | any} e
      */
-    mouseDrag = (e: ToolEvent|any) => {
+    mouseDrag = (e: ToolEvent | any) => {
       // クリックしてから一定以上ドラッグされた時に初めて矩形を表示する
       if (this.debounceCount < WithSelectTool.DEBOUNCE_THRESHOLD) {
         this.debounceCount += 1

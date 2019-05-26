@@ -45,7 +45,7 @@ const styles = theme => ({
 });
 
 function ProductValues(props) {
-  const { classes } = props;
+  const {classes} = props;
 
   return (
     <section className={classes.root}>
@@ -58,7 +58,7 @@ function ProductValues(props) {
         <Grid container spacing={40}>
           <Grid item xs={12} md={4}>
             <div className={classes.item}>
-              <BuildIcon className={classes.productIcon} />
+              <BuildIcon className={classes.productIcon}/>
               <Typography variant="h5" className={classes.title}>
                 Easy to Use
               </Typography>
@@ -69,7 +69,7 @@ function ProductValues(props) {
           </Grid>
           <Grid item xs={12} md={4}>
             <div className={classes.item}>
-              <CloudIcon className={classes.productIcon} />
+              <CloudIcon className={classes.productIcon}/>
               <Typography variant="h5" className={classes.title}>
                 Cloud Native
               </Typography>
@@ -80,7 +80,7 @@ function ProductValues(props) {
           </Grid>
           <Grid item xs={12} md={4}>
             <div className={classes.item}>
-              <AccessibilityIcon className={classes.productIcon} />
+              <AccessibilityIcon className={classes.productIcon}/>
               <Typography variant="h5" className={classes.title}>
                 Beautiful UI
               </Typography>

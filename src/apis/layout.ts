@@ -32,7 +32,7 @@ const saveLayoutData = async (userId: string,
                               layoutConfig: LayoutConfig,
                               userRailGroups: UserRailGroupData[],
                               userCustomRails: RailItemData[]
-                              ) => {
+) => {
   const layoutId = layoutMeta.id
   const body: LayoutDataWithMeta = {
     layout: layoutData,

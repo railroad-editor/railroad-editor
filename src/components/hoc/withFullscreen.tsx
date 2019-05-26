@@ -23,7 +23,7 @@ export default function withFullscreen(WrappedComponent: React.ComponentClass<Wi
     }
 
     toggleFullscreen = () => {
-      if (!this.state.fullscreen) {
+      if (! this.state.fullscreen) {
         if (document.documentElement.requestFullscreen) {
           document.documentElement.requestFullscreen()
         } else if (document.documentElement.webkitRequestFullscreen) {
@@ -39,7 +39,7 @@ export default function withFullscreen(WrappedComponent: React.ComponentClass<Wi
     }
 
     fullScreenChange = () => {
-      this.setState({ fullscreen: !this.state.fullscreen })
+      this.setState({fullscreen: ! this.state.fullscreen})
     }
 
     componentDidMount() {
