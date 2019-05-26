@@ -52,8 +52,8 @@ export default class DoubleStraightRailPart extends RailPartBase<DoubleStraightR
         data={data}
       >
         <RectPart
-          width={length}
-          height={RAIL_PART_WIDTH}
+          width={RAIL_PART_WIDTH}
+          height={length}
           pivot={Pivot.LEFT}
           fillColor={fillColors[0]}
           flowDirection={flowDirections[0]}
@@ -63,8 +63,8 @@ export default class DoubleStraightRailPart extends RailPartBase<DoubleStraightR
         />
         <RectPart
           position={new Point(0, RAIL_SPACE)}
-          width={length}
-          height={RAIL_PART_WIDTH}
+          width={RAIL_PART_WIDTH}
+          height={length}
           pivot={Pivot.LEFT}
           fillColor={fillColors[0]}
           flowDirection={flowDirections[1]}

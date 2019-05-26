@@ -52,8 +52,8 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
         pivot={Pivot.LEFT}
       >
         <RectPart
-          width={length}
-          height={RAIL_PART_WIDTH}
+          width={RAIL_PART_WIDTH}
+          height={length}
           pivot={Pivot.LEFT}
           fillColor={fillColors[0]}
           flowDirection={flowDirections[0]}

@@ -24,20 +24,20 @@ export default class RectPart extends PartBase<RectPartProps, {}> {
       case Pivot.LEFT:
         return new Point(0, 0)
       case Pivot.TOP:
-        return new Point(width / 2, -height / 2)
+        return new Point(height / 2, -width / 2)
       case Pivot.RIGHT:
-        return new Point(width, 0)
+        return new Point(height, 0)
       case Pivot.BOTTOM:
-        return new Point(width / 2, height / 2)
+        return new Point(height / 2, width / 2)
       case Pivot.CENTER:
       default:
-        return new Point(width / 2, 0)
+        return new Point(height / 2, 0)
     }
   }
 }
 
 
 export function createRectPath(width: number, height: number) {
-  let pathData = `M 0 0 L 0 ${-height / 2} ${width} ${-height / 2} L ${width}} 0 L ${width} ${height / 2} L 0 ${height / 2} Z`
+  let pathData = `M 0 0 L 0 ${-width / 2} ${height} ${-width / 2} L ${height}} 0 L ${height} ${width / 2} L 0 ${width / 2} Z`
   return pathData
 }

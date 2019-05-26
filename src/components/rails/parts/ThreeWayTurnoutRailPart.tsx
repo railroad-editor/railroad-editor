@@ -72,8 +72,8 @@ export default class ThreeWayTurnoutRailPart extends RailPartBase<ThreeWayTurnou
         data={data}
       >
         <RectPart
-          width={length}
-          height={RAIL_PART_WIDTH}
+          width={RAIL_PART_WIDTH}
+          height={length}
           pivot={Pivot.LEFT}
           fillColor={fillColors[0]}
           flowDirection={flowDirections[0]}
