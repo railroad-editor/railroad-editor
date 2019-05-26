@@ -285,6 +285,7 @@ export class BuilderStore {
   deleteTemporaryRail = () => {
     this.temporaryRails = []
     this.temporaryRailGroup = null
+    this.intersects = false
   }
 
   @action
