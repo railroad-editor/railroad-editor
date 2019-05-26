@@ -4,7 +4,6 @@ import RectPart from "./primitives/RectPart";
 import ArcPart, {ArcDirection} from "./primitives/ArcPart";
 import {RAIL_PART_WIDTH, RAIL_SPACE} from "constants/parts";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
-import PartGroup from "components/rails/parts/primitives/PartGroup";
 import RailPartBase, {RailPartBaseDefaultProps, RailPartBaseProps} from "components/rails/parts/RailPartBase";
 import getLogger from "logging";
 import Gap from "components/rails/parts/Gap";
@@ -58,11 +57,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 
     return (
-      <PartGroup
-        pivotPartIndex={pivotPartIndex}
-        pivot={pivot}
-        data={data}
-      >
+      <>
         <RectPart
           width={RAIL_PART_WIDTH}
           height={length / 2}
@@ -189,7 +184,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
             type: 'Gap',
           }}
         />
-      </PartGroup>
+      </>
     )
   }
 }

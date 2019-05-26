@@ -2,7 +2,6 @@ import * as React from "react";
 import RectPart from "./primitives/RectPart";
 import {RAIL_PART_WIDTH} from "constants/parts";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
-import PartGroup from "components/rails/parts/primitives/PartGroup";
 import RailPartBase, {RailPartBaseDefaultProps, RailPartBaseProps} from "components/rails/parts/RailPartBase";
 import getLogger from "logging";
 import 'lodash.combinations';
@@ -45,12 +44,8 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
 
   renderParts = () => {
     const {length, pivotJointIndex, data, fillColor, fillColors, flowDirections} = this.props
-    const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
     return (
-      <PartGroup
-        pivotPartIndex={pivotPartIndex}
-        pivot={Pivot.LEFT}
-      >
+      <>
         <RectPart
           width={RAIL_PART_WIDTH}
           height={length}
@@ -61,7 +56,7 @@ export default class StraightRailPart extends RailPartBase<StraightRailPartProps
             type: 'Part'
           }}
         />
-      </PartGroup>
+      </>
     )
   }
 }

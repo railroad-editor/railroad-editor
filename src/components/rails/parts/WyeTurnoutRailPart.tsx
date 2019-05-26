@@ -2,7 +2,6 @@ import * as React from "react";
 import ArcPart, {ArcDirection} from "./primitives/ArcPart";
 import {RAIL_PART_WIDTH} from "constants/parts";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
-import PartGroup from "components/rails/parts/primitives/PartGroup";
 import RailPartBase, {RailPartBaseDefaultProps, RailPartBaseProps} from "components/rails/parts/RailPartBase";
 import getLogger from "logging";
 
@@ -51,11 +50,7 @@ export default class WyeTurnoutRailPart extends RailPartBase<WyeTurnoutRailPartP
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 
     return (
-      <PartGroup
-        pivotPartIndex={pivotPartIndex}
-        pivot={pivot}
-        data={data}
-      >
+      <>
         <ArcPart
           direction={ArcDirection.LEFT}
           radius={radius}
@@ -78,7 +73,7 @@ export default class WyeTurnoutRailPart extends RailPartBase<WyeTurnoutRailPartP
             type: 'Part'
           }}
         />
-      </PartGroup>
+      </>
     )
   }
 }
