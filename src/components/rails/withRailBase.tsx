@@ -11,6 +11,7 @@ import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores"
 import {FlowDirection} from "components/rails/parts/primitives/PartBase";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import {Tools} from "constants/tools";
+import {ArcDirection} from "./parts/primitives/ArcPart";
 
 const LOGGER = getLogger(__filename)
 
@@ -508,6 +509,8 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
       // このレールと仮レールの両方がカーブレールの場合、PivotJoint (=向き)を揃える
       if (this.props.type === 'CurveRail' && paletteRailData.type === 'CurveRail') {
         return this.props.pivotJointIndex
+      } else if (this.props.type === 'CurvedTurnout' && (this.props as any).branchDirection === ArcDirection.LEFT) {
+        return 1
       } else {
         return 0
       }
