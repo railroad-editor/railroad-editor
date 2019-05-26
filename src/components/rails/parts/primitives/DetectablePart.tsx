@@ -1,6 +1,5 @@
 import * as React from "react";
 import {ReactElement} from "react";
-import {Group} from "react-paper-bindings";
 import PartBase, {PartBaseProps} from "components/rails/parts/primitives/PartBase";
 import PartGroup from "components/rails/parts/primitives/PartGroup";
 
@@ -80,19 +79,24 @@ export default class DetectablePart extends React.Component<DetectablePartProps,
     }
   }
 
-  onClick = (e: MouseEvent | any) => {
+  onLeftClick = (e: MouseEvent | any) => {
     let shouldChangeState = false
-    switch (e.event.button) {
-      case 0:
-        if (this.props.onLeftClick) {
-          shouldChangeState = this.props.onLeftClick(e)
-        }
-        break
-      case 2:
-        if (this.props.onRightClick) {
-          shouldChangeState = this.props.onRightClick(e)
-        }
-        break
+    if (this.props.onLeftClick) {
+      shouldChangeState = this.props.onLeftClick(e)
+    }
+    // コールバックがtrueを返した時のみ状態を変更する
+    if (shouldChangeState) {
+      this.setState({
+        detectionState: DetectionState.AFTER_DETECT,
+        detectionPartVisible: false
+      })
+    }
+  }
+
+  onRightClick = (e: MouseEvent | any) => {
+    let shouldChangeState = false
+    if (this.props.onRightClick) {
+      shouldChangeState = this.props.onRightClick(e)
     }
     // コールバックがtrueを返した時のみ状態を変更する
     if (shouldChangeState) {
@@ -121,7 +125,8 @@ export default class DetectablePart extends React.Component<DetectablePartProps,
     this.onMouseEnter = this.onMouseEnter.bind(this)
     this.onMouseLeave = this.onMouseLeave.bind(this)
     this.onMouseMove = this.onMouseMove.bind(this)
-    this.onClick = this.onClick.bind(this)
+    this.onLeftClick = this.onLeftClick.bind(this)
+    this.onRightClick = this.onRightClick.bind(this)
     this.getInstance = this.getInstance.bind(this)
   }
 
@@ -173,7 +178,7 @@ export default class DetectablePart extends React.Component<DetectablePartProps,
 
   // detectionEnabledが OFF -> ON になった場合は状態をリセットする
   componentWillReceiveProps(nextProps: DetectablePartProps) {
-    if (!this.props.detectionEnabled && nextProps.detectionEnabled) {
+    if (! this.props.detectionEnabled && nextProps.detectionEnabled) {
       this.setState({
         detectionState: DetectionState.BEFORE_DETECT,
         detectionPartVisible: true
@@ -184,7 +189,7 @@ export default class DetectablePart extends React.Component<DetectablePartProps,
   render() {
     const {
       position, angle, pivot, pivotPartIndex, fillColors, selected, name, data, detectionEnabled,
-      mainPart, detectionPart, visible, opacity, onLeftClick, onRightClick
+      mainPart, detectionPart, visible, opacity
     } = this.props
     const {detectionState, isError} = this.state
 
@@ -203,7 +208,7 @@ export default class DetectablePart extends React.Component<DetectablePartProps,
       const color = detectionState === DetectionState.DETECTING && isError ? 'red' : fillColors[detectionState]
       clonedDetectionPart = React.cloneElement(detectionPart as any, {
         ...detectionPart.props,
-        visible: detectionEnabled ? this.isDetecting() || this.isBeforeDetect(): false,
+        visible: detectionEnabled ? this.isDetecting() || this.isBeforeDetect() : false,
         fillColor: color,
         name: 'detect',
       })
@@ -224,8 +229,8 @@ export default class DetectablePart extends React.Component<DetectablePartProps,
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
         onMouseMove={this.onMouseMove}
-        onLeftClick={onLeftClick}
-        onRightClick={onRightClick}
+        onLeftClick={this.onLeftClick}
+        onRightClick={this.onRightClick}
         ref={this.getInstance}
       >
         {clonedMainPart}
