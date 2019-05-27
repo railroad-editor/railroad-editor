@@ -84,7 +84,7 @@ export class Measure extends React.Component<MeasureProps, MeasureState> {
         content={`${diff.length.toFixed()} (X=${diff.x.toFixed()}, Y=${diff.y.toFixed()})`}
         fillColor={'black'}
         fontFamily={'Courier New'}
-        fontSize={18}
+        fontSize={20}
         fontWeight={'bold'}
         justification={'center'}
         point={this.state.fixedPosition ? [this.state.fixedPosition.x, this.state.fixedPosition.y] : [textPosition.x, textPosition.y]}
