@@ -13,6 +13,7 @@ const INITIAL_STATE = {
   saveNewDialog: false,
   loginDialog: false,
   signInDialog: false,
+  settingsDialog: false,
   editorMode: EditorMode.BUILDER,
 }
 
@@ -23,15 +24,17 @@ export class UiStore {
   @observable saveNewDialog: boolean
   @observable loginDialog: boolean
   @observable signInDialog: boolean
+  @observable settingsDialog: boolean
   @observable editorMode: EditorMode
 
-  constructor({layoutsDialog, createNewDialog, saveNewDialog, loginDialog, signInDialog, editorMode}) {
+  constructor({layoutsDialog, createNewDialog, saveNewDialog, loginDialog, signInDialog, settingsDialog, editorMode}) {
     this.layoutsDialog = layoutsDialog
     this.createNewDialog = createNewDialog
     this.saveNewDialog = saveNewDialog
     this.loginDialog = loginDialog
     this.signInDialog = signInDialog
     this.editorMode = editorMode
+    this.settingsDialog = settingsDialog
   }
 
   @action
@@ -67,6 +70,11 @@ export class UiStore {
   @action
   setSignInDialog = (open: boolean) => {
     this.signInDialog = open
+  }
+
+  @action
+  setSettingsDialog = (open: boolean) => {
+    this.settingsDialog = open
   }
 }
 

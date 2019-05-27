@@ -27,6 +27,8 @@ import SignUpDialog from "components/Editor/ToolBar/MenuDrawer/SignUpDialog/Sign
 import {UiStore} from "store/uiStore";
 import {KeyLabel} from "components/common/KeyLabel/KeyLabel";
 import {LayoutLogicStore} from "store/layoutLogicStore";
+import {SettingsDialog} from "../BuilderToolBar/SettingsDialog/SettingsDialog";
+import SettingsIcon from "@material-ui/icons/Settings";
 
 const LOGGER = getLogger(__filename)
 
@@ -133,6 +135,15 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
     // metaを更新してから保存する
     this.props.layout.setLayoutMeta(meta)
     this.props.layoutLogic.saveLayout(this.props.snackbar.showMessage)
+    this.props.onClose()
+  }
+
+  openSettingsDialog = () => {
+    this.props.ui.setSettingsDialog(true)
+  }
+
+  closeSettingsDialog = () => {
+    this.props.ui.setSettingsDialog(false)
     this.props.onClose()
   }
 
@@ -251,6 +262,12 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
               </ListItemIcon>
               <ListItemText primary="Save As..."/>
             </ListItem>
+            <ListItem button onClick={this.openSettingsDialog}>
+              <ListItemIcon>
+                <SettingsIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Settings"/>
+            </ListItem>
             <Divider/>
             <ListItem button component="a" target="_blank" href="http://d2t6ssvra5p03o.cloudfront.net/index.html"
                       onClick={this.onOpenHelp}
@@ -289,6 +306,15 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
           onClose={this.closeSignUpDialog}
           setAuthData={this.props.common.setAuthData}
           loadLayoutList={this.props.common.loadLayoutList}
+        />
+        <SettingsDialog
+          title={'Settings'}
+          open={ui.settingsDialog}
+          onClose={this.closeSettingsDialog}
+          config={this.props.layout.config}
+          setConfig={this.props.layout.setConfig}
+          userInfo={this.props.common.userInfo}
+          layoutMeta={this.props.layout.meta}
         />
         {dialogs}
       </>

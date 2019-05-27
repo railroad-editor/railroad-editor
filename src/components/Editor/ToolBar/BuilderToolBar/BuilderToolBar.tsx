@@ -11,7 +11,6 @@ import RedoIcon from '@material-ui/icons/Redo'
 import DeleteIcon from '@material-ui/icons/Delete'
 import PanToolIcon from '@material-ui/icons/PanTool'
 import AspectRatioIcon from "@material-ui/icons/AspectRatio";
-import SettingsIcon from "@material-ui/icons/Settings";
 import CopyIcon from "@material-ui/icons/ContentCopy";
 import CutIcon from "@material-ui/icons/ContentCut";
 import FreePlacingModeIcon from "@material-ui/icons/LocationOn";
@@ -29,7 +28,6 @@ import {CommonStore} from "store/commonStore";
 import {compose} from "recompose";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import {StyledIconButton, VerticalDivider} from "components/Editor/ToolBar/styles";
-import {SettingsDialog} from "components/Editor/ToolBar/BuilderToolBar/SettingsDialog/SettingsDialog";
 import withMoveTool from "components/hoc/withMoveTool";
 import PowerIcon from "@material-ui/icons/Power";
 
@@ -47,7 +45,6 @@ export interface BuilderToolBarProps {
 }
 
 export interface BuilderToolBarState {
-  openSettings: boolean
   el: HTMLElement | undefined
 }
 
@@ -61,7 +58,6 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
   constructor(props: EnhancedBuilderToolBarProps) {
     super(props)
     this.state = {
-      openSettings: false,
       el: undefined,
     }
   }
@@ -74,18 +70,6 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
     this.props.builder.setActiveTool(tool)
     // 最後に選択していたアイテムを選択する
     this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[tool])
-  }
-
-  openSettingsDialog = (e) => {
-    this.setState({
-      openSettings: true
-    })
-  }
-
-  closeSettingsDialog = () => {
-    this.setState({
-      openSettings: false
-    })
   }
 
   onChangePlacingMode = (mode: PlacingMode) => (e) => {
@@ -256,23 +240,6 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
             <AspectRatioIcon/>
           </StyledIconButton>
         </Tooltip>
-
-        <Tooltip title={'Settings'}>
-          <StyledIconButton
-            onClick={this.openSettingsDialog}
-          >
-            <SettingsIcon/>
-          </StyledIconButton>
-        </Tooltip>
-        <SettingsDialog
-          title={'Settings'}
-          open={this.state.openSettings}
-          onClose={this.closeSettingsDialog}
-          config={this.props.layout.config}
-          setConfig={this.props.layout.setConfig}
-          userInfo={this.props.common.userInfo}
-          layoutMeta={this.props.layout.meta}
-        />
       </Grid>
     )
   }
