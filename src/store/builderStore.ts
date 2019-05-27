@@ -1,7 +1,7 @@
 import {RailComponentClasses, RailData, RailGroupData, RailItemData} from "components/rails";
 import {FeederInfo, JointInfo} from "components/rails/RailBase";
 import {RailGroupProps} from "components/rails/RailGroup/RailGroup";
-import {action, computed, observable, reaction} from "mobx";
+import {action, computed, observable, reaction, runInAction} from "mobx";
 import {Tools} from "constants/tools";
 import builderPaletteData from "constants/railPaletteItems.json"
 import railPaletteItems from "constants/railPaletteItems.json"
@@ -164,6 +164,12 @@ export class BuilderStore {
         break
       case Tools.GAP_JOINERS:
         layoutLogicStore.changeToGapJoinerMode()
+        break
+      case Tools.MEASURE:
+        runInAction(() => {
+          this.setMeasureStartPosition(null)
+          this.setMeasureEndPosition(null)
+        })
         break
       default:
         layoutLogicStore.changeToRailMode()
