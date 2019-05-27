@@ -43,6 +43,9 @@ export interface BuilderStoreState {
   freePlacingDialog: boolean
   freePlacingPosition: Point
   clickedJointPosition: Point
+  measureStartPosition: Point
+  measureEndPosition: Point
+  measuredDistance: Point
 }
 
 export enum PlacingMode {
@@ -74,7 +77,10 @@ export const INITIAL_STATE: BuilderStoreState = {
   temporaryFeeder: null,
   freePlacingDialog: false,
   freePlacingPosition: new Point(0, 0),
-  clickedJointPosition: new Point(0, 0)
+  clickedJointPosition: new Point(0, 0),
+  measureStartPosition: null,
+  measureEndPosition: null,
+  measuredDistance: null
 }
 
 
@@ -113,9 +119,14 @@ export class BuilderStore {
 
   @observable clickedJointPosition: Point
 
+  @observable measureStartPosition: Point
+
+  @observable measureEndPosition: Point
+
   constructor({
                 paletteItem, lastPaletteItems, placingMode, activeLayerId, temporaryRails, temporaryRailGroup, userRailGroups,
-                userRails, activeTool, selecting, temporaryFeeder, freePlacingDialog, freePlacingPosition, clickedJointPosition
+                userRails, activeTool, selecting, temporaryFeeder, freePlacingDialog, freePlacingPosition, clickedJointPosition,
+                measureStartPosition, measureEndPosition
               }) {
     this.paletteItem = paletteItem
     this.lastPaletteItems = lastPaletteItems
@@ -132,6 +143,8 @@ export class BuilderStore {
     this.freePlacingDialog = freePlacingDialog
     this.freePlacingPosition = freePlacingPosition
     this.clickedJointPosition = clickedJointPosition
+    this.measureStartPosition = measureStartPosition
+    this.measureEndPosition = measureEndPosition
 
     // ツール変更時
     reaction(
@@ -439,6 +452,17 @@ export class BuilderStore {
   setClickedJointPosition = (position: Point) => {
     this.clickedJointPosition = position
   }
+
+  @action
+  setMeasureStartPosition = (position: Point) => {
+    this.measureStartPosition = position
+  }
+
+  @action
+  setMeasureEndPosition = (position: Point) => {
+    this.measureEndPosition = position
+  }
+
 }
 
 

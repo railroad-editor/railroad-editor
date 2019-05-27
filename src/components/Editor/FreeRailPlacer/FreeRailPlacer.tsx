@@ -11,7 +11,7 @@ import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import CirclePart from "components/rails/parts/primitives/CirclePart";
-import {RAIL_PUTTER_MARKER_RADIUS, Tools} from "constants/tools";
+import {isRailTool, RAIL_PUTTER_MARKER_RADIUS, Tools} from "constants/tools";
 import {JOINT_DETECTION_OPACITY_RATE, JOINT_FILL_COLORS} from "constants/parts";
 import {CommonStore} from "store/commonStore";
 import {EditorMode} from "store/uiStore";
@@ -192,6 +192,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
           {
             /* 不可視の四角形、イベントハンドリング用 */
             this.props.common.editorMode === EditorMode.BUILDER &&
+            isRailTool(this.props.builder.activeTool) &&
             this.props.builder.placingMode === PlacingMode.FREE &&
             <RectPart
               width={this.props.layout.config.paperWidth / 2}

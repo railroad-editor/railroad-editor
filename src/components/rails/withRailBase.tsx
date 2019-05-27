@@ -10,7 +10,7 @@ import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {FlowDirection} from "components/rails/parts/primitives/PartBase";
 import {LayoutLogicStore} from "store/layoutLogicStore";
-import {Tools} from "constants/tools";
+import {isRailTool, Tools} from "constants/tools";
 import {ArcDirection} from "./parts/primitives/ArcPart";
 
 const LOGGER = getLogger(__filename)
@@ -267,6 +267,17 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * @param {MouseEvent} e
      */
     onJointMouseEnter = (jointId: number, e: MouseEvent) => {
+      let activeTool = this.props.builder.activeTool
+      if (isRailTool(activeTool)) {
+        this.onJointMouseEnterForRailTools(jointId, e)
+      } else if (activeTool == Tools.PAN) {
+        // noop
+      } else if (activeTool == Tools.MEASURE) {
+        // noop
+      }
+    }
+
+    onJointMouseEnterForRailTools = (jointId: number, e: MouseEvent) => {
       // 矩形選択中は仮レールを表示させない
       if (this.props.builder.selecting) return
 
@@ -309,12 +320,35 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
     }
 
 
+    onJointLeftClick = (jointId: number, e: MouseEvent) => {
+      let activeTool = this.props.builder.activeTool
+      if (isRailTool(activeTool)) {
+        this.onJointLeftClickForRailTool(jointId, e)
+      } else if (activeTool == Tools.PAN) {
+        // noop
+      } else if (activeTool == Tools.MEASURE) {
+        this.onJointLeftClickForMeasureTool(jointId, e)
+      }
+    }
+
+    onJointLeftClickForMeasureTool = (jointId: number, e: MouseEvent) => {
+      const start = this.props.builder.measureStartPosition
+      const end = this.props.builder.measureEndPosition
+      if (! start && ! end || start && end) {
+        this.props.builder.setMeasureEndPosition(null)
+        this.props.builder.setMeasureStartPosition(this.joints[jointId].globalPosition)
+      }
+      if (start && ! end) {
+        this.props.builder.setMeasureEndPosition(this.joints[jointId].globalPosition)
+      }
+    }
+
     /**
      * ジョイントを左クリックしたら、仮レールの位置にレールを設置する
      * @param {number} jointId
      * @param {MouseEvent} e
      */
-    onJointLeftClick = (jointId: number, e: MouseEvent) => {
+    onJointLeftClickForRailTool = (jointId: number, e: MouseEvent) => {
       if (this.props.builder.placingMode == PlacingMode.FREE) {
         // クリックしたジョイントの位置を記録し、ダイアログを表示する
         this.props.builder.setClickedJointPosition(this.joints[jointId].globalPosition)

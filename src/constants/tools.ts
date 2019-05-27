@@ -8,11 +8,21 @@ export enum Tools {
   GAP_JOINERS = 'Gap Joiners',
   SELECT = 'Select',
   PAN = 'Pan',
+  MEASURE = 'Measure'
+}
+
+export enum Commands {
+  COPY = 'Copy',
+  CUT = 'Cut',
+  DELETE = 'Delete',
   UNDO = 'Undo',
   REDO = 'Redo',
   RESET_VIEW = 'Reset View',
-  DELETE = 'Delete',
-  SIMULATOR = 'Simulator'
+}
+
+
+export const isRailTool = (tool: Tools): boolean => {
+  return [Tools.STRAIGHT_RAILS, Tools.CURVE_RAILS, Tools.TURNOUTS, Tools.SPECIAL_RAILS, Tools.RAIL_GROUPS].includes(tool)
 }
 
 export const DEFAULT_VIEW_WIDTH = 1920

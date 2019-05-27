@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {Grid, Tooltip} from '@material-ui/core'
-import {Tools} from "constants/tools";
+import {Commands, Tools} from "constants/tools";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_SIMULATOR_LOGIC} from "constants/stores";
@@ -84,7 +84,7 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
             <PanToolIcon/>
           </StyledIconButton>
         </Tooltip>
-        <Tooltip title={Tools.RESET_VIEW}>
+        <Tooltip title={Commands.RESET_VIEW}>
           <StyledIconButton
             onClick={this.props.resetViewPosition}
           >

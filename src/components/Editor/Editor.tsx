@@ -37,6 +37,8 @@ import {SimulatorLogicStore} from "store/simulatorLogicStore";
 import Palettes from "./Palettes/Palettes";
 import {DistantRailPlacer} from "./DistantRailPlacer/DistantRailPlacer";
 import TemporaryLayer from "./TemporaryLayer/TemporaryLayer";
+import {Measure} from "./Measure/Measure";
+import {LowestEventHandler} from "./LowestEventHandler/LowestEventHandler";
 
 const LOGGER = getLogger(__filename)
 
@@ -195,12 +197,17 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             matrix={matrix}
             setPaperLoaded={this.props.common.setPaperLoaded}
           >
+
+            <LowestEventHandler mousePosition={this.state.mousePosition}/>
+
             {/*/!* 後から書いたコンポーネントの方が前面に配置される *!/*/}
             <TemporaryLayer/>
 
             <FreeRailPlacer mousePosition={this.state.mousePosition}/>
 
             <Layout/>
+
+            <Measure mousePosition={this.state.mousePosition}/>
 
             <Tool
               active={this.isActive(

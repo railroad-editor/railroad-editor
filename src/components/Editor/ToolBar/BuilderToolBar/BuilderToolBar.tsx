@@ -5,7 +5,7 @@ import TurnoutIcon from '../Icon/TurnoutIcon'
 import SpecialRailIcon from "../Icon/SpecialRailIcon";
 import RailGroupIcon from "../Icon/RailGroupIcon";
 import {Grid} from '@material-ui/core'
-import {Tools} from "constants/tools";
+import {Commands, Tools} from "constants/tools";
 import UndoIcon from '@material-ui/icons/Undo'
 import RedoIcon from '@material-ui/icons/Redo'
 import DeleteIcon from '@material-ui/icons/Delete'
@@ -15,6 +15,7 @@ import CopyIcon from "@material-ui/icons/ContentCopy";
 import CutIcon from "@material-ui/icons/ContentCut";
 import FreePlacingModeIcon from "@material-ui/icons/LocationOn";
 import ConnectModeIcon from "@material-ui/icons/CompareArrows";
+import StraightenIcon from "@material-ui/icons/Straighten";
 import GapIcon from "../Icon/Gap";
 import getLogger from "logging";
 import * as classNames from "classnames"
@@ -165,6 +166,17 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
           </StyledIconButton>
         </Tooltip>
 
+        <Tooltip title={Tools.MEASURE}>
+          <StyledIconButton
+            className={classNames({
+              'active': this.isActive(Tools.MEASURE)
+            })}
+            onClick={() => this.props.builder.setActiveTool(Tools.MEASURE)}
+          >
+            <StraightenIcon/>
+          </StyledIconButton>
+        </Tooltip>
+
         <VerticalDivider/>
 
         <Tooltip title={PlacingMode.FREE}>
@@ -190,7 +202,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
 
         <VerticalDivider/>
 
-        <Tooltip title={"Copy (Ctrl+C)"}>
+        <Tooltip title={Commands.COPY}>
           <StyledIconButton
             onClick={(e) => {
               this.props.builderRegisterRailGroup('Clipboard', false)
@@ -198,7 +210,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
             <CopyIcon/>
           </StyledIconButton>
         </Tooltip>
-        <Tooltip title={"Cut (Ctrl+X)"}>
+        <Tooltip title={Commands.CUT}>
           <StyledIconButton
             onClick={(e) => {
               this.props.builderRegisterRailGroup('Clipboard', true)
@@ -206,7 +218,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
             <CutIcon/>
           </StyledIconButton>
         </Tooltip>
-        <Tooltip title={"Delete (BS)"}>
+        <Tooltip title={Commands.DELETE}>
           <StyledIconButton
             onClick={this.props.layoutLogic.deleteSelected}
           >
@@ -214,7 +226,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
           </StyledIconButton>
         </Tooltip>
 
-        <Tooltip title={Tools.UNDO}>
+        <Tooltip title={Commands.UNDO}>
           <StyledIconButton
             className={classNames({
               'disabled': ! this.props.layout.canUndo
@@ -223,7 +235,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
             <UndoIcon/>
           </StyledIconButton>
         </Tooltip>
-        <Tooltip title={Tools.REDO}>
+        <Tooltip title={Commands.REDO}>
           <StyledIconButton
             className={classNames({
               'disabled': ! this.props.layout.canRedo
@@ -233,7 +245,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
           </StyledIconButton>
         </Tooltip>
 
-        <Tooltip title={Tools.RESET_VIEW}>
+        <Tooltip title={Commands.RESET_VIEW}>
           <StyledIconButton
             onClick={this.props.resetViewPosition}
           >
