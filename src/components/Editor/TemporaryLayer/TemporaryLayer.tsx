@@ -2,7 +2,6 @@ import * as React from "react";
 import {Layer} from "react-paper-bindings";
 import {createFeederComponent, createRailOrRailGroupComponent} from "components/rails/utils";
 import getLogger from "logging";
-import {default as withBuilder, WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {compose} from "recompose";
 import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import {inject, observer} from "mobx-react";
@@ -24,9 +23,9 @@ export interface LayoutState {
 
 @inject(STORE_BUILDER, STORE_LAYOUT)
 @observer
-export class TemporaryLayer extends React.Component<TemporaryLayerProps & WithBuilderPublicProps, LayoutState> {
+export class TemporaryLayer extends React.Component<TemporaryLayerProps, LayoutState> {
 
-  constructor(props: TemporaryLayerProps & WithBuilderPublicProps) {
+  constructor(props: TemporaryLayerProps) {
     super(props)
   }
 
@@ -62,5 +61,4 @@ export class TemporaryLayer extends React.Component<TemporaryLayerProps & WithBu
 
 
 export default compose<TemporaryLayerProps, TemporaryLayerProps | any>(
-  withBuilder,
 )(TemporaryLayer)

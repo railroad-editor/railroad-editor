@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Layer, Path, Point, ToolEvent} from 'paper'
 import getLogger from "logging";
-import {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {DEFAULT_SELECTION_RECT_COLOR, DEFAULT_SELECTION_RECT_OPACITY, Tools} from "constants/tools";
 import {getRailComponent} from "components/rails/utils";
 import {BuilderStore} from "store/builderStore";
@@ -38,7 +37,7 @@ interface WithSelectToolState {
 }
 
 
-type WithSelectToolProps = WithSelectToolPublicProps & WithBuilderPublicProps
+type WithSelectToolProps = WithSelectToolPublicProps
 
 /**
  * レールの矩形選択機能を提供するHOC。

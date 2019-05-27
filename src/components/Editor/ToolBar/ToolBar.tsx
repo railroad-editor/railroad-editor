@@ -13,7 +13,6 @@ import {StyledIconButton} from "./styles";
 import {Tools} from "constants/tools";
 import MenuIcon from "@material-ui/icons/Menu";
 import getLogger from "logging";
-import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
@@ -52,36 +51,17 @@ export interface ToolBarState {
   editorMode: EditorMode
 }
 
-type EnhancedToolBarProps = ToolBarProps & WithBuilderPublicProps
-
-// TODO: MenuItemの色変わらね〜〜〜！！！
-// const styles = theme => ({
-//   menuItem: {
-//     '&$selected': {
-//       backgroundColor: 'orange'
-//     },
-//     root: {
-//       '&$selected': {
-//         backgroundColor: 'orange'
-//       },
-//     },
-//     selected: {
-//       backgroundColor: 'orange !important'
-//     },
-//   }
-// })
-
 
 @inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
 @observer
-export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState> {
+export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
 
   myPeerId: string
   peer: Peer
   targetPeerId: string
   conn: any
 
-  constructor(props: EnhancedToolBarProps) {
+  constructor(props: ToolBarProps) {
     super(props)
     this.state = {
       openMenu: false,
@@ -233,7 +213,6 @@ export class ToolBar extends React.Component<EnhancedToolBarProps, ToolBarState>
 
 
 export default compose<ToolBarProps, ToolBarProps>(
-  withBuilder,
   withMoveTool,
   // withStyles(styles)
 )(ToolBar)

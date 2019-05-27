@@ -1,7 +1,6 @@
 import * as React from "react";
 import {normAngle} from "components/rails/utils";
 import getLogger from "logging";
-import {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {compose} from "recompose";
 import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
 import {inject, observer} from "mobx-react";
@@ -40,9 +39,9 @@ export interface FeederTipState {
 
 @inject(STORE_BUILDER, STORE_LAYOUT, STORE_COMMON)
 @observer
-export class FeederTip extends React.Component<FeederTipProps & WithBuilderPublicProps, FeederTipState> {
+export class FeederTip extends React.Component<FeederTipProps, FeederTipState> {
 
-  constructor(props: FeederTipProps & WithBuilderPublicProps) {
+  constructor(props: FeederTipProps) {
     super(props)
     this.state = {
       dialogOpen: false

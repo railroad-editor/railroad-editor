@@ -1,6 +1,5 @@
 import * as React from "react";
 import getLogger from "logging";
-import {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {compose} from "recompose";
 import {STORE_COMMON} from "constants/stores";
 import {inject, observer} from "mobx-react";
@@ -22,9 +21,9 @@ export interface RailTipsState {
 
 @inject(STORE_COMMON)
 @observer
-export class LayoutTips extends React.Component<RailTipsProps & WithBuilderPublicProps, RailTipsState> {
+export class LayoutTips extends React.Component<RailTipsProps, RailTipsState> {
 
-  constructor(props: RailTipsProps & WithBuilderPublicProps) {
+  constructor(props: RailTipsProps) {
     super(props)
   }
 
