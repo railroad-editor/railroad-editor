@@ -9,6 +9,7 @@ import * as moment from "moment";
 import {FeederInfo, GapJoinerInfo} from "components/rails/RailBase";
 import TrainController from "components/Editor/ToolBar/SimulatorToolBar/TrainController";
 import {reactionWithOldValue} from "./utils";
+import railItems from "constants/railItems.json";
 
 const LOGGER = getLogger(__filename)
 
@@ -18,6 +19,7 @@ export interface LayoutConfig {
   paperHeight: number
   gridSize: number
   backgroundImageUrl: string
+  railSetName: string
 }
 
 export interface LayoutMeta {
@@ -159,7 +161,8 @@ export const INITIAL_STATE: LayoutStoreState = {
     paperWidth: DEFAULT_PAPER_WIDTH,
     paperHeight: DEFAULT_PAPER_HEIGHT,
     gridSize: DEFAULT_GRID_SIZE,
-    backgroundImageUrl: ''
+    backgroundImageUrl: '',
+    railSetName: 'TOMIX'
   }
 }
 
@@ -290,6 +293,10 @@ export class LayoutStore {
     }
   }
 
+  @computed
+  get presetRailItems() {
+    return railItems[this.config.railSetName]
+  }
 
   /**
    * レール系 Add/Update/Delete

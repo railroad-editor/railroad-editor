@@ -12,6 +12,10 @@ import Image from 'material-ui-image'
 import CancelIcon from '@material-ui/icons/Cancel'
 import IconButton from "@material-ui/core/IconButton";
 import {Spacer} from "components/Editor/Palettes/BuilderPalettes/LayerPalette/LayerSettingDialog/styles";
+import {FormControl} from "@material-ui/core";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const DeleteIconButton = styled(IconButton)`
   && {
@@ -158,6 +162,22 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
             }
           </Grid>
         </Grid>
+
+        <Spacer/>
+
+        <form>
+          <FormControl>
+            <InputLabel>Rail Set</InputLabel>
+            <Select
+              value={this.state.inputs['railSetName']}
+              onChange={this.onChange('railSetName')}
+              autoWidth
+              displayEmpty
+            >
+              <MenuItem value={'TOMIX'}>TOMIX</MenuItem>
+            </Select>
+          </FormControl>
+        </form>
       </>
     )
   }

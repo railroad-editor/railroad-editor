@@ -3,9 +3,10 @@ import {FeederInfo, JointInfo} from "components/rails/RailBase";
 import {RailGroupProps} from "components/rails/RailGroup/RailGroup";
 import {action, computed, observable, reaction} from "mobx";
 import {Tools} from "constants/tools";
-import builderPaletteData from "constants/builderPaletteItems.json"
+import builderPaletteData from "constants/railPaletteItems.json"
+import railPaletteItems from "constants/railPaletteItems.json"
 import layoutLogicStore from "store/layoutLogicStore";
-import railItems from "constants/railItems.json"
+import layoutStore from "store/layoutStore";
 import {Point} from "paper";
 
 
@@ -81,8 +82,6 @@ export const INITIAL_STATE: BuilderStoreState = {
  * Builderモードに特有のUIの状態を保持し、操作するStore
  */
 export class BuilderStore {
-  // 事前定義済みのパレットアイテム群
-  @observable presetPaletteItems: PresetPaletteItems
   // パレットで選択中のアイテム
   @observable paletteItem: PaletteItem
   // パレット切替の直前に選択していたアイテム
@@ -115,10 +114,9 @@ export class BuilderStore {
   @observable clickedJointPosition: Point
 
   constructor({
-                presetPaletteItems, paletteItem, lastPaletteItems, placingMode, activeLayerId, temporaryRails, temporaryRailGroup, userRailGroups,
+                paletteItem, lastPaletteItems, placingMode, activeLayerId, temporaryRails, temporaryRailGroup, userRailGroups,
                 userRails, activeTool, selecting, temporaryFeeder, freePlacingDialog, freePlacingPosition, clickedJointPosition
               }) {
-    this.presetPaletteItems = presetPaletteItems
     this.paletteItem = paletteItem
     this.lastPaletteItems = lastPaletteItems
     this.placingMode = placingMode
@@ -208,6 +206,11 @@ export class BuilderStore {
     return nextPivotJointIndex
   }
 
+  @computed
+  get presetRailPaletteItems() {
+    return railPaletteItems[layoutStore.config.railSetName]
+  }
+
   /**
    * 指定の名前のレールの固有Propsを返す。
    * プリセットのレールに無ければユーザーカスタムレールで探して返す。
@@ -219,7 +222,7 @@ export class BuilderStore {
       if (! name) {
         name = this.paletteItem.name
       }
-      const presetItem = railItems.items.find(item => item.name === name)
+      const presetItem = layoutStore.presetRailItems.items.find(item => item.name === name)
       if (presetItem) {
         return presetItem
       }

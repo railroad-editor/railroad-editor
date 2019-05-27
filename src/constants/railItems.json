@@ -1,255 +1,257 @@
 {
-  "items": [
-    {
-      "type": "StraightRail",
-      "name": "S280",
-      "length": 280
-    },
-    {
-      "type": "StraightRail",
-      "name": "S158.5",
-      "length": 158.5
-    },
-    {
-      "type": "StraightRail",
-      "name": "S140",
-      "length": 140
-    },
-    {
-      "type": "StraightRail",
-      "name": "S99",
-      "length": 99
-    },
-    {
-      "type": "StraightRail",
-      "name": "S72.5",
-      "length": 72.5
-    },
-    {
-      "type": "StraightRail",
-      "name": "S70",
-      "length": 70
-    },
-    {
-      "type": "StraightRail",
-      "name": "S33",
-      "length": 33
-    },
-    {
-      "type": "StraightRail",
-      "name": "S185",
-      "length": 18.5
-    },
-    {
-      "type": "DoubleStraightRail",
-      "name": "DS280",
-      "length": 280
-    },
-    {
-      "type": "DoubleStraightRail",
-      "name": "DS140",
-      "length": 140
-    },
-    {
-      "type": "GappedStraightRail",
-      "name": "G-70-W",
-      "length": 70
-    },
-    {
-      "type": "CurveRail",
-      "name": "C243-45",
-      "radius": 243,
-      "centerAngle": 45
-    },
-    {
-      "type": "CurveRail",
-      "name": "C280-45",
-      "radius": 280,
-      "centerAngle": 45
-    },
-    {
-      "type": "CurveRail",
-      "name": "C317-45",
-      "radius": 317,
-      "centerAngle": 45
-    },
-    {
-      "type": "CurveRail",
-      "name": "C354-45",
-      "radius": 354,
-      "centerAngle": 45
-    },
-    {
-      "type": "CurveRail",
-      "name": "C391-45",
-      "radius": 391,
-      "centerAngle": 45
-    },
-    {
-      "type": "CurveRail",
-      "name": "C243-15",
-      "radius": 243,
-      "centerAngle": 15
-    },
-    {
-      "type": "CurveRail",
-      "name": "C280-15",
-      "radius": 280,
-      "centerAngle": 15
-    },
-    {
-      "type": "CurveRail",
-      "name": "C317-15",
-      "radius": 317,
-      "centerAngle": 15
-    },
-    {
-      "type": "CurveRail",
-      "name": "C354-15",
-      "radius": 354,
-      "centerAngle": 15
-    },
-    {
-      "type": "CurveRail",
-      "name": "C391-15",
-      "radius": 391,
-      "centerAngle": 15
-    },
-    {
-      "type": "CurveRail",
-      "name": "C541-15",
-      "radius": 541,
-      "centerAngle": 15
-    },
-    {
-      "type": "CurveRail",
-      "name": "C541-15",
-      "radius": 541,
-      "centerAngle": 15
-    },
-    {
-      "type": "DoubleCurveRail",
-      "name": "DC317-280-45",
-      "innerRadius": 280,
-      "outerRadius": 317,
-      "centerAngle": 45
-    },
-    {
-      "type": "DoubleCurveRail",
-      "name": "DC391-354-45",
-      "innerRadius": 354,
-      "outerRadius": 391,
-      "centerAngle": 45
-    },
-    {
-      "type": "SimpleTurnout",
-      "name": "PR541-15",
-      "length": 140,
-      "radius": 541,
-      "centerAngle": 15,
-      "branchDirection": "Right"
-    },
-    {
-      "type": "SimpleTurnout",
-      "name": "PL541-15",
-      "length": 140,
-      "radius": 541,
-      "centerAngle": 15,
-      "branchDirection": "Left"
-    },
-    {
-      "type": "SimpleTurnout",
-      "name": "PR280-30",
-      "length": 140,
-      "radius": 280,
-      "centerAngle": 30,
-      "branchDirection": "Right"
-    },
-    {
-      "type": "SimpleTurnout",
-      "name": "PL280-30",
-      "length": 140,
-      "radius": 280,
-      "centerAngle": 30,
-      "branchDirection": "Left"
-    },
-    {
-      "type": "CurvedTurnout",
-      "name": "CPR317/280-45",
-      "outerRadius": 317,
-      "innerRadius": 280,
-      "outerCenterAngle": 45,
-      "innerCenterAngle": 45,
-      "branchDirection": "Right"
-    },
-    {
-      "type": "CurvedTurnout",
-      "name": "CPL317/280-45",
-      "outerRadius": 317,
-      "innerRadius": 280,
-      "outerCenterAngle": 45,
-      "innerCenterAngle": 45,
-      "branchDirection": "Left"
-    },
-    {
-      "type": "WyeTurnout",
-      "name": "PY280-15",
-      "radius": 280,
-      "centerAngle": 15
-    },
-    {
-      "type": "ThreeWayTurnout",
-      "name": "PRL541/280-15",
-      "length": 140,
-      "rightStart": 0,
-      "rightRadius": 541,
-      "rightCenterAngle": 15,
-      "leftStart": 0,
-      "leftRadius": 541,
-      "leftCenterAngle": 15
-    },
-    {
-      "type": "ThreeWayTurnout",
-      "name": "PLR541/280-15",
-      "length": 140,
-      "rightStart": 0,
-      "rightRadius": 541,
-      "rightCenterAngle": 15,
-      "leftStart": 0,
-      "leftRadius": 541,
-      "leftCenterAngle": 15
-    },
-    {
-      "type": "DoubleCrossTurnout",
-      "name": "N-PX280",
-      "length": 280,
-      "centerAngle": 15
-    },
-    {
-      "type": "EndRail",
-      "name": "End Rail",
-      "length": 70
-    },
-    {
-      "type": "CrossingRail",
-      "name": "XR140-15",
-      "length": 140,
-      "crossAngle": 15
-    },
-    {
-      "type": "CrossingRail",
-      "name": "XR72.5-30",
-      "length": 72.5,
-      "crossAngle": 30
-    },
-    {
-      "type": "CrossingRail",
-      "name": "XR37-90",
-      "length": 37,
-      "crossAngle": 90
-    }
-  ],
-  "vendor": "Tomix"
+  "TOMIX": {
+    "vendor": "TOMIX",
+    "items": [
+      {
+        "type": "StraightRail",
+        "name": "S280",
+        "length": 280
+      },
+      {
+        "type": "StraightRail",
+        "name": "S158.5",
+        "length": 158.5
+      },
+      {
+        "type": "StraightRail",
+        "name": "S140",
+        "length": 140
+      },
+      {
+        "type": "StraightRail",
+        "name": "S99",
+        "length": 99
+      },
+      {
+        "type": "StraightRail",
+        "name": "S72.5",
+        "length": 72.5
+      },
+      {
+        "type": "StraightRail",
+        "name": "S70",
+        "length": 70
+      },
+      {
+        "type": "StraightRail",
+        "name": "S33",
+        "length": 33
+      },
+      {
+        "type": "StraightRail",
+        "name": "S185",
+        "length": 18.5
+      },
+      {
+        "type": "DoubleStraightRail",
+        "name": "DS280",
+        "length": 280
+      },
+      {
+        "type": "DoubleStraightRail",
+        "name": "DS140",
+        "length": 140
+      },
+      {
+        "type": "GappedStraightRail",
+        "name": "G-70-W",
+        "length": 70
+      },
+      {
+        "type": "CurveRail",
+        "name": "C243-45",
+        "radius": 243,
+        "centerAngle": 45
+      },
+      {
+        "type": "CurveRail",
+        "name": "C280-45",
+        "radius": 280,
+        "centerAngle": 45
+      },
+      {
+        "type": "CurveRail",
+        "name": "C317-45",
+        "radius": 317,
+        "centerAngle": 45
+      },
+      {
+        "type": "CurveRail",
+        "name": "C354-45",
+        "radius": 354,
+        "centerAngle": 45
+      },
+      {
+        "type": "CurveRail",
+        "name": "C391-45",
+        "radius": 391,
+        "centerAngle": 45
+      },
+      {
+        "type": "CurveRail",
+        "name": "C243-15",
+        "radius": 243,
+        "centerAngle": 15
+      },
+      {
+        "type": "CurveRail",
+        "name": "C280-15",
+        "radius": 280,
+        "centerAngle": 15
+      },
+      {
+        "type": "CurveRail",
+        "name": "C317-15",
+        "radius": 317,
+        "centerAngle": 15
+      },
+      {
+        "type": "CurveRail",
+        "name": "C354-15",
+        "radius": 354,
+        "centerAngle": 15
+      },
+      {
+        "type": "CurveRail",
+        "name": "C391-15",
+        "radius": 391,
+        "centerAngle": 15
+      },
+      {
+        "type": "CurveRail",
+        "name": "C541-15",
+        "radius": 541,
+        "centerAngle": 15
+      },
+      {
+        "type": "CurveRail",
+        "name": "C541-15",
+        "radius": 541,
+        "centerAngle": 15
+      },
+      {
+        "type": "DoubleCurveRail",
+        "name": "DC317-280-45",
+        "innerRadius": 280,
+        "outerRadius": 317,
+        "centerAngle": 45
+      },
+      {
+        "type": "DoubleCurveRail",
+        "name": "DC391-354-45",
+        "innerRadius": 354,
+        "outerRadius": 391,
+        "centerAngle": 45
+      },
+      {
+        "type": "SimpleTurnout",
+        "name": "PR541-15",
+        "length": 140,
+        "radius": 541,
+        "centerAngle": 15,
+        "branchDirection": "Right"
+      },
+      {
+        "type": "SimpleTurnout",
+        "name": "PL541-15",
+        "length": 140,
+        "radius": 541,
+        "centerAngle": 15,
+        "branchDirection": "Left"
+      },
+      {
+        "type": "SimpleTurnout",
+        "name": "PR280-30",
+        "length": 140,
+        "radius": 280,
+        "centerAngle": 30,
+        "branchDirection": "Right"
+      },
+      {
+        "type": "SimpleTurnout",
+        "name": "PL280-30",
+        "length": 140,
+        "radius": 280,
+        "centerAngle": 30,
+        "branchDirection": "Left"
+      },
+      {
+        "type": "CurvedTurnout",
+        "name": "CPR317/280-45",
+        "outerRadius": 317,
+        "innerRadius": 280,
+        "outerCenterAngle": 45,
+        "innerCenterAngle": 45,
+        "branchDirection": "Right"
+      },
+      {
+        "type": "CurvedTurnout",
+        "name": "CPL317/280-45",
+        "outerRadius": 317,
+        "innerRadius": 280,
+        "outerCenterAngle": 45,
+        "innerCenterAngle": 45,
+        "branchDirection": "Left"
+      },
+      {
+        "type": "WyeTurnout",
+        "name": "PY280-15",
+        "radius": 280,
+        "centerAngle": 15
+      },
+      {
+        "type": "ThreeWayTurnout",
+        "name": "PRL541/280-15",
+        "length": 140,
+        "rightStart": 0,
+        "rightRadius": 541,
+        "rightCenterAngle": 15,
+        "leftStart": 0,
+        "leftRadius": 541,
+        "leftCenterAngle": 15
+      },
+      {
+        "type": "ThreeWayTurnout",
+        "name": "PLR541/280-15",
+        "length": 140,
+        "rightStart": 0,
+        "rightRadius": 541,
+        "rightCenterAngle": 15,
+        "leftStart": 0,
+        "leftRadius": 541,
+        "leftCenterAngle": 15
+      },
+      {
+        "type": "DoubleCrossTurnout",
+        "name": "N-PX280",
+        "length": 280,
+        "centerAngle": 15
+      },
+      {
+        "type": "EndRail",
+        "name": "End Rail",
+        "length": 70
+      },
+      {
+        "type": "CrossingRail",
+        "name": "XR140-15",
+        "length": 140,
+        "crossAngle": 15
+      },
+      {
+        "type": "CrossingRail",
+        "name": "XR72.5-30",
+        "length": 72.5,
+        "crossAngle": 30
+      },
+      {
+        "type": "CrossingRail",
+        "name": "XR37-90",
+        "length": 37,
+        "crossAngle": 90
+      }
+    ]
+  }
 }
 
 
