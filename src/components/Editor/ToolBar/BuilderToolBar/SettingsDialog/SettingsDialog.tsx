@@ -103,6 +103,7 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
             validatorListener={this.handleValidation}
             validators={['required']}
             errorMessages={['this field is required']}
+            withRequiredValidator={true}
           />
           <TextValidator
             label="Paper Height"
@@ -115,6 +116,7 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
             validatorListener={this.handleValidation}
             validators={['required']}
             errorMessages={['this field is required']}
+            withRequiredValidator={true}
           />
           <TextValidator
             label="Grid Size"
@@ -127,6 +129,7 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
             validatorListener={this.handleValidation}
             validators={['required']}
             errorMessages={['this field is required']}
+            withRequiredValidator={true}
           />
         </ValidatorForm>
 

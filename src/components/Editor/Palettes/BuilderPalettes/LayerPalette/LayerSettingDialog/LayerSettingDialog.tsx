@@ -98,6 +98,7 @@ export default class LayerSettingDialog extends FormDialog<LayerSettingDialogPro
             validatorListener={this.handleValidation}
             validators={['required']}
             errorMessages={['this field is required']}
+            withRequiredValidator={true}
           />
         </ValidatorForm>
         <Spacer/>

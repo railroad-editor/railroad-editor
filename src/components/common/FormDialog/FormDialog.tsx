@@ -45,7 +45,6 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
 
   onEnter = () => {
     this.setState(this.getInitialState())
-    this.handleValidation()
   }
 
   onClose = () => {

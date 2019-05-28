@@ -48,6 +48,7 @@ export class NewSwitcherDialog extends FormDialog<NewSwitcherDialogProps, FormDi
             validatorListener={this.handleValidation}
             validators={['required']}
             errorMessages={['this field is required']}
+            withRequiredValidator={true}
           />
         </ValidatorForm>
         <form>

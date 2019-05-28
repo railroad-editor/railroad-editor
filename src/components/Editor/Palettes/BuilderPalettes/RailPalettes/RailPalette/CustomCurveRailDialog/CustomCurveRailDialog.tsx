@@ -113,6 +113,7 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
             validators={['required']}
             errorMessages={['this field is required']}
             onBlur={this.onInnterRadiusBlur}
+            withRequiredValidator={true}
           />
           <br/>
           <TextValidator
@@ -127,6 +128,7 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
             validators={['required']}
             errorMessages={['this field is required']}
             onBlur={this.onOuterRadiusBlur}
+            withRequiredValidator={true}
           />
         </>
         }
@@ -142,6 +144,7 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
           validatorListener={this.handleValidation}
           validators={['required']}
           errorMessages={['this field is required']}
+          withRequiredValidator={true}
         />
         }
         <br/>
@@ -156,6 +159,7 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
           validatorListener={this.handleValidation}
           validators={['required']}
           errorMessages={['this field is required']}
+          withRequiredValidator={true}
         />
         <br/>
         <FormControlLabel
@@ -178,6 +182,7 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
           validatorListener={this.handleValidation}
           validators={['required', 'isUniqueName']}
           errorMessages={['this field is required', 'The name already exists.']}
+          withRequiredValidator={true}
         />
       </ValidatorForm>
     )

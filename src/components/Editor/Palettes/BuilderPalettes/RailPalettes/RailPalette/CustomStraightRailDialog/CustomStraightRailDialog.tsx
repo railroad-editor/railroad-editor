@@ -77,6 +77,7 @@ export default class CustomStraightRailDialog extends FormDialog<CustomStraightR
           validatorListener={this.handleValidation}
           validators={['required']}
           errorMessages={['this field is required']}
+          withRequiredValidator={true}
         />
         <br/>
         <FormControlLabel
@@ -99,6 +100,7 @@ export default class CustomStraightRailDialog extends FormDialog<CustomStraightR
           validatorListener={this.handleValidation}
           validators={['required', 'isUniqueName']}
           errorMessages={['this field is required', 'The name already exists.']}
+          withRequiredValidator={true}
         />
       </ValidatorForm>
     )
