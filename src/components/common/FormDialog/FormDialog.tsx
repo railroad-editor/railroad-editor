@@ -56,9 +56,13 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
     this.setInput(name, e.target.value)
   }
 
-  handleValidation = () => {
+  handleValidation = async () => {
+    let disabled = true
+    if (this._form) {
+      disabled = ! await this._form.isFormValid()
+    }
     this.setState({
-      disabled: ! (this._form && this._form.isFormValid())
+      disabled: disabled
     })
   }
 
