@@ -37,6 +37,8 @@ import {SimulatorLogicStore} from "store/simulatorLogicStore";
 import Palettes from "./Palettes/Palettes";
 import {DistantRailPlacer} from "./DistantRailPlacer/DistantRailPlacer";
 import TemporaryLayer from "./TemporaryLayer/TemporaryLayer";
+import {Measure} from "./Measure/Measure";
+import {LowestEventHandler} from "./LowestEventHandler/LowestEventHandler";
 
 const LOGGER = getLogger(__filename)
 
@@ -171,6 +173,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
     const {paperWidth, paperHeight, gridSize, backgroundImageUrl} = this.props.layout.config
 
     // LOGGER.debug(`from=${this.props.selectionRectFrom}, to=${this.props.selectionRectTo}`)
+    // LOGGER.debug(this.state.mousePosition)
 
     return (
       <StyledWrapper onContextMenu={this.noopContextMenu}>
@@ -195,6 +198,9 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             matrix={matrix}
             setPaperLoaded={this.props.common.setPaperLoaded}
           >
+
+            <LowestEventHandler mousePosition={this.state.mousePosition}/>
+
             {/*/!* 後から書いたコンポーネントの方が前面に配置される *!/*/}
             <TemporaryLayer/>
 
@@ -202,9 +208,11 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
             <Layout/>
 
+            <Measure mousePosition={this.state.mousePosition}/>
+
             <Tool
               active={this.isActive(
-                Tools.STRAIGHT_RAILS, Tools.CURVE_RAILS, Tools.TURNOUTS, Tools.SPECIAL_RAILS, Tools.RAIL_GROUPS)}
+                Tools.STRAIGHT_RAILS, Tools.CURVE_RAILS, Tools.TURNOUTS, Tools.SPECIAL_RAILS, Tools.RAIL_GROUPS, Tools.FEEDERS, Tools.GAP_JOINERS, Tools.MEASURE)}
               name={'Rails'}
               onMouseDown={this.buildModeMouseDown}
               onMouseMove={this.buildModeMouseMove}
