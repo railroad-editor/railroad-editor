@@ -84,6 +84,7 @@ export default class SaveLayoutDialog extends FormDialog<SaveLayoutDialogProps, 
           validatorListener={this.handleValidation}
           validators={['required']}
           errorMessages={['this field is required']}
+          withRequiredValidator={true}
         />
       </ValidatorForm>
     )

@@ -133,6 +133,7 @@ export default class TurnoutSettingDialog extends FormDialog<TurnoutSettingDialo
             validatorListener={this.handleValidation}
             validators={['required']}
             errorMessages={['this field is required']}
+            withRequiredValidator={true}
           />
         </ValidatorForm>
         <form>

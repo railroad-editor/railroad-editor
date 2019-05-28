@@ -52,6 +52,7 @@ export class EditDialog extends FormDialog<EditDialogProps, FormDialogState> {
           validatorListener={this.handleValidation}
           validators={['required']}
           errorMessages={['this field is required']}
+          withRequiredValidator={true}
         />
       </ValidatorForm>
     )

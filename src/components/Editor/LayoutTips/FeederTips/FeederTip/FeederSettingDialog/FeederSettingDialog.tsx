@@ -84,6 +84,7 @@ export default class FeederSettingDialog extends FormDialog<FeederSettingDialogP
             validatorListener={this.handleValidation}
             validators={['required']}
             errorMessages={['this field is required']}
+            withRequiredValidator={true}
           />
         </ValidatorForm>
         <form>

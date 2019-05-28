@@ -57,6 +57,7 @@ export class NewRailGroupDialog extends FormDialog<NewRailGroupDialogProps, Form
           validatorListener={this.handleValidation}
           validators={['required', 'isUniqueName', 'isNameNotAllowed']}
           errorMessages={['this field is required', 'The name already exists.', 'The name cannot be used.']}
+          withRequiredValidator={true}
         />
       </ValidatorForm>
     )
