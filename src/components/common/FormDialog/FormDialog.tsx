@@ -54,8 +54,7 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
 
   onClose = () => {
     this.props.onClose()
-    this.setState(this.getInitialState())
-    // setTimeout(() => this.setState(this.getInitialState()), 100)
+    setTimeout(() => this.setState(this.getInitialState()), 500)
   }
 
   onChange = name => e => {

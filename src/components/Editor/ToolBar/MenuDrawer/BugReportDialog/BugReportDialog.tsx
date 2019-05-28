@@ -47,8 +47,7 @@ export class BugReportDialog extends FormDialog<BugReportDialogProps, FormDialog
   onOK = () => {
     // TODO: call Bug Report API
 
-    this.props.onClose()
-    this.setState(this.getInitialState())
+    this.onClose()
   }
 
   renderContent = () => {
