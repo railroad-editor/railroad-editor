@@ -29,6 +29,7 @@ import {KeyLabel} from "components/common/KeyLabel/KeyLabel";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import {SettingsDialog} from "../BuilderToolBar/SettingsDialog/SettingsDialog";
 import SettingsIcon from "@material-ui/icons/Settings";
+import {runInAction} from "mobx";
 
 const LOGGER = getLogger(__filename)
 
@@ -74,6 +75,24 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
     return false
   }
 
+  openSignUpDialog = () => {
+    this.props.ui.setSignInDialog(true)
+  }
+
+  closeSignUpDialog = () => {
+    this.props.ui.setSignInDialog(false)
+    this.props.onClose()
+  }
+
+  openLoginDialog = () => {
+    this.props.ui.setLoginDialog(true)
+  }
+
+  closeLoginDialog = () => {
+    this.props.ui.setLoginDialog(false)
+    this.props.onClose()
+  }
+
   openLayoutsDialog = () => {
     this.props.ui.setLayoutsDialog(true, this.props.snackbar.showMessage)
   }
@@ -101,22 +120,11 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
     this.props.onClose()
   }
 
-  openLoginDialog = () => {
-    this.props.ui.setLoginDialog(true)
-  }
-
-  closeLoginDialog = () => {
-    this.props.ui.setLoginDialog(false)
-    this.props.onClose()
-  }
-
-  openSignUpDialog = () => {
-    this.props.ui.setSignInDialog(true)
-  }
-
-  closeSignUpDialog = () => {
-    this.props.ui.setSignInDialog(false)
-    this.props.onClose()
+  onCreateNew = (meta: LayoutMeta) => {
+    runInAction(() => {
+      this.props.layout.resetLayoutData()
+      this.props.layout.updateLayoutMeta(meta)
+    })
   }
 
   onSave = async () => {
@@ -291,7 +299,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
           title={"Create New Layout"}
           open={ui.createNewDialog}
           onClose={this.closeCreateNewDialog}
-          onOK={this.onSaveAs}
+          onOK={this.onCreateNew}
           authData={this.props.common.userInfo}
           layoutConfig={this.props.layout.config}
         />

@@ -177,10 +177,7 @@ export class LayoutStore {
   @observable config: LayoutConfig
 
   constructor({histories, historyIndex, meta, config}) {
-    this.histories = histories
-    this.historyIndex = historyIndex
-    this.meta = meta
-    this.config = config
+    this.initialize({histories, historyIndex, meta, config})
 
     reactionWithOldValue(
       () => this.currentLayoutData.rails.length,
@@ -194,6 +191,18 @@ export class LayoutStore {
         }
       }
     )
+  }
+
+  initialize = ({histories, historyIndex, meta, config}) => {
+    this.histories = histories
+    this.historyIndex = historyIndex
+    this.meta = meta
+    this.config = config
+  }
+
+  @action
+  resetLayoutData = () => {
+    this.initialize(INITIAL_STATE)
   }
 
   @computed
