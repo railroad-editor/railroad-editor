@@ -4,16 +4,16 @@
 	"InitializationTime": "2018-04-29-01-10-37",
 	"LastConfigurationTime": "2018-04-29-01-09-42",
 	"LastNPMInstallTime": "",
-	"FrontendLastBuildTime": "2019-05-27-04-26-39",
-	"LastPublishTime": "2019-05-27-04-26-49",
-	"BackendLastSyncTime": "2019-05-27-04-26-37",
-	"BackendLastBuildTime": "2019-05-27-04-26-15",
-	"BackendLastPushTime": "2019-05-27-04-26-19",
+  "FrontendLastBuildTime": "2019-05-28-11-42-52",
+  "LastPublishTime": "2019-05-28-11-43-05",
+  "BackendLastSyncTime": "2019-05-28-11-42-51",
+  "BackendLastBuildTime": "2019-05-28-11-42-27",
+  "BackendLastPushTime": "2019-05-28-11-42-31",
 	"BackendProjectID": "afb78a90-fb33-4b35-aabb-2be1304f8015",
 	"BackendProjectName": "railroad-editor",
 	"BackendProjectConsoleUrl": "https://console.aws.amazon.com/mobilehub/home#/afb78a90-fb33-4b35-aabb-2be1304f8015/build",
 	"BackendProjectCreationTime": "2018-04-28T08:32:11.825Z",
-	"BackendProjectLastUpdatedTime": "2019-05-26T19:26:18.564Z",
+  "BackendProjectLastUpdatedTime": "2019-05-28T02:42:31.354Z",
 	"Framework": "react",
-	"BackendLastSyncToDevTime": "2019-05-27-04-26-37"
+  "BackendLastSyncToDevTime": "2019-05-28-11-42-51"
 }
