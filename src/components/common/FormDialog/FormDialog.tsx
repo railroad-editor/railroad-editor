@@ -41,6 +41,11 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
 
   abstract onOK: (e: any) => void
 
+  onOKBase = (e) => {
+    this.onOK(e)
+    this.onClose()
+  }
+
   abstract renderContent: () => React.ReactNode
 
   onEnter = () => {
@@ -48,8 +53,9 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
   }
 
   onClose = () => {
-    this.setState(this.getInitialState())
     this.props.onClose()
+    this.setState(this.getInitialState())
+    // setTimeout(() => this.setState(this.getInitialState()), 100)
   }
 
   onChange = name => e => {
@@ -96,7 +102,7 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
         </DialogContent>
         <DialogActions>
           <Button variant="raised" color="primary"
-                  disabled={this.state.disabled} onClick={this.onOK}>
+                  disabled={this.state.disabled} onClick={this.onOKBase}>
             OK
           </Button>
           <Button onClick={this.onClose} color="primary" autoFocus>
