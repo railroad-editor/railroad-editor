@@ -67,13 +67,19 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
     return this.props.builder.activeTool === tool
   }
 
-  onClickBuilderItem = (tool: Tools) => (e: MouseEvent) => {
+  /**
+   *  オブジェクト設置系ツールを切り替える
+   */
+  onClickObjectTools = (tool: Tools) => (e: MouseEvent) => {
     this.props.builder.setActiveTool(tool)
     // 最後に選択していたアイテムを選択する
     this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[tool])
   }
 
-  onChangePlacingMode = (mode: PlacingMode) => (e) => {
+  /**
+   *  レール設置モードを切り替える
+   */
+  onClickPlacingModes = (mode: PlacingMode) => (e) => {
     this.props.builder.setPlacingMode(mode)
   }
 
@@ -86,7 +92,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
             className={classNames({
               'active': this.isActive(Tools.STRAIGHT_RAILS)
             })}
-            onClick={this.onClickBuilderItem(Tools.STRAIGHT_RAILS)}
+            onClick={this.onClickObjectTools(Tools.STRAIGHT_RAILS)}
           >
             <StraightRailIcon/>
           </StyledIconButton>
@@ -96,7 +102,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
             className={classNames({
               'active': this.isActive(Tools.CURVE_RAILS)
             })}
-            onClick={this.onClickBuilderItem(Tools.CURVE_RAILS)}
+            onClick={this.onClickObjectTools(Tools.CURVE_RAILS)}
           >
             <CurveRailIcon/>
           </StyledIconButton>
@@ -106,7 +112,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
             className={classNames({
               'active': this.isActive(Tools.TURNOUTS)
             })}
-            onClick={this.onClickBuilderItem(Tools.TURNOUTS)}
+            onClick={this.onClickObjectTools(Tools.TURNOUTS)}
           >
             <TurnoutIcon/>
           </StyledIconButton>
@@ -116,7 +122,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
             className={classNames({
               'active': this.isActive(Tools.SPECIAL_RAILS)
             })}
-            onClick={this.onClickBuilderItem(Tools.SPECIAL_RAILS)}
+            onClick={this.onClickObjectTools(Tools.SPECIAL_RAILS)}
           >
             <SpecialRailIcon/>
           </StyledIconButton>
@@ -127,7 +133,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
             className={classNames({
               'active': this.isActive(Tools.RAIL_GROUPS)
             })}
-            onClick={this.onClickBuilderItem(Tools.RAIL_GROUPS)}
+            onClick={this.onClickObjectTools(Tools.RAIL_GROUPS)}
           >
             <RailGroupIcon/>
           </StyledIconButton>
@@ -138,7 +144,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
             className={classNames({
               'active': this.isActive(Tools.FEEDERS)
             })}
-            onClick={this.onClickBuilderItem(Tools.FEEDERS)}
+            onClick={this.onClickObjectTools(Tools.FEEDERS)}
           >
             {/*<FeederIcon/>*/}
             <PowerIcon/>
@@ -149,13 +155,13 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
             className={classNames({
               'active': this.isActive(Tools.GAP_JOINERS)
             })}
-            onClick={this.onClickBuilderItem(Tools.GAP_JOINERS)}
+            onClick={this.onClickObjectTools(Tools.GAP_JOINERS)}
           >
             <GapIcon/>
           </StyledIconButton>
         </Tooltip>
 
-        <Tooltip title={"PAN (Alt)"}>
+        <Tooltip title={`${Tools.PAN} (Alt)`}>
           <StyledIconButton
             className={classNames({
               'active': this.isActive(Tools.PAN)
@@ -166,7 +172,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
           </StyledIconButton>
         </Tooltip>
 
-        <Tooltip title={Tools.MEASURE}>
+        <Tooltip title={`${Tools.MEASURE} (M)`}>
           <StyledIconButton
             className={classNames({
               'active': this.isActive(Tools.MEASURE)
@@ -184,7 +190,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
             className={classNames({
               'active': this.props.builder.placingMode === PlacingMode.FREE
             })}
-            onClick={this.onChangePlacingMode(PlacingMode.FREE)}
+            onClick={this.onClickPlacingModes(PlacingMode.FREE)}
           >
             <FreePlacingModeIcon/>
           </StyledIconButton>
@@ -194,7 +200,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
             className={classNames({
               'active': this.props.builder.placingMode === PlacingMode.JOINT
             })}
-            onClick={this.onChangePlacingMode(PlacingMode.JOINT)}
+            onClick={this.onClickPlacingModes(PlacingMode.JOINT)}
           >
             <ConnectModeIcon/>
           </StyledIconButton>
@@ -202,7 +208,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
 
         <VerticalDivider/>
 
-        <Tooltip title={Commands.COPY}>
+        <Tooltip title={`${Commands.COPY} (Ctrl+C)`}>
           <StyledIconButton
             onClick={(e) => {
               this.props.builderRegisterRailGroup('Clipboard', false)
@@ -210,7 +216,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
             <CopyIcon/>
           </StyledIconButton>
         </Tooltip>
-        <Tooltip title={Commands.CUT}>
+        <Tooltip title={`${Commands.CUT} (Ctrl+X)`}>
           <StyledIconButton
             onClick={(e) => {
               this.props.builderRegisterRailGroup('Clipboard', true)
@@ -218,7 +224,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
             <CutIcon/>
           </StyledIconButton>
         </Tooltip>
-        <Tooltip title={Commands.DELETE}>
+        <Tooltip title={`${Commands.DELETE} (Backspace)`}>
           <StyledIconButton
             onClick={this.props.layoutLogic.deleteSelected}
           >
@@ -226,7 +232,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
           </StyledIconButton>
         </Tooltip>
 
-        <Tooltip title={Commands.UNDO}>
+        <Tooltip title={`${Commands.UNDO} (Ctrl+Z)`}>
           <StyledIconButton
             className={classNames({
               'disabled': ! this.props.layout.canUndo
@@ -235,7 +241,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
             <UndoIcon/>
           </StyledIconButton>
         </Tooltip>
-        <Tooltip title={Commands.REDO}>
+        <Tooltip title={`${Commands.REDO} (Ctrl+Y)`}>
           <StyledIconButton
             className={classNames({
               'disabled': ! this.props.layout.canRedo

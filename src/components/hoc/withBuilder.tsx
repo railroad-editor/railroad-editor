@@ -216,6 +216,18 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       }
     }
 
+    keyDown_CtrlZ = (e) => {
+      this.props.layout.undo()
+    }
+
+    keyDown_CtrlY = (e) => {
+      this.props.layout.redo()
+    }
+
+    keyDown_CtrlR = (e) => {
+      // this.props.layout.redo()
+    }
+
     /**
      * 仮レールを設置する。
      * @param {RailData} railData position, angle, pivotJointIndex などの位置に関する情報を含むこと。

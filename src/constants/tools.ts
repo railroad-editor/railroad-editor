@@ -20,6 +20,28 @@ export enum Commands {
   RESET_VIEW = 'Reset View',
 }
 
+export const TOOL_HOT_KEYS = {
+  [Tools.STRAIGHT_RAILS]: 'S',
+  [Tools.CURVE_RAILS]: 'C',
+  [Tools.TURNOUTS]: 'T',
+  [Tools.SPECIAL_RAILS]: 'X',
+  [Tools.RAIL_GROUPS]: 'G',
+  [Tools.FEEDERS]: 'F',
+  [Tools.GAP_JOINERS]: 'J',
+  [Tools.SELECT]: 'Select',
+  [Tools.PAN]: 'Alt',
+  [Tools.MEASURE]: 'M'
+}
+
+export const COMMAND_HOT_KEYS = {
+  [Commands.COPY]: 'C',
+  [Commands.CUT]: 'X',
+  [Commands.DELETE]: 'Delete',
+  [Commands.UNDO]: 'Undo',
+  [Commands.REDO]: 'Redo',
+  [Commands.RESET_VIEW]: 'Reset View',
+}
+
 
 export const isRailTool = (tool: Tools): boolean => {
   return [Tools.STRAIGHT_RAILS, Tools.CURVE_RAILS, Tools.TURNOUTS, Tools.SPECIAL_RAILS, Tools.RAIL_GROUPS].includes(tool)

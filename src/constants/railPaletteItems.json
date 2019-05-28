@@ -167,7 +167,7 @@
         "type": "Feeder"
       }
     ],
-    "GapJoiners": [
+    "Gap Joiners": [
       {
         "name": "GapJoiner",
         "type": "GapJoiner"

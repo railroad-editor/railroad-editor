@@ -52,10 +52,14 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
 
 
     keyDown = (e: KeyboardEvent | any) => {
+      // ダイアログの表示中はツールの切替を行わない
       if (this.dialogExists()) return
 
-      // これらのModifierのショートカットキーは現状扱わない
-      if (e.ctrlKey || e.metaKey) {
+      // ツールの切替はModifierを押さない状態で行うものとする。
+      // Ctrl: コマンド
+      // Alt: パンツール
+      // Shift: 各ツールでの挙動切替
+      if (e.shiftKey || e.ctrlKey || e.metaKey) {
         return
       }
 
@@ -84,11 +88,19 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
         case 'g':
           this.props.builder.setActiveTool(Tools.RAIL_GROUPS)
           this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[Tools.RAIL_GROUPS])
+          break
         case 'f':
           this.props.builder.setActiveTool(Tools.FEEDERS)
           break
         case 'j':
           this.props.builder.setActiveTool(Tools.GAP_JOINERS)
+          break
+        case 'p':
+          // 一応 p でもPANツールを有効にできるようにしておく
+          this.props.builder.setActiveTool(Tools.PAN)
+          break
+        case 'm':
+          this.props.builder.setActiveTool(Tools.MEASURE)
           break
       }
       e.preventDefault()
