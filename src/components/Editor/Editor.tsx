@@ -173,6 +173,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
     const {paperWidth, paperHeight, gridSize, backgroundImageUrl} = this.props.layout.config
 
     // LOGGER.debug(`from=${this.props.selectionRectFrom}, to=${this.props.selectionRectTo}`)
+    // LOGGER.debug(this.state.mousePosition)
 
     return (
       <StyledWrapper onContextMenu={this.noopContextMenu}>
@@ -211,7 +212,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
             <Tool
               active={this.isActive(
-                Tools.STRAIGHT_RAILS, Tools.CURVE_RAILS, Tools.TURNOUTS, Tools.SPECIAL_RAILS, Tools.RAIL_GROUPS)}
+                Tools.STRAIGHT_RAILS, Tools.CURVE_RAILS, Tools.TURNOUTS, Tools.SPECIAL_RAILS, Tools.RAIL_GROUPS, Tools.FEEDERS, Tools.GAP_JOINERS, Tools.MEASURE)}
               name={'Rails'}
               onMouseDown={this.buildModeMouseDown}
               onMouseMove={this.buildModeMouseMove}
