@@ -46,7 +46,6 @@ export default class DistantPlacingDialog extends FormDialog<DistantPlacingDialo
       <>
         <ValidatorForm
           ref={(form) => this._form = form}
-          instantValidate={true}
         >
           <AutoFocusTextValidator
             label="X"
