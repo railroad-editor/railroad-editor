@@ -451,7 +451,11 @@ export class LayoutStore {
 
   @action
   setConfig = (config: LayoutConfig) => {
-    this.config = config
+    // 古いレイアウトデータのコンフィグとの互換性を保つために、デフォルトのコンフィグとマージする
+    this.config = {
+      ...INITIAL_STATE.config,
+      ...config
+    }
   }
 
   @action
