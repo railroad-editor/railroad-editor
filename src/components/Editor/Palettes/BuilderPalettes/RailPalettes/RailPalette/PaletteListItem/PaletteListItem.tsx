@@ -1,9 +1,8 @@
 import * as React from 'react'
 import {ListItemText, MenuItem} from '@material-ui/core'
 import {PrimaryColorActiveListItem} from "components/common/ActiveListItem/index";
-import IconButton from "@material-ui/core/IconButton";
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from "@material-ui/core/Menu";
+import {PrimaryPaletteListItemSettingButton} from "../../../../../../common/PaletteListItemSettingButton/PaletteListItemSettingButton";
 
 export interface PaletteListItemProps {
   item: PaletteItem
@@ -49,20 +48,7 @@ export default class PaletteListItem extends React.Component<PaletteListItemProp
     let menuButton, menu
     if (hasMenu) {
       menuButton = (
-        <IconButton
-          style={{
-            width: '20px',
-            height: '20px',
-            fontSize: '20px'
-          }}
-          onClick={this.openMenu}
-        >
-          <MoreVertIcon
-            style={{
-              fontSize: '20px'
-            }}
-          />
-        </IconButton>
+        <PrimaryPaletteListItemSettingButton onClick={this.openMenu}/>
       )
       menu = (
         <Menu

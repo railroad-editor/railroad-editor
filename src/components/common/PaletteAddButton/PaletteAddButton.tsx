@@ -30,8 +30,10 @@ export const PrimaryPaletteAddButton = styled(PaletteAddButton)`
     &.active, &:active {
         color: #FFC700
     }
-    margin-top: -11px;
-    margin-left: 10px;
+    // fix icon's vertical position
+    & span {
+      margin-top: -11px;
+    }
   }
 `
 
@@ -46,8 +48,10 @@ export const SecondaryPaletteAddButton = styled(PaletteAddButton)`
     &.active, &:active {
         color: #FF9400
     }
-    margin-top: -11px;
     margin-left: 10px;
+    // fix icon's vertical position
+    & span {
+      margin-top: -11px;
   }
 `
 

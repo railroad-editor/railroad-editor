@@ -3,8 +3,7 @@ import {ReactEventHandler} from "react";
 import {ActiveListItemProps, SecondaryColorActiveListItem} from "components/common/ActiveListItem/index";
 import {ListItemText, MenuItem} from '@material-ui/core';
 import Menu from "@material-ui/core/Menu";
-import IconButton from "@material-ui/core/IconButton";
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import {PrimaryPaletteListItemSettingButton} from "components/common/PaletteListItemSettingButton/PaletteListItemSettingButton";
 
 
 export interface LayerListItemProps extends ActiveListItemProps {
@@ -56,21 +55,7 @@ export class LayerListItem extends React.Component<LayerListItemProps, LayerList
           {...otherProps as any}
         >
           <ListItemText primary={text}/>
-          <IconButton
-            style={{
-              width: '20px',
-              height: '20px',
-              fontSize: '20px',
-              marginTop: '-18px'
-            }}
-            onClick={this.openMenu}
-          >
-            <MoreVertIcon
-              style={{
-                fontSize: '20px'
-              }}
-            />
-          </IconButton>
+          <PrimaryPaletteListItemSettingButton onClick={this.openMenu}/>
         </SecondaryColorActiveListItem>
         <Menu
           anchorEl={this.state.anchorEl}
