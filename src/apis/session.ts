@@ -20,7 +20,7 @@ const fetchSession = async (userId: string, layoutId: string): Promise<Session> 
 
 const createSession = async (userId: string, layoutId: string, peerId: string) => {
   return await API.put('Layout', `/users/${userId}/sessions/${layoutId}`, {
-    headers: {},
+    headers: {'Content-Type': 'application/json'},
     body: {
       peerId,
     }
