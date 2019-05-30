@@ -9,6 +9,9 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Grid from "@material-ui/core/Grid";
 import FormControl from "@material-ui/core/FormControl";
+import IssuesAPI from "apis/issues";
+import {withSnackbar} from 'material-ui-snackbar-provider'
+import {compose} from "recompose";
 
 const LOGGER = getLogger(__filename)
 
@@ -25,6 +28,7 @@ const styles = theme => ({
 
 export interface BugReportDialogProps extends FormDialogProps {
   classes: any
+  snackbar: any
 }
 
 
@@ -44,9 +48,14 @@ export class BugReportDialog extends FormDialog<BugReportDialogProps, FormDialog
     }
   }
 
-  onOK = () => {
-    // TODO: call Bug Report API
-
+  onOK = async () => {
+    const {issueType, issueTitle, issueComment} = this.state.inputs
+    const res = await IssuesAPI.createIssue({
+      type: issueType,
+      title: issueTitle,
+      comment: issueComment,
+    })
+    this.props.snackbar.showMessage('Your issue is submitted successfully. Thank you for reporting!')
     this.onClose()
   }
 
@@ -111,4 +120,7 @@ export class BugReportDialog extends FormDialog<BugReportDialogProps, FormDialog
   }
 }
 
-export default withStyles(styles)(BugReportDialog);
+export default compose<BugReportDialogProps, BugReportDialogProps | any>(
+  withStyles(styles),
+  withSnackbar()
+)(BugReportDialog)
