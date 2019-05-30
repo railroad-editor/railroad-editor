@@ -12,6 +12,7 @@ features:
         paths:
           /: !com.amazonaws.mobilehub.v0.Function {}
           /confirm: !com.amazonaws.mobilehub.v0.Function {}
+          /issues: !com.amazonaws.mobilehub.v0.Function {}
           '/users/{userId}/layouts': !com.amazonaws.mobilehub.v0.Function {}
           '/users/{userId}/layouts/{layoutId}': !com.amazonaws.mobilehub.v0.Function {}
           '/users/{userId}/sessions': !com.amazonaws.mobilehub.v0.Function {}
