@@ -42,7 +42,7 @@ const saveLayoutData = async (userId: string,
     userRails: userCustomRails
   }
   return await API.put('Layout', `/users/${userId}/layouts/${layoutId}`, {
-    headers: {},
+    headers: {'Content-Type': 'application/json'},
     body: body
   })
 }

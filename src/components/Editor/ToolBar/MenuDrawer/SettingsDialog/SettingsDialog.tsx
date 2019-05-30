@@ -178,6 +178,7 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
               displayEmpty
             >
               <MenuItem value={'TOMIX'}>TOMIX</MenuItem>
+              <MenuItem value={'KATO'}>KATO</MenuItem>
             </Select>
           </FormControl>
         </form>

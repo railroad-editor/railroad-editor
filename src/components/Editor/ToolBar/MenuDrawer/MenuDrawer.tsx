@@ -9,6 +9,7 @@ import SigninIcon from "@material-ui/icons/PermIdentity";
 import LoginIcon from "@material-ui/icons/LockOpen";
 import LogoutIcon from "@material-ui/icons/Lock";
 import HelpIcon from "@material-ui/icons/Help";
+import BugReportIcon from "@material-ui/icons/BugReport";
 import OpenLayoutsDialog from "components/Editor/ToolBar/MenuDrawer/OpenLayoutsDialog/OpenLayoutsDialog";
 import Auth from "aws-amplify/lib/Auth";
 import Divider from "@material-ui/core/Divider";
@@ -27,9 +28,10 @@ import SignUpDialog from "components/Editor/ToolBar/MenuDrawer/SignUpDialog/Sign
 import {UiStore} from "store/uiStore";
 import {KeyLabel} from "components/common/KeyLabel/KeyLabel";
 import {LayoutLogicStore} from "store/layoutLogicStore";
-import {SettingsDialog} from "../BuilderToolBar/SettingsDialog/SettingsDialog";
+import {SettingsDialog} from "./SettingsDialog/SettingsDialog";
 import SettingsIcon from "@material-ui/icons/Settings";
 import {runInAction} from "mobx";
+import BugReportDialog from "./BugReportDialog/BugReportDialog";
 
 const LOGGER = getLogger(__filename)
 
@@ -155,9 +157,19 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
     this.props.onClose()
   }
 
-  onOpenHelp = () => {
+  onOpenUserManual = () => {
     this.props.onClose()
   }
+
+  openBugReportDialog = () => {
+    this.props.ui.setBugReportDialog(true)
+  }
+
+  closeBugReportDialog = () => {
+    this.props.ui.setBugReportDialog(false)
+    this.props.onClose()
+  }
+
 
   /**
    * レイアウトをSVGファイルに変換し、ダウンロードする。
@@ -278,12 +290,18 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
             </ListItem>
             <Divider/>
             <ListItem button component="a" target="_blank" href="http://d2t6ssvra5p03o.cloudfront.net/index.html"
-                      onClick={this.onOpenHelp}
+                      onClick={this.onOpenUserManual}
             >
               <ListItemIcon>
                 <HelpIcon/>
               </ListItemIcon>
               <ListItemText primary="User Manual"/>
+            </ListItem>
+            <ListItem button onClick={this.openBugReportDialog}>
+              <ListItemIcon>
+                <BugReportIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Bug Report"/>
             </ListItem>
             {/*<ListItem button onClick={this.downloadAsSVG}>*/}
             {/*<ListItemIcon>*/}
@@ -323,6 +341,11 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
           setConfig={this.props.layout.setConfig}
           userInfo={this.props.common.userInfo}
           layoutMeta={this.props.layout.meta}
+        />
+        <BugReportDialog
+          title={"Bug Report"}
+          open={ui.bugReportDialog}
+          onClose={this.closeBugReportDialog}
         />
         {dialogs}
       </>
