@@ -7912,7 +7912,7 @@ react-material-ui-form-validator@2.0.8:
 
 "react-paper-bindings@https://github.com/kota65535/react-paper-bindings.dist#master":
   version "1.0.0"
-  resolved "https://github.com/kota65535/react-paper-bindings.dist#0791905f0f5e72e493e838021111090b3b0273a2"
+  resolved "https://github.com/kota65535/react-paper-bindings.dist#fb0a01d8156f3fb0d63d8d927ee16396cb596b9a"
 
 react-reconciler@^0.7.0:
   version "0.7.0"
