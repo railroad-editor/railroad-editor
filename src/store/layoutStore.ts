@@ -1,6 +1,6 @@
 import {RailComponentClasses, RailData} from "components/rails";
 import {action, computed, observable, toJS} from "mobx";
-import builderStore, {PlacingMode} from "./builderStore";
+import builderStore from "./builderStore";
 import {DEFAULT_GRID_SIZE, DEFAULT_PAPER_HEIGHT, DEFAULT_PAPER_WIDTH} from "constants/tools";
 import {getAllOpenCloseJoints} from "components/rails/utils";
 import getLogger from "logging";
@@ -8,7 +8,6 @@ import * as uuidv4 from "uuid/v4";
 import * as moment from "moment";
 import {FeederInfo, GapJoinerInfo} from "components/rails/RailBase";
 import TrainController from "components/Editor/ToolBar/SimulatorToolBar/TrainController";
-import {reactionWithOldValue} from "./utils";
 import railItems from "constants/railItems.json";
 
 const LOGGER = getLogger(__filename)
@@ -178,19 +177,6 @@ export class LayoutStore {
 
   constructor({histories, historyIndex, meta, config}) {
     this.initialize({histories, historyIndex, meta, config})
-
-    reactionWithOldValue(
-      () => this.currentLayoutData.rails.length,
-      (newValue, oldValue) => {
-        if (newValue === 0) {
-          // レイアウトが空ならFree Placing Mode
-          builderStore.setPlacingMode(PlacingMode.FREE)
-        } else if (newValue === 1 && oldValue === 0) {
-          // 最初のレールを置いたらJoint Placing Modeに自動的に移行する
-          builderStore.setPlacingMode(PlacingMode.JOINT)
-        }
-      }
-    )
   }
 
   initialize = ({histories, historyIndex, meta, config}) => {

@@ -8,6 +8,7 @@ import railPaletteItems from "constants/railPaletteItems.json"
 import layoutLogicStore from "store/layoutLogicStore";
 import layoutStore from "store/layoutStore";
 import {Point} from "paper";
+import {reactionWithOldValue} from "./utils";
 
 
 export interface PresetPaletteItems {
@@ -151,6 +152,19 @@ export class BuilderStore {
       () => this.activeTool,
       (tool) => {
         this.changeMode(tool)
+      }
+    )
+
+    reactionWithOldValue(
+      () => layoutStore.currentLayoutData.rails.length,
+      (newValue, oldValue) => {
+        if (newValue === 0) {
+          // レイアウトが空ならFree Placing Mode
+          this.setPlacingMode(PlacingMode.FREE)
+        } else if (newValue === 1 && oldValue === 0) {
+          // 最初のレールを置いたらJoint Placing Modeに自動的に移行する
+          this.setPlacingMode(PlacingMode.JOINT)
+        }
       }
     )
   }

@@ -1,7 +1,7 @@
 import {action} from "mobx";
 import getLogger from "logging";
 import layoutStore, {ConductionStates} from "store/layoutStore";
-import builderStore from "store/builderStore";
+import builderStore, {PlacingMode} from "store/builderStore";
 import {JointPair} from "components/hoc/withBuilder";
 import {Tools} from "constants/tools";
 import {getRailComponent} from "components/rails/utils";
@@ -66,6 +66,11 @@ export class LayoutLogicStore {
     layoutStore.setConfig(layout.config)
     builderStore.setUserRailGroups(layout.userRailGroups)
     builderStore.setUserRails(layout.userRails)
+    if (layout.layout.rails.length > 0) {
+      builderStore.setPlacingMode(PlacingMode.JOINT)
+    } else {
+      builderStore.setPlacingMode(PlacingMode.FREE)
+    }
 
     // TODO: 本当はセーブするときに全ての電流をOFFにしておくのが良い
     if (commonStore.editorMode === EditorMode.BUILDER) {
