@@ -97,7 +97,6 @@ export interface RailBaseDefaultProps {
   opacity: number
   // 色
   fillColor: string
-  fillColors: object
 
   flowDirections: FlowDirections
 
@@ -159,7 +158,6 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     visible: true,
     opacity: 1,
     fillColor: undefined,
-    fillColors: {},
 
     flowDirections: {},
 
@@ -501,7 +499,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
 
   render() {
     const {
-      fillColor, fillColors, onRailPartLeftClick, onRailPartMouseEnter, onRailPartMouseLeave, flowDirections,
+      fillColor, onRailPartLeftClick, onRailPartMouseEnter, onRailPartMouseLeave, flowDirections,
       conductionState, showGap, showJoints
     } = this.props
 
@@ -509,7 +507,6 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     const extendedRailPart = React.cloneElement(railPart as any, {
       ...railPart.props,
       fillColor: fillColor,
-      fillColors: fillColors,
       onLeftClick: onRailPartLeftClick,
       onMouseEnter: onRailPartMouseEnter,
       onMouseLeave: onRailPartMouseLeave,

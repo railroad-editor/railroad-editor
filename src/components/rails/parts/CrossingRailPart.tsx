@@ -39,7 +39,7 @@ export default class CrossingRailPart extends RailPartBase<CrossingRailPartProps
   }
 
   renderParts = () => {
-    const {length, crossAngle, fillColors, flowDirections} = this.props
+    const {length, crossAngle, fillColor, flowDirections} = this.props
 
     return (
       <>
@@ -48,7 +48,7 @@ export default class CrossingRailPart extends RailPartBase<CrossingRailPartProps
           width={RAIL_PART_WIDTH}
           height={length}
           pivot={Pivot.CENTER}
-          fillColor={fillColors[0]}
+          fillColor={fillColor}
           flowDirection={flowDirections[0]}
           data={{
             type: 'Part'
@@ -60,7 +60,7 @@ export default class CrossingRailPart extends RailPartBase<CrossingRailPartProps
           width={RAIL_PART_WIDTH}
           height={length}
           pivot={Pivot.CENTER}
-          fillColor={fillColors[0]}
+          fillColor={fillColor}
           flowDirection={flowDirections[1]}
           data={{
             type: 'Part'

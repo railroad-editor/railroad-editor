@@ -41,7 +41,7 @@ export default class DoubleStraightRailPart extends RailPartBase<DoubleStraightR
   }
 
   renderParts = () => {
-    const {length, fillColors, flowDirections} = this.props
+    const {length, fillColor, flowDirections} = this.props
 
     return (
       <>
@@ -49,7 +49,7 @@ export default class DoubleStraightRailPart extends RailPartBase<DoubleStraightR
           width={RAIL_PART_WIDTH}
           height={length}
           pivot={Pivot.LEFT}
-          fillColor={fillColors[0]}
+          fillColor={fillColor}
           flowDirection={flowDirections[0]}
           data={{
             type: 'Part'
@@ -60,7 +60,7 @@ export default class DoubleStraightRailPart extends RailPartBase<DoubleStraightR
           width={RAIL_PART_WIDTH}
           height={length}
           pivot={Pivot.LEFT}
-          fillColor={fillColors[0]}
+          fillColor={fillColor}
           flowDirection={flowDirections[1]}
           data={{
             type: 'Part'

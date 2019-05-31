@@ -39,7 +39,7 @@ export default class DoubleStraightRail extends RailBase<DoubleStraightRailProps
         selected={selected}
         opacity={opacity}
         visible={visible}
-        fillColors={_.fill(Array(4), fillColor)}
+        fillColor={fillColor}
         data={{
           type: 'RailPart',
           railId: id,

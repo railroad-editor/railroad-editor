@@ -50,7 +50,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
 
 
   renderParts = () => {
-    const {length, centerAngle, fillColors, flowDirections, showGap} = this.props
+    const {length, centerAngle, fillColor, flowDirections, showGap} = this.props
 
     // TODO: 方程式を解いてちゃんと値を出す
     const radius = length / (2 * Math.sin(centerAngle / 180 * Math.PI))
@@ -61,7 +61,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           width={RAIL_PART_WIDTH}
           height={length / 2}
           pivot={Pivot.LEFT}
-          fillColor={fillColors[0]}
+          fillColor={fillColor}
           flowDirection={flowDirections[0]}
           data={{
             type: 'Part'
@@ -72,7 +72,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           width={RAIL_PART_WIDTH}
           height={length / 2}
           pivot={Pivot.LEFT}
-          fillColor={fillColors[0]}
+          fillColor={fillColor}
           flowDirection={flowDirections[1]}
           data={{
             type: 'Part'
@@ -83,7 +83,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           width={RAIL_PART_WIDTH}
           height={length / 2}
           pivot={Pivot.LEFT}
-          fillColor={fillColors[0]}
+          fillColor={fillColor}
           flowDirection={flowDirections[2]}
           data={{
             type: 'Part'
@@ -94,7 +94,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           width={RAIL_PART_WIDTH}
           height={length / 2}
           pivot={Pivot.LEFT}
-          fillColor={fillColors[0]}
+          fillColor={fillColor}
           flowDirection={flowDirections[3]}
           data={{
             type: 'Part'
@@ -106,7 +106,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           centerAngle={centerAngle}
           width={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
-          fillColor={fillColors[1]}
+          fillColor={fillColor}
           flowDirection={flowDirections[4]}
           data={{
             type: 'Part'
@@ -120,7 +120,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           centerAngle={centerAngle}
           width={RAIL_PART_WIDTH}
           pivot={Pivot.RIGHT}
-          fillColor={fillColors[1]}
+          fillColor={fillColor}
           flowDirection={flowDirections[5]}
           data={{
             type: 'Part'
@@ -133,7 +133,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           centerAngle={centerAngle}
           width={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
-          fillColor={fillColors[1]}
+          fillColor={fillColor}
           flowDirection={flowDirections[6]}
           data={{
             type: 'Part'
@@ -147,7 +147,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           centerAngle={centerAngle}
           width={RAIL_PART_WIDTH}
           pivot={Pivot.RIGHT}
-          fillColor={fillColors[1]}
+          fillColor={fillColor}
           flowDirection={flowDirections[7]}
           data={{
             type: 'Part'
