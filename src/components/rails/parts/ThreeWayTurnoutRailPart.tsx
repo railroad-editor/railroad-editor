@@ -61,7 +61,7 @@ export default class ThreeWayTurnoutRailPart extends RailPartBase<ThreeWayTurnou
 
 
   renderParts = () => {
-    const {length, rightStart, rightRadius, rightCenterAngle, leftStart, leftRadius, leftCenterAngle, fillColors, flowDirections} = this.props
+    const {length, rightStart, rightRadius, rightCenterAngle, leftStart, leftRadius, leftCenterAngle, fillColor, flowDirections} = this.props
 
     return (
       <>
@@ -69,7 +69,7 @@ export default class ThreeWayTurnoutRailPart extends RailPartBase<ThreeWayTurnou
           width={RAIL_PART_WIDTH}
           height={length}
           pivot={Pivot.LEFT}
-          fillColor={fillColors[0]}
+          fillColor={fillColor}
           flowDirection={flowDirections[0]}
           data={{
             type: 'Part'
@@ -82,7 +82,7 @@ export default class ThreeWayTurnoutRailPart extends RailPartBase<ThreeWayTurnou
           centerAngle={rightCenterAngle}
           width={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
-          fillColor={fillColors[1]}
+          fillColor={fillColor}
           flowDirection={flowDirections[1]}
           data={{
             type: 'Part'
@@ -95,7 +95,7 @@ export default class ThreeWayTurnoutRailPart extends RailPartBase<ThreeWayTurnou
           centerAngle={leftCenterAngle}
           width={RAIL_PART_WIDTH}
           pivot={Pivot.LEFT}
-          fillColor={fillColors[2]}
+          fillColor={fillColor}
           flowDirection={flowDirections[2]}
           data={{
             type: 'Part'

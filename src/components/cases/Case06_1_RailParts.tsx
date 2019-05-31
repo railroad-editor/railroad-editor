@@ -89,7 +89,7 @@ export default class Case05 extends React.Component<any, any> {
           length={140}
           radius={280}
           centerAngle={30}
-          fillColors={{1: 'blue'}}
+          fillColor={'blue'}
         />
         <SimpleTurnoutRailPart
           pivotJointIndex={1}

@@ -42,7 +42,7 @@ export default class CurveRail extends RailBase<CurveRailProps, RailBaseState> {
         selected={selected}
         opacity={opacity}
         visible={visible}
-        fillColors={_.fill(Array(4), fillColor)}
+        fillColor={fillColor}
         data={{
           type: 'RailPart',
           railId: id,

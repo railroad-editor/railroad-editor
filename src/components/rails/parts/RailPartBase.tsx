@@ -35,7 +35,6 @@ export interface RailPartBaseDefaultProps {
   opacity?: number
   visible?: boolean
   fillColor?: string
-  fillColors?: object    // パーツの色。stringで全パーツ指定、string[]でパーツ毎の指定。
   flowDirections: FlowDirections
   conductionState: number
   showGap?: boolean
@@ -51,7 +50,6 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     opacity: 1,
     visible: true,
     fillColor: undefined,
-    fillColors: {},
     flowDirections: {},
     conductionState: 0,
     showGap: true,
