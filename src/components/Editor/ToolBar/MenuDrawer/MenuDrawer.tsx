@@ -301,7 +301,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
               <ListItemIcon>
                 <BugReportIcon/>
               </ListItemIcon>
-              <ListItemText primary="Bug Report"/>
+              <ListItemText primary="Report a Bug"/>
             </ListItem>
             {/*<ListItem button onClick={this.downloadAsSVG}>*/}
             {/*<ListItemIcon>*/}
@@ -343,7 +343,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
           layoutMeta={this.props.layout.meta}
         />
         <BugReportDialog
-          title={"Bug Report"}
+          title={"Report a Bug"}
           open={ui.bugReportDialog}
           onClose={this.closeBugReportDialog}
         />
