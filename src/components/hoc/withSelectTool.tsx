@@ -16,8 +16,6 @@ export interface WithSelectToolPublicProps {
   selectToolMouseDown: (e: ToolEvent) => void
   selectToolMouseDrag: (e: ToolEvent) => void
   selectToolMouseUp: (e: ToolEvent) => void
-  selectionRectFrom: Point
-  selectionRectTo: Point
 
   builder?: BuilderStore
   layout?: LayoutStore
@@ -25,15 +23,7 @@ export interface WithSelectToolPublicProps {
 
 }
 
-// export interface WithSelectToolPrivateProps {
-//   layout: LayoutData
-//   activeLayerId: number
-//   setMousePosition: (point: Point) => void
-// }
-
 interface WithSelectToolState {
-  selectionRectFrom: Point
-  selectionRectTo: Point
 }
 
 
@@ -59,17 +49,21 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
     constructor(props: WithSelectToolProps) {
       super(props)
 
-      this.state = {
-        selectionRectFrom: null,
-        selectionRectTo: null
-      }
       this.selectionRect = null
+      this.selectionRectFrom = null
       this.debounceCount = 0
-      this.mouseDrag = this.mouseDrag.bind(this)
-      this.mouseDown = this.mouseDown.bind(this)
-      this.mouseUp = this.mouseUp.bind(this)
     }
 
+    onMouseDown = (e: MouseEvent | any) => {
+      switch (e.event.button) {
+        case 0:
+          this.onLeftClick(e)
+          break
+        // case 2:
+        //   this.onRightClick(e)
+        //   break
+      }
+    }
 
     /**
      * レールパーツ以外の場所を左クリックしたら、選択状態をリセットする。
@@ -77,7 +71,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
      * そのままドラッグすると矩形選択を開始する。
      * @param {paper.ToolEvent | any} e
      */
-    mouseDown = (e: ToolEvent | any) => {
+    onLeftClick = (e) => {
       // Shiftが押されておらず、RailPart上で無ければ選択状態をリセットする
       const isNotOnRailPart = (! e.item) || ! (['RailPart', 'Feeder', 'GapJoiner'].includes(e.item.data.type))
       if ((! e.modifiers.shift) && isNotOnRailPart) {
@@ -87,12 +81,14 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
       this.selectionRectFrom = e.point
     }
 
-
     /**
      * ドラッグ中は、矩形選択の開始地点からマウスカーソルに至る矩形を表示し続ける。
      * @param {paper.ToolEvent | any} e
      */
-    mouseDrag = (e: ToolEvent | any) => {
+    onMouseDrag = (e: ToolEvent | any) => {
+      if (! this.selectionRectFrom) {
+        return
+      }
       // クリックしてから一定以上ドラッグされた時に初めて矩形を表示する
       if (this.debounceCount < WithSelectTool.DEBOUNCE_THRESHOLD) {
         this.debounceCount += 1
@@ -122,7 +118,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
      * ドラッグを終了したら、一部または全体が矩形に含まれるレールを選択状態にする。
      * @param {paper.ToolEvent} e
      */
-    mouseUp = (e: ToolEvent) => {
+    onMouseUp = (e: ToolEvent) => {
       this.props.builder.setSelecting(false)
       if (! this.selectionRect) {
         return
@@ -145,6 +141,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
       this.selectionRect = null
       this.selectionLayer.remove()
       this.selectionLayer = null
+      this.selectionRectFrom = null
       this.debounceCount = 0
     }
 
@@ -227,11 +224,9 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
       return (
         <WrappedComponent
           {...this.props}
-          selectToolMouseDown={this.mouseDown}
-          selectToolMouseDrag={this.mouseDrag}
-          selectToolMouseUp={this.mouseUp}
-          selectionRectFrom={this.state.selectionRectFrom}
-          selectionRectTo={this.state.selectionRectTo}
+          selectToolMouseDown={this.onMouseDown}
+          selectToolMouseDrag={this.onMouseDrag}
+          selectToolMouseUp={this.onMouseUp}
         />
       )
     }

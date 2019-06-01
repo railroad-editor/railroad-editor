@@ -64,11 +64,6 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
       }
 
       switch (e.key) {
-        case 'Alt':
-          // シフトを押している間はPANツールが有効になる。離すと元に戻る
-          this._prevTool = this.props.builder.activeTool
-          this.props.builder.setActiveTool(Tools.PAN)
-          break
         case 's':
           this.props.builder.setActiveTool(Tools.STRAIGHT_RAILS)
           this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[Tools.STRAIGHT_RAILS])
@@ -95,10 +90,6 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
         case 'j':
           this.props.builder.setActiveTool(Tools.GAP_JOINERS)
           break
-        case 'p':
-          // 一応 p でもPANツールを有効にできるようにしておく
-          this.props.builder.setActiveTool(Tools.PAN)
-          break
         case 'm':
           this.props.builder.setActiveTool(Tools.MEASURE)
           break
@@ -110,7 +101,7 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
     keyUp = (e: KeyboardEvent) => {
       switch (e.key) {
         case 'Alt':
-          this.props.builder.setActiveTool(this._prevTool)
+          // this.props.builder.setActiveTool(this._prevTool)
           break
       }
     }

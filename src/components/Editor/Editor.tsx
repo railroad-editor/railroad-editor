@@ -97,6 +97,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
   buildModeMouseDown = (e) => {
     // this.props.builderMouseDown(e)
     this.props.selectToolMouseDown(e);
+    this.props.moveToolMouseDown(e);
     // this.props.moveToolMouseDown(e)
     // Material-UIの要素に変にフォーカスが残ってしまうので、Canvasにいるときは常にBlurして対処
     // TODO: もっとスマートな方法が無いか調べる
@@ -106,15 +107,18 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
   buildModeMouseMove = (e) => {
     // this.props.builderMouseMove(e)
     const mousePosition = this.props.moveToolMouseMove(e);
+    this.props.moveToolMouseMove(e);
     this.setState({mousePosition});
   }
 
   buildModeMouseDrag = (e) => {
     this.props.selectToolMouseDrag(e)
+    this.props.moveToolMouseDrag(e)
   }
 
   buildModeMouseUp = (e) => {
     this.props.selectToolMouseUp(e)
+    this.props.moveToolMouseUp(e)
   }
 
   buildModeKeyDown = (e) => {
@@ -125,33 +129,9 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
     this.props.builderKeyUp(e)
   }
 
-  panModeMouseDown = (e) => {
-    this.props.moveToolMouseDown(e);
-    // Material-UIの要素に変にフォーカスが残ってしまうので、Canvasにいるときは常にBlurして対処
-    // TODO: もっとスマートな方法が無いか調べる
-    (document.activeElement as HTMLElement).blur();
-  }
-
-  panModeMouseMove = (e) => {
-    this.props.moveToolMouseMove(e);
-  }
-
-  panModeMouseDrag = (e) => {
-    this.props.moveToolMouseDrag(e)
-  }
-
-  panModeMouseUp = (e) => {
-    this.props.moveToolMouseUp(e)
-  }
-
-  panModeKeyDown = (e) => {
-
-  }
-
   onFrame = (e) => {
     getAllRailComponents().forEach(r => r.onFrame(e))
   }
-
 
   // コンテキストメニュー無効化
   noopContextMenu = (e) => {
@@ -211,24 +191,14 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             <Measure mousePosition={this.state.mousePosition}/>
 
             <Tool
-              active={this.isActive(
-                Tools.STRAIGHT_RAILS, Tools.CURVE_RAILS, Tools.TURNOUTS, Tools.SPECIAL_RAILS, Tools.RAIL_GROUPS, Tools.FEEDERS, Tools.GAP_JOINERS, Tools.MEASURE)}
-              name={'Rails'}
+              active={this.props.common.editorMode === EditorMode.BUILDER}
+              name={'Builder Mode Global Handler'}
               onMouseDown={this.buildModeMouseDown}
               onMouseMove={this.buildModeMouseMove}
               onMouseDrag={this.buildModeMouseDrag}
               onMouseUp={this.buildModeMouseUp}
               onKeyDown={this.buildModeKeyDown}
               onKeyUp={this.builderModeKeyUp}
-            />
-            <Tool
-              active={this.isActive(Tools.PAN)}
-              name={Tools.PAN}
-              onMouseDown={this.panModeMouseDown}
-              onMouseMove={this.panModeMouseMove}
-              onMouseDrag={this.panModeMouseDrag}
-              onMouseUp={this.panModeMouseUp}
-              onKeyDown={this.panModeKeyDown}
             />
           </GridPaper>
         </EditorBody>

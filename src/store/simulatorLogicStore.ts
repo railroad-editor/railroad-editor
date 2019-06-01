@@ -94,7 +94,6 @@ export class SimulatorLogicStore {
       }
     )
 
-    this.activeTool = Tools.PAN
     this.errorRails = []
     this.errorPowerPacks = []
   }
@@ -337,9 +336,6 @@ export class SimulatorLogicStore {
   setCursorShape = (tool: Tools) => {
     // カーソル形状を変更する
     switch (tool) {
-      case Tools.PAN:
-        document.body.style.cursor = 'move'
-        break
       default:
         document.body.style.cursor = 'crosshair'
     }

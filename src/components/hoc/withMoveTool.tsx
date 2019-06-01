@@ -67,13 +67,6 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
       this.mousePosition = new Point(0, 0)
       this.isFocused = true
 
-      this.mouseWheel = this.mouseWheel.bind(this)
-      this.mouseMove = this.mouseMove.bind(this)
-      this.mouseDrag = this.mouseDrag.bind(this)
-      this.mouseDown = this.mouseDown.bind(this)
-      this.mouseUp = this.mouseUp.bind(this)
-      this.resetViewPosition = this.resetViewPosition.bind(this)
-
       reaction(
         () => this.props.common.isPaperLoaded,
         () => this.setInitialZoom()
@@ -182,14 +175,20 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
       return e.point
     }
 
-    /**
-     * Mouse down handler
-     *
-     * @param  {ToolEvent} e Paper.js ToolEvent
-     */
-    mouseDown = (e: ToolEvent | any) => {
-      //this._pan = this.getPanEventData(e)
-      // const { tool: { view } } = e
+    onMouseDown = (e: MouseEvent | any) => {
+      switch (e.event.button) {
+        // case 0:
+        //   this.onLeftClick(e)
+        //   break
+        case 2:
+          this.onRightClick(e)
+          break
+      }
+    }
+
+    onRightClick = (e) => {
+      this._pan = this.getPanEventData(e)
+      document.body.style.cursor = 'move'
     }
 
     /**
@@ -204,7 +203,6 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
     mouseDrag = (e: ToolEvent | any) => {
       const {tool: {view}} = e
       if (! this._pan) {
-        this._pan = this.getPanEventData(e)
         return
       }
       const prev = this._pan
@@ -224,6 +222,7 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
      */
     mouseUp = (e: ToolEvent) => {
       this._pan = null
+      document.body.style.cursor = 'crosshair'
     }
 
     resetViewPosition = () => {
@@ -257,7 +256,7 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
           {...this.state}
           moveToolMouseWheel={this.mouseWheel}
           moveToolMouseMove={this.mouseMove}
-          moveToolMouseDown={this.mouseDown}
+          moveToolMouseDown={this.onMouseDown}
           moveToolMouseDrag={this.mouseDrag}
           moveToolMouseUp={this.mouseUp}
           resetViewPosition={this.resetViewPosition}

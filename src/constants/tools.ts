@@ -6,8 +6,6 @@ export enum Tools {
   RAIL_GROUPS = 'Rail Groups',
   FEEDERS = 'Feeders',
   GAP_JOINERS = 'Gap Joiners',
-  SELECT = 'Select',
-  PAN = 'Pan',
   MEASURE = 'Measure'
 }
 
@@ -28,8 +26,6 @@ export const TOOL_HOT_KEYS = {
   [Tools.RAIL_GROUPS]: 'G',
   [Tools.FEEDERS]: 'F',
   [Tools.GAP_JOINERS]: 'J',
-  [Tools.SELECT]: 'Select',
-  [Tools.PAN]: 'Alt',
   [Tools.MEASURE]: 'M'
 }
 

@@ -11,7 +11,7 @@ import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import CirclePart from "components/rails/parts/primitives/CirclePart";
-import {isRailTool, RAIL_PUTTER_MARKER_RADIUS, Tools} from "constants/tools";
+import {isRailTool, RAIL_PUTTER_MARKER_RADIUS} from "constants/tools";
 import {JOINT_DETECTION_OPACITY_RATE, JOINT_FILL_COLORS} from "constants/parts";
 import {CommonStore} from "store/commonStore";
 import {EditorMode} from "store/uiStore";
@@ -179,11 +179,6 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
         position = this.state.fixedPosition
         opacity = JOINT_DETECTION_OPACITY_RATE
         break
-    }
-
-    // パンツール使用中は何もしない
-    if (this.props.builder.activeTool === Tools.PAN) {
-      return null
     }
 
     return (

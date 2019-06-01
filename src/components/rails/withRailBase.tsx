@@ -270,10 +270,6 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
       let activeTool = this.props.builder.activeTool
       if (isRailTool(activeTool)) {
         this.onJointMouseEnterForRailTools(jointId, e)
-      } else if (activeTool == Tools.PAN) {
-        // noop
-      } else if (activeTool == Tools.MEASURE) {
-        // noop
       }
     }
 
@@ -324,8 +320,6 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
       let activeTool = this.props.builder.activeTool
       if (isRailTool(activeTool)) {
         this.onJointLeftClickForRailTool(jointId, e)
-      } else if (activeTool == Tools.PAN) {
-        // noop
       } else if (activeTool == Tools.MEASURE) {
         this.onJointLeftClickForMeasureTool(jointId, e)
       }
