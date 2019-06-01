@@ -25,6 +25,7 @@ import {UiStore} from "store/uiStore";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import {CommonStore} from "store/commonStore";
 import {SimulatorLogicStore} from "store/simulatorLogicStore";
+import {runInAction} from "mobx";
 
 
 const LOGGER = getLogger(__filename)
@@ -289,10 +290,6 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       LOGGER.info('withBuilder#setTemporaryRailGroup', railGroup, children, 'intersects:', intersects)
     }
 
-    protected connectCloseJoints = () => {
-      this.props.layoutLogic.connectJoints(this.props.layout.unconnectedCloseJoints)
-    }
-
     protected setCloseJointsDetecting = () => {
       this.changeJointState(this.props.layout.unconnectedCloseJoints, DetectionState.DETECTING)
     }
@@ -317,23 +314,26 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     addRail = () => {
       const {temporaryRails, temporaryRailGroup, deleteTemporaryRail} = this.props.builder
 
-      this.props.layout.commit()
+      runInAction(() => {
+        this.props.layout.commit()
 
-      if (temporaryRailGroup) {
-        // レールグループの追加処理
-        this.addRailGroup(temporaryRailGroup, temporaryRails)
-      } else if (temporaryRails.length > 0) {
-        // 単体のレールの追加処理
-        this.addSingleRail(temporaryRails[0])
-      } else {
-        LOGGER.warn('withBuilder#addRail', 'No temporary rail available')
-        return
-      }
+        if (temporaryRailGroup) {
+          // レールグループの追加処理
+          this.addRailGroup(temporaryRailGroup, temporaryRails)
+        } else if (temporaryRails.length > 0) {
+          // 単体のレールの追加処理
+          this.addSingleRail(temporaryRails[0])
+        } else {
+          LOGGER.warn('withBuilder#addRail', 'No temporary rail available')
+          return
+        }
 
-      // 仮レールを削除
-      deleteTemporaryRail()
+        // 仮レールを削除
+        deleteTemporaryRail()
+      })
       // 未接続の近傍ジョイントを接続する
-      this.connectCloseJoints()
+      // TODO: ここもRunInActionに入れられないか調べる
+      this.props.layoutLogic.connectUnconnectedCloseJoints()
     }
 
     /**

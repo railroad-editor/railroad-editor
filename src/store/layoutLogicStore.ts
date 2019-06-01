@@ -161,6 +161,11 @@ export class LayoutLogicStore {
     pairs.forEach(pair => this.connectJoint(pair))
   }
 
+  @action
+  connectUnconnectedCloseJoints = () => {
+    this.connectJoints(layoutStore.unconnectedCloseJoints)
+  }
+
   /**
    * 指定のレールのジョイントの接続を解除する。
    */
