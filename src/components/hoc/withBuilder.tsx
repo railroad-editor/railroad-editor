@@ -162,6 +162,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
 
     keyDown_Backspace = (e) => {
       // this.deleteSelectedRails()
+      this.props.layout.commit()
       this.props.layoutLogic.deleteSelected()
     }
 

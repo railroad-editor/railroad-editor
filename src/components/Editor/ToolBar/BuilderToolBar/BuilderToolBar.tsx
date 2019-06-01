@@ -82,6 +82,11 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
     this.props.builder.setPlacingMode(mode)
   }
 
+  onDelete = (e) => {
+    this.props.layout.commit()
+    this.props.layoutLogic.deleteSelected()
+  }
+
 
   render() {
     return (
@@ -214,7 +219,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
         </Tooltip>
         <Tooltip title={`${Commands.DELETE} (Backspace)`}>
           <StyledIconButton
-            onClick={this.props.layoutLogic.deleteSelected}
+            onClick={this.onDelete}
           >
             <DeleteIcon/>
           </StyledIconButton>
