@@ -36,6 +36,7 @@ export interface FreeRailPlacerProps {
 export interface FreeRailPlacerState {
   fixedPosition: Point
   phase: Phase
+  steppedAngle: number
   isError: boolean
 }
 
@@ -53,10 +54,12 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
     this.state = {
       fixedPosition: null,
       phase: Phase.SET_POSITION,
+      steppedAngle: 0,
       isError: false
     }
 
-    reaction(() => this.props.builder.freePlacingPosition,
+    // 自由設置モードの差分距離がセットされた時、ジョイントの位置に基づいてレール位置を固定する
+    reaction(() => this.props.builder.freePlacingDifference,
       (position) => {
         let newPosition = this.props.builder.clickedJointPosition.add(position)
         this.setState({
@@ -65,9 +68,18 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
         })
       }
     )
+
+    // 微調整角度が変更された時、仮レールを再描画する
+    reaction(
+      () => this.props.builder.adjustmentAngle,
+      (angle) => {
+        // 現在仮レールを表示しているレールであれば、仮レールを再描画する
+        this.showTemporaryRail()
+      }
+    )
   }
 
-  mouseLeftDownOnPaper = (e: MouseEvent) => {
+  onLeftClickOnPaper = (e: MouseEvent) => {
     // このハンドラはSET_ANGLE フェーズのみで呼び出される
     // 位置が決定済みかつ設置可能ならば角度を決定する
     if (this.state.phase === Phase.SET_ANGLE) {
@@ -80,7 +92,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
     }
   }
 
-  mouseLeftDownOnMarker = (e: MouseEvent) => {
+  onLeftClickOnMarker = (e: MouseEvent) => {
     if (this.state.phase === Phase.SET_ANGLE) {
       // 位置が決定済みならば、マーカー上で左クリックすると設置をキャンセルする
       this.onResetPosition()
@@ -90,7 +102,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
     }
   }
 
-  mouseRightDown = (e: MouseEvent) => {
+  onRightClickOnPaper = (e: MouseEvent) => {
     // レールの向きを変更する
     if (this.state.phase === Phase.SET_ANGLE) {
       if (this.props.builder.temporaryRailGroup) {
@@ -194,8 +206,8 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
               height={this.props.layout.config.paperHeight / 2}
               position={position}
               opacity={0}
-              onLeftClick={this.mouseLeftDownOnPaper}
-              onRightClick={this.mouseRightDown}
+              onLeftClick={this.onLeftClickOnPaper}
+              onRightClick={this.onRightClickOnPaper}
               onMouseMove={this.onMouseMove}
             />
           }
@@ -210,8 +222,8 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
             position={position}
             fillColor={this.state.isError ? 'red' : JOINT_FILL_COLORS[2]}
             opacity={opacity}
-            onLeftClick={this.mouseLeftDownOnMarker}
-            onRightClick={this.mouseRightDown}
+            onLeftClick={this.onLeftClickOnMarker}
+            onRightClick={this.onRightClickOnPaper}
             onMouseMove={this.onMouseMove}
             ref={r => this.marker = r}
           />
@@ -245,7 +257,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
 
   private showTemporaryRailGroup = () => {
     const {rails, openJoints} = this.props.builder.getRailGroupItemData()
-    const angle = getFirstRailAngle(this.state.fixedPosition, this.props.mousePosition)
+    const angle = getSteppedAngleByMousePosition(this.state.fixedPosition, this.props.mousePosition)
 
     if (! this.props.builder.temporaryRailGroup) {
       const tempRailGroup = {
@@ -269,7 +281,13 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
 
   private showTemporaryRail = () => {
     const itemData = this.props.builder.getRailItemData()
-    const angle = getFirstRailAngle(this.state.fixedPosition, this.props.mousePosition)
+    const steppedAngle = getSteppedAngleByMousePosition(this.state.fixedPosition, this.props.mousePosition)
+    const angle = steppedAngle + this.props.builder.adjustmentAngle
+
+    if (this.state.steppedAngle !== steppedAngle) {
+      console.log('reset angle')
+      this.props.builder.setAdjustmentAngle(0)
+    }
 
     if (_.isEmpty(this.props.builder.temporaryRails)) {
       // 仮レール未設置ならPivotJointは0
@@ -290,6 +308,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
       }
       this.props.builderSetTemporaryRail(tempRail)
     }
+    this.setState({steppedAngle})
   }
 
   private addRail = () => {
@@ -307,7 +326,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
  * @param {number} step
  * @returns {number}
  */
-const getFirstRailAngle = (anchor: Point, cursor: Point, step: number = 15) => {
+const getSteppedAngleByMousePosition = (anchor: Point, cursor: Point, step: number = 15) => {
   const diffX = cursor.x - anchor.x
   const diffY = cursor.y - anchor.y
   const angle = Math.atan2(diffY, diffX) * 180 / Math.PI

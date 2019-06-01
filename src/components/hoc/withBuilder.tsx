@@ -229,6 +229,14 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       // this.props.layout.redo()
     }
 
+    keyDown_Up = (e) => {
+      this.props.builder.setAdjustmentAngle(this.props.builder.adjustmentAngle + 1)
+    }
+
+    keyDown_Down = (e) => {
+      this.props.builder.setAdjustmentAngle(this.props.builder.adjustmentAngle - 1)
+    }
+
     /**
      * 仮レールを設置する。
      * @param {RailData} railData position, angle, pivotJointIndex などの位置に関する情報を含むこと。
