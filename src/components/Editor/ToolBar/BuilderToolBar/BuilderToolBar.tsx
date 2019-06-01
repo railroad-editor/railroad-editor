@@ -9,7 +9,6 @@ import {Commands, Tools} from "constants/tools";
 import UndoIcon from '@material-ui/icons/Undo'
 import RedoIcon from '@material-ui/icons/Redo'
 import DeleteIcon from '@material-ui/icons/Delete'
-import PanToolIcon from '@material-ui/icons/PanTool'
 import AspectRatioIcon from "@material-ui/icons/AspectRatio";
 import CopyIcon from "@material-ui/icons/ContentCopy";
 import CutIcon from "@material-ui/icons/ContentCut";
@@ -158,17 +157,6 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
             onClick={this.onClickObjectTools(Tools.GAP_JOINERS)}
           >
             <GapIcon/>
-          </StyledIconButton>
-        </Tooltip>
-
-        <Tooltip title={`${Tools.PAN} (Alt)`}>
-          <StyledIconButton
-            className={classNames({
-              'active': this.isActive(Tools.PAN)
-            })}
-            onClick={() => this.props.builder.setActiveTool(Tools.PAN)}
-          >
-            <PanToolIcon/>
           </StyledIconButton>
         </Tooltip>
 

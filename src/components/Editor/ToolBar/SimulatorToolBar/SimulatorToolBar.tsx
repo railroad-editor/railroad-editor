@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {Grid, Tooltip} from '@material-ui/core'
-import {Commands, Tools} from "constants/tools";
+import {Commands} from "constants/tools";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_SIMULATOR_LOGIC} from "constants/stores";
@@ -9,9 +9,7 @@ import {compose} from "recompose";
 import withMoveTool from "components/hoc/withMoveTool";
 import {StyledIconButton} from "components/Editor/ToolBar/styles";
 import AspectRatioIcon from "@material-ui/icons/AspectRatio";
-import PanToolIcon from '@material-ui/icons/PanTool'
 import SettingsRemoteIcon from '@material-ui/icons/SettingsRemote'
-import * as classNames from "classnames"
 import {BuilderStore} from "store/builderStore";
 import {SimulatorLogicStore} from "store/simulatorLogicStore";
 import {withSnackbar} from 'material-ui-snackbar-provider'
@@ -74,16 +72,6 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
   render() {
     return (
       <Grid xs justify="center" alignItems="center" style={{display: 'flex'}}>
-        <Tooltip title={"PAN (Alt)"}>
-          <StyledIconButton
-            className={classNames({
-              'active': this.isActive(Tools.PAN)
-            })}
-            onClick={() => this.props.simulatorLogic.setActiveTool(Tools.PAN)}
-          >
-            <PanToolIcon/>
-          </StyledIconButton>
-        </Tooltip>
         <Tooltip title={Commands.RESET_VIEW}>
           <StyledIconButton
             onClick={this.props.resetViewPosition}

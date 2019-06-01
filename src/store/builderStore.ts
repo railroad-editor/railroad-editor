@@ -448,14 +448,7 @@ export class BuilderStore {
 
   @action
   setCursorShape = (tool: Tools) => {
-    // カーソル形状を変更する
-    switch (tool) {
-      case Tools.PAN:
-        document.body.style.cursor = 'move'
-        break
-      default:
-        document.body.style.cursor = 'crosshair'
-    }
+    document.body.style.cursor = 'crosshair'
   }
 
   @action

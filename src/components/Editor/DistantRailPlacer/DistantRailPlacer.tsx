@@ -4,7 +4,6 @@ import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_COMMON} from "constants/stores";
 import {BuilderStore, PlacingMode} from "store/builderStore";
-import {Tools} from "constants/tools";
 import {CommonStore} from "store/commonStore";
 import {EditorMode} from "store/uiStore";
 import DistantPlacingDialog from "./DistantPlacingDialog/DistantPlacingDialog";
@@ -36,10 +35,6 @@ export class DistantRailPlacer extends React.Component<DistantRailPlacerProps, D
   }
 
   render() {
-    // パンツール使用中は何もしない
-    if (this.props.builder.activeTool === Tools.PAN) {
-      return null
-    }
 
     return (
       <>
