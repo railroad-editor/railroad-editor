@@ -12,7 +12,6 @@ import {FlowDirection} from "components/rails/parts/primitives/PartBase";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import {isRailTool, Tools} from "constants/tools";
 import {ArcDirection} from "./parts/primitives/ArcPart";
-import {reaction} from "mobx";
 
 const LOGGER = getLogger(__filename)
 
@@ -44,6 +43,7 @@ export interface WithRailBaseProps {
   onGapJoinerLeftClick: (id: number, e: MouseEvent) => void
   onGapJoinerMouseEnter: (id: number, e: MouseEvent) => void
   onGapJoinerMouseLeave: (id: number, e: MouseEvent) => void
+  showTemporaryRailOrRailGroup: (id: number) => void
 
   onMount?: (ref: RailBase<any, RailBaseState>) => void
   onUnmount?: (ref: RailBase<any, RailBaseState>) => void
@@ -72,16 +72,6 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
     constructor(props: RailBaseEnhancedProps) {
       super(props)
 
-      // 微調整角度が変更された時、仮レールを再描画する
-      reaction(
-        () => this.props.builder.adjustmentAngle,
-        (angle) => {
-          // 現在仮レールを表示しているレールであれば、仮レールを再描画する
-          if (this.rail.props.id === this.props.builder.currentRailId) {
-            this.showTemporaryRail(this.props.builder.currentJointId)
-          }
-        }
-      )
     }
 
     get railPart() {
@@ -287,11 +277,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
       // 微調整角度をリセットする
       this.props.builder.setAdjustmentAngle(0)
 
-      if (this.props.builder.getRailGroupItemData()) {
-        this.showTemporaryRailGroup(jointId)
-      } else if (this.props.builder.getRailItemData()) {
-        this.showTemporaryRail(jointId)
-      }
+      this.showTemporaryRailOrRailGroup(jointId)
     }
 
     /**
@@ -493,10 +479,19 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
           onRailPartMouseLeave={this.onRailPartMouseLeave}
           onMount={(instance) => this.onMount(instance)}
           onUnmount={(instance) => this.onUnmount(instance)}
+          showTemporaryRailOrRailGroup={this.showTemporaryRailOrRailGroup}
         />
       )
     }
 
+
+    showTemporaryRailOrRailGroup = (jointId: number) => {
+      if (this.props.builder.getRailGroupItemData()) {
+        this.showTemporaryRailGroup(jointId)
+      } else if (this.props.builder.getRailItemData()) {
+        this.showTemporaryRail(jointId)
+      }
+    }
 
     /**
      * 仮レールグループを表示する
@@ -517,7 +512,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
       const railGroup = {
         pivotJointInfo: pivotJointInfo,
         position: this.railPart.getGlobalJointPosition(jointId),
-        angle: this.railPart.getGlobalJointAngle(jointId),
+        angle: this.railPart.getGlobalJointAngle(jointId) + this.props.builder.adjustmentAngle
       }
 
       this.props.builderSetTemporaryRailGroup(railGroup, rails)

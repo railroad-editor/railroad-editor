@@ -61,11 +61,13 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
     // 自由設置モードの差分距離がセットされた時、ジョイントの位置に基づいてレール位置を固定する
     reaction(() => this.props.builder.freePlacingDifference,
       (position) => {
-        let newPosition = this.props.builder.clickedJointPosition.add(position)
-        this.setState({
-          fixedPosition: newPosition,
-          phase: Phase.SET_ANGLE
-        })
+        if (this.isActive()) {
+          let newPosition = this.props.builder.clickedJointPosition.add(position)
+          this.setState({
+            fixedPosition: newPosition,
+            phase: Phase.SET_ANGLE
+          })
+        }
       }
     )
 
@@ -74,7 +76,9 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
       () => this.props.builder.adjustmentAngle,
       (angle) => {
         // 現在仮レールを表示しているレールであれば、仮レールを再描画する
-        this.showTemporaryRail()
+        if (this.isActive()) {
+          this.showTemporaryRailOrRailGroup()
+        }
       }
     )
   }
@@ -170,6 +174,11 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
     }
   }
 
+  isActive = () => {
+    return this.props.common.editorMode === EditorMode.BUILDER &&
+      isRailTool(this.props.builder.activeTool) &&
+      this.props.builder.placingMode === PlacingMode.FREE
+  }
 
   render() {
     let radius, position, opacity
@@ -198,9 +207,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
         <Layer name={'freeRailPlacer'}>
           {
             /* 不可視の四角形、イベントハンドリング用 */
-            this.props.common.editorMode === EditorMode.BUILDER &&
-            isRailTool(this.props.builder.activeTool) &&
-            this.props.builder.placingMode === PlacingMode.FREE &&
+            this.isActive() &&
             <RectPart
               width={this.props.layout.config.paperWidth / 2}
               height={this.props.layout.config.paperHeight / 2}
@@ -214,9 +221,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
         </Layer>
         {
           /* マーカー */
-          this.props.common.editorMode === EditorMode.BUILDER &&
-          this.props.builder.placingMode === PlacingMode.FREE &&
-          this.state.phase != Phase.SET_POSITION &&
+          this.isActive() && this.state.phase != Phase.SET_POSITION &&
           <CirclePart
             radius={radius}
             position={position}
