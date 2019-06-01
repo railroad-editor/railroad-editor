@@ -16,6 +16,7 @@ import {
   FEEDER_SOCKET_FILL_COLORS
 } from "constants/parts";
 import Feeder from "components/rails/parts/Feeder";
+import {WithRailBaseProps} from "./withRailBase";
 
 const LOGGER = getLogger(__filename)
 
@@ -156,7 +157,7 @@ export const anglesEqual = (a1, a2, tolerance = 0.0000001) => {
  * @param {number} id
  * @returns {RailBase<RailBaseProps, any>}
  */
-export const getRailComponent = (id: number): RailBase<RailBaseProps, any> => {
+export const getRailComponent = (id: number): RailBase<RailBaseProps & WithRailBaseProps, any> => {
   return window.RAIL_COMPONENTS[id.toString()]
 }
 
@@ -172,11 +173,11 @@ export const getTemporaryRailGroupComponent = (): RailGroup => {
  * 全てのレールコンポーネントを取得する
  * @returns {Array<RailBase<RailBaseProps, any>>}
  */
-export const getAllRailComponents = (): RailBase<RailBaseProps, any>[] => {
+export const getAllRailComponents = (): RailBase<RailBaseProps & WithRailBaseProps, any>[] => {
   return Object.keys(window.RAIL_COMPONENTS).map(key => window.RAIL_COMPONENTS[key])
 }
 
-export const getRailComponentsOfLayer = (layerId: number): RailBase<RailBaseProps, any>[] => {
+export const getRailComponentsOfLayer = (layerId: number): RailBase<RailBaseProps & WithRailBaseProps, any>[] => {
   return getAllRailComponents().filter(r => r.props.layerId === layerId)
 }
 

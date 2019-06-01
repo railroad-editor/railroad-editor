@@ -168,12 +168,10 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
 
     keyDown_CtrlC = (e) => {
       this.registerRailGroup('Clipboard', false)
-      this.props.snackbar.showMessage('Copied rails to "Clipboard" rail group.')
     }
 
     keyDown_CtrlX = (e) => {
       this.registerRailGroup('Clipboard', true)
-      this.props.snackbar.showMessage('Copied rails to "Clipboard" rail group.')
     }
 
     keyDown_CtrlV = (e) => {
@@ -441,6 +439,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       } else {
         this.props.layoutLogic.selectAllRails(false)
       }
+      this.props.snackbar.showMessage('Copied rails to "Clipboard" rail group.')
     }
 
     protected registerRailGroupInner = (rails: RailData[], name: string) => {

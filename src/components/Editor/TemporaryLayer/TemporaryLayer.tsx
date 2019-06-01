@@ -1,12 +1,13 @@
 import * as React from "react";
 import {Layer} from "react-paper-bindings";
-import {createFeederComponent, createRailOrRailGroupComponent} from "components/rails/utils";
+import {createFeederComponent, createRailOrRailGroupComponent, getRailComponent} from "components/rails/utils";
 import getLogger from "logging";
 import {compose} from "recompose";
 import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import {inject, observer} from "mobx-react";
 import {LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
+import {reaction} from "mobx";
 
 const LOGGER = getLogger(__filename)
 
@@ -27,6 +28,17 @@ export class TemporaryLayer extends React.Component<TemporaryLayerProps, LayoutS
 
   constructor(props: TemporaryLayerProps) {
     super(props)
+
+    // 微調整角度が変更された時、仮レールを再描画する
+    reaction(
+      () => this.props.builder.adjustmentAngle,
+      (adjustmentAngle) => {
+        // 現在仮レールを表示しているレールであれば、仮レールを再描画する
+        // 仮レールを設置する
+        getRailComponent(this.props.builder.currentRailId).props.showTemporaryRailOrRailGroup(this.props.builder.currentJointId)
+        this.forceUpdate()
+      }
+    )
   }
 
 
