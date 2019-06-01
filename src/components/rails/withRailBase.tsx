@@ -405,7 +405,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
 
 
     onRailPartMouseEnter = () => {
-      if (this.props.builder.isRailMode) {
+      if (this.props.builder.isRailMode && this.props.opacity === 1) {
         document.body.style.cursor = 'pointer'
       }
     }
@@ -421,8 +421,8 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * @param {MouseEvent} e
      */
     onRailPartLeftClick = (e: MouseEvent | any) => {
-      // レールの選択状態をトグルする
-      if (this.props.builder.isRailMode) {
+      // レールの選択状態をトグルする。半透明なら何もしない
+      if (this.props.builder.isRailMode && this.props.opacity === 1) {
         this.props.layoutLogic.toggleSelectRail(this.props.id)
         LOGGER.info(`${this.props.id} clicked.`)
       }

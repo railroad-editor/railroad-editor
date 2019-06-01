@@ -53,10 +53,6 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
       updateDialogOpen: false,
       deleteDialogOpen: false
     }
-    this.onToggleVisible = this.onToggleVisible.bind(this)
-    this.onChangeActive = this.onChangeActive.bind(this)
-    this.openDeleteDialog = this.openDeleteDialog.bind(this)
-    this.openUpdateDialog = this.openUpdateDialog.bind(this)
   }
 
 

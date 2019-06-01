@@ -146,8 +146,10 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
     }
 
     selectRails = () => {
-      // 選択対象は現在のレイヤーのレールとする
-      const rails = this.props.layout.currentLayoutData.rails.map(r => getRailComponent(r.id))
+      // 選択対象は半透明でない全てのレール
+      const rails = this.props.layout.currentLayoutData.rails
+        .map(r => getRailComponent(r.id))
+        .filter(r => r.props.opacity === 1)
 
       const selected = []
       rails.forEach((rail) => {
