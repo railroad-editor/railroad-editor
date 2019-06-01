@@ -47,6 +47,9 @@ export interface BuilderStoreState {
   measureStartPosition: Point
   measureEndPosition: Point
   measuredDistance: Point
+  adjustmentAngle: number
+  currentJointId: number
+  currentRailId: number
 }
 
 export enum PlacingMode {
@@ -81,7 +84,10 @@ export const INITIAL_STATE: BuilderStoreState = {
   clickedJointPosition: new Point(0, 0),
   measureStartPosition: null,
   measureEndPosition: null,
-  measuredDistance: null
+  measuredDistance: null,
+  adjustmentAngle: 0,
+  currentJointId: null,
+  currentRailId: null
 }
 
 
@@ -113,21 +119,27 @@ export class BuilderStore {
   @observable selecting: boolean
   // 仮フィーダー
   @observable temporaryFeeder: FeederInfo
-
+  // [自由配置モード] ジョイントをクリックした際のレール位置入力ダイアログ表示
   @observable freePlacingDialog: boolean
-
-  @observable freePlacingPosition: Point
-
+  // [自由配置モード] ジョイントをクリックした際に入力した位置差分
+  @observable freePlacingDifference: Point
+  // [自由配置モード] クリックされたジョイントの位置
   @observable clickedJointPosition: Point
-
+  // [メジャーツール] 測定を開始した位置
   @observable measureStartPosition: Point
-
+  // [メジャーツール] 測定を終了した位置
   @observable measureEndPosition: Point
+  // [角度微調整機能] レール設置時の微調整角度
+  @observable adjustmentAngle: number
+  // 現在仮レールを表示しているジョイントのID
+  @observable currentJointId: number
+  // 現在仮レールを表示しているジョイントを持つレールのID
+  @observable currentRailId: number
 
   constructor({
                 paletteItem, lastPaletteItems, placingMode, activeLayerId, temporaryRails, temporaryRailGroup, userRailGroups,
                 userRails, activeTool, selecting, temporaryFeeder, freePlacingDialog, freePlacingPosition, clickedJointPosition,
-                measureStartPosition, measureEndPosition
+                measureStartPosition, measureEndPosition, adjustmentAngle, currentJointId, currentRailId
               }) {
     this.paletteItem = paletteItem
     this.lastPaletteItems = lastPaletteItems
@@ -142,10 +154,13 @@ export class BuilderStore {
     this.selecting = selecting
     this.temporaryFeeder = temporaryFeeder
     this.freePlacingDialog = freePlacingDialog
-    this.freePlacingPosition = freePlacingPosition
+    this.freePlacingDifference = freePlacingPosition
     this.clickedJointPosition = clickedJointPosition
     this.measureStartPosition = measureStartPosition
     this.measureEndPosition = measureEndPosition
+    this.adjustmentAngle = adjustmentAngle
+    this.currentJointId = currentJointId
+    this.currentRailId = currentRailId
 
     // ツール変更時
     reaction(
@@ -457,8 +472,8 @@ export class BuilderStore {
   }
 
   @action
-  setFreePlacingPosition = (position: Point) => {
-    this.freePlacingPosition = position
+  setFreePlacingDifference = (position: Point) => {
+    this.freePlacingDifference = position
   }
 
   @action
@@ -476,6 +491,16 @@ export class BuilderStore {
     this.measureEndPosition = position
   }
 
+  @action
+  setAdjustmentAngle = (angle: number) => {
+    this.adjustmentAngle = angle
+  }
+
+  @action
+  setCurrentJoint = (railId: number, jointId: number) => {
+    this.currentRailId = railId
+    this.currentJointId = jointId
+  }
 }
 
 

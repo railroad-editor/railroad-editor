@@ -489,7 +489,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     }
   }
 
-  protected getInstance(railPart) {
+  protected getInstance = (railPart) => {
     if (railPart) this.railPart = railPart
   }
 

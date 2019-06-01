@@ -12,6 +12,7 @@ import {FlowDirection} from "components/rails/parts/primitives/PartBase";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import {isRailTool, Tools} from "constants/tools";
 import {ArcDirection} from "./parts/primitives/ArcPart";
+import {reaction} from "mobx";
 
 const LOGGER = getLogger(__filename)
 
@@ -71,14 +72,16 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
     constructor(props: RailBaseEnhancedProps) {
       super(props)
 
-      this.onRailPartLeftClick = this.onRailPartLeftClick.bind(this)
-      this.onRailPartRightClick = this.onRailPartRightClick.bind(this)
-      this.onJointLeftClick = this.onJointLeftClick.bind(this)
-      this.onJointRightClick = this.onJointRightClick.bind(this)
-      this.onJointMouseMove = this.onJointMouseMove.bind(this)
-      this.onJointMouseEnter = this.onJointMouseEnter.bind(this)
-      this.onJointMouseLeave = this.onJointMouseLeave.bind(this)
-      this.onFeederSocketLeftClick = this.onFeederSocketLeftClick.bind(this)
+      // 微調整角度が変更された時、仮レールを再描画する
+      reaction(
+        () => this.props.builder.adjustmentAngle,
+        (angle) => {
+          // 現在仮レールを表示しているレールであれば、仮レールを再描画する
+          if (this.rail.props.id === this.props.builder.currentRailId) {
+            this.showTemporaryRail(this.props.builder.currentJointId)
+          }
+        }
+      )
     }
 
     get railPart() {
@@ -276,8 +279,13 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
     onJointMouseEnterForRailTools = (jointId: number, e: MouseEvent) => {
       // 矩形選択中は仮レールを表示させない
       if (this.props.builder.selecting) return
-
+      // 自由設置モードの場合は何もしない
       if (this.props.builder.placingMode == PlacingMode.FREE) return
+
+      // 仮レール表示ジョイントをセットする
+      this.props.builder.setCurrentJoint(this.rail.props.id, jointId)
+      // 微調整角度をリセットする
+      this.props.builder.setAdjustmentAngle(0)
 
       if (this.props.builder.getRailGroupItemData()) {
         this.showTemporaryRailGroup(jointId)
@@ -313,6 +321,10 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
     onJointMouseLeave = (jointId: number, e: MouseEvent) => {
       // PivotJointIndexを保存しておきたいので、削除するのではなく不可視にする
       this.props.builder.updateTemporaryRail({visible: false})
+      // 仮レール表示ジョイントをリセットする
+      this.props.builder.setCurrentJoint(null, null)
+      // 微調整角度をリセットする
+      this.props.builder.setAdjustmentAngle(0)
     }
 
 
@@ -323,6 +335,10 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
       } else if (activeTool == Tools.MEASURE) {
         this.onJointLeftClickForMeasureTool(jointId, e)
       }
+      // 仮レール表示ジョイントをリセットする
+      this.props.builder.setCurrentJoint(null, null)
+      // 微調整角度をリセットする
+      this.props.builder.setAdjustmentAngle(0)
     }
 
     onJointLeftClickForMeasureTool = (jointId: number, e: MouseEvent) => {
@@ -404,7 +420,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * Shiftを押している場合: それ以外のレールの選択状態を解除しない
      * @param {MouseEvent} e
      */
-    onRailPartLeftClick(e: MouseEvent | any) {
+    onRailPartLeftClick = (e: MouseEvent | any) => {
       // レールの選択状態をトグルする
       if (this.props.builder.isRailMode) {
         this.props.layoutLogic.toggleSelectRail(this.props.id)
@@ -419,7 +435,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * 現状何もしない
      * @param {MouseEvent} e
      */
-    onRailPartRightClick(e: MouseEvent) {
+    onRailPartRightClick = (e: MouseEvent) => {
       return false
     }
 
@@ -526,7 +542,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
       this.props.builderSetTemporaryRail({
         ...railData,
         position: this.railPart.getGlobalJointPosition(jointId),
-        angle: this.railPart.getGlobalJointAngle(jointId),
+        angle: this.railPart.getGlobalJointAngle(jointId) + this.props.builder.adjustmentAngle,
         pivotJointIndex: pivotJointIndex,
       })
       LOGGER.info('TemporaryRail', railData)
