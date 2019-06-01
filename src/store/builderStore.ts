@@ -209,7 +209,7 @@ export class BuilderStore {
 
   @computed
   get isRailMode() {
-    return ! [Tools.FEEDERS, Tools.GAP_JOINERS].includes(this.activeTool)
+    return [Tools.STRAIGHT_RAILS, Tools.CURVE_RAILS, Tools.TURNOUTS, Tools.SPECIAL_RAILS, Tools.RAIL_GROUPS].includes(this.activeTool)
   }
 
   @computed
