@@ -157,7 +157,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
         const targetPaths = rail.railPart.path.children
         let result = targetPaths.map(path => {
           let isIntersected = this.selectionRect.intersects(path)
-          let isContained = this.selectionRect.contains((path as any).localToOther(this.selectionRect, path.position))
+          let isContained = this.selectionRect.contains((path as any).localToGlobal())
           return isIntersected || isContained
         }).some((e) => e)
 

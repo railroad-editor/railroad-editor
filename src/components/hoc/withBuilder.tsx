@@ -3,7 +3,7 @@ import {ToolEvent} from "paper";
 import getLogger from "logging";
 import {RailData, RailGroupData} from "components/rails";
 import {JointInfo} from "components/rails/RailBase";
-import {getCloseJointsOf, getRailComponent, getTemporaryRailGroupComponent, intersectsOf} from "components/rails/utils";
+import {getRailComponent, getTemporaryRailGroupComponent} from "components/rails/utils";
 import RailGroup from "components/rails/RailGroup/RailGroup";
 import {DetectionState} from "components/rails/parts/primitives/DetectablePart";
 import {TEMPORARY_RAIL_OPACITY, Tools} from "constants/tools";
@@ -171,6 +171,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
 
     keyDown_CtrlX = (e) => {
+      this.props.layout.commit()
       this.registerRailGroup('Clipboard', true)
     }
 
@@ -256,7 +257,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       // 近傍ジョイントを検出状態に変更する
       this.setCloseJointsDetecting()
       // 重なりをチェックする
-      const intersects = this.checkIntersections()
+      const intersects = this.props.builder.intersects
       LOGGER.info('withBuilder#setTemporaryRail', railData, 'intersects:', intersects)
     }
 
@@ -293,26 +294,12 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       // 近傍ジョイントを検出状態に変更する
       this.setCloseJointsDetecting()
       // 重なりをチェックする
-      const intersects = this.checkIntersections()
+      const intersects = this.props.builder.intersects
       LOGGER.info('withBuilder#setTemporaryRailGroup', railGroup, children, 'intersects:', intersects)
     }
 
     protected setCloseJointsDetecting = () => {
       this.changeJointState(this.props.layout.unconnectedCloseJoints, DetectionState.DETECTING)
-    }
-
-    protected checkIntersections = () => {
-      const {temporaryRails} = this.props.builder;
-      const {currentLayoutData, activeLayerRails} = this.props.layout;
-
-      const jointsCloseToTempRail = _.flatMap(temporaryRails, r => getCloseJointsOf(r.id, currentLayoutData.rails))
-      // const closeJointPairForTempRail = this.props.layout.unconnectedCloseJoints.filter(ji => ji.from.railId === -1)
-      const targetRailIds = _.without(activeLayerRails.map(rail => rail.id), ...jointsCloseToTempRail.map(j => j.to.railId))
-      const intersects = temporaryRails.map(r => intersectsOf(r.id, targetRailIds)).some(e => e)
-      LOGGER.info("Temporary rail's close joints", jointsCloseToTempRail)
-
-      this.props.builder.setIntersects(intersects)
-      return intersects
     }
 
     /**
@@ -431,11 +418,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       }
       this.registerRailGroupInner(rails, name)
       if (shouldDelete) {
-        this.props.layout.deleteRails(this.props.layout.currentLayoutData.rails.map(rail => {
-          return {
-            id: rail.id
-          }
-        }))
+        this.props.layoutLogic.deleteRails(rails.map(r => r.id))
       } else {
         this.props.layoutLogic.selectAllRails(false)
       }

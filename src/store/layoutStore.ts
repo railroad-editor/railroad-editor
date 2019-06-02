@@ -400,10 +400,10 @@ export class LayoutStore {
 
   @action
   commit = () => {
-    // 今のインデックスにレイアウトデータをクローンする
-    this.histories[this.historyIndex] = toJS(this.currentLayoutData)
     //次のインデックスにレイアウトデータを保存
     this.histories[this.historyIndex + 1] = this.currentLayoutData
+    // 今のインデックスにレイアウトデータをクローンする
+    this.histories[this.historyIndex] = toJS(this.currentLayoutData)
     this.historyIndex += 1
   }
 

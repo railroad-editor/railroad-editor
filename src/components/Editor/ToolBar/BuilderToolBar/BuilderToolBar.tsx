@@ -82,6 +82,11 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
     this.props.builder.setPlacingMode(mode)
   }
 
+  onCut = (e) => {
+    this.props.layout.commit()
+    this.props.builderRegisterRailGroup('Clipboard', true)
+  }
+
   onDelete = (e) => {
     this.props.layout.commit()
     this.props.layoutLogic.deleteSelected()
@@ -211,9 +216,8 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
         </Tooltip>
         <Tooltip title={`${Commands.CUT} (Ctrl+X)`}>
           <StyledIconButton
-            onClick={(e) => {
-              this.props.builderRegisterRailGroup('Clipboard', true)
-            }}>
+            onClick={this.onCut}
+          >
             <CutIcon/>
           </StyledIconButton>
         </Tooltip>

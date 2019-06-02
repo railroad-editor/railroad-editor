@@ -22,6 +22,7 @@ export interface WithRailBaseProps {
   onRailPartRightClick: (e: MouseEvent) => boolean
   onRailPartMouseEnter: (e: MouseEvent) => boolean
   onRailPartMouseLeave: (e: MouseEvent) => boolean
+  onRailPartMouseMove: (e: MouseEvent) => boolean
 
   onJointLeftClick: (jointId: number, e: MouseEvent) => boolean
   onJointRightClick: (jointId: number, e: MouseEvent) => boolean
@@ -385,19 +386,26 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
           pivotJointIndex: this.props.builder.nextPivotJointIndex
         })
       }
-      // ジョイントの検出状態は変更しない
-      return false
+      // ジョイントのエラー状態を即座に反映する
+      this.onJointMouseMove(jointId, e)
+
+      // ジョイントを検出状態のままでキープする
+      return true
     }
 
-
     onRailPartMouseEnter = () => {
-      if (this.props.builder.isRailMode && this.props.opacity === 1) {
-        document.body.style.cursor = 'pointer'
+      if (! this.props.builder.usingRailTools || this.props.opacity !== 1) {
+        return
       }
+      document.body.style.cursor = 'pointer'
     }
 
     onRailPartMouseLeave = () => {
       this.props.builder.setCursorShape(this.props.builder.activeTool)
+    }
+
+    onRailPartMouseMove = () => {
+      this.onRailPartMouseEnter()
     }
 
     /**
@@ -408,7 +416,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      */
     onRailPartLeftClick = (e: MouseEvent | any) => {
       // レールの選択状態をトグルする。半透明なら何もしない
-      if (this.props.builder.isRailMode && this.props.opacity === 1) {
+      if (this.props.builder.usingRailTools && this.props.opacity === 1) {
         this.props.layoutLogic.toggleSelectRail(this.props.id)
         LOGGER.info(`${this.props.id} clicked.`)
       }
@@ -477,6 +485,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
           onRailPartRightClick={this.onRailPartRightClick}
           onRailPartMouseEnter={this.onRailPartMouseEnter}
           onRailPartMouseLeave={this.onRailPartMouseLeave}
+          onRailPartMouseMove={this.onRailPartMouseMove}
           onMount={this.onMount}
           onUnmount={this.onUnmount}
           showTemporaryRailOrRailGroup={this.showTemporaryRailOrRailGroup}

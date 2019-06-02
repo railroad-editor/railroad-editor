@@ -23,6 +23,7 @@ export interface RailPartBaseProps extends Partial<RailPartBaseDefaultProps> {
   onRightClick?: (e: MouseEvent) => boolean
   onMouseEnter?: (e: MouseEvent) => boolean
   onMouseLeave?: (e: MouseEvent) => boolean
+  onMouseMove?: (e: MouseEvent) => boolean
 
   pivotJointIndex?: number
 }
@@ -214,7 +215,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
   render() {
     const {
       position, angle, pivotJointIndex, selected, fillColor,
-      name, data, onLeftClick, onRightClick, visible, opacity, onMouseEnter, onMouseLeave
+      name, data, onLeftClick, onRightClick, visible, opacity, onMouseEnter, onMouseLeave, onMouseMove
     } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
 
@@ -247,6 +248,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
         onRightClick={onRightClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
+        onMouseMove={onMouseMove}
         ref={this.getRef}
       >
         {parts}
