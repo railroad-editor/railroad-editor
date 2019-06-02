@@ -110,6 +110,7 @@ export interface RailBaseDefaultProps {
   onRailPartRightClick: (e: MouseEvent) => boolean
   onRailPartMouseEnter: (e: MouseEvent) => boolean
   onRailPartMouseLeave: (e: MouseEvent) => boolean
+  onRailPartMouseMove: (e: MouseEvent) => boolean
 
   onJointLeftClick: (jointId: number, e: MouseEvent) => void
   onJointRightClick: (jointId: number, e: MouseEvent) => void
@@ -174,6 +175,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     onRailPartRightClick: (e: MouseEvent) => false,
     onRailPartMouseEnter: (e: MouseEvent) => false,
     onRailPartMouseLeave: (e: MouseEvent) => false,
+    onRailPartMouseMove: (e: MouseEvent) => false,
 
     onJointLeftClick: (jointId: number, e: MouseEvent) => {
     },
@@ -498,7 +500,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
 
   render() {
     const {
-      fillColor, onRailPartLeftClick, onRailPartMouseEnter, onRailPartMouseLeave, flowDirections,
+      fillColor, onRailPartLeftClick, onRailPartRightClick, onRailPartMouseEnter, onRailPartMouseLeave, onRailPartMouseMove, flowDirections,
       conductionState, showGap, showJoints
     } = this.props
 
@@ -507,8 +509,10 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
       ...railPart.props,
       fillColor: fillColor,
       onLeftClick: onRailPartLeftClick,
+      onRightClick: onRailPartRightClick,
       onMouseEnter: onRailPartMouseEnter,
       onMouseLeave: onRailPartMouseLeave,
+      onMouseMove: onRailPartMouseMove,
       flowDirections: flowDirections,
       conductionState: conductionState,
       showGap: showGap,
