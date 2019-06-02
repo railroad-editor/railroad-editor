@@ -8,7 +8,7 @@ const LOGGER = getLogger(__filename)
 
 
 export interface RailGroupProps extends Partial<RailGroupDefaultProps> {
-  position: Point
+  position: Point2D
   angle: number
   id: number
   pivotJointInfo?: JointInfo
@@ -48,7 +48,7 @@ export default class RailGroup extends React.Component<RailGroupProps, {}> {
   constructor(props: RailGroupProps) {
     super(props)
     this._children = this.props.children ? new Array((this.props.children as any[]).length) : []
-    this.pivotPosition = this.props.position
+    this.pivotPosition = new Point(this.props.position)
     this.pivotAngle = 0
   }
 
@@ -57,7 +57,7 @@ export default class RailGroup extends React.Component<RailGroupProps, {}> {
     LOGGER.debug('RailGroup#setInternal', this.group, this.group ? this.group.children : '')
     if (this.group.children.length > 0) {
       this.group.pivot = this.getPivotPosition()
-      this.group.position = this.props.position
+      this.group.position = new Point(this.props.position)
       this.group.rotation = this.getAngle()
     }
   }

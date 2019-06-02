@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Point} from "paper";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
 import {GAP_JOINER_HEIGHT, GAP_JOINER_SOCKET_FILL_COLORS, GAP_JOINER_WIDTH} from "constants/parts";
 import RectPart from "components/rails/parts/primitives/RectPart";
@@ -12,7 +11,7 @@ interface GapJoinerProps extends Partial<DefaultProps> {
 }
 
 interface DefaultProps {
-  position?: Point
+  position?: Point2D
   angle?: number
   data?: any
   pivot?: Pivot
@@ -28,7 +27,7 @@ interface DefaultProps {
 
 export default class GapJoiner extends React.Component<GapJoinerProps, {}> {
   public static defaultProps: DefaultProps = {
-    position: new Point(0, 0),
+    position: {x: 0, y: 0},
     angle: 0,
     pivot: Pivot.CENTER,
     selected: false,
@@ -52,7 +51,7 @@ export default class GapJoiner extends React.Component<GapJoinerProps, {}> {
 
     return (
       <RectPart
-        position={position}
+        position={{x: position.x, y: position.y}}
         angle={angle}
         width={GAP_JOINER_WIDTH}
         height={GAP_JOINER_HEIGHT}

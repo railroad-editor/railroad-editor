@@ -48,6 +48,16 @@ export const createRailOrRailGroupComponent = (railGroup: RailGroupData, rails: 
   }
 }
 
+const onMount = (ref) => {
+  window.RAIL_COMPONENTS[ref.props.id] = ref
+  LOGGER.info(`Rail added. id=${ref.props.id}, ${ref.props.type}`)  //`
+}
+
+const onUnmount = (ref) => {
+  LOGGER.info(`Rail deleted. id=${ref.props.id}, ${ref.props.type}`)  //`
+  delete window.RAIL_COMPONENTS[ref.props.id]
+}
+
 /**
  * レールコンポーネントを生成する。
  * TODO: パフォーマンス
@@ -62,7 +72,7 @@ export const createRailComponent = (item: RailData, layer: LayerData, feeders?: 
   }
   return (
     <RailContainer
-      key={id}
+      key={`rail-container-${id}`}
       id={id}
       {...props}
       fillColor={layer.color}
@@ -72,16 +82,10 @@ export const createRailComponent = (item: RailData, layer: LayerData, feeders?: 
       // (activeTool === Tools.SELECT)
       // (this.props.selectedItem.id === selectedItem || layer.id === selectedItem)
       // HOCでラップされた中身のRailComponentを取得する
-      onMount={(ref) => {
-        window.RAIL_COMPONENTS[id] = ref
-        LOGGER.info(`Rail added. id=${id}, ${ref.props.type}`)  //`
-      }}
-      onUnmount={(ref) => {
-        LOGGER.info(`Rail deleted. id=${id}, ${ref.props.type}`)  //`
-        delete window.RAIL_COMPONENTS[id]
-      }}
-      feeders={feeders && feeders.filter(feeder => feeder.railId === id)}
-      gapJoiners={gapJoiners && gapJoiners.filter(gapJoiner => gapJoiner.railId === id)}
+      onMount={onMount}
+      onUnmount={onUnmount}
+      // feeders={feeders && feeders.filter(feeder => feeder.railId === id)}
+      // gapJoiners={gapJoiners && gapJoiners.filter(gapJoiner => gapJoiner.railId === id)}
     />)
 }
 

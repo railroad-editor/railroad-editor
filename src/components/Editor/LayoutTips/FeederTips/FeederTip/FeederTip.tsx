@@ -7,7 +7,6 @@ import {inject, observer} from "mobx-react";
 import {LayoutStore} from "store/layoutStore";
 import {Tooltip, withStyles} from "@material-ui/core";
 import {CommonStore} from "store/commonStore";
-import {Point} from "paper";
 import FeederSettingDialog
   from "components/Editor/LayoutTips/FeederTips/FeederTip/FeederSettingDialog/FeederSettingDialog";
 import {FeederInfo} from "components/rails/RailBase";
@@ -24,7 +23,7 @@ const createColoredTooltip = (color: string) => withStyles({
 
 export interface FeederTipProps {
   feeder: FeederInfo
-  position: Point
+  position: Point2D
   angle: number
   open: boolean
   color?: string

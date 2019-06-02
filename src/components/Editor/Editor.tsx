@@ -13,7 +13,6 @@ import './Paper.css'
 import withBuilder, {WithBuilderPublicProps} from "../hoc/withBuilder";
 import getLogger from "logging";
 import withSelectTool, {WithSelectToolPublicProps} from "components/hoc/withSelectTool";
-import {Point} from "paper";
 import {inject, observer} from "mobx-react";
 import {CommonStore} from "store/commonStore";
 import {LayoutStore} from "store/layoutStore";
@@ -39,6 +38,7 @@ import {DistantRailPlacer} from "./DistantRailPlacer/DistantRailPlacer";
 import TemporaryLayer from "./TemporaryLayer/TemporaryLayer";
 import {Measure} from "./Measure/Measure";
 import {LowestEventHandler} from "./LowestEventHandler/LowestEventHandler";
+import {observable} from "mobx";
 
 const LOGGER = getLogger(__filename)
 
@@ -62,8 +62,6 @@ type EnhancedEditorProps = EditorProps
 
 
 export interface EditorState {
-  // マウス位置
-  mousePosition: Point
 }
 
 
@@ -71,11 +69,11 @@ export interface EditorState {
 @observer
 class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
+  // マウス位置
+  @observable mousePosition = {x: 0, y: 0}
+
   constructor(props: EnhancedEditorProps) {
     super(props)
-    this.state = {
-      mousePosition: new Point(0, 0)
-    }
   }
 
   async componentDidMount() {
@@ -108,7 +106,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
     // this.props.builderMouseMove(e)
     const mousePosition = this.props.moveToolMouseMove(e);
     this.props.moveToolMouseMove(e);
-    this.setState({mousePosition});
+    this.mousePosition = {x: mousePosition.x, y: mousePosition.y}
   }
 
   buildModeMouseDrag = (e) => {
@@ -179,16 +177,16 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             setPaperLoaded={this.props.common.setPaperLoaded}
           >
 
-            <LowestEventHandler mousePosition={this.state.mousePosition}/>
+            <LowestEventHandler mousePosition={this.mousePosition}/>
 
             {/*/!* 後から書いたコンポーネントの方が前面に配置される *!/*/}
             <TemporaryLayer/>
 
-            <FreeRailPlacer mousePosition={this.state.mousePosition}/>
+            <FreeRailPlacer mousePosition={this.mousePosition}/>
 
             <Layout/>
 
-            <Measure mousePosition={this.state.mousePosition}/>
+            <Measure mousePosition={this.mousePosition}/>
 
             <Tool
               active={this.props.common.editorMode === EditorMode.BUILDER}

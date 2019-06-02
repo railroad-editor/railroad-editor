@@ -7,7 +7,6 @@ import builderPaletteData from "constants/railPaletteItems.json"
 import railPaletteItems from "constants/railPaletteItems.json"
 import layoutLogicStore from "store/layoutLogicStore";
 import layoutStore from "store/layoutStore";
-import {Point} from "paper";
 import {reactionWithOldValue} from "./utils";
 
 
@@ -42,11 +41,11 @@ export interface BuilderStoreState {
   selecting: boolean
   temporaryFeeder: FeederInfo
   freePlacingDialog: boolean
-  freePlacingPosition: Point
-  clickedJointPosition: Point
-  measureStartPosition: Point
-  measureEndPosition: Point
-  measuredDistance: Point
+  freePlacingPosition: Point2D
+  clickedJointPosition: Point2D
+  measureStartPosition: Point2D
+  measureEndPosition: Point2D
+  measuredDistance: Point2D
   adjustmentAngle: number
   currentJointId: number
   currentRailId: number
@@ -80,8 +79,8 @@ export const INITIAL_STATE: BuilderStoreState = {
   selecting: false,
   temporaryFeeder: null,
   freePlacingDialog: false,
-  freePlacingPosition: new Point(0, 0),
-  clickedJointPosition: new Point(0, 0),
+  freePlacingPosition: {x: 0, y: 0},
+  clickedJointPosition: {x: 0, y: 0},
   measureStartPosition: null,
   measureEndPosition: null,
   measuredDistance: null,
@@ -122,13 +121,13 @@ export class BuilderStore {
   // [自由配置モード] ジョイントをクリックした際のレール位置入力ダイアログ表示
   @observable freePlacingDialog: boolean
   // [自由配置モード] ジョイントをクリックした際に入力した位置差分
-  @observable freePlacingDifference: Point
+  @observable freePlacingDifference: Point2D
   // [自由配置モード] クリックされたジョイントの位置
-  @observable clickedJointPosition: Point
+  @observable clickedJointPosition: Point2D
   // [メジャーツール] 測定を開始した位置
-  @observable measureStartPosition: Point
+  @observable measureStartPosition: Point2D
   // [メジャーツール] 測定を終了した位置
-  @observable measureEndPosition: Point
+  @observable measureEndPosition: Point2D
   // [角度微調整機能] レール設置時の微調整角度
   @observable adjustmentAngle: number
   // 現在仮レールを表示しているジョイントのID
@@ -472,22 +471,22 @@ export class BuilderStore {
   }
 
   @action
-  setFreePlacingDifference = (position: Point) => {
+  setFreePlacingDifference = (position: Point2D) => {
     this.freePlacingDifference = position
   }
 
   @action
-  setClickedJointPosition = (position: Point) => {
+  setClickedJointPosition = (position: Point2D) => {
     this.clickedJointPosition = position
   }
 
   @action
-  setMeasureStartPosition = (position: Point) => {
+  setMeasureStartPosition = (position: Point2D) => {
     this.measureStartPosition = position
   }
 
   @action
-  setMeasureEndPosition = (position: Point) => {
+  setMeasureEndPosition = (position: Point2D) => {
     this.measureEndPosition = position
   }
 

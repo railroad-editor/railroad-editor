@@ -1,6 +1,5 @@
 import * as React from "react";
 import {compose, defaultProps, mapProps} from "recompose";
-import {Point} from "paper";
 import withBuilder from "components/hoc/withBuilder";
 import withRailBase from "components/rails/withRailBase";
 import {RailBase, RailBaseProps} from "components/rails/RailBase";
@@ -15,7 +14,7 @@ export function railHocs<TI extends React.Component, TO>(clazz: RailBase<any, an
     defaultProps(clazz.defaultProps),
     mapProps((props: RailBaseProps) => {
       if (props.position instanceof Array) {
-        const position = new Point(props.position[1], props.position[2])
+        const position = {x: props.position[1], y: props.position[2]}
         return {
           ...props,
           position

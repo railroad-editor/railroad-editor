@@ -17,7 +17,7 @@ interface PartGroupState {
 
 export default class PartGroup extends PartBase<PartGroupProps, PartGroupState> {
   public static defaultProps: PartBaseDefaultProps = {
-    position: new Point(0, 0),
+    position: {x: 0, y: 0},
     angle: 0,
     pivot: Pivot.CENTER,
     fillColor: undefined,
@@ -160,10 +160,10 @@ export default class PartGroup extends PartBase<PartGroupProps, PartGroupState> 
     // TODO: より上手い方法が無いか考える
     const {pivot, pivotPartIndex} = this.props
     if (pivot == null && pivotPartIndex == null) {
-      this.group.position = this.props.position
+      this.group.position = new Point(this.props.position)
     } else {
       this.group.pivot = this.getInternalPivotPosition(this.props.pivot)
-      this.group.position = this.props.position
+      this.group.position = new Point(this.props.position)
     }
   }
 }

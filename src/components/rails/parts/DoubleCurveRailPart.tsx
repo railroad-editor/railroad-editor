@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Point} from "paper";
 import {RAIL_PART_WIDTH, RAIL_SPACE} from "constants/parts";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
 import RailPartBase, {RailPartBaseDefaultProps, RailPartBaseProps} from "components/rails/parts/RailPartBase";
@@ -76,7 +75,7 @@ export default class DoubleCurveRailPart extends RailPartBase<DoubleCurveRailPar
         <ArcPart
           pivot={Pivot.LEFT}
           direction={direction}
-          position={new Point(0, RAIL_SPACE)}
+          position={{x: 0, y: RAIL_SPACE}}
           radius={radius2}
           centerAngle={centerAngle}
           width={RAIL_PART_WIDTH}

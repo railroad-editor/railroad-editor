@@ -28,7 +28,7 @@ export interface RailPartBaseProps extends Partial<RailPartBaseDefaultProps> {
 }
 
 export interface RailPartBaseDefaultProps {
-  position?: Point
+  position?: Point2D
   angle?: number
   detectionEnabled?: boolean
   selected?: boolean
@@ -43,7 +43,7 @@ export interface RailPartBaseDefaultProps {
 
 export default abstract class RailPartBase<P extends RailPartBaseProps, S> extends React.Component<P, S> {
   public static defaultProps: RailPartBaseDefaultProps = {
-    position: new Point(0, 0),
+    position: {x: 0, y: 0},
     angle: 0,
     detectionEnabled: true,
     selected: false,
@@ -233,7 +233,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
 
     return (
       <PartGroup
-        position={position}
+        position={{x: position.x, y: position.y}}
         angle={angle}
         pivot={pivot}
         pivotPartIndex={pivotPartIndex}

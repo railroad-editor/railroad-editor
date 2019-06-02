@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Point} from "paper";
 import DetectablePart from "./primitives/DetectablePart";
 import CirclePart from "./primitives/CirclePart";
 import {JointMeta} from "components/rails/parts/types";
@@ -27,7 +26,7 @@ interface JointProps extends Partial<DefaultProps> {
 }
 
 interface DefaultProps {
-  position?: Point
+  position?: Point2D
   angle?: number
   pivot?: Pivot
   selected?: boolean
@@ -41,7 +40,7 @@ interface DefaultProps {
 
 export default class Joint extends React.Component<JointProps, {}> {
   public static defaultProps: DefaultProps = {
-    position: new Point(0, 0),
+    position: {x: 0, y: 0},
     angle: 0,
     pivot: Pivot.CENTER,
     selected: false,
@@ -100,7 +99,7 @@ export default class Joint extends React.Component<JointProps, {}> {
             opacity={opacity * JOINT_DETECTION_OPACITY_RATE}
           />
         }
-        position={position}
+        position={{x: position.x, y: position.y}}
         angle={angle}
         pivot={pivot}
         fillColors={fillColors}

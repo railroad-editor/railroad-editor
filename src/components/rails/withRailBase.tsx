@@ -477,8 +477,8 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
           onRailPartRightClick={this.onRailPartRightClick}
           onRailPartMouseEnter={this.onRailPartMouseEnter}
           onRailPartMouseLeave={this.onRailPartMouseLeave}
-          onMount={(instance) => this.onMount(instance)}
-          onUnmount={(instance) => this.onUnmount(instance)}
+          onMount={this.onMount}
+          onUnmount={this.onUnmount}
           showTemporaryRailOrRailGroup={this.showTemporaryRailOrRailGroup}
         />
       )
@@ -508,10 +508,11 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
         pivotJointInfo = this.props.builder.temporaryRailGroup.pivotJointInfo
       }
 
+      const position = this.railPart.getGlobalJointPosition(jointId)
       // レールグループデータの作成
       const railGroup = {
         pivotJointInfo: pivotJointInfo,
-        position: this.railPart.getGlobalJointPosition(jointId),
+        position: {x: position.x, y: position.y},
         angle: this.railPart.getGlobalJointAngle(jointId) + this.props.builder.adjustmentAngle
       }
 
@@ -533,10 +534,11 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
         pivotJointIndex = this.props.builder.temporaryRails[0].pivotJointIndex
       }
 
+      const position = this.railPart.getGlobalJointPosition(jointId)
       // 仮レールを設置する
       this.props.builderSetTemporaryRail({
         ...railData,
-        position: this.railPart.getGlobalJointPosition(jointId),
+        position: {x: position.x, y: position.y},
         angle: this.railPart.getGlobalJointAngle(jointId) + this.props.builder.adjustmentAngle,
         pivotJointIndex: pivotJointIndex,
       })

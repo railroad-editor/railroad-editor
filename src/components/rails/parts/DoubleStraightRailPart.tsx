@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Point} from "paper";
 import RectPart from "./primitives/RectPart";
 import {RAIL_PART_WIDTH, RAIL_SPACE} from "constants/parts";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
@@ -56,7 +55,7 @@ export default class DoubleStraightRailPart extends RailPartBase<DoubleStraightR
           }}
         />
         <RectPart
-          position={new Point(0, RAIL_SPACE)}
+          position={{x: 0, y: RAIL_SPACE}}
           width={RAIL_PART_WIDTH}
           height={length}
           pivot={Pivot.LEFT}

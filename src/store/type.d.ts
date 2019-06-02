@@ -5,3 +5,7 @@ declare interface PaletteItem {
   type: string
 }
 
+declare interface Point2D {
+  x: number
+  y: number
+}
