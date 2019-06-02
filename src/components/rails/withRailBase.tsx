@@ -390,7 +390,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
       this.onJointMouseMove(jointId, e)
 
       // ジョイントを検出状態のままでキープする
-      return true
+      return false
     }
 
     onRailPartMouseEnter = () => {

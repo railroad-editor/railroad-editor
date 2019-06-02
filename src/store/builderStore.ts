@@ -37,6 +37,7 @@ export interface BuilderStoreState {
   temporaryRailGroup: RailGroupData
   userRailGroups: UserRailGroupData[]
   userRails: any
+  intersects: boolean
   activeTool: string
   selecting: boolean
   temporaryFeeder: FeederInfo
@@ -73,6 +74,7 @@ export const INITIAL_STATE: BuilderStoreState = {
   temporaryRails: [],
   temporaryRailGroup: null,
   userRailGroups: [],
+  intersects: false,
   userRails: [],
   activeTool: null,   // 後でreactionを起こさせるためにここではnullにしておく
   selecting: false,
@@ -105,6 +107,8 @@ export class BuilderStore {
   @observable temporaryRails: RailData[]
   // 仮レールグループ
   @observable temporaryRailGroup: RailGroupData
+  // 仮レールと他のレールが重なっているか否か
+  @observable intersects: boolean
   // カスタムレール
   @observable userRails: any
   // ユーザーが登録したレールグループ
@@ -145,6 +149,7 @@ export class BuilderStore {
     this.temporaryRailGroup = temporaryRailGroup
     this.userRailGroups = userRailGroups
     this.userRails = userRails
+    this.intersects = false
     this.activeTool = activeTool
     this.selecting = selecting
     this.temporaryFeeder = temporaryFeeder
@@ -257,8 +262,8 @@ export class BuilderStore {
   /**
    * 仮レールに他のレールと重なりがあるか否かを判定する
    */
-  @computed
-  get intersects() {
+  @action
+  checkIntersections() {
     const {temporaryRails} = this
     const {currentLayoutData, activeLayerRails} = layoutStore
 
@@ -266,7 +271,7 @@ export class BuilderStore {
     // const closeJointPairForTempRail = this.props.layout.unconnectedCloseJoints.filter(ji => ji.from.railId === -1)
     const targetRailIds = _.without(activeLayerRails.map(rail => rail.id), ...jointsCloseToTempRail.map(j => j.to.railId))
     const intersects = temporaryRails.map(r => intersectsOf(r.id, targetRailIds)).some(e => e)
-    return intersects
+    this.setIntersects(intersects)
   }
 
   /**
@@ -314,6 +319,7 @@ export class BuilderStore {
     }).get()
   }
 
+
   @action
   setPlacingMode = (placingMode: PlacingMode) => {
     this.placingMode = placingMode
@@ -345,6 +351,7 @@ export class BuilderStore {
   deleteTemporaryRail = () => {
     this.temporaryRails = []
     this.temporaryRailGroup = null
+    this.intersects = false
   }
 
   @action
@@ -457,6 +464,11 @@ export class BuilderStore {
   @action
   deleteUserRail = (item: RailItemData) => {
     this.userRails = _.reject(this.userRails, r => item.name === r.name && item.type === r.type)
+  }
+
+  @action
+  setIntersects = (intersects: boolean) => {
+    this.intersects = intersects
   }
 
   @action

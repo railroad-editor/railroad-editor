@@ -257,8 +257,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       // 近傍ジョイントを検出状態に変更する
       this.setCloseJointsDetecting()
       // 重なりをチェックする
-      const intersects = this.props.builder.intersects
-      LOGGER.info('withBuilder#setTemporaryRail', railData, 'intersects:', intersects)
+      this.props.builder.checkIntersections()
     }
 
     /**
@@ -294,8 +293,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       // 近傍ジョイントを検出状態に変更する
       this.setCloseJointsDetecting()
       // 重なりをチェックする
-      const intersects = this.props.builder.intersects
-      LOGGER.info('withBuilder#setTemporaryRailGroup', railGroup, children, 'intersects:', intersects)
+      this.props.builder.checkIntersections()
     }
 
     protected setCloseJointsDetecting = () => {
