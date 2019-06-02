@@ -353,18 +353,11 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
         return false
       }
       // Joint Placing Mode
-
-      // 仮レールがこのレイヤーの他のレールと重なっていたら、何もせずに返る
-      if (this.props.builder.intersects) {
-        // ジョイントの検出状態を変更させない
-        return false
-      }
-
       if (_.isEmpty(this.props.builder.temporaryRails)) {
         return false
       }
-
       this.props.builderAddRail()
+      // 検出済状態に移行する
       return true
     }
 
