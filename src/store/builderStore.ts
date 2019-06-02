@@ -260,7 +260,7 @@ export class BuilderStore {
   }
 
   /**
-   * 仮レールに他のレールと重なりがあるか否かを判定する
+   * 仮レールが他のレールと衝突しているか否かを判定する
    */
   @action
   checkIntersections() {

@@ -379,6 +379,8 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
           pivotJointIndex: this.props.builder.nextPivotJointIndex
         })
       }
+      // 仮レールの衝突判定を行う
+      this.props.builder.checkIntersections()
       // ジョイントのエラー状態を即座に反映する
       this.onJointMouseMove(jointId, e)
 
@@ -409,10 +411,18 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      */
     onRailPartLeftClick = (e: MouseEvent | any) => {
       // レールの選択状態をトグルする。半透明なら何もしない
-      if (this.props.builder.usingRailTools && this.props.opacity === 1) {
-        this.props.layoutLogic.toggleSelectRail(this.props.id)
-        LOGGER.info(`${this.props.id} clicked.`)
+      if (! this.props.builder.usingRailTools) {
+        return false
       }
+      if (this.props.opacity !== 1) {
+        return false
+      }
+      if (e.modifiers.shift) {
+        this.props.layoutLogic.selectRail(this.props.id, ! this.props.selected)
+      } else {
+        this.props.layoutLogic.toggleSelectRail(this.props.id)
+      }
+      LOGGER.info(`${this.props.id} clicked.`)
       return false
     }
 
