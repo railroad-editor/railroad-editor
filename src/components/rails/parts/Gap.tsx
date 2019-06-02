@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Point} from "paper";
 import RectPart from "components/rails/parts/primitives/RectPart";
 import getLogger from "logging";
 import {GAP_FILL_COLOR, GAP_HEIGHT, GAP_WIDTH} from "constants/parts";
@@ -10,7 +9,7 @@ interface GapProps extends Partial<DefaultProps> {
 }
 
 interface DefaultProps {
-  position?: Point
+  position?: Point2D
   angle?: number
   data?: any
   selected?: boolean
@@ -24,7 +23,7 @@ interface DefaultProps {
 
 export default class Gap extends React.Component<GapProps, {}> {
   public static defaultProps: DefaultProps = {
-    position: new Point(0, 0),
+    position: {x: 0, y: 0},
     angle: 0,
     selected: false,
     opacity: 1,
@@ -52,7 +51,7 @@ export default class Gap extends React.Component<GapProps, {}> {
         width={GAP_WIDTH}
         height={GAP_HEIGHT}
         opacity={opacity}
-        position={position}
+        position={{x: position.x, y: position.y}}
         angle={angle}
         pivot={undefined}
         visible={visible}

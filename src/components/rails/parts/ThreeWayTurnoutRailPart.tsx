@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Point} from "paper";
 import RectPart from "./primitives/RectPart";
 import ArcPart, {ArcDirection} from "./primitives/ArcPart";
 import {RAIL_PART_WIDTH} from "constants/parts";
@@ -76,7 +75,7 @@ export default class ThreeWayTurnoutRailPart extends RailPartBase<ThreeWayTurnou
           }}
         />
         <ArcPart
-          position={new Point(rightStart, 0)}
+          position={{x: rightStart, y: 0}}
           direction={ArcDirection.RIGHT}
           radius={rightRadius}
           centerAngle={rightCenterAngle}
@@ -89,7 +88,7 @@ export default class ThreeWayTurnoutRailPart extends RailPartBase<ThreeWayTurnou
           }}
         />
         <ArcPart
-          position={new Point(leftStart, 0)}
+          position={{x: leftStart, y: 0}}
           direction={ArcDirection.LEFT}
           radius={leftRadius}
           centerAngle={leftCenterAngle}

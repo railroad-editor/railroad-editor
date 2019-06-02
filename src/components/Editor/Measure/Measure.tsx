@@ -13,13 +13,13 @@ import {Layer, Line, PointText} from "react-paper-bindings";
 const LOGGER = getLogger(__filename)
 
 export interface MeasureProps {
-  mousePosition: Point
+  mousePosition: Point2D
   common?: CommonStore
   builder?: BuilderStore
 }
 
 export interface MeasureState {
-  fixedPosition: Point
+  fixedPosition: Point2D
 }
 
 
@@ -40,14 +40,14 @@ export class Measure extends React.Component<MeasureProps, MeasureState> {
     this.props.builder.setFreePlacingDialog(false)
   }
 
-  renderLine = (from: Point, mouse: Point, to: Point) => {
+  renderLine = (from: Point2D, mouse: Point2D, to: Point2D) => {
     if (! from) {
       return null
     }
     let lineTo
     if (! to) {
       // マウス移動中は、ジョイントの当たり判定と干渉しないように線を少し短くする
-      lineTo = mouse.add(new Point(from.x - mouse.x, from.y - mouse.y).normalize(5))
+      lineTo = new Point(mouse).add(new Point(from.x - mouse.x, from.y - mouse.y).normalize(5))
     } else {
       lineTo = to
     }
@@ -61,10 +61,10 @@ export class Measure extends React.Component<MeasureProps, MeasureState> {
     )
   }
 
-  renderText = (from: Point, to: Point) => {
-    let diff = to.subtract(from)
+  renderText = (from: Point2D, to: Point2D) => {
+    let diff = new Point(to).subtract(new Point(from))
     // マウスカーソルの位置から、Y軸方向にのみずらした場所にテキストを表示する
-    let textPosition = to.add(new Point(0, (to.y - from.y >= 0 ? 1 : -1) * 40))
+    let textPosition = new Point(to).add(new Point(0, (to.y - from.y >= 0 ? 1 : -1) * 40))
     if (this.props.builder.measureEndPosition) {
       if (! this.state.fixedPosition) {
         this.setState({

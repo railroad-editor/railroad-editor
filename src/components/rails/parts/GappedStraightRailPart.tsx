@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Point} from "paper";
 import RectPart from "./primitives/RectPart";
 import {RAIL_PART_WIDTH} from "constants/parts";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
@@ -56,7 +55,7 @@ export default class GappedStraightRailPart extends RailPartBase<GappedStraightR
           }}
         />
         <RectPart
-          position={new Point(length / 2, 0)}
+          position={{x: length / 2, y: 0}}
           width={RAIL_PART_WIDTH}
           height={length / 2}
           pivot={Pivot.LEFT}
@@ -67,7 +66,7 @@ export default class GappedStraightRailPart extends RailPartBase<GappedStraightR
           }}
         />
         <Gap
-          position={new Point(length / 2, 0)}
+          position={{x: length / 2, y: 0}}
           visible={showGap}
           data={{
             type: 'Gap',

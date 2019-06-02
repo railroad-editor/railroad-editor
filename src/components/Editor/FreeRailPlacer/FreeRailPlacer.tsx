@@ -27,14 +27,14 @@ enum Phase {
 }
 
 export interface FreeRailPlacerProps {
-  mousePosition: Point
+  mousePosition: Point2D
   common?: CommonStore
   builder?: BuilderStore
   layout?: LayoutStore
 }
 
 export interface FreeRailPlacerState {
-  fixedPosition: Point
+  fixedPosition: Point2D
   phase: Phase
   steppedAngle: number
   isError: boolean
@@ -62,7 +62,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
     reaction(() => this.props.builder.freePlacingDifference,
       (position) => {
         if (this.isActive()) {
-          let newPosition = this.props.builder.clickedJointPosition.add(position)
+          let newPosition = new Point(this.props.builder.clickedJointPosition).add(new Point(position))
           this.setState({
             fixedPosition: newPosition,
             phase: Phase.SET_ANGLE
@@ -298,7 +298,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
       // 仮レール未設置ならPivotJointは0
       const tempRail = {
         ...itemData,
-        position: this.state.fixedPosition,
+        position: {x: this.state.fixedPosition.x, y: this.state.fixedPosition.y},
         angle: angle,
         pivotJointIndex: 0
       }
@@ -307,7 +307,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
       // 仮レールが既に存在するならPivotJointをキープ
       const tempRail = {
         ...itemData,
-        position: this.state.fixedPosition,
+        position: {x: this.state.fixedPosition.x, y: this.state.fixedPosition.y},
         angle: angle,
         pivotJointIndex: this.props.builder.temporaryRails[0].pivotJointIndex
       }
@@ -331,7 +331,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
  * @param {number} step
  * @returns {number}
  */
-const getSteppedAngleByMousePosition = (anchor: Point, cursor: Point, step: number = 15) => {
+const getSteppedAngleByMousePosition = (anchor: Point2D, cursor: Point2D, step: number = 15) => {
   const diffX = cursor.x - anchor.x
   const diffY = cursor.y - anchor.y
   const angle = Math.atan2(diffY, diffX) * 180 / Math.PI

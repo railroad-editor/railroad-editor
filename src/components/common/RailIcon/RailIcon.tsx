@@ -1,7 +1,6 @@
 import * as React from 'react'
 import {ListItemProps} from "@material-ui/core/ListItem";
 import {View} from "react-paper-bindings";
-import {Point} from "paper";
 
 export interface RailIconProps extends ListItemProps {
   width: number
@@ -53,7 +52,7 @@ export default class RailIcon extends React.Component<RailIconProps, RailIconSta
 
     const extendedRail = React.cloneElement(rail as any, {
       ...rail.props,
-      position: new Point(width / 2, height / 2),
+      position: {x: width / 2, y: height / 2},
       enableJoints: false,
       pivotJointIndex: undefined,
       ref: (r) => {

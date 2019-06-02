@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Point} from "paper";
 import Joint from "./parts/Joint";
 import {anglesEqual, pointsEqual} from "components/rails/utils";
 import * as _ from "lodash";
@@ -50,7 +49,7 @@ export interface FlowDirections {
 
 
 export interface RailBaseProps extends Partial<RailBaseDefaultProps> {
-  position: Point
+  position: Point2D
   angle: number
   id: number
   // レールが所属するレイヤーのID
@@ -135,9 +134,9 @@ export interface RailBaseDefaultProps {
 }
 
 export interface RailBaseState {
-  jointPositions: Point[]
+  jointPositions: Point2D[]
   jointAngles: number[]
-  feederSocketPositions: Point[]
+  feederSocketPositions: Point2D[]
   feederSocketAngles: number[]
 }
 
@@ -514,6 +513,8 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
       conductionState: conductionState,
       showGap: showGap,
     })
+
+    LOGGER.info(`rail ${this.props.id} render`)
 
     return (
       <>

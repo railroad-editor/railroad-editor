@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Point} from "paper";
 import RectPart from "./primitives/RectPart";
 import {RAIL_PART_WIDTH} from "constants/parts";
 import {Pivot} from "components/rails/parts/primitives/PartBase";
@@ -44,7 +43,7 @@ export default class CrossingRailPart extends RailPartBase<CrossingRailPartProps
     return (
       <>
         <RectPart
-          position={new Point(0, 0)}
+          position={{x: 0, y: 0}}
           width={RAIL_PART_WIDTH}
           height={length}
           pivot={Pivot.CENTER}
@@ -55,7 +54,7 @@ export default class CrossingRailPart extends RailPartBase<CrossingRailPartProps
           }}
         />
         <RectPart
-          position={new Point(0, 0)}
+          position={{x: 0, y: 0}}
           angle={crossAngle}
           width={RAIL_PART_WIDTH}
           height={length}

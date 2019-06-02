@@ -247,6 +247,9 @@ export class LayoutLogicStore {
     if (target == null) {
       return
     }
+    if (target.selected === selected) {
+      return
+    }
 
     layoutStore.updateRail({
       id: target.id,

@@ -15,7 +15,7 @@ import {runInAction} from "mobx";
 const LOGGER = getLogger(__filename)
 
 export interface LowestEventHandlingLayerProps {
-  mousePosition: Point
+  mousePosition: Point2D
   common?: CommonStore
   builder?: BuilderStore
   layout?: LayoutStore

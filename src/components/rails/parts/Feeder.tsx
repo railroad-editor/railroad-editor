@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Point} from "paper";
 import getLogger from "logging";
 import TrianglePart from "components/rails/parts/primitives/TrianglePart";
 import {FEEDER_HEIGHT, FEEDER_SOCKET_FILL_COLORS, FEEDER_WIDTH} from "constants/parts";
@@ -12,7 +11,7 @@ interface FeederProps extends Partial<DefaultProps> {
 }
 
 interface DefaultProps {
-  position?: Point
+  position?: Point2D
   angle?: number
   data?: any
   selected?: boolean
@@ -28,7 +27,7 @@ interface DefaultProps {
 
 export default class Feeder extends React.Component<FeederProps, {}> {
   public static defaultProps: DefaultProps = {
-    position: new Point(0, 0),
+    position: {x: 0, y: 0},
     angle: 0,
     selected: false,
     opacity: 1,
@@ -64,7 +63,7 @@ export default class Feeder extends React.Component<FeederProps, {}> {
 
     return (
       <TrianglePart
-        position={position}
+        position={{x: position.x, y: position.y}}
         angle={angle}
         width={FEEDER_WIDTH}
         height={FEEDER_HEIGHT}

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Group, Item, Path, Point} from "paper";
+import {Group, Item, Path} from "paper";
 import {Path as PathComponent} from "react-paper-bindings";
 import {ANIMATION_FLOW_COLOR_1, ANIMATION_FLOW_COLOR_2} from "constants/parts";
 
@@ -19,7 +19,7 @@ export enum FlowDirection {
 }
 
 export interface PartBaseProps extends Partial<PartBaseDefaultProps> {
-  position?: Point
+  position?: Point2D
   angle?: number
   pivot?: Pivot
   fillColor?: string
@@ -40,7 +40,7 @@ export interface PartBaseProps extends Partial<PartBaseDefaultProps> {
 }
 
 export interface PartBaseDefaultProps {
-  position?: Point
+  position?: Point2D
   angle?: number
   pivot?: Pivot
   fillColor?: string
@@ -53,7 +53,7 @@ export interface PartBaseDefaultProps {
 
 export default abstract class PartBase<P extends PartBaseProps, S> extends React.Component<P, S> {
   public static defaultProps: PartBaseDefaultProps = {
-    position: new Point(0, 0),
+    position: {x: 0, y: 0},
     angle: 0,
     pivot: Pivot.CENTER,
     fillColor: 'black',

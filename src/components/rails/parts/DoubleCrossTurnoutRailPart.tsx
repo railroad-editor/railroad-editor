@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Point} from "paper";
 import RectPart from "./primitives/RectPart";
 import ArcPart, {ArcDirection} from "./primitives/ArcPart";
 import {RAIL_PART_WIDTH, RAIL_SPACE} from "constants/parts";
@@ -68,7 +67,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           }}
         />
         <RectPart
-          position={new Point(length / 2, 0)}
+          position={{x: length / 2, y: 0}}
           width={RAIL_PART_WIDTH}
           height={length / 2}
           pivot={Pivot.LEFT}
@@ -79,7 +78,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           }}
         />
         <RectPart
-          position={new Point(0, RAIL_SPACE)}
+          position={{x: 0, y: RAIL_SPACE}}
           width={RAIL_PART_WIDTH}
           height={length / 2}
           pivot={Pivot.LEFT}
@@ -90,7 +89,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           }}
         />
         <RectPart
-          position={new Point(length / 2, RAIL_SPACE)}
+          position={{x: length / 2, y: RAIL_SPACE}}
           width={RAIL_PART_WIDTH}
           height={length / 2}
           pivot={Pivot.LEFT}
@@ -113,7 +112,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           }}
         />
         <ArcPart
-          position={new Point(length, 0)}
+          position={{x: length, y: 0}}
           direction={ArcDirection.RIGHT}
           angle={-centerAngle}
           radius={radius}
@@ -127,7 +126,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           }}
         />
         <ArcPart
-          position={new Point(0, RAIL_SPACE)}
+          position={{x: 0, y: RAIL_SPACE}}
           direction={ArcDirection.LEFT}
           radius={radius}
           centerAngle={centerAngle}
@@ -140,7 +139,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           }}
         />
         <ArcPart
-          position={new Point(length, RAIL_SPACE)}
+          position={{x: length, y: RAIL_SPACE}}
           direction={ArcDirection.LEFT}
           angle={centerAngle}
           radius={radius}
@@ -154,21 +153,21 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           }}
         />
         <Gap
-          position={new Point(length / 2, 0)}
+          position={{x: length / 2, y: 0}}
           visible={showGap}
           data={{
             type: 'Gap',
           }}
         />
         <Gap
-          position={new Point(length / 2, RAIL_SPACE)}
+          position={{x: length / 2, y: RAIL_SPACE}}
           visible={showGap}
           data={{
             type: 'Gap',
           }}
         />
         <Gap
-          position={new Point(length / 2, RAIL_SPACE / 2)}
+          position={{x: length / 2, y: RAIL_SPACE / 2}}
           angle={centerAngle}
           visible={showGap}
           data={{
@@ -176,7 +175,7 @@ export default class DoubleCrossTurnoutRailPart extends RailPartBase<DoubleCross
           }}
         />
         <Gap
-          position={new Point(length / 2, RAIL_SPACE / 2)}
+          position={{x: length / 2, y: RAIL_SPACE / 2}}
           angle={-centerAngle}
           visible={showGap}
           data={{

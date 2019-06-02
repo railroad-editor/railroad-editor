@@ -319,20 +319,29 @@ export class LayoutStore {
 
   @action
   updateRail = (item: Partial<RailData>) => {
+    LOGGER.info(`updateRail ${item.id}`)
     const index = this.currentLayoutData.rails.findIndex(rail => rail.id === item.id)
     const target = this.currentLayoutData.rails[index]
 
     // 明示的にnull指定されたらリセットする
-    const opposingJoints = item.opposingJoints === null ? {} : removeEmpty({
+    let opposingJoints = item.opposingJoints === null ? {} : removeEmpty({
       ...target.opposingJoints,
       ...item.opposingJoints
     })
     // 明示的にnull指定されたらリセットする
-    const flowDirections = item.flowDirections === null ? {} : removeEmpty({
+    let flowDirections = item.flowDirections === null ? {} : removeEmpty({
       ...target.flowDirections,
       ...item.flowDirections
     })
 
+    // 中身を比較する
+    // TODO: これ本当に必要？
+    if (_.isEqual(opposingJoints, target.opposingJoints)) {
+      opposingJoints = target.opposingJoints
+    }
+    if (_.isEqual(flowDirections, target.flowDirections)) {
+      flowDirections = target.flowDirections
+    }
     this.currentLayoutData.rails[index] = {
       ...target,
       ...item,
@@ -391,9 +400,10 @@ export class LayoutStore {
 
   @action
   commit = () => {
-    const layout = toJS(this.currentLayoutData)
-    LOGGER.info('LayoutStore#commit', layout)
-    this.histories[this.historyIndex + 1] = layout
+    // 今のインデックスにレイアウトデータをクローンする
+    this.histories[this.historyIndex] = toJS(this.currentLayoutData)
+    //次のインデックスにレイアウトデータを保存
+    this.histories[this.historyIndex + 1] = this.currentLayoutData
     this.historyIndex += 1
   }
 

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Point, ToolEvent} from "paper";
+import {ToolEvent} from "paper";
 import getLogger from "logging";
 import {RailData, RailGroupData} from "components/rails";
 import {JointInfo} from "components/rails/RailBase";
@@ -473,7 +473,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
         rails: newRails,
         id: 0,
         name: name,
-        position: new Point(0, 0),
+        position: {x: 0, y: 0},
         angle: 0,
         openJoints: openJoints
       }

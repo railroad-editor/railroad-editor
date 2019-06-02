@@ -5,7 +5,6 @@ import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
 import {inject, observer} from "mobx-react";
 import {LayoutStore, SwitcherData} from "store/layoutStore";
 import {CommonStore} from "store/commonStore";
-import {Point} from "paper";
 import TurnoutSettingDialog
   from "components/Editor/LayoutTips/RailTips/RailTip/TurnoutSettingDialog/TurnoutSettingDialog";
 import {RailData} from "components/rails";
@@ -24,7 +23,7 @@ const createColoredTooltip = (color: string) => withStyles({
 export interface FeederTipProps {
   rail: RailData
   switchers: SwitcherData[]
-  position: Point
+  position: Point2D
   open: boolean
   color?: string
   layout?: LayoutStore
