@@ -4,7 +4,7 @@
 	"region": "ap-northeast-1",
 	"state": "NORMAL",
 	"createdDate": "2018-04-28T08:32:11.825Z",
-  "lastUpdatedDate": "2019-05-31T22:18:12.692Z",
+  "lastUpdatedDate": "2019-06-01T23:51:19.905Z",
 	"consoleUrl": "https://console.aws.amazon.com/mobilehub/home#/afb78a90-fb33-4b35-aabb-2be1304f8015/build",
 	"resources": [
 		{
@@ -70,8 +70,8 @@
 				"lastUpdateRequestID": "8bc1ebad-4ac3-11e8-a08d-450774c10c61",
 				"region": "ap-northeast-1",
 				"user-pool-id": "ap-northeast-1_SW4VnlrmO",
-              "user-pools-client-id": "260r8fbm1jsol78gq3k1rs3f",
-              "user-pools-client-secret": "1ei14473pdfkbhp1br2p4i2gmpsjhr6gp9eaehb1ti73vdcgmdcg",
+              "user-pools-client-id": "...redacted_-1643112374...",
+              "user-pools-client-secret": "...redacted_-1695881414...",
 				"user-pools-id": "ap-northeast-1_SW4VnlrmO",
 				"user-pools-web-client-id": "6dedi9vc5b14dijcfeomuhfdav"
 			}
