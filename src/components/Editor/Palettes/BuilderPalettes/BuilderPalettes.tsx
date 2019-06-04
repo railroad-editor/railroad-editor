@@ -1,6 +1,10 @@
 import * as React from 'react'
 import {compose} from "recompose";
-import {StyledLayerPalette, StyledRailPalette} from "components/Editor/Palettes/BuilderPalettes/BuilderPalettes.style";
+import {
+  StyledInfoPalette,
+  StyledLayerPalette,
+  StyledRailPalette
+} from "components/Editor/Palettes/BuilderPalettes/BuilderPalettes.style";
 
 
 export interface BuilderPalettesProps {
@@ -17,6 +21,7 @@ export class BuilderPalettes extends React.Component<BuilderPalettesProps> {
       <>
         <StyledRailPalette/>
         <StyledLayerPalette/>
+        <StyledInfoPalette/>
       </>
     )
   }

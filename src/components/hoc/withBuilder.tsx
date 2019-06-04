@@ -246,7 +246,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       const tempRail = {
         ...railData,
         id: -1,                             // 仮のレールID
-        name: 'TemporaryRail',              //
+        name: this.props.builder.paletteItem.name,              //
         layerId: -1,                        // 仮のレイヤーに設置
         enableJoints: false,                // ジョイントを無効化
         opacity: TEMPORARY_RAIL_OPACITY,    // 半透明
@@ -271,7 +271,6 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
         return {
           ...r,
           id: -2 - idx,                       // 仮のレールIDを割り当て
-          name: 'TemporaryRail',              //
           layerId: -1,                        // 仮のレイヤーに設置
           enableJoints: false,                // ジョイントを無効化
           opacity: TEMPORARY_RAIL_OPACITY,    // 半透明
@@ -284,7 +283,6 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
         ...railGroupData,
         type: 'RailGroup',
         id: -1,                                   // 仮のレールグループIDを割り当て
-        name: 'TemporaryRailGroup',               //
         rails: children.map(c => c.id)  // メンバーレール
       }
 
@@ -335,7 +333,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     protected addSingleRail = (rail: RailData) => {
       const data = {
         ..._.omitBy(rail, _.isFunction),
-        name: '',
+        name: this.props.builder.paletteItem.name,
         layerId: this.props.builder.activeLayerId,  // 現在のレイヤーに置く
         enableJoints: true,                         // ジョイントを有効化
         opposingJoints: {},                         // 近傍ジョイントは後で接続する
@@ -349,7 +347,6 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       const railDatas = rails.map(rail => {
         return {
           ..._.omitBy(rail, _.isFunction),
-          name: '',
           layerId: this.props.builder.activeLayerId,  // 現在のレイヤーに置く
           enableJoints: true,                         // ジョイントを有効化
           opposingJoints: {},                         // 近傍ジョイントは後で接続する

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Rnd from "react-rnd"
 import LayerPalette from "components/Editor/Palettes/BuilderPalettes/LayerPalette/LayerPalette";
 import RailPalettes from "components/Editor/Palettes/BuilderPalettes/RailPalettes/RailPalettes";
+import InfoPalette from "./InfoPalette/InfoPalette";
 
 
 export const StyledRnd = styled(Rnd as any)`
@@ -26,4 +27,12 @@ export const StyledLayerPalette = styled(LayerPalette as any)`
   right: 15px;
   // AppBarよりも上に置く
   //z-index: 1100;
+`
+
+export const StyledInfoPalette = styled(InfoPalette as any)`
+  // Rndのインラインスタイルである top:0, left:0 を打ち消す
+  top: ${window.innerHeight - 250}px!important;
+  left: auto!important;
+  right: 15px;
+
 `

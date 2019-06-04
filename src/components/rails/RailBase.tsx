@@ -65,6 +65,7 @@ export interface RailBaseProps extends Partial<RailBaseDefaultProps> {
   pivotJointIndex?: number,
 
   turnoutId?: number
+  turnoutName?: string
 }
 
 export interface RailBaseDefaultProps {
@@ -500,13 +501,14 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
 
   render() {
     const {
-      fillColor, onRailPartLeftClick, onRailPartRightClick, onRailPartMouseEnter, onRailPartMouseLeave, onRailPartMouseMove, flowDirections,
+      name, fillColor, onRailPartLeftClick, onRailPartRightClick, onRailPartMouseEnter, onRailPartMouseLeave, onRailPartMouseMove, flowDirections,
       conductionState, showGap, showJoints
     } = this.props
 
     const railPart = this.renderRailPart(this.props)
     const extendedRailPart = React.cloneElement(railPart as any, {
       ...railPart.props,
+      name: name,
       fillColor: fillColor,
       onLeftClick: onRailPartLeftClick,
       onRightClick: onRailPartRightClick,
@@ -515,7 +517,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
       onMouseMove: onRailPartMouseMove,
       flowDirections: flowDirections,
       conductionState: conductionState,
-      showGap: showGap,
+      showGap: showGap
     })
 
     LOGGER.info(`rail ${this.props.id} render`)
