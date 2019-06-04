@@ -299,16 +299,17 @@ export class LayoutStore {
 
   @action
   addRail = (item: RailData) => {
-    let turnoutId = null, name = ''
+    let turnoutId = null, turnoutName = ''
+    // TODO: ここでやるべきか検討する
     if (RailComponentClasses[item.type].defaultProps.numConductionStates > 1) {
       turnoutId = this.nextTurnoutId
-      name = `T${turnoutId}`
+      turnoutName = `T${turnoutId}`
     }
     this.currentLayoutData.rails.push({
       ...item,
       id: this.nextRailId,
       turnoutId,
-      name
+      turnoutName
     })
   }
 
