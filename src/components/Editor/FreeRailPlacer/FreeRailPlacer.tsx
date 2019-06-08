@@ -132,11 +132,19 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
     }
   }
 
+  isPointOnPaper = (point: Point2D, margin: number = 2) => {
+    return (0 - margin <= point.x && point.x <= this.props.layout.config.paperWidth + margin)
+      && (0 - margin <= point.y && point.y <= this.props.layout.config.paperHeight + margin)
+  }
+
   onSetPosition = () => {
-    this.setState({
-      fixedPosition: this.getMarkerPosition(),
-      phase: Phase.SET_ANGLE
-    })
+    let position = this.getMarkerPosition()
+    if (this.isPointOnPaper(position)) {
+      this.setState({
+        fixedPosition: this.getMarkerPosition(),
+        phase: Phase.SET_ANGLE
+      })
+    }
   }
 
   onResetPosition = () => {
