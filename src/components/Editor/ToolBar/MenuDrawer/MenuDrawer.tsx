@@ -30,8 +30,10 @@ import {KeyLabel} from "components/common/KeyLabel/KeyLabel";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import {SettingsDialog} from "./SettingsDialog/SettingsDialog";
 import SettingsIcon from "@material-ui/icons/Settings";
+import AssignmentIcon from "@material-ui/icons/Assignment";
 import {runInAction} from "mobx";
 import BugReportDialog from "./BugReportDialog/BugReportDialog";
+import ShowSummaryDialog from "./SummaryDialog/SummaryDialog";
 
 const LOGGER = getLogger(__filename)
 
@@ -154,6 +156,15 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
 
   closeSettingsDialog = () => {
     this.props.ui.setSettingsDialog(false)
+    this.props.onClose()
+  }
+
+  openSummaryDialog = () => {
+    this.props.ui.setSummaryDialog(true)
+  }
+
+  closeSummaryDialog = () => {
+    this.props.ui.setSummaryDialog(false)
     this.props.onClose()
   }
 
@@ -286,7 +297,13 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
               <ListItemIcon>
                 <SettingsIcon/>
               </ListItemIcon>
-              <ListItemText primary="Settings"/>
+              <ListItemText primary="Layout Settings"/>
+            </ListItem>
+            <ListItem button onClick={this.openSummaryDialog}>
+              <ListItemIcon>
+                <AssignmentIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Layout Summary"/>
             </ListItem>
             <Divider/>
             <ListItem button component="a" target="_blank" href="http://d2t6ssvra5p03o.cloudfront.net/index.html"
@@ -341,6 +358,11 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
           setConfig={this.props.layout.setConfig}
           userInfo={this.props.common.userInfo}
           layoutMeta={this.props.layout.meta}
+        />
+        <ShowSummaryDialog
+          title={"Layout Summary"}
+          open={ui.summaryDialog}
+          onClose={this.closeSummaryDialog}
         />
         <BugReportDialog
           title={"Report a Bug"}
