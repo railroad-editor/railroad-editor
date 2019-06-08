@@ -176,7 +176,7 @@ export class BuilderStore {
         if (newValue === 0) {
           // レイアウトが空ならFree Placing Mode
           this.setPlacingMode(PlacingMode.FREE)
-        } else if (newValue === 1 && oldValue === 0) {
+        } else if (newValue > 0 && oldValue === 0) {
           // 最初のレールを置いたらJoint Placing Modeに自動的に移行する
           this.setPlacingMode(PlacingMode.JOINT)
         }
