@@ -84,8 +84,8 @@ export const createRailComponent = (item: RailData, layer: LayerData, feeders?: 
       // HOCでラップされた中身のRailComponentを取得する
       onMount={onMount}
       onUnmount={onUnmount}
-      // feeders={feeders && feeders.filter(feeder => feeder.railId === id)}
-      // gapJoiners={gapJoiners && gapJoiners.filter(gapJoiner => gapJoiner.railId === id)}
+      feeders={feeders}
+      gapJoiners={gapJoiners}
     />)
 }
 

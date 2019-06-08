@@ -51,7 +51,9 @@ export class Layout extends React.Component<LayoutProps, LayoutState> {
               {
                 currentLayoutData.rails
                   .filter(r => r.layerId === layer.id)
-                  .map(item => createRailComponent(item, layer, currentLayoutData.feeders, currentLayoutData.gapJoiners))
+                  .map(item => createRailComponent(item, layer,
+                    this.props.layout.feedersByRailId(item.id),
+                    this.props.layout.gapJoinersByRailId(item.id)))
               }
             </Layer>
           )

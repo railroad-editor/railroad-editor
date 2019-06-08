@@ -9,6 +9,7 @@ import * as moment from "moment";
 import {FeederInfo, GapJoinerInfo} from "components/rails/RailBase";
 import TrainController from "components/Editor/ToolBar/SimulatorToolBar/TrainController";
 import railItems from "constants/railItems.json";
+import {computedFn} from "mobx-utils";
 
 const LOGGER = getLogger(__filename)
 
@@ -292,6 +293,14 @@ export class LayoutStore {
   get presetRailItems() {
     return railItems[this.config.railSetName]
   }
+
+  feedersByRailId = computedFn(function feedersByRailId(this: LayoutStore, railId: number) {
+    return this.currentLayoutData.feeders.filter(f => f.railId === railId)
+  })
+
+  gapJoinersByRailId = computedFn(function feedersByRailId(this: LayoutStore, railId: number) {
+    return this.currentLayoutData.gapJoiners.filter(j => j.railId === railId)
+  })
 
   /**
    * レール系 Add/Update/Delete
