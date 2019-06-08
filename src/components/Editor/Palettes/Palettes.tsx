@@ -5,6 +5,7 @@ import {compose} from "recompose";
 import {EditorMode} from "store/uiStore";
 import {CommonStore} from "store/commonStore";
 import BuilderPalettes from "./BuilderPalettes/BuilderPalettes";
+import {SimulatorPalettes} from "./SimulatorPalettes/SimulatorPalettes";
 
 
 export interface PalettesProps {
@@ -26,7 +27,7 @@ export class Palettes extends React.Component<PalettesProps> {
           <BuilderPalettes/>
         </div>
         <div hidden={this.props.common.editorMode !== EditorMode.SIMULATOR}>
-          {/*<SimulatorPalettes/>*/}
+          <SimulatorPalettes/>
         </div>
       </>
     )

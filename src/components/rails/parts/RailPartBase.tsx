@@ -36,6 +36,7 @@ export interface RailPartBaseDefaultProps {
   opacity?: number
   visible?: boolean
   fillColor?: string
+  fillColors?: object
   flowDirections: FlowDirections
   conductionState: number
   showGap?: boolean
@@ -51,6 +52,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     opacity: 1,
     visible: true,
     fillColor: undefined,
+    fillColors: {},
     flowDirections: {},
     conductionState: 0,
     showGap: true,
@@ -214,7 +216,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
 
   render() {
     const {
-      position, angle, pivotJointIndex, selected, fillColor,
+      position, angle, pivotJointIndex, selected, fillColor, fillColors,
       name, data, onLeftClick, onRightClick, visible, opacity, onMouseEnter, onMouseLeave, onMouseMove
     } = this.props
     const {pivotPartIndex, pivot} = this.getPivot(pivotJointIndex)
@@ -223,6 +225,14 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     if (! isArray(parts)) {
       parts = [parts]
     }
+
+    // fillColors に色が入っていなかったら fillColor を適用する
+    let extendedParts = React.Children.map(parts, (c: any, i) =>
+      React.cloneElement(c, {
+        fillColor: fillColors[i] ? fillColors[i] : fillColor
+      })
+    )
+
     // Create detection parts
     let detectionParts = parts.map(c => React.cloneElement(c, {
       width: RAIL_PART_WIDTH / 2,
@@ -251,7 +261,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
         onMouseMove={onMouseMove}
         ref={this.getRef}
       >
-        {parts}
+        {extendedParts}
         {detectionParts}
       </PartGroup>
     )

@@ -25,8 +25,9 @@ export const NarrowCardHeader = styled(CardHeader)`
 
 export const StyledSlider = styled(Slider)`
   && {
-    padding-right: 8px;
-    padding-left: 8px;
+    padding: 22px 0px;
+    margin-top: 10px;
+    cursor: pointer;
   }
 `
 
