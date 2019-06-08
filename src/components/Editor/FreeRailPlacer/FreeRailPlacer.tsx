@@ -85,11 +85,9 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
 
   onLeftClickOnPaper = (e: MouseEvent) => {
     // このハンドラはSET_ANGLE フェーズのみで呼び出される
-    // 位置が決定済みかつ設置可能ならば角度を決定する
+    // 位置が決定済みならば角度を決定する
     if (this.state.phase === Phase.SET_ANGLE) {
-      if (! this.state.isError) {
-        this.onSetAngle()
-      }
+      this.onSetAngle()
     } else {
       // そうでなければ位置を決定する
       this.onSetPosition()
