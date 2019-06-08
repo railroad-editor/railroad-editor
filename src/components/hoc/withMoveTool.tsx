@@ -188,7 +188,6 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
 
     onRightClick = (e) => {
       this._pan = this.getPanEventData(e)
-      document.body.style.cursor = 'move'
     }
 
     /**
@@ -213,6 +212,8 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
       view.translate(tx, ty)
       this._pan = next
       this.props.common.setPan(new Point(tx, ty))
+      // change cursor shape
+      document.body.style.cursor = 'move'
     }
 
     /**
