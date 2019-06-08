@@ -4,7 +4,7 @@
 	"region": "ap-northeast-1",
 	"state": "NORMAL",
 	"createdDate": "2018-04-28T08:32:11.825Z",
-  "lastUpdatedDate": "2019-06-02T19:01:21.652Z",
+	"lastUpdatedDate": "2019-06-04T16:54:27.964Z",
 	"consoleUrl": "https://console.aws.amazon.com/mobilehub/home#/afb78a90-fb33-4b35-aabb-2be1304f8015/build",
 	"resources": [
 		{
@@ -25,7 +25,7 @@
 			"feature": "user-data",
 			"attributes": {
 				"authType": "authenticated",
-              "lastUpdateRequestID": "c9088d9b-de85-4319-83af-fdb4c3da4e31",
+				"lastUpdateRequestID": "c9088d9b-de85-4319-83af-fdb4c3da4e31",
 				"role": "railroadeditor_auth_MOBILEHUB_69379349"
 			}
 		},
@@ -36,7 +36,7 @@
 			"feature": "user-data",
 			"attributes": {
 				"authType": "unauthenticated",
-              "lastUpdateRequestID": "c9088d9b-de85-4319-83af-fdb4c3da4e31",
+				"lastUpdateRequestID": "c9088d9b-de85-4319-83af-fdb4c3da4e31",
 				"role": "railroadeditor_unauth_MOBILEHUB_69379349"
 			}
 		},
@@ -70,8 +70,8 @@
 				"lastUpdateRequestID": "8bc1ebad-4ac3-11e8-a08d-450774c10c61",
 				"region": "ap-northeast-1",
 				"user-pool-id": "ap-northeast-1_SW4VnlrmO",
-              "user-pools-client-id": "...redacted_-1643112374...",
-              "user-pools-client-secret": "...redacted_-1695881414...",
+				"user-pools-client-id": "...redacted_-1643112374...",
+				"user-pools-client-secret": "...redacted_-1695881414...",
 				"user-pools-id": "ap-northeast-1_SW4VnlrmO",
 				"user-pools-web-client-id": "6dedi9vc5b14dijcfeomuhfdav"
 			}
@@ -112,7 +112,7 @@
 			"feature": "analytics",
 			"attributes": {
 				"authType": "authenticated",
-              "lastUpdateRequestID": "c9088d9b-de85-4319-83af-fdb4c3da4e31",
+				"lastUpdateRequestID": "c9088d9b-de85-4319-83af-fdb4c3da4e31",
 				"role": "railroadeditor_auth_MOBILEHUB_69379349"
 			}
 		},
@@ -123,7 +123,7 @@
 			"feature": "analytics",
 			"attributes": {
 				"authType": "unauthenticated",
-              "lastUpdateRequestID": "c9088d9b-de85-4319-83af-fdb4c3da4e31",
+				"lastUpdateRequestID": "c9088d9b-de85-4319-83af-fdb4c3da4e31",
 				"role": "railroadeditor_unauth_MOBILEHUB_69379349"
 			}
 		},
@@ -156,7 +156,7 @@
 			"feature": "hosting",
 			"attributes": {
 				"authType": "authenticated",
-              "lastUpdateRequestID": "c9088d9b-de85-4319-83af-fdb4c3da4e31",
+				"lastUpdateRequestID": "c9088d9b-de85-4319-83af-fdb4c3da4e31",
 				"role": "railroadeditor_auth_MOBILEHUB_69379349"
 			}
 		},
@@ -167,7 +167,7 @@
 			"feature": "hosting",
 			"attributes": {
 				"authType": "unauthenticated",
-              "lastUpdateRequestID": "c9088d9b-de85-4319-83af-fdb4c3da4e31",
+				"lastUpdateRequestID": "c9088d9b-de85-4319-83af-fdb4c3da4e31",
 				"role": "railroadeditor_unauth_MOBILEHUB_69379349"
 			}
 		},
@@ -210,7 +210,7 @@
 				"cfLogicalID": "CloudLogic",
 				"cfPhysicalID": "arn:aws:cloudformation:ap-northeast-1:561678142736:stack/MOBILEHUB-69379349-Development-CloudLogic-6B7R6ZEGATWA/ba7a02e0-4b08-11e8-a219-503a6ff78e62",
 				"deeplinkURL": "https://console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stack/detail?stackId=arn:aws:cloudformation:ap-northeast-1:561678142736:stack/MOBILEHUB-69379349-Development-CloudLogic-6B7R6ZEGATWA/ba7a02e0-4b08-11e8-a219-503a6ff78e62",
-              "lastUpdateTimestamp": "1559241222098",
+				"lastUpdateTimestamp": "1559241222098",
 				"reason": "none",
 				"region": "ap-northeast-1",
 				"status": "UPDATE_COMPLETE"
