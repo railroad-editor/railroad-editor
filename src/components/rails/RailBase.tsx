@@ -97,6 +97,8 @@ export interface RailBaseDefaultProps {
   opacity: number
   // 色
   fillColor: string
+  // パーツごとの色
+  fillColors: {}
 
   flowDirections: FlowDirections
 
@@ -159,6 +161,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
     visible: true,
     opacity: 1,
     fillColor: undefined,
+    fillColors: {},
 
     flowDirections: {},
 
@@ -501,7 +504,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
 
   render() {
     const {
-      name, fillColor, onRailPartLeftClick, onRailPartRightClick, onRailPartMouseEnter, onRailPartMouseLeave, onRailPartMouseMove, flowDirections,
+      name, fillColor, fillColors, onRailPartLeftClick, onRailPartRightClick, onRailPartMouseEnter, onRailPartMouseLeave, onRailPartMouseMove, flowDirections,
       conductionState, showGap, showJoints
     } = this.props
 
@@ -510,6 +513,7 @@ export abstract class RailBase<P extends RailBaseProps, S extends RailBaseState>
       ...railPart.props,
       name: name,
       fillColor: fillColor,
+      fillColors: fillColors,
       onLeftClick: onRailPartLeftClick,
       onRightClick: onRailPartRightClick,
       onMouseEnter: onRailPartMouseEnter,

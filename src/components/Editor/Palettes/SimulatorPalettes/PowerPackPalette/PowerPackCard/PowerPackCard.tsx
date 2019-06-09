@@ -37,7 +37,6 @@ export interface PowerPackCardState {
   anchorEl: HTMLElement
   sliderValue: number
   sliderDragging: boolean
-  direction: boolean
   dialogOpen: boolean
 }
 
@@ -52,16 +51,15 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
       anchorEl: null,
       sliderValue: 0,
       sliderDragging: false,
-      direction: true,
       dialogOpen: false,
     }
   }
 
   componentDidUpdate() {
     // スライダーの電流値がショートなどの原因で反映されなかった場合、元の値に戻す
-    if (this.props.item.power !== this.state.sliderValue) {
-      this.setState({sliderValue: this.props.item.power})
-    }
+    // if (this.props.item.power !== this.state.sliderValue) {
+    //   this.setState({sliderValue: this.props.item.power})
+    // }
   }
 
   openMenu = (e: React.MouseEvent<HTMLElement>) => {
@@ -112,7 +110,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
   onSliderChange = (e, value) => {
     const intValue = Math.round(value)
     this.setState({
-      sliderValue: intValue
+      sliderValue: value
     })
     if (! this.state.sliderDragging) {
       this.props.layout.updatePowerPack({
@@ -124,11 +122,6 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
 
   onDirectionChange = (e) => {
     // TODO: 電流を自動で0にするかどうかは設定で変えられるようにすべき
-    this.setState({
-      // sliderValue: 0,
-      direction: e.target.checked
-    });
-
     this.props.layout.updatePowerPack({
       id: this.props.item.id,
       // power: 0,
@@ -158,6 +151,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
   render() {
     const {name, direction, power, supplyingFeederIds, color, isError} = this.props.item
 
+    LOGGER.debug('slider', this.state.sliderValue)
     return (
       <>
         <Card>
@@ -185,7 +179,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
               </Grid>
               <Grid item xs>
                 <Switch
-                  checked={this.state.direction}
+                  checked={direction}
                   onChange={this.onDirectionChange}
                   value="checkedA"
                 />

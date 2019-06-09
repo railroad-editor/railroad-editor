@@ -5,12 +5,17 @@ import {
   StyledPowerPackPalette,
   StyledSwitcherPalette
 } from "components/Editor/Palettes/SimulatorPalettes/SimulatorPalettes.style";
+import {inject, observer} from "mobx-react";
+import {STORE_LAYOUT} from "../../../../constants/stores";
 
 
 export interface SimulatorPalettesProps {
   layout?: LayoutStore
 }
 
+
+@inject(STORE_LAYOUT)
+@observer
 export class SimulatorPalettes extends React.Component<SimulatorPalettesProps> {
 
   constructor(props: SimulatorPalettesProps) {

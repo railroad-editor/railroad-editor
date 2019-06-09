@@ -68,7 +68,7 @@ export default class TurnoutSettingDialog extends FormDialog<TurnoutSettingDialo
   onOK = (e) => {
     this.props.layout.updateRail({
       ...this.props.rail,
-      name: this.state.inputs.name,
+      turnoutName: this.state.inputs.turnoutName,
     })
     if (this.state.connectedSwitcherId) {
       this.props.layoutLogic.connectTurnoutToSwitcher(
@@ -127,8 +127,8 @@ export default class TurnoutSettingDialog extends FormDialog<TurnoutSettingDialo
             label="Turnout Name"
             name="name"
             key="name"
-            value={this.state.inputs.name}
-            onChange={this.onChange('name')}
+            value={this.state.inputs.turnoutName}
+            onChange={this.onChange('turnoutName')}
             onKeyPress={this.onKeyPress}
             validatorListener={this.handleValidation}
             validators={['required']}

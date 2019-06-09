@@ -21,6 +21,13 @@ export class NewPowerPackDialog extends FormDialog<NewPowerPackDialogProps, Form
     this.state = this.getInitialState()
   }
 
+  getInitialState = () => {
+    return {
+      inputs: this.props.defaultInputs || {},
+      disabled: false
+    }
+  }
+
   onOK = (e) => {
     this.props.addPowerPack(this.state.inputs.name)
     // this.props.snackbar.showMessage(`Copied to "${this.state.inputs.name}" rail group.`)  //`
