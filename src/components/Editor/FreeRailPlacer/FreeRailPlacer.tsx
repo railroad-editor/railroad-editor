@@ -215,8 +215,8 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
             /* 不可視の四角形、イベントハンドリング用 */
             this.isActive() &&
             <RectPart
-              width={this.props.layout.config.paperWidth / 2}
-              height={this.props.layout.config.paperHeight / 2}
+              width={this.props.layout.config.paperWidth}
+              height={this.props.layout.config.paperHeight}
               position={position}
               opacity={0}
               onLeftClick={this.onLeftClickOnPaper}
