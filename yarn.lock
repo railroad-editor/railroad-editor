@@ -172,6 +172,13 @@
     "@types/node" "*"
     "@types/react" "*"
 
+"@types/react-dom@^16.8.5":
+  version "16.8.5"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.8.5.tgz#3e3f4d99199391a7fb40aa3a155c8dd99b899cbd"
+  integrity sha512-idCEjROZ2cqh29+trmTmZhsBAUNQuYrF92JHKzZ5+aiFM1mlSk3bb23CK7HhYuOY75Apgap5y2jTyHzaM2AJGA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-router-dom@^4.2.6":
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/@types/react-router-dom/-/react-router-dom-4.3.4.tgz#63a7a8558129d2f4ff76e4bdd099bf4b98e25a0d"
@@ -195,7 +202,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*":
+"@types/react@*", "@types/react@^16.8.23":
   version "16.8.23"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.23.tgz#ec6be3ceed6353a20948169b6cb4c97b65b97ad2"
   integrity sha512-abkEOIeljniUN9qB5onp++g0EY38h7atnDHxwKUFz1r3VH1+yG1OKi2sNPTyObL40goBmfKFpdii2lEzwLX1cA==
@@ -4964,7 +4971,7 @@ lodash.uniq@^4.5.0:
   version "4.17.10"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.10.tgz#1b7793cf7259ea38fb3661d4d38b3260af8ae4e7"
 
-lodash@^4.3.0:
+lodash@^4.17.15, lodash@^4.3.0:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
@@ -5741,14 +5748,9 @@ pako@~1.0.5:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.6.tgz#0101211baa70c4bca4a0f63f2206e97b7dfaf258"
 
-paper@^0.11.8:
-  version "0.11.8"
-  resolved "https://registry.yarnpkg.com/paper/-/paper-0.11.8.tgz#c395269e23e3bb456c9f9e88a2f87f4421bfef23"
-  integrity sha512-3O5o8SntwieIlBmHjWS4hAYESiZ0yb++Outz9Rr5AN/ZFK7jfVGLANjqyIvEKIpGMImf2fQCkW64n8dkYheP5g==
-
-"paper@https://github.com/kota65535/paper.js#dist":
+"paper@https://github.com/railroad-editor/paper.js#dist":
   version "0.12.3"
-  resolved "https://github.com/kota65535/paper.js#bc4d39945bfcb8ff67774158de85710794c5c955"
+  resolved "https://github.com/railroad-editor/paper.js#684f1ec6f1e25adc6204d44d76b59c105703f5f1"
 
 parallel-transform@^1.1.0:
   version "1.1.0"
@@ -6486,7 +6488,7 @@ react-dev-utils@^5.0.1:
     strip-ansi "3.0.1"
     text-table "0.2.0"
 
-react-dom@^16.3.2, react-dom@^16.6.0:
+react-dom@^16.3.2, react-dom@^16.6.0, react-dom@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.6.tgz#71d6303f631e8b0097f56165ef608f051ff6e10f"
   integrity sha512-1nL7PIq9LTL3fthPqwkvr2zY7phIPjYrT0jp4HjyEQrEROnw4dG41VVwi/wfoCneoleqrNX7iAD+pXebJZwrwA==
@@ -6594,14 +6596,26 @@ react-material-ui-form-validator@2.0.8:
 
 "react-paper-bindings@https://github.com/railroad-editor/react-paper-bindings#dist":
   version "0.0.1"
-  resolved "https://github.com/railroad-editor/react-paper-bindings#e46798d22be911501ac44eb507bbd7317ec42283"
+  resolved "https://github.com/railroad-editor/react-paper-bindings#004d22a6b8250eeba65af64cb3b6e1d64ef173c8"
   dependencies:
     fbjs "^1.0.0"
-    paper "^0.11.8"
+    paper "https://github.com/railroad-editor/paper.js#dist"
     react "^16.6.0"
     react-dom "^16.6.0"
     react-reconciler "^0.16.0"
     scheduler "^0.10.0"
+
+"react-rail-components@https://github.com/railroad-editor/react-rail-components#dist":
+  version "0.0.1"
+  resolved "https://github.com/railroad-editor/react-rail-components#8a827980c4d671bcf14b1cd66e664f84ac2e20b9"
+  dependencies:
+    "@types/react" "^16.8.23"
+    "@types/react-dom" "^16.8.5"
+    lodash "^4.17.15"
+    paper "https://github.com/railroad-editor/paper.js#dist"
+    react "^16.8.6"
+    react-dom "^16.8.6"
+    react-paper-bindings "https://github.com/railroad-editor/react-paper-bindings#dist"
 
 react-reconciler@0.7.0:
   version "0.7.0"
@@ -6699,7 +6713,7 @@ react-transition-group@^2.2.1:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react@^16.3.2, react@^16.6.0:
+react@^16.3.2, react@^16.6.0, react@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react/-/react-16.8.6.tgz#ad6c3a9614fd3a4e9ef51117f54d888da01f2bbe"
   integrity sha512-pC0uMkhLaHm11ZSJULfOBqV4tIZkx87ZLvbbQYunNixAAvjnC+snJCg0XQXn9VIsttVsbZP/H/ewzgsd5fxKXw==
