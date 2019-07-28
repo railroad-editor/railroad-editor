@@ -91,7 +91,7 @@ export default abstract class RailPartBase<P extends RailPartBaseProps, S> exten
     this.partGroup.children
       .filter(c => c.props.data.type === 'Gap')
       .forEach(c => {
-        c.path.fillColor = 'red'
+        c.path.fillColor = 'red' as any
       })
   }
 

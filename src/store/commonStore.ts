@@ -2,7 +2,6 @@ import {action, computed, observable, reaction} from "mobx";
 import {AuthData} from "components/common/Authenticator/AuthPiece/AuthPiece";
 import {LayoutMeta} from "store/layoutStore";
 import LayoutAPI from "apis/layout";
-import {create} from "mobx-persist";
 import {DEFAULT_INITIAL_ZOOM} from "constants/tools";
 import {EditorMode} from "store/uiStore";
 import {Point} from "paper";
@@ -139,12 +138,7 @@ export class CommonStore {
   }
 }
 
-const hydrate = create({})
-
 const store = new CommonStore(INITIAL_STATE)
 
-// hydrate('userInfo', store).then(() => console.log('userInfo hydrated'))
-
 export default store
-
 
