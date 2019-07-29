@@ -66,7 +66,7 @@ export default class ForgotPassword extends AuthPiece<any, any> {
             </Grid>
           </Grid>
           <MainButtonGrid item xs={12}>
-            <Button fullWidth variant="raised" color="primary"
+            <Button fullWidth color="primary"
                     disabled={this.state.disabled} onClick={this.sendEmail}>
               Send Email
             </Button>

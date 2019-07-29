@@ -130,8 +130,9 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
             this.selectRails()
             break
         }
-        this.selectionRect = null
       }
+      this.selectionRect = null
+      this.selectionRectFrom = null
     }
 
     private selectRails = () => {

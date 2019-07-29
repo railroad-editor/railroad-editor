@@ -141,7 +141,7 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
             </Typography>
           </Grid>
           <Grid item xs={4}>
-            <Button component="label" variant="raised" color="primary">
+            <Button component="label" color="primary">
               Upload File
               <input
                 onChange={this.readImageFile}

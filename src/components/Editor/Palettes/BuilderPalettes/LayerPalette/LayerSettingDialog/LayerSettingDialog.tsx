@@ -115,7 +115,7 @@ export default class LayerSettingDialog extends FormDialog<LayerSettingDialogPro
               onClick={this.openColorPicker}
               buttonRef={ref => this.anchorEl = ref}
               style={{backgroundColor: this.state.inputs.color}}
-              variant="raised"
+
             />
           </Grid>
         </Grid>

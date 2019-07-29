@@ -14,7 +14,8 @@ export default class ActiveListItem extends React.Component<ActiveListItemProps,
 
   render() {
     return (
-      <ListItem {...this.props}>
+      // TODO: https://github.com/mui-org/material-ui/issues/14971
+      <ListItem {...this.props as any}>
       </ListItem>
     )
   }
