@@ -20,7 +20,6 @@ import {CommonStore} from "store/commonStore";
 import {LayoutMeta, LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
 import SaveLayoutDialog from "components/Editor/ToolBar/MenuDrawer/SaveLayoutDialog/SaveLayoutDialog";
-import * as moment from "moment";
 import {withSnackbar} from 'material-ui-snackbar-provider'
 import {compose} from "recompose";
 import LoginDialog from "components/Editor/ToolBar/MenuDrawer/LoginDialog/LoginDialog";
@@ -188,15 +187,15 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
    * @param e
    */
   downloadAsSVG = (e) => {
-    const basename = this.props.layout.meta.name
-    const fileName = `${basename}-${moment().format('YYYYMMDD')}`  //`
-
-    const svg = window.PAPER_SCOPE.project.exportSVG({asString: true})
-    const url = "data:image/svg+xml;utf8," + encodeURIComponent(svg)
-    const link = document.createElement("a");
-    link.download = fileName;
-    link.href = url;
-    link.click();
+    // const basename = this.props.layout.meta.name
+    // const fileName = `${basename}-${moment().format('YYYYMMDD')}`  //`
+    //
+    // const svg = window.PAPER_SCOPE.project.exportSVG({asString: true})
+    // const url = "data:image/svg+xml;utf8," + encodeURIComponent(svg)
+    // const link = document.createElement("a");
+    // link.download = fileName;
+    // link.href = url;
+    // link.click();
   }
 
 

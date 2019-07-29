@@ -169,7 +169,7 @@ export default class SwitcherSettingDialog extends FormDialog<SwitcherSettingDia
               onClick={this.openColorPicker}
               buttonRef={ref => this.anchorEl = ref}
               style={{backgroundColor: this.state.inputs.color}}
-              variant="raised"
+
             />
           </Grid>
         </Grid>

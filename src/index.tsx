@@ -6,7 +6,6 @@ import registerServiceWorker from './registerServiceWorker'
 
 window.RAIL_COMPONENTS = {}
 window.RAIL_GROUP_COMPONENTS = {}
-window.PAPER_SCOPE = null
 
 
 const EVENTS_TO_MODIFY = ['touchstart', 'touchmove', 'touchend', 'touchcancel', 'wheel'];

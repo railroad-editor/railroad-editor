@@ -14,7 +14,8 @@ export default class ActiveMenuItem extends React.Component<ActiveMenuItemProps,
 
   render() {
     return (
-      <MenuItem {...this.props}>
+      // TODO: https://github.com/mui-org/material-ui/issues/14971
+      <MenuItem {...this.props as any}>
       </MenuItem>
     )
   }

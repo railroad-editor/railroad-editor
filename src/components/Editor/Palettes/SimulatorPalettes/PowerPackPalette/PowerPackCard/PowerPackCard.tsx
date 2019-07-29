@@ -197,7 +197,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
                 supplyingFeederIds.map(id => {
                   const feeder = this.props.feeders.find(f => f.id === id)
                   return (
-                    <ListItem>
+                    <ListItem button>
                       <ListItemIcon>
                         <PowerIcon/>
                       </ListItemIcon>

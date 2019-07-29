@@ -123,7 +123,7 @@ export class ResetPassword extends AuthPiece<ResetPasswordProps & RouteComponent
         </CenteredGrid>
         <CenteredGrid container spacing={8} style={{marginTop: '16px'}}>
           <Grid item xs={12}>
-            <Button variant="raised" color="primary"
+            <Button color="primary"
                     disabled={this.state.disabled} onClick={this.submit}>
               Change Password
             </Button>

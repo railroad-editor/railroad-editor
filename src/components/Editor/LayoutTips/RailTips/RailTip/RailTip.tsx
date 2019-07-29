@@ -89,7 +89,7 @@ export class RailTip extends React.Component<FeederTipProps, FeederTipState> {
     return (
       <>
         <StyledTooltip open={open} title={rail.turnoutName}
-                       PopperProps={{onClick: this.onClick, style: {cursor: 'pointer', zIndex: '900'}}}
+          // PopperProps={{onClick: this.onClick, style: {cursor: 'pointer', zIndex: '900'}}}
                        placement={placement}
                        interactive
         >

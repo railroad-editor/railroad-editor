@@ -43,7 +43,7 @@ export class ConfirmationDialog extends React.Component<RenameLayerDialogProps, 
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button variant="raised" onClick={this.onOK} color="primary">
+          <Button onClick={this.onOK} color="primary">
             OK
           </Button>
           <Button onClick={onClose} color="primary">

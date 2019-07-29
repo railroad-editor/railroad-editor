@@ -100,7 +100,7 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
           {this.renderContent()}
         </DialogContent>
         <DialogActions>
-          <Button variant="raised" color="primary"
+          <Button color="primary"
                   disabled={this.state.disabled} onClick={this.onOKBase}>
             OK
           </Button>

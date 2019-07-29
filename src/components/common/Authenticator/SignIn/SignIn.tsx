@@ -118,7 +118,7 @@ export default class SignIn extends AuthPiece<SignInProps, AuthPieceState> {
               </ValidatorForm>
             </Grid>
             <MainButtonGrid item xs={12}>
-              <Button fullWidth variant="raised" color="primary"
+              <Button fullWidth color="primary"
                       disabled={this.state.disabled} onClick={this.signIn}>
                 Login
               </Button>

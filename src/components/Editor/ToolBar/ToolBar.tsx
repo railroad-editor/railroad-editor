@@ -137,76 +137,75 @@ export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
 
   render() {
     return (
-      <>
-        <AppBar>
-          <MuiToolbar>
-            <Grid container justify="space-between" spacing={0}>
-              <Grid xs justify="flex-start" alignItems="center" style={{display: 'flex'}}>
-                <Tooltip title={"Menu"}>
-                  <StyledIconButton onClick={this.openMenu}>
-                    <MenuIcon/>
-                  </StyledIconButton>
-                </Tooltip>
-                <MenuDrawer open={this.state.openMenu} onClose={this.closeMenu}/>
+      <AppBar>
+        <MuiToolbar>
+          <Grid container justify="space-between" spacing={0}>
+            <Grid xs justify="flex-start" alignItems="center" style={{display: 'flex'}}>
+              <Tooltip title={"Menu"}>
+                <StyledIconButton onClick={this.openMenu}>
+                  <MenuIcon/>
+                </StyledIconButton>
+              </Tooltip>
+              <MenuDrawer open={this.state.openMenu} onClose={this.closeMenu}/>
 
-                <Tooltip title={'Layout Name'}>
-                  <EditableTypography
-                    variant="title"
-                    color="inherit"
-                    text={this.props.layout.meta.name}
-                    onOK={this.setLayoutName}
-                  />
-                </Tooltip>
-              </Grid>
-
-              {
-                this.props.common.editorMode === EditorMode.BUILDER &&
-                <BuilderToolBar/>
-              }
-              {
-                this.props.common.editorMode === EditorMode.SIMULATOR &&
-                <SimulatorToolBar/>
-              }
-
-
-              <Grid xs justify="flex-end" alignItems="center" style={{display: 'flex'}}>
-                <Tooltip title={'Editor Mode'} PopperProps={{style: {zIndex: '1000'}}}
-                >
-                  <Select
-                    value={this.props.common.editorMode}
-                    onChange={this.onChangeEditorMode}
-                    renderValue={value => {
-                      return (
-                        <>
-                          {value === EditorMode.BUILDER && <ListItemIcon><BuildIcon/></ListItemIcon>}
-                          {value === EditorMode.SIMULATOR && <ListItemIcon><PlayArrowIcon/></ListItemIcon>}
-                        </>
-                      )
-                    }}
-                  >
-                    <MenuItem
-                      value={EditorMode.BUILDER}
-                    >
-                      <ListItemIcon>
-                        <BuildIcon/>
-                      </ListItemIcon>
-                      <ListItemText primary={EditorMode.BUILDER}/>
-                    </MenuItem>
-                    <MenuItem
-                      value={EditorMode.SIMULATOR}
-                    >
-                      <ListItemIcon>
-                        <PlayArrowIcon/>
-                      </ListItemIcon>
-                      <ListItemText primary={EditorMode.SIMULATOR}/>
-                    </MenuItem>
-                  </Select>
-                </Tooltip>
-              </Grid>
+              <Tooltip title={'Layout Name'}>
+                <EditableTypography
+                  variant="h6"
+                  color="inherit"
+                  text={this.props.layout.meta.name}
+                  onOK={this.setLayoutName}
+                />
+              </Tooltip>
             </Grid>
-          </MuiToolbar>
-        </AppBar>
-      </>
+
+            {
+              this.props.common.editorMode === EditorMode.BUILDER &&
+              <BuilderToolBar/>
+            }
+            {
+              this.props.common.editorMode === EditorMode.SIMULATOR &&
+              <SimulatorToolBar/>
+            }
+
+
+            <Grid xs justify="flex-end" alignItems="center" style={{display: 'flex'}}>
+              <Tooltip title={'Editor Mode'}
+                // PopperProps={{style: {zIndex: '1000'}}}
+              >
+                <Select
+                  value={this.props.common.editorMode}
+                  onChange={this.onChangeEditorMode}
+                  renderValue={value => {
+                    return (
+                      <>
+                        {value === EditorMode.BUILDER && <ListItemIcon><BuildIcon/></ListItemIcon>}
+                        {value === EditorMode.SIMULATOR && <ListItemIcon><PlayArrowIcon/></ListItemIcon>}
+                      </>
+                    )
+                  }}
+                >
+                  <MenuItem
+                    value={EditorMode.BUILDER}
+                  >
+                    <ListItemIcon>
+                      <BuildIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary={EditorMode.BUILDER}/>
+                  </MenuItem>
+                  <MenuItem
+                    value={EditorMode.SIMULATOR}
+                  >
+                    <ListItemIcon>
+                      <PlayArrowIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary={EditorMode.SIMULATOR}/>
+                  </MenuItem>
+                </Select>
+              </Tooltip>
+            </Grid>
+          </Grid>
+        </MuiToolbar>
+      </AppBar>
     )
   }
 }
