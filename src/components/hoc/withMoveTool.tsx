@@ -3,27 +3,26 @@ import {DEFAULT_INITIAL_ZOOM, ZOOM_CORRECTION, ZOOM_FACTOR, ZOOM_MAX, ZOOM_MIN} 
 import {PaperScope, Point, ToolEvent, View} from 'paper'
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
-import {BuilderStore} from "store/builderStore";
+import {STORE_COMMON, STORE_LAYOUT, STORE_PAPER} from "constants/stores";
 import {LayoutStore} from "store/layoutStore";
 import {reaction} from "mobx";
 import {CommonStore} from "store/commonStore";
+import {PaperStore} from "../../store/paperStore.";
 
 const LOGGER = getLogger(__filename)
 
 
-export interface WithMoveToolPublicProps {
+export interface WithMoveToolProps {
   moveToolMouseWheel: (e: React.WheelEvent<HTMLElement>, {view}: { view: View }) => void
   moveToolMouseMove: (e: ToolEvent) => Point
   moveToolMouseDown: (e: ToolEvent) => void
   moveToolMouseUp: (e: ToolEvent) => void
   moveToolMouseDrag: (e: ToolEvent) => void
   resetViewPosition: () => void
-  builder?: BuilderStore
   layout?: LayoutStore
   common?: CommonStore
+  paper?: PaperStore
 }
-
 
 interface WithMoveToolState {
   sx: number  // scale center x
@@ -35,35 +34,30 @@ interface WithMoveToolState {
   zoom: number
 }
 
-export type WithMoveToolProps = WithMoveToolPublicProps
+interface PanEventData {
+  point: Point
+  x: number
+  y: number
+}
 
 /**
  * キャンバスのパニング・ズーム機能を提供するHOC。
  */
-export default function withMoveTool(WrappedComponent: React.ComponentClass<WithMoveToolPublicProps>) {
+export default function withMoveTool(WrappedComponent: React.ComponentClass<WithMoveToolProps>) {
 
 
-  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_COMMON)
+  @inject(STORE_LAYOUT, STORE_COMMON, STORE_PAPER)
   @observer
   class WithMoveTool extends React.Component<WithMoveToolProps, WithMoveToolState> {
 
-    private _pan: any
+    pan: PanEventData
     mousePosition: Point
     isFocused: boolean
-    view: any
 
     constructor(props: WithMoveToolProps) {
       super(props)
-      this.state = {
-        sx: 0, // scale center x
-        sy: 0, // scale center y
-        tx: 0, // translate x
-        ty: 0, // translate y
-        x: 0,
-        y: 0,
-        zoom: DEFAULT_INITIAL_ZOOM,
-      }
-      this._pan = null
+      this.state = {sx: 0, sy: 0, tx: 0, ty: 0, x: 0, y: 0, zoom: DEFAULT_INITIAL_ZOOM}
+      this.pan = null
       this.mousePosition = new Point(0, 0)
       this.isFocused = true
 
@@ -116,7 +110,7 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
      * @param  {Object}    next Next pan event data
      * @return {Object}         Next pan state data
      */
-    getPanEventState = (e: ToolEvent | any, prev: any, next: any) => {
+    getPanEventState = (e: ToolEvent | any, prev: PanEventData, next: PanEventData) => {
       const {x, y} = this.state
       const {point, tool: {view}} = e
       const t = point.subtract(view.viewToProject(prev.point))
@@ -134,7 +128,7 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
      * @param  {SyntheticEvent} e    React's SyntheticEvent
      * @param  {PaperScope}     view Paper.js PaperScope instance
      */
-    mouseWheel = (e: React.WheelEvent<HTMLElement>, {view}: { view: View }) => {
+    mouseWheel = (e: React.WheelEvent<HTMLElement>) => {
       e.nativeEvent.preventDefault()
 
       LOGGER.debug(e.nativeEvent)
@@ -154,22 +148,22 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
         } else {
           const {pageX, pageY} = e
           const {offsetLeft, offsetTop} = e.currentTarget
-          zoomCenter = this.view.viewToProject(new Point(pageX - offsetLeft, pageY - offsetTop))
+          zoomCenter = this.props.paper.scope.view.viewToProject(new Point(pageX - offsetLeft, pageY - offsetTop))
           LOGGER.debug(`zoomCenter=${zoomCenter} (not focused)`)
         }
-        this.setState({
-          sx: zoomCenter.x,
-          sy: zoomCenter.y,
-          zoom: newZoom,
-        })
-        this.props.common.setZoom(newZoom)
+        // this.setState({
+        //   sx: zoomCenter.x,
+        //   sy: zoomCenter.y,
+        //   zoom: newZoom,
+        // })
+        // this.props.common.setZoom(newZoom)
+        (this.props.paper.scope.view as any).scale(newZoom, zoomCenter)
       }
     }
 
     mouseMove = (e: ToolEvent) => {
       // キャンバス上のマウスカーソルの位置を更新
       this.mousePosition = e.point
-      this.view = (e as any).tool.view
       // LOGGER.trace(e.point)
       // this.props.setMousePosition(e.point)
       return e.point
@@ -187,31 +181,24 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
     }
 
     onRightClick = (e) => {
-      this._pan = this.getPanEventData(e)
+      this.pan = this.getPanEventData(e)
     }
 
     /**
-     * Mouse drag handler
-     *
-     * @TODO: fix start pan glitch
-     * @TODO: transforming view manually is much faster,
-     * figure out how to do it fast with react
-     *
-     * @param  {ToolEvent} e Paper.js ToolEvent
+     * Mouse drag handler for Panning.
      */
     mouseDrag = (e: ToolEvent | any) => {
-      const {tool: {view}} = e
-      if (! this._pan) {
+      const {point, tool: {view}} = e
+      if (! this.pan) {
         return
       }
-      const prev = this._pan
+
+      const prev = this.pan
       const next = this.getPanEventData(e)
-      //this.setState(this.getPanEventState(e, prev, next))
-      const {tx, ty} = this.getPanEventState(e, prev, next)
-      // transform view manually
-      view.translate(tx, ty)
-      this._pan = next
-      this.props.common.setPan(new Point(tx, ty))
+      const t = point.subtract(view.viewToProject(prev.point))
+      view.translate(t.x, t.y)
+      this.pan = next
+      this.props.common.setPan(t)
       // change cursor shape
       document.body.style.cursor = 'move'
     }
@@ -222,21 +209,25 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
      * @param  {ToolEvent} e Paper.js ToolEvent
      */
     mouseUp = (e: ToolEvent) => {
-      this._pan = null
+      this.pan = null
       document.body.style.cursor = 'crosshair'
     }
 
     resetViewPosition = () => {
-      if (window.PAPER_SCOPE) {
+      if (! this.props.paper.scope) {
+        return
+      }
+      let view: View | any = this.props.paper.scope.view
+      if (view) {
         const {paperWidth, paperHeight} = this.props.layout.config
         // 初期ズームをセットする
-        window.PAPER_SCOPE.view.zoom = this.props.common.initialZoom
+        view.zoom = this.props.common.initialZoom
 
         // TODO: 何故か縦方向の位置が少し低い。ひとまず固定値で補正して調査中。
-        const windowCenter = window.PAPER_SCOPE.view.viewToProject(new Point(window.innerWidth / 2, window.innerHeight / 2 - 30))
+        const windowCenter = this.props.paper.scope.view.viewToProject(new Point(window.innerWidth / 2, window.innerHeight / 2 - 30))
         const boardCenter = new Point(paperWidth / 2, paperHeight / 2)
         const diff = windowCenter.subtract(boardCenter)
-        window.PAPER_SCOPE.view.translate(diff.x, diff.y)
+        view.translate(diff.x, diff.y)
       }
     }
 
@@ -254,7 +245,6 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
       return (
         <WrappedComponent
           {...this.props}
-          {...this.state}
           moveToolMouseWheel={this.mouseWheel}
           moveToolMouseMove={this.mouseMove}
           moveToolMouseDown={this.onMouseDown}

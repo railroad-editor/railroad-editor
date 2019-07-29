@@ -3,7 +3,6 @@ import {compose} from 'recompose'
 
 import {Tool} from 'react-paper-bindings'
 
-import {WithFullscreenProps} from '../hoc/withFullscreen'
 import withTools, {WithToolsPrivateProps} from '../hoc/withTools'
 import withMoveTool, {WithMoveToolProps} from '../hoc/withMoveTool'
 
@@ -12,7 +11,7 @@ import {EditorBody, StyledToolBar, StyledWrapper} from "./Editor.style";
 import './Paper.css'
 import withBuilder, {WithBuilderPublicProps} from "../hoc/withBuilder";
 import getLogger from "logging";
-import withSelectTool, {WithSelectToolPublicProps} from "components/hoc/withSelectTool";
+import withSelectTool, {WithSelectToolProps} from "components/hoc/withSelectTool";
 import {inject, observer} from "mobx-react";
 import {CommonStore} from "store/commonStore";
 import {LayoutStore} from "store/layoutStore";
@@ -54,11 +53,10 @@ export interface EditorProps {
 
 
 type EnhancedEditorProps = EditorProps
-  & WithFullscreenProps
   & WithToolsPrivateProps
   & WithMoveToolProps
   & WithBuilderPublicProps
-  & WithSelectToolPublicProps
+  & WithSelectToolProps
 
 
 export interface EditorState {
@@ -140,14 +138,6 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
   render() {
 
-    // const toolbarProps = Object.assign(_.pick(this.props,
-    //   ['activeTool', 'setTool', 'undo', 'redo', 'canUndo', 'canRedo', 'paletteItem', 'resetViewPosition']), {
-    // })
-    //
-    const matrix = _.pick(this.props, [
-      'sx', 'sy', 'tx', 'ty', 'x', 'y', 'zoom',
-    ])
-
     const {paperWidth, paperHeight, gridSize, backgroundImageUrl} = this.props.layout.config
 
     // LOGGER.debug(`from=${this.props.selectionRectFrom}, to=${this.props.selectionRectTo}`)
@@ -173,7 +163,6 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             gridSize={gridSize}
             onWheel={this.props.moveToolMouseWheel}
             onFrame={this.onFrame}
-            matrix={matrix}
             setPaperLoaded={this.props.common.setPaperLoaded}
           >
 
@@ -185,6 +174,8 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             <FreeRailPlacer mousePosition={this.mousePosition}/>
 
             <Layout/>
+
+            {this.props.selectionLayer}
 
             <Measure mousePosition={this.mousePosition}/>
 

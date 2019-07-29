@@ -2,6 +2,9 @@ import * as React from 'react'
 import {Layer, Line, Raster, Rectangle, View} from 'react-paper-bindings'
 import {Point} from 'paper';
 import * as _ from "lodash";
+import {inject, observer} from "mobx-react";
+import {STORE_PAPER} from "../../../constants/stores";
+import {PaperStore} from "../../../store/paperStore.";
 
 export interface GridPaperProps {
   viewWidth: number
@@ -16,21 +19,12 @@ export interface GridPaperProps {
   onWheel: any
   onFrame: any
   setPaperLoaded: (loaded: boolean) => void
-  matrix?: any
+  paper?: PaperStore
 }
 
 
-const DEFAULT_MATRIX = {
-  sx: 0, // scale center x
-  sy: 0, // scale center y
-  tx: 0, // translate x
-  ty: 0, // translate y
-  x: 0,
-  y: 0,
-  zoom: 1,
-}
-
-
+@inject(STORE_PAPER)
+@observer
 export class GridPaper extends React.Component<GridPaperProps, {}> {
 
   view: View
@@ -41,7 +35,7 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
 
 
   componentDidMount() {
-    window.PAPER_SCOPE = this.view.paper
+    this.props.paper.setPaperScope(this.view.scope)
     this.props.setPaperLoaded(true)
   }
 
@@ -112,12 +106,10 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
 
   render() {
     const {viewWidth, viewHeight, backgroundColor, onWheel, onFrame} = this.props
-    const matrix = this.props.matrix || DEFAULT_MATRIX
 
     return (
       <View width={viewWidth}
             height={viewHeight}
-            matrix={matrix}
             onWheel={onWheel}
             onFrame={onFrame}
             settings={{

@@ -4,6 +4,7 @@ import LayoutStore from "store/layoutStore";
 import UiStore from "store/uiStore";
 import LayoutLogicStore from "store/layoutLogicStore";
 import SimulatorLogicStore from "store/simulatorLogicStore";
+import PaperStore from "./paperStore.";
 
 export function createStores() {
   return {
@@ -12,6 +13,7 @@ export function createStores() {
     layout: LayoutStore,
     layoutLogic: LayoutLogicStore,
     simulatorLogic: SimulatorLogicStore,
-    ui: UiStore
+    ui: UiStore,
+    paper: PaperStore
   };
 }

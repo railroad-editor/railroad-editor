@@ -1,33 +1,35 @@
 import * as React from 'react';
-import {Layer, Path, Point, ToolEvent} from 'paper'
+import {Path, Point, ToolEvent} from 'paper'
 import getLogger from "logging";
 import {DEFAULT_SELECTION_RECT_COLOR, DEFAULT_SELECTION_RECT_OPACITY, Tools} from "constants/tools";
 import {getRailComponent} from "components/rails/utils";
 import {BuilderStore} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
+import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_PAPER} from "constants/stores";
 import {LayoutLogicStore} from "store/layoutLogicStore";
+import {PaperStore} from "../../store/paperStore.";
+import {Layer as LayerComponent, Rectangle as RectangleComponent} from "react-paper-bindings";
 
 const LOGGER = getLogger(__filename)
 
 
-export interface WithSelectToolPublicProps {
+export interface WithSelectToolProps {
   selectToolMouseDown: (e: ToolEvent) => void
   selectToolMouseDrag: (e: ToolEvent) => void
   selectToolMouseUp: (e: ToolEvent) => void
+  selectionLayer: React.ReactNode
 
   builder?: BuilderStore
   layout?: LayoutStore
   layoutLogic?: LayoutLogicStore
-
+  paper?: PaperStore
 }
 
 interface WithSelectToolState {
+  from: Point2D
+  to: Point2D
 }
-
-
-type WithSelectToolProps = WithSelectToolPublicProps
 
 /**
  * レールの矩形選択機能を提供するHOC。
@@ -35,19 +37,22 @@ type WithSelectToolProps = WithSelectToolPublicProps
  */
 export default function withSelectTool(WrappedComponent: React.ComponentClass<WithSelectToolProps>) {
 
-  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
+  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_PAPER)
   @observer
   class WithSelectTool extends React.Component<WithSelectToolProps, WithSelectToolState> {
 
-    public static DEBOUNCE_THRESHOLD = 5
+    static DEBOUNCE_THRESHOLD = 5
 
     selectionRect: Path.Rectangle
     selectionRectFrom: Point
-    selectionLayer: Layer
     debounceCount: number
 
     constructor(props: WithSelectToolProps) {
       super(props)
+      this.state = {
+        from: null,
+        to: null
+      }
 
       this.selectionRect = null
       this.selectionRectFrom = null
@@ -71,7 +76,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
      * そのままドラッグすると矩形選択を開始する。
      * @param {paper.ToolEvent | any} e
      */
-    onLeftClick = (e) => {
+    private onLeftClick = (e) => {
       // Shiftが押されておらず、RailPart上で無ければ選択状態をリセットする
       const isNotOnRailPart = (! e.item) || ! (['RailPart', 'Feeder', 'GapJoiner'].includes(e.item.data.type))
       if ((! e.modifiers.shift) && isNotOnRailPart) {
@@ -95,24 +100,11 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
         return
       }
       this.props.builder.setSelecting(true)
-
-      // Pathを毎回生成・削除する場合、PaperRendererで描画するよりも
-      // 生のPaperJSオブジェクトを操作したほうが都合が良い。
-      if (this.selectionRect) {
-        this.selectionRect.remove()
-      }
-      if (! this.selectionLayer) {
-        this.selectionLayer = new Layer()
-      }
-      this.selectionRect = new Path.Rectangle({
-          from: this.selectionRectFrom,
-          to: e.point,
-          fillColor: DEFAULT_SELECTION_RECT_COLOR,
-          opacity: DEFAULT_SELECTION_RECT_OPACITY,
-        }
-      )
+      this.setState({
+        from: this.selectionRectFrom,
+        to: e.point,
+      })
     }
-
 
     /**
      * ドラッグを終了したら、一部または全体が矩形に含まれるレールを選択状態にする。
@@ -120,32 +112,29 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
      */
     onMouseUp = (e: ToolEvent) => {
       this.props.builder.setSelecting(false)
-      if (! this.selectionRect) {
-        return
-      }
-
-      switch (this.props.builder.activeTool) {
-        case Tools.FEEDERS:
-          this.selectFeeders()
-          break
-        case Tools.GAP_JOINERS:
-          this.selectGapJoiners()
-          break
-        default:
-          this.selectRails()
-          break
-      }
-
-      // 矩形を削除する
-      this.selectionRect.remove()
-      this.selectionRect = null
-      this.selectionLayer.remove()
-      this.selectionLayer = null
-      this.selectionRectFrom = null
+      this.setState({
+        from: null,
+        to: null,
+      })
       this.debounceCount = 0
+
+      if (this.selectionRect) {
+        switch (this.props.builder.activeTool) {
+          case Tools.FEEDERS:
+            this.selectFeeders()
+            break
+          case Tools.GAP_JOINERS:
+            this.selectGapJoiners()
+            break
+          default:
+            this.selectRails()
+            break
+        }
+        this.selectionRect = null
+      }
     }
 
-    selectRails = () => {
+    private selectRails = () => {
       // 選択対象は半透明でない全てのレール
       const rails = this.props.layout.currentLayoutData.rails
         .map(r => getRailComponent(r.id))
@@ -171,7 +160,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
       this.props.layoutLogic.selectRails(selected, true)
     }
 
-    selectFeeders = () => {
+    private selectFeeders = () => {
       // 選択対象は現在のレイヤーのレールとする
       const rails = this.props.layout.currentLayoutData.rails.map(r => getRailComponent(r.id))
       const feeders = _.flatMap(rails, rail => rail.feeders).filter(feeder => feeder)
@@ -196,7 +185,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
       this.props.layoutLogic.selectFeeders(selected, true)
     }
 
-    selectGapJoiners = () => {
+    private selectGapJoiners = () => {
       // 選択対象は現在のレイヤーのレールとする
       const rails = this.props.layout.currentLayoutData.rails.map(r => getRailComponent(r.id))
       const gapJoiners = _.flatMap(rails, rail => rail.gapJoiners).filter(g => g)
@@ -221,14 +210,36 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
       this.props.layoutLogic.selectGapJoiners(selected, true)
     }
 
+    renderSelectionLayer = () => {
+      return (
+        <>
+          {this.props.builder.selecting &&
+          <LayerComponent>
+            <RectangleComponent
+              from={this.state.from}
+              to={this.state.to}
+              fillColor={DEFAULT_SELECTION_RECT_COLOR}
+              opacity={DEFAULT_SELECTION_RECT_OPACITY}
+              ref={r => {
+                if (r) this.selectionRect = r
+              }}
+            />
+          </LayerComponent>
+          }
+        </>
+      )
+    }
+
 
     render() {
+      let selectionLayer = this.renderSelectionLayer()
       return (
         <WrappedComponent
           {...this.props}
           selectToolMouseDown={this.onMouseDown}
           selectToolMouseDrag={this.onMouseDrag}
           selectToolMouseUp={this.onMouseUp}
+          selectionLayer={selectionLayer}
         />
       )
     }

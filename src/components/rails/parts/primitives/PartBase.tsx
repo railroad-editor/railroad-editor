@@ -108,7 +108,7 @@ export default abstract class PartBase<P extends PartBaseProps, S> extends React
    */
   getAngleTo(item: Item, pivot: Pivot) {
     // (this.path as any)._project._updateVersion += 1
-    return this.path.getMatrixTo(item).decompose().rotation
+    return (this.path.getMatrixTo(item).decompose() as any).rotation
   }
 
   /**
@@ -177,7 +177,7 @@ export default abstract class PartBase<P extends PartBaseProps, S> extends React
     switch (this.props.flowDirection) {
       case FlowDirection.NONE:
         // 何もしない
-        this.path.fillColor = this.props.fillColor
+        this.path.fillColor = this.props.fillColor as any
         return;
       case FlowDirection.LEFT_TO_RIGHT:
         currentOrigin = this.getPosition(Pivot.LEFT).multiply(2 - ratio).add(this.getPosition(Pivot.RIGHT).multiply(ratio - 1))
@@ -188,7 +188,7 @@ export default abstract class PartBase<P extends PartBaseProps, S> extends React
         currentDestination = currentOrigin.add(this.getPosition(Pivot.RIGHT).subtract(this.getPosition(Pivot.LEFT)).multiply(2))
         break;
       case FlowDirection.ILLEGAL:
-        this.path.fillColor = "red";
+        this.path.fillColor = "red" as any
         return;
     }
 

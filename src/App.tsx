@@ -6,7 +6,6 @@ import qs from "query-string"
 import Amplify from "aws-amplify";
 import Auth from "aws-amplify/lib/Auth";
 import aws_exports from './aws-exports';
-import TestCases from "./components/cases/TestCases";
 import ResetPassword from "components/common/Authenticator/ResetPassword/ResetPassword";
 import {inject, observer} from "mobx-react";
 import {STORE_COMMON} from "constants/stores";
@@ -77,14 +76,6 @@ class App extends React.Component<AppProps, {}> {
               const params = qs.parse(location.search)
               if (params.user_name && params.confirmation_code) {
                 return <ResetPassword userName={params.user_name} code={params.confirmation_code}/>
-              } else {
-                return <Redirect push to={"/"}/>
-              }
-            }}
-            />
-            <Route path="/tests" render={() => {
-              if (process.env.NODE_ENV === 'development') {
-                return <TestCases/>
               } else {
                 return <Redirect push to={"/"}/>
               }
