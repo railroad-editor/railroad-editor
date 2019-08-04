@@ -8,8 +8,8 @@ import {LayoutStore} from "store/layoutStore";
 import {CommonStore} from "store/commonStore";
 import {reaction} from "mobx";
 import FeederTip from "components/Editor/LayoutTips/FeederTips/FeederTip/FeederTip";
-import {Pivot} from "components/rails/parts/primitives/PartBase";
 import {PaperStore} from "../../../../store/paperStore.";
+import {Pivot} from "react-rail-components/lib/parts/primitives/PartBase";
 
 const LOGGER = getLogger(__filename)
 

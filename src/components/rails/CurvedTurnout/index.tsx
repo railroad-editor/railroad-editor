@@ -1,4 +1,4 @@
 import {railHocs} from "components/rails/hoc";
-import CurvedTurnout from "components/rails/CurvedTurnout/CurvedTurnout";
+import {CurvedTurnout} from "react-rail-components";
 
 export default railHocs(CurvedTurnout)

@@ -1,4 +1,4 @@
 import {railHocs} from "components/rails/hoc";
-import ThreeWayTurnout from "components/rails/ThreeWayTurnout/ThreeWayTurnout";
+import {ThreeWayTurnout} from "react-rail-components";
 
 export default railHocs(ThreeWayTurnout)

@@ -1,4 +1,4 @@
 import {railHocs} from "components/rails/hoc";
-import SimpleTurnout from "components/rails/SimpleTurnout/SimpleTurnout";
+import {SimpleTurnout} from "react-rail-components";
 
 export default railHocs(SimpleTurnout)

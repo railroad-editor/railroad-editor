@@ -1,14 +1,14 @@
 import * as React from "react";
-import Joint from "./parts/Joint";
 import {anglesEqual, pointsEqual} from "components/rails/utils";
 import * as _ from "lodash";
-import RailPartBase from "components/rails/parts/RailPartBase";
 import getLogger from "logging";
-import FeederSocket from "components/rails/parts/FeederSocket";
-import {FlowDirection, Pivot} from "components/rails/parts/primitives/PartBase";
-import GapJoiner from "components/rails/parts/GapJoiner";
-import Feeder from "components/rails/parts/Feeder";
-import GapJoinerSocket from "components/rails/parts/GapJoinerSocket";
+import {FlowDirection, Pivot} from "react-rail-components/lib/parts/primitives/PartBase";
+import RailPartBase from "react-rail-components/lib/parts/RailPartBase";
+import Joint from "react-rail-components/lib/parts/Joint";
+import FeederSocket from "react-rail-components/lib/parts/FeederSocket";
+import GapJoiner from "react-rail-components/lib/parts/GapJoiner";
+import Feeder from "react-rail-components/lib/parts/Feeder";
+import GapJoinerSocket from "react-rail-components/lib/parts/GapJoinerSocket";
 
 const LOGGER = getLogger(__filename)
 

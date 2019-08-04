@@ -10,7 +10,7 @@ import {CommonStore} from "store/commonStore";
 import FeederSettingDialog
   from "components/Editor/LayoutTips/FeederTips/FeederTip/FeederSettingDialog/FeederSettingDialog";
 import {FeederInfo} from "components/rails/RailBase";
-import {FlowDirection} from "components/rails/parts/primitives/PartBase";
+import {FlowDirection} from "react-rail-components/lib/parts/primitives/PartBase";
 
 const LOGGER = getLogger(__filename)
 
