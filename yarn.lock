@@ -316,9 +316,9 @@
     "@types/react" "*"
 
 "@types/react@*", "@types/react@^16.8.23":
-  version "16.8.23"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.23.tgz#ec6be3ceed6353a20948169b6cb4c97b65b97ad2"
-  integrity sha512-abkEOIeljniUN9qB5onp++g0EY38h7atnDHxwKUFz1r3VH1+yG1OKi2sNPTyObL40goBmfKFpdii2lEzwLX1cA==
+  version "16.8.24"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.24.tgz#8d1ea1fcbfa214220da3d3c04e506f1077b0deac"
+  integrity sha512-VpFHUoD37YNY2+lr/+c7qL/tZsIU/bKuskUF3tmGUArbxIcQdb5j3zvo4cuuzu2A6UaVmVn7sJ4PgWYNFEBGzg==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -5918,7 +5918,7 @@ pako@~1.0.5:
 
 "paper@https://github.com/railroad-editor/paper.js#dist":
   version "0.12.3"
-  resolved "https://github.com/railroad-editor/paper.js#684f1ec6f1e25adc6204d44d76b59c105703f5f1"
+  resolved "https://github.com/railroad-editor/paper.js#76fe626a361a50a314977db832c0719704a9041b"
 
 parallel-transform@^1.1.0:
   version "1.1.0"
@@ -6761,7 +6761,7 @@ react-material-ui-form-validator@2.0.8:
 
 "react-paper-bindings@https://github.com/railroad-editor/react-paper-bindings#dist":
   version "0.0.1"
-  resolved "https://github.com/railroad-editor/react-paper-bindings#004d22a6b8250eeba65af64cb3b6e1d64ef173c8"
+  resolved "https://github.com/railroad-editor/react-paper-bindings#2dd9c7acd61d1bd137d5595fcefdb0b26ce11a5a"
   dependencies:
     fbjs "^1.0.0"
     paper "https://github.com/railroad-editor/paper.js#dist"
@@ -6772,7 +6772,7 @@ react-material-ui-form-validator@2.0.8:
 
 "react-rail-components@https://github.com/railroad-editor/react-rail-components#dist":
   version "0.0.1"
-  resolved "https://github.com/railroad-editor/react-rail-components#8a827980c4d671bcf14b1cd66e664f84ac2e20b9"
+  resolved "https://github.com/railroad-editor/react-rail-components#80494bf00bc762c72706219f4eea257dd2a589ad"
   dependencies:
     "@types/react" "^16.8.23"
     "@types/react-dom" "^16.8.5"

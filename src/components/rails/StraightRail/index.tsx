@@ -1,5 +1,5 @@
 import {railHocs} from "components/rails/hoc";
-import StraightRail from "components/rails/StraightRail/StraightRail";
+import {StraightRail} from "react-rail-components";
 
 export default railHocs<any, any>(StraightRail)
 

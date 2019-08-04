@@ -1,7 +1,6 @@
 import * as React from "react";
 import {Point} from "paper";
 import {Layer} from "react-paper-bindings";
-import RectPart from "../../rails/parts/primitives/RectPart";
 import {getClosest} from "constants/utils";
 import getLogger from "logging";
 import {default as withBuilder, WithBuilderPublicProps} from "components/hoc/withBuilder";
@@ -10,12 +9,13 @@ import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
-import CirclePart from "components/rails/parts/primitives/CirclePart";
 import {isRailTool, RAIL_PUTTER_MARKER_RADIUS} from "constants/tools";
 import {JOINT_DETECTION_OPACITY_RATE, JOINT_FILL_COLORS} from "constants/parts";
 import {CommonStore} from "store/commonStore";
 import {EditorMode} from "store/uiStore";
 import {reaction} from "mobx";
+import CirclePart from "react-rail-components/lib/parts/primitives/CirclePart";
+import RectPart from "react-rail-components/lib/parts/primitives/RectPart";
 
 const LOGGER = getLogger(__filename)
 

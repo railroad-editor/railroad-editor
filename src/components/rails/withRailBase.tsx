@@ -8,10 +8,10 @@ import {BuilderStore, PlacingMode} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
-import {FlowDirection} from "components/rails/parts/primitives/PartBase";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import {isRailTool, Tools} from "constants/tools";
-import {ArcDirection} from "./parts/primitives/ArcPart";
+import {FlowDirection} from "react-rail-components/lib/parts/primitives/PartBase";
+import {ArcDirection} from "react-rail-components/lib/parts/primitives/ArcPart";
 
 const LOGGER = getLogger(__filename)
 

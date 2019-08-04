@@ -1,4 +1,4 @@
 import {railHocs} from "components/rails/hoc";
-import DoubleStraightRail from "components/rails/DoubleStraightRail/DoubleStraightRail";
+import {DoubleStraightRail} from "react-rail-components";
 
 export default railHocs(DoubleStraightRail)

@@ -4,8 +4,6 @@ import getLogger from "logging";
 import {RailData, RailGroupData} from "components/rails";
 import {JointInfo} from "components/rails/RailBase";
 import {getRailComponent, getTemporaryRailGroupComponent} from "components/rails/utils";
-import RailGroup from "components/rails/RailGroup/RailGroup";
-import {DetectionState} from "components/rails/parts/primitives/DetectablePart";
 import {TEMPORARY_RAIL_OPACITY, Tools} from "constants/tools";
 import {inject, observer} from "mobx-react";
 import {
@@ -26,6 +24,7 @@ import {LayoutLogicStore} from "store/layoutLogicStore";
 import {CommonStore} from "store/commonStore";
 import {SimulatorLogicStore} from "store/simulatorLogicStore";
 import {runInAction} from "mobx";
+import {DetectionState} from "react-rail-components/lib/parts/primitives/DetectablePart";
 
 
 const LOGGER = getLogger(__filename)

@@ -1,4 +1,4 @@
 import {railHocs} from "components/rails/hoc";
-import EndRail from "components/rails/EndRail/EndRail";
+import {EndRail} from "react-rail-components";
 
 export default railHocs(EndRail)

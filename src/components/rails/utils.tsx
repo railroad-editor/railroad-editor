@@ -1,12 +1,11 @@
 import * as React from "react";
 import RailContainers, {RailComponentClasses, RailData, RailGroupData} from "components/rails/index";
 import getLogger from "logging";
-import {FeederInfo, GapJoinerInfo, RailBase, RailBaseProps} from "components/rails/RailBase";
-import RailGroupContainer from "components/rails/RailGroup";
+import {FeederInfo, GapJoinerInfo, RailBase, RailBaseProps} from "react-rail-components/lib/RailBase";
 import {Point} from "paper";
 import {JointPair} from "components/hoc/withBuilder";
 import {LayerData} from "store/layoutStore";
-import RailGroup from "components/rails/RailGroup/RailGroup";
+import {RailGroup} from "react-rail-components";
 import * as _ from 'lodash';
 import 'lodash.combinations';
 import 'lodash.product';
@@ -15,8 +14,8 @@ import {
   CLOSED_JOINT_DISTANCE_TORELANCE,
   FEEDER_SOCKET_FILL_COLORS
 } from "constants/parts";
-import Feeder from "components/rails/parts/Feeder";
 import {WithRailBaseProps} from "./withRailBase";
+import Feeder from "react-rail-components/lib/parts/Feeder";
 
 const LOGGER = getLogger(__filename)
 
@@ -103,7 +102,7 @@ export const createRailGroupComponent = (item: RailGroupData, children: RailData
   }
 
   return (
-    <RailGroupContainer
+    <RailContainers.RailGroup
       key={id}
       id={id}
       {...props}
@@ -117,7 +116,7 @@ export const createRailGroupComponent = (item: RailGroupData, children: RailData
       }}
     >
       {children.map(rail => createRailComponent(rail, layer))}
-    </RailGroupContainer>
+    </RailContainers.RailGroup>
   )
 }
 

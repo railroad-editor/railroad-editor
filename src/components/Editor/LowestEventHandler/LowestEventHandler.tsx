@@ -7,10 +7,10 @@ import {BuilderStore} from "store/builderStore";
 import {Tools} from "constants/tools";
 import {CommonStore} from "store/commonStore";
 import {LayoutStore} from "../../../store/layoutStore";
-import RectPart from "../../rails/parts/primitives/RectPart";
 import {Layer} from "react-paper-bindings";
 import {Point} from "paper";
 import {runInAction} from "mobx";
+import RectPart from "react-rail-components/lib/parts/primitives/RectPart";
 
 const LOGGER = getLogger(__filename)
 

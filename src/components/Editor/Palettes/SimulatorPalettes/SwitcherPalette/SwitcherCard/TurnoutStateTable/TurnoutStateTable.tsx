@@ -6,14 +6,19 @@ import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import RailIcon from "components/common/RailIcon/RailIcon";
 import {RailComponentClasses, RailData} from "components/rails/index";
-import SimpleTurnout, {SimpleTurnoutProps} from "components/rails/SimpleTurnout/SimpleTurnout";
-import DoubleCrossTurnout, {DoubleCrossTurnoutProps} from "components/rails/DoubleCrossTurnout/DoubleCrossTurnout";
 import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css'
 import {getRailComponent} from "components/rails/utils";
-import ThreeWayTurnout, {ThreeWayTurnoutProps} from "components/rails/ThreeWayTurnout/ThreeWayTurnout";
 import {InversedConductionStates} from "components/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwticherCard";
 import {ActiveSmallButton} from "components/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwitchCard.style";
+import {
+  DoubleCrossTurnout,
+  DoubleCrossTurnoutProps,
+  SimpleTurnout,
+  SimpleTurnoutProps,
+  ThreeWayTurnout,
+  ThreeWayTurnoutProps
+} from "react-rail-components";
 
 
 const LOGGER = getLogger(__filename)
