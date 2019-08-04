@@ -43,8 +43,8 @@ export const isRailTool = (tool: Tools): boolean => {
   return [Tools.STRAIGHT_RAILS, Tools.CURVE_RAILS, Tools.TURNOUTS, Tools.SPECIAL_RAILS, Tools.RAIL_GROUPS].includes(tool)
 }
 
-export const DEFAULT_VIEW_WIDTH = 1920
-export const DEFAULT_VIEW_HEIGHT = 1080
+export const DEFAULT_VIEW_WIDTH = 3840
+export const DEFAULT_VIEW_HEIGHT = 2160
 
 export const DEFAULT_PAPER_WIDTH = 2100
 export const DEFAULT_PAPER_HEIGHT = 1400
