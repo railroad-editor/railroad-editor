@@ -25,6 +25,7 @@ import {CommonStore} from "store/commonStore";
 import {SimulatorLogicStore} from "store/simulatorLogicStore";
 import {runInAction} from "mobx";
 import {DetectionState} from "react-rail-components/lib/parts/primitives/DetectablePart";
+import {OpposingJoints} from "react-rail-components/lib/RailBase";
 
 
 const LOGGER = getLogger(__filename)
@@ -425,7 +426,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       const openJoints = []
       rails.map((rail, idx) => {
         // 他のメンバーに接続されているジョイントだけをリストアップする
-        const opposingJointIds = _.toPairs(rail.opposingJoints)
+        const opposingJointIds = _.toPairs(rail.opposingJoints as OpposingJoints)
           .filter(([k, v]) => memberRailIds.includes(v.railId))
           .map(([k, v]) => Number(k))
         // このレールのジョイント数を取得し、未接続ジョイントのIDをリストアップする

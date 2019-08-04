@@ -448,7 +448,7 @@ export class BuilderStore {
 
   @action
   deleteUserRailGroup = (item: PaletteItem) => {
-    this.userRailGroups = _.reject(this.userRailGroups, r => item.name)
+    this.userRailGroups = _.reject(this.userRailGroups, r => r.name === item.name)
   }
 
   @action

@@ -20,9 +20,9 @@ export interface WithRailBaseProps {
   // Injected Props
   onRailPartLeftClick: (e: MouseEvent) => boolean
   onRailPartRightClick: (e: MouseEvent) => boolean
-  onRailPartMouseEnter: (e: MouseEvent) => boolean
-  onRailPartMouseLeave: (e: MouseEvent) => boolean
-  onRailPartMouseMove: (e: MouseEvent) => boolean
+  onRailPartMouseEnter: (e: MouseEvent) => void
+  onRailPartMouseLeave: (e: MouseEvent) => void
+  onRailPartMouseMove: (e: MouseEvent) => void
 
   onJointLeftClick: (jointId: number, e: MouseEvent) => boolean
   onJointRightClick: (jointId: number, e: MouseEvent) => boolean
@@ -61,7 +61,7 @@ export type RailBaseEnhancedProps = RailBaseProps & WithRailBaseProps & WithBuil
  * Railの各種イベントハンドラを提供するHOC
  * 依存: WithBuilder
  */
-export default function withRailBase(WrappedComponent: React.ComponentClass<RailBaseProps>) {
+export default function withRailBase(WrappedComponent: React.ComponentClass<RailBaseEnhancedProps>) {
 
 
   @inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
@@ -317,15 +317,17 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
 
     onJointLeftClick = (jointId: number, e: MouseEvent) => {
       let activeTool = this.props.builder.activeTool
+      let shouldChangeJointState = false
       if (isRailTool(activeTool)) {
-        this.onJointLeftClickForRailTool(jointId, e)
+        shouldChangeJointState = this.onJointLeftClickForRailTool(jointId, e)
       } else if (activeTool == Tools.MEASURE) {
-        this.onJointLeftClickForMeasureTool(jointId, e)
+        shouldChangeJointState = this.onJointLeftClickForMeasureTool(jointId, e)
       }
       // 仮レール表示ジョイントをリセットする
       this.props.builder.setCurrentJoint(null, null)
       // 微調整角度をリセットする
       this.props.builder.setAdjustmentAngle(0)
+      return shouldChangeJointState
     }
 
     onJointLeftClickForMeasureTool = (jointId: number, e: MouseEvent) => {
@@ -338,6 +340,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
       if (start && ! end) {
         this.props.builder.setMeasureEndPosition(this.joints[jointId].globalPosition)
       }
+      return false
     }
 
     /**

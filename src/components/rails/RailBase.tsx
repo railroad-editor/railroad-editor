@@ -111,9 +111,9 @@ export interface RailBaseDefaultProps {
   // イベントハンドラ
   onRailPartLeftClick: (e: MouseEvent) => boolean
   onRailPartRightClick: (e: MouseEvent) => boolean
-  onRailPartMouseEnter: (e: MouseEvent) => boolean
-  onRailPartMouseLeave: (e: MouseEvent) => boolean
-  onRailPartMouseMove: (e: MouseEvent) => boolean
+  onRailPartMouseEnter: (e: MouseEvent) => void
+  onRailPartMouseLeave: (e: MouseEvent) => void
+  onRailPartMouseMove: (e: MouseEvent) => void
 
   onJointLeftClick: (jointId: number, e: MouseEvent) => void
   onJointRightClick: (jointId: number, e: MouseEvent) => void

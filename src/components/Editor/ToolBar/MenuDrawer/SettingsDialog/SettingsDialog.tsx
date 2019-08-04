@@ -67,7 +67,7 @@ export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogSt
     })
 
     LOGGER.info(newConfig)
-    this.props.setConfig(newConfig)
+    this.props.setConfig(newConfig as any)
     this.onClose()
   }
 
