@@ -5442,12 +5442,6 @@ mobx-devtools-mst@^0.9.14:
   version "0.9.14"
   resolved "https://registry.yarnpkg.com/mobx-devtools-mst/-/mobx-devtools-mst-0.9.14.tgz#e203ebf686331f9ff016336599b81b1796d10339"
 
-mobx-persist@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/mobx-persist/-/mobx-persist-0.4.1.tgz#fe5790eda04e0ee0b91c512d1347104e09363f9a"
-  dependencies:
-    serializr "^1.1.11"
-
 mobx-react@5.4.4:
   version "5.4.4"
   resolved "https://registry.yarnpkg.com/mobx-react/-/mobx-react-5.4.4.tgz#b3de9c6eabcd0ed8a40036888cb0221ab9568b80"
@@ -6717,12 +6711,6 @@ react-form-validator-core@0.6.3:
     promise-polyfill "8.1.0"
     react-lifecycles-compat "^3.0.2"
 
-react-form-validator-core@^0.4.4:
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/react-form-validator-core/-/react-form-validator-core-0.4.4.tgz#71e6e23a17b5d3ad453ad9c30941cbe7897f91bb"
-  dependencies:
-    react-lifecycles-compat "^3.0.2"
-
 react-grid-layout@^0.16.6:
   version "0.16.6"
   resolved "https://registry.yarnpkg.com/react-grid-layout/-/react-grid-layout-0.16.6.tgz#9b2407a2b946c2260ebaf66f13b556e1da4efeb2"
@@ -6781,15 +6769,6 @@ react-material-ui-form-validator@2.0.8:
     react "^16.8.6"
     react-dom "^16.8.6"
     react-paper-bindings "https://github.com/railroad-editor/react-paper-bindings#dist"
-
-react-reconciler@0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.7.0.tgz#9614894103e5f138deeeb5eabaf3ee80eb1d026d"
-  dependencies:
-    fbjs "^0.8.16"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.0"
 
 react-reconciler@^0.16.0:
   version "0.16.0"
@@ -7390,10 +7369,6 @@ send@0.16.2:
 serialize-javascript@^1.4.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-1.5.0.tgz#1aa336162c88a890ddad5384baebc93a655161fe"
-
-serializr@^1.1.11:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/serializr/-/serializr-1.2.0.tgz#b337264352e697106b7638c27ffb24cb56226aaa"
 
 serve-index@^1.7.2:
   version "1.9.1"
