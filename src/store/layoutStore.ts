@@ -6,10 +6,10 @@ import {getAllOpenCloseJoints} from "components/rails/utils";
 import getLogger from "logging";
 import * as uuidv4 from "uuid/v4";
 import * as moment from "moment";
-import {FeederInfo, GapJoinerInfo} from "components/rails/RailBase";
 import TrainController from "components/Editor/ToolBar/SimulatorToolBar/TrainController";
 import railItems from "constants/railItems.json";
 import {computedFn} from "mobx-utils";
+import {FeederInfo, GapJoinerInfo} from "react-rail-components";
 
 const LOGGER = getLogger(__filename)
 

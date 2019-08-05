@@ -9,8 +9,8 @@ import {Tooltip, withStyles} from "@material-ui/core";
 import {CommonStore} from "store/commonStore";
 import FeederSettingDialog
   from "components/Editor/LayoutTips/FeederTips/FeederTip/FeederSettingDialog/FeederSettingDialog";
-import {FeederInfo} from "components/rails/RailBase";
 import {FlowDirection} from "react-rail-components/lib/parts/primitives/PartBase";
+import {FeederInfo} from "react-rail-components";
 
 const LOGGER = getLogger(__filename)
 

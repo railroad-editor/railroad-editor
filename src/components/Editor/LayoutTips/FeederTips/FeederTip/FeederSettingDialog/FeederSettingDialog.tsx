@@ -2,12 +2,12 @@ import * as React from "react";
 import AutoFocusTextValidator from "components/common/AutoFocusTextValidator";
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
 import {ValidatorForm} from 'react-material-ui-form-validator';
-import {FeederInfo} from "components/rails/RailBase";
 import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
 import {LayoutStore, PowerPackData} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {LayoutLogicStore} from "store/layoutLogicStore";
+import {FeederInfo} from "react-rail-components";
 
 
 export interface FeederSettingDialogProps extends FormDialogProps {

@@ -8,7 +8,6 @@ import IconButton from "@material-ui/core/IconButton";
 import PowerIcon from "@material-ui/icons/Power";
 import Card from "@material-ui/core/Card";
 import {LayoutStore, PowerPackData} from "store/layoutStore";
-import {FeederInfo} from "components/rails/RailBase";
 import {inject, observer} from 'mobx-react';
 import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {LayoutLogicStore} from "store/layoutLogicStore";
@@ -22,6 +21,7 @@ import {
   StyledSlider,
   Triangle
 } from "components/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard.style";
+import {FeederInfo} from "react-rail-components";
 
 const LOGGER = getLogger(__filename)
 

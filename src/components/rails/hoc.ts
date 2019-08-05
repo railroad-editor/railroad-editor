@@ -2,7 +2,7 @@ import * as React from "react";
 import {compose, defaultProps, mapProps} from "recompose";
 import withBuilder from "components/hoc/withBuilder";
 import withRailBase from "components/rails/withRailBase";
-import {RailBase, RailBaseProps} from "components/rails/RailBase";
+import {RailBase, RailBaseProps} from "react-rail-components";
 
 /**
  * Rail container を生成するためのHOC

@@ -2,7 +2,6 @@ import * as React from 'react'
 import {ToolEvent} from "paper";
 import getLogger from "logging";
 import {RailData, RailGroupData} from "components/rails";
-import {JointInfo} from "components/rails/RailBase";
 import {getRailComponent, getTemporaryRailGroupComponent} from "components/rails/utils";
 import {TEMPORARY_RAIL_OPACITY, Tools} from "constants/tools";
 import {inject, observer} from "mobx-react";
@@ -25,7 +24,7 @@ import {CommonStore} from "store/commonStore";
 import {SimulatorLogicStore} from "store/simulatorLogicStore";
 import {runInAction} from "mobx";
 import {DetectionState} from "react-rail-components/lib/parts/primitives/DetectablePart";
-import {OpposingJoints} from "react-rail-components/lib/RailBase";
+import {JointInfo, OpposingJoints} from "react-rail-components";
 
 
 const LOGGER = getLogger(__filename)

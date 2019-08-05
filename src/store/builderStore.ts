@@ -1,5 +1,4 @@
 import {RailComponentClasses, RailData, RailGroupData, RailItemData} from "components/rails";
-import {FeederInfo, JointInfo} from "components/rails/RailBase";
 import {action, computed, observable, reaction, runInAction} from "mobx";
 import {Tools} from "constants/tools";
 import builderPaletteData from "constants/railPaletteItems.json"
@@ -8,7 +7,7 @@ import layoutLogicStore from "store/layoutLogicStore";
 import layoutStore from "store/layoutStore";
 import {reactionWithOldValue} from "./utils";
 import {getCloseJointsOf, intersectsOf} from "../components/rails/utils";
-import {RailGroupProps} from "react-rail-components";
+import {FeederInfo, JointInfo, RailGroupProps} from "react-rail-components";
 
 
 export interface PresetPaletteItems {

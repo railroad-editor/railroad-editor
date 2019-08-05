@@ -6,7 +6,6 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from "@material-ui/core/IconButton";
 import Card from "@material-ui/core/Card";
 import {ConductionStates, LayoutStore, SwitcherData} from "store/layoutStore";
-import {FeederInfo} from "components/rails/RailBase";
 import {inject, observer} from 'mobx-react';
 import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {LayoutLogicStore} from "store/layoutLogicStore";
@@ -20,6 +19,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import 'react-grid-layout/css/styles.css'
 import {TurnoutStateTable} from "components/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherCard/TurnoutStateTable/TurnoutStateTable";
 import {Triangle} from "components/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard.style";
+import {FeederInfo} from "react-rail-components";
 
 
 const LOGGER = getLogger(__filename)

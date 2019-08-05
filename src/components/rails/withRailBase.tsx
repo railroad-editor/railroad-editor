@@ -1,7 +1,6 @@
 import * as React from "react";
 import getLogger from "logging";
 import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
-import {RailBase, RailBaseProps, RailBaseState} from "components/rails/RailBase";
 import {RailData} from "./index";
 import {compose} from "recompose";
 import {BuilderStore, PlacingMode} from "store/builderStore";
@@ -12,6 +11,7 @@ import {LayoutLogicStore} from "store/layoutLogicStore";
 import {isRailTool, Tools} from "constants/tools";
 import {FlowDirection} from "react-rail-components/lib/parts/primitives/PartBase";
 import {ArcDirection} from "react-rail-components/lib/parts/primitives/ArcPart";
+import {RailBase, RailBaseProps, RailBaseState} from "react-rail-components";
 
 const LOGGER = getLogger(__filename)
 
@@ -391,19 +391,19 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
       return false
     }
 
-    onRailPartMouseEnter = () => {
+    onRailPartMouseEnter = (e: MouseEvent): void => {
       if (! this.props.builder.usingRailTools || this.props.opacity !== 1) {
         return
       }
       document.body.style.cursor = 'pointer'
     }
 
-    onRailPartMouseLeave = () => {
+    onRailPartMouseLeave = (e: MouseEvent) => {
       this.props.builder.setCursorShape(this.props.builder.activeTool)
     }
 
-    onRailPartMouseMove = () => {
-      this.onRailPartMouseEnter()
+    onRailPartMouseMove = (e: MouseEvent) => {
+      this.onRailPartMouseEnter(e)
     }
 
     /**
