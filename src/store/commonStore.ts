@@ -1,4 +1,4 @@
-import {action, computed, observable, reaction} from "mobx";
+import {action, computed, observable, reaction, runInAction} from "mobx";
 import {AuthData} from "components/common/Authenticator/AuthPiece/AuthPiece";
 import {LayoutMeta} from "store/layoutStore";
 import LayoutAPI from "apis/layout";
@@ -52,22 +52,6 @@ export class CommonStore {
     this.zooming = zooming
     this.pan = pan
     this.panning = panning
-
-    // zoomがセットされてから少し経ったらzoomingをfalseに戻す
-    reaction(() => this.zoom,
-      () => this.zooming = false,
-      {
-        delay: 200
-      }
-    )
-
-    // zoomがセットされてから少し経ったらzoomingをfalseに戻す
-    reaction(() => this.pan,
-      () => this.panning = false,
-      {
-        delay: 200
-      }
-    )
 
     // モード変更時に各モードの状態を復元する
     reaction(
@@ -129,12 +113,18 @@ export class CommonStore {
   setZoom = (zoom: number) => {
     this.zoom = zoom
     this.zooming = true
+    setTimeout(() =>  runInAction(() => {
+      this.zooming = false
+    }), 200)
   }
 
   @action
   setPan = (point: Point) => {
     this.pan = point
     this.panning = true
+    setTimeout(() =>  runInAction(() => {
+      this.panning = false
+    }), 200)
   }
 }
 

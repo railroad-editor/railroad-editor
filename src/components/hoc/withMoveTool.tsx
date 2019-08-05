@@ -103,26 +103,6 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
     }
 
     /**
-     * Get pan event state
-     *
-     * @param  {ToolEvent} e    Paper.js ToolEvent
-     * @param  {Object}    prev Previous pan event data
-     * @param  {Object}    next Next pan event data
-     * @return {Object}         Next pan state data
-     */
-    getPanEventState = (e: ToolEvent | any, prev: PanEventData, next: PanEventData) => {
-      const {x, y} = this.state
-      const {point, tool: {view}} = e
-      const t = point.subtract(view.viewToProject(prev.point))
-      return {
-        tx: t.x,
-        ty: t.y,
-        x: x + t.x,
-        y: y + t.y,
-      }
-    }
-
-    /**
      * Mouse wheel handler
      *
      * @param  {SyntheticEvent} e    React's SyntheticEvent
@@ -151,13 +131,9 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
           zoomCenter = this.props.paper.scope.view.viewToProject(new Point(pageX - offsetLeft, pageY - offsetTop))
           LOGGER.debug(`zoomCenter=${zoomCenter} (not focused)`)
         }
-        // this.setState({
-        //   sx: zoomCenter.x,
-        //   sy: zoomCenter.y,
-        //   zoom: newZoom,
-        // })
-        // this.props.common.setZoom(newZoom)
+
         (this.props.paper.scope.view as any).scale(newZoom, zoomCenter)
+        this.props.common.setZoom(newZoom)
       }
     }
 
