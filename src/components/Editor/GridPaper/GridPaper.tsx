@@ -110,15 +110,17 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
     return (
       <View width={viewWidth}
             height={viewHeight}
-            onWheel={onWheel}
-            onFrame={onFrame}
+            viewProps={{
+              onFrame: onFrame
+            }}
             settings={{
               applyMatrix: false
             }}
             canvasProps={{
               style: {
                 backgroundColor: backgroundColor
-              }
+              },
+              onWheel: onWheel
             }}
             ref={(view) => {
               this.view = view
