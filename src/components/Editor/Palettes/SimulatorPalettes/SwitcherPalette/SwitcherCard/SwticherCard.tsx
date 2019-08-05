@@ -165,7 +165,7 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
               return (
                 <Grid container justify="center" alignItems="center" spacing={0}>
                   <Grid item xs={3}>
-                    <Typography align="center"> {rail.name} </Typography>
+                    <Typography align="center"> {rail.turnoutName} </Typography>
                   </Grid>
                   <Grid item xs={6}>
                     <TurnoutStateTable switcher={this.props.item} rail={rail}/>
