@@ -66,7 +66,7 @@ export default class SignUp extends AuthPiece<AuthPieceProps, SignUpState> {
       <div>
         <DialogTitle>Sign Up</DialogTitle>
         <StyledDialogContent>
-          <Grid container spacing={8}>
+          <Grid container spacing={1}>
             <Grid item xs={12}>
               <ValidatorForm
                 ref={(form) => this._form = form}

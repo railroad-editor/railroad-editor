@@ -32,7 +32,7 @@ export default class ConfirmEmail extends AuthPiece<ConfirmEmailProps, any> {
       <div>
         <DialogTitle>{this.props.title}</DialogTitle>
         <StyledDialogContent>
-          <Grid container spacing={8}>
+          <Grid container spacing={1}>
             <Grid item xs={12} style={{margin: '16px 0px 16px 0px'}}>
               <Typography>
                 Please open the sent email and follow the link.

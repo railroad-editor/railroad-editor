@@ -121,7 +121,7 @@ export class ResetPassword extends AuthPiece<ResetPasswordProps & RouteComponent
             </ValidatorForm>
           </Grid>
         </CenteredGrid>
-        <CenteredGrid container spacing={8} style={{marginTop: '16px'}}>
+        <CenteredGrid container spacing={1} style={{marginTop: '16px'}}>
           <Grid item xs={12}>
             <Button color="primary"
                     disabled={this.state.disabled} onClick={this.submit}>

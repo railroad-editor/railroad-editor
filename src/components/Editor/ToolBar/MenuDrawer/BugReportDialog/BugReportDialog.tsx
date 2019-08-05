@@ -62,7 +62,7 @@ export class BugReportDialog extends FormDialog<BugReportDialogProps, FormDialog
   renderContent = () => {
     return (
       <>
-        <Grid container spacing={8} className={this.props.classes.grid}>
+        <Grid container spacing={1} className={this.props.classes.grid}>
           <Grid item xs={12}>
             <form>
               <FormControl>
