@@ -132,7 +132,7 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
           LOGGER.debug(`zoomCenter=${zoomCenter} (not focused)`)
         }
 
-        (this.props.paper.scope.view as any).scale(newZoom, zoomCenter)
+        this.props.paper.scope.view.scale(newZoom, zoomCenter)
         this.props.common.setZoom(newZoom)
       }
     }
@@ -193,7 +193,7 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
       if (! this.props.paper.scope) {
         return
       }
-      let view: View | any = this.props.paper.scope.view
+      let view = this.props.paper.scope.view
       if (view) {
         const {paperWidth, paperHeight} = this.props.layout.config
         // 初期ズームをセットする
@@ -203,7 +203,7 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
         const windowCenter = this.props.paper.scope.view.viewToProject(new Point(window.innerWidth / 2, window.innerHeight / 2 - 30))
         const boardCenter = new Point(paperWidth / 2, paperHeight / 2)
         const diff = windowCenter.subtract(boardCenter)
-        view.translate(diff.x, diff.y)
+        view.translate(diff)
       }
     }
 
