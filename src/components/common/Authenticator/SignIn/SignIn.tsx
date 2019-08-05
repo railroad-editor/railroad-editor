@@ -83,7 +83,7 @@ export default class SignIn extends AuthPiece<SignInProps, AuthPieceState> {
       <div>
         <DialogTitle>Login</DialogTitle>
         <StyledDialogContent>
-          <Grid container spacing={8}>
+          <Grid container spacing={1}>
             <Grid item xs={12}>
               <ValidatorForm
                 ref={(form) => this._form = form}

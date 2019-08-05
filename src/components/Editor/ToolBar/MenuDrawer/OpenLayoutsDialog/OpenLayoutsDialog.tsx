@@ -91,7 +91,7 @@ export default class OpenLayoutsDialog extends React.Component<OpenLayoutDialogP
           <Typography>
             You have {this.props.layouts.length} layouts.
           </Typography>
-          <Grid container spacing={24}>
+          <Grid container spacing={4}>
             {sortedLayouts.map((meta, idx) => {
               const layoutImageFile = getLayoutImageFileName(this.props.authData.username, meta.id)
               return (

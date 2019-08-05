@@ -92,7 +92,7 @@ export class SummaryDialog extends FormDialog<ShowSummaryDialogProps, FormDialog
     }
 
     return (
-      <Grid container spacing={8} className={this.props.classes.grid}>
+      <Grid container spacing={1} className={this.props.classes.grid}>
         <OddGrid item xs={12}>
           <Typography>{name}</Typography>
         </OddGrid>

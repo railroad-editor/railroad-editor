@@ -33,7 +33,7 @@ export default class InfoPalette extends React.Component<InfoPaletteProps, InfoP
 
     if (selectedRails.length === 0) {
       return (
-        <GridContainer container spacing={8}>
+        <GridContainer container spacing={1}>
           <Grid item xs={12}>
             <Typography>Select any rail</Typography>
           </Grid>
@@ -42,7 +42,7 @@ export default class InfoPalette extends React.Component<InfoPaletteProps, InfoP
     }
     if (selectedRails.length > 1) {
       return (
-        <GridContainer container spacing={8}>
+        <GridContainer container spacing={1}>
           <Grid item xs={12}>
             <Typography>
               {selectedRails.length} rails are selected
@@ -54,7 +54,7 @@ export default class InfoPalette extends React.Component<InfoPaletteProps, InfoP
 
     const selected = selectedRails[0]
     return (
-      <GridContainer container spacing={8}>
+      <GridContainer container spacing={1}>
         <OddGrid item xs={4}>
           <Typography>Name</Typography>
         </OddGrid>

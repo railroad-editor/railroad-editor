@@ -44,7 +44,7 @@ export default class ForgotPassword extends AuthPiece<any, any> {
       <div>
         <DialogTitle>Password Reset</DialogTitle>
         <StyledDialogContent>
-          <Grid container spacing={8}>
+          <Grid container spacing={1}>
             <Grid item xs={12}>
               <ValidatorForm
                 ref={(form) => this._form = form}
