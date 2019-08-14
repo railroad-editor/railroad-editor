@@ -2,6 +2,7 @@ import {SKYWAY_API_KEY} from "constants/tools";
 import Peer from 'skyway-js';
 import SessionAPI from "apis/session"
 import getLogger from "logging";
+import * as waitUntil from 'async-wait-until';
 import {TrainControllerConfig} from "store/layoutStore";
 
 const LOGGER = getLogger(__filename)
@@ -12,10 +13,8 @@ class TrainController {
   conn: any
 
   connect = async (username: string, layoutId: string) => {
-    // コントローラーがセッションを作成済みか調べる
-    const session = await SessionAPI.fetchSession(
-      username,
-      layoutId)
+    // Controller CLIがセッションを作成済みか調べる
+    let session: any = await SessionAPI.fetchSession(username, layoutId)
       .catch((reason) => {
         // this.props.snackbar.showMessage('No session yet.')
         LOGGER.error('No session yet.')
@@ -33,34 +32,40 @@ class TrainController {
     this.peer.on('open', id => {
       this.peerId = id
       console.log('This peer ID:', this.peerId)
+    })
+    this.peer.on('error', err => {
+      console.log(err)
+    })
 
-      // コントローラーに接続する
-      this.conn = this.peer.connect(session.peerId, {
-        label: 'aa',
-        metadata: {}
-      })
+    // wait until peer is open
+    await waitUntil(() => {
+      return this.peer.open;
+    })
 
-      this.conn.on('open', () => onConnectionOpen(this.conn));
+    this.conn = this.peer.connect(session.peerId)
 
-      this.conn.on('error', (err) => {
-        console.log(err)
-      })
-
-      const onConnectionOpen = (conn) => {
-        LOGGER.info('P2P Connection opened.')
-
-        // データを受信したとき
-        conn.on('data', data => {
-          LOGGER.info(`DATA: ${data}`)   //`
-        });
-        conn.on('close', () => {
-          LOGGER.info('P2P Connection closed.')
-        });
-        conn.on('error', err => {
-          LOGGER.error(err)
-        });
-      }
+    this.conn.once('open', () => {
+      const remoteId = this.conn.remoteId;
+      console.log(`Connection opened. Remote Peer ID: ${remoteId}`);
+      console.log('Remote Peer ID', remoteId);
     });
+
+    this.conn.on('data', data => {
+      console.log(`Remote data: ${data}\n`);
+    });
+
+    this.conn.once('close', () => {
+      console.log('Connection closed.');
+    });
+
+    this.conn.on('error', err => {
+      console.log(err);
+    });
+
+    // wait until connection is open
+    await waitUntil(() => {
+      return this.conn.open;
+    })
   }
 
   configure = (config: TrainControllerConfig) => {

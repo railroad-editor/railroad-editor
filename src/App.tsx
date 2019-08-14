@@ -2,7 +2,7 @@ import * as React from 'react'
 import Editor from 'components/Editor/Editor'
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import {Redirect} from "react-router";
-import qs from "query-string"
+import * as qs from "query-string"
 import Amplify from "aws-amplify";
 import Auth from "aws-amplify/lib/Auth";
 import aws_exports from './aws-exports';

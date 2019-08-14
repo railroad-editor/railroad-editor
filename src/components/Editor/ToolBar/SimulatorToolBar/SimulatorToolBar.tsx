@@ -49,24 +49,9 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
     }
   }
 
-  openSettingsDialog = (e) => {
-    this.setState({
-      openSettings: true
-    })
-  }
-
-  closeSettingsDialog = () => {
-    this.setState({
-      openSettings: false
-    })
-  }
-
   onRemoteConnect = async (e) => {
     await TrainController.connect(this.props.common.userInfo.username, this.props.layout.meta.id)
-  }
-
-  isActive(tool: string) {
-    return this.props.simulatorLogic.activeTool === tool
+    await TrainController.configure(this.props.layout.trainControllerConfig)
   }
 
   render() {
@@ -86,15 +71,6 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
             <SettingsRemoteIcon/>
           </StyledIconButton>
         </Tooltip>
-        {/*<SimulatorSettingsDialog*/}
-        {/*title={'Settings'}*/}
-        {/*open={this.state.openSettings}*/}
-        {/*onClose={this.closeSettingsDialog}*/}
-        {/*config={this.props.layout.config}*/}
-        {/*setConfig={this.props.layout.setConfig}*/}
-        {/*userInfo={this.props.common.userInfo}*/}
-        {/*layoutMeta={this.props.layout.meta}*/}
-        {/*/>*/}
       </Grid>
     )
   }

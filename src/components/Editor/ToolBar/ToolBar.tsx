@@ -10,13 +10,12 @@ import {
   Tooltip
 } from '@material-ui/core'
 import {StyledIconButton} from "./styles";
-import {Tools} from "constants/tools";
 import MenuIcon from "@material-ui/icons/Menu";
 import getLogger from "logging";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
-import {BuilderStore, PlacingMode} from "store/builderStore";
+import {BuilderStore} from "store/builderStore";
 import {CommonStore} from "store/commonStore";
 import MenuDrawer from "components/Editor/ToolBar/MenuDrawer/MenuDrawer";
 import {compose} from "recompose";
@@ -84,16 +83,6 @@ export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
 
   }
 
-  isActive(tool: string) {
-    return this.props.builder.activeTool === tool
-  }
-
-  onClickBuilderItem = (tool: Tools) => (e: MouseEvent) => {
-    this.props.builder.setActiveTool(tool)
-    // 最後に選択していたアイテムを選択する
-    this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[tool])
-  }
-
 
   openMenu = (e) => {
     LOGGER.info(this.props.layout.meta)
@@ -108,26 +97,10 @@ export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
     })
   }
 
-  openSettingsDialog = (e) => {
-    this.setState({
-      openSettings: true
-    })
-  }
-
-  closeSettingsDialog = () => {
-    this.setState({
-      openSettings: false
-    })
-  }
-
   setLayoutName = (text: string) => {
     this.props.layout.updateLayoutMeta({
       name: text
     })
-  }
-
-  onChangePlacingMode = (mode: PlacingMode) => (e) => {
-    this.props.builder.setPlacingMode(mode)
   }
 
   onChangeEditorMode = (e) => {
