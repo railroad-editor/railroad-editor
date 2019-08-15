@@ -186,6 +186,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
               </Grid>
             </Grid>
             <StyledSlider
+              max={255}
               value={this.state.sliderValue}
               onChange={this.onSliderChange}
               onDragStart={this.onSliderDragStart}

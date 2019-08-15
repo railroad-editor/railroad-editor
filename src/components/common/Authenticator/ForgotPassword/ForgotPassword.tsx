@@ -47,7 +47,7 @@ export default class ForgotPassword extends AuthPiece<any, any> {
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <ValidatorForm
-                ref={(form) => this._form = form}
+                ref={this.getFormRef}
               >
                 <TextValidator
                   autoFocus

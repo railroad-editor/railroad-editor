@@ -54,6 +54,11 @@ export default abstract class AuthPiece<P extends AuthPieceProps, S extends Auth
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
+  getFormRef = (ref) => {
+    if (ref && ! this._form) {
+      this._form = ref
+    }
+  }
 
   errorMessage(err: string | any) {
     if (typeof err === 'string') {

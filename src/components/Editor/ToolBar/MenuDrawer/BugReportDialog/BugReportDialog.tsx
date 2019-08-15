@@ -1,7 +1,7 @@
 import * as React from 'react'
 import getLogger from "logging";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
+import {FormDialog, FormDialogProps, FormDialogState, FormInputs} from "components/common/FormDialog/FormDialog";
 import "react-fine-uploader/gallery/gallery.css";
 import {withStyles} from "@material-ui/core";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -39,12 +39,9 @@ export class BugReportDialog extends FormDialog<BugReportDialogProps, FormDialog
     this.state = this.getInitialState()
   }
 
-  getInitialState = () => {
+  getInitialInputs(): FormInputs {
     return {
-      inputs: {
-        issueType: 'Bug',
-      },
-      disabled: true
+      issueType: 'Bug',
     }
   }
 
@@ -82,7 +79,7 @@ export class BugReportDialog extends FormDialog<BugReportDialogProps, FormDialog
           </Grid>
           <Grid item xs={12}>
             <ValidatorForm
-              ref={(form) => this._form = form}
+              ref={this.getFormRef}
             >
               <TextValidator
                 label="Title"

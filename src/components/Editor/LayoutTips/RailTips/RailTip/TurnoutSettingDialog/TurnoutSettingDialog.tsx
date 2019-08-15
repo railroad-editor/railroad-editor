@@ -1,6 +1,6 @@
 import * as React from "react";
 import AutoFocusTextValidator from "components/common/AutoFocusTextValidator";
-import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
+import {FormDialog, FormDialogProps, FormDialogState, FormInputs} from "components/common/FormDialog/FormDialog";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {FormControl, InputLabel, List, ListItem, MenuItem, Select} from "@material-ui/core";
 import {ConductionStates, LayoutStore, SwitcherData, SwitcherType} from "store/layoutStore";
@@ -34,6 +34,9 @@ export default class TurnoutSettingDialog extends FormDialog<TurnoutSettingDialo
     this.state = this.getInitialState()
   }
 
+  getInitialInputs(): FormInputs {
+    return _.mapValues(this.props.rail, (v) => String(v))
+  }
 
   getInitialState = () => {
     const {rail, switchers} = this.props
@@ -58,8 +61,7 @@ export default class TurnoutSettingDialog extends FormDialog<TurnoutSettingDialo
 
     const connectedSwitcherId = connectedSwitcher ? connectedSwitcher.id : null
     return {
-      inputs: _.mapValues(this.props.rail, (v) => String(v)),
-      disabled: false,
+      ...super.getInitialState(),
       connectedSwitcherId: connectedSwitcherId,
       conductionStates: conductionStates
     }
@@ -121,7 +123,7 @@ export default class TurnoutSettingDialog extends FormDialog<TurnoutSettingDialo
     return (
       <>
         <ValidatorForm
-          ref={(form) => this._form = form}
+          ref={this.getFormRef}
         >
           <AutoFocusTextValidator
             label="Turnout Name"

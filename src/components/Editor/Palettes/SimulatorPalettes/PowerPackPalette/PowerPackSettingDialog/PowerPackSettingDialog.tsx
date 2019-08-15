@@ -33,10 +33,13 @@ export default class PowerPackSettingDialog extends FormDialog<PowerPackSettingD
     this.state = this.getInitialState()
   }
 
+  getInitialInputs = () => {
+    return _.mapValues(this.props.powerPack, (v) => String(v))
+  }
+
   getInitialState = () => {
     return {
-      inputs: _.mapValues(this.props.powerPack, (v) => String(v)),
-      disabled: true,
+      ...super.getInitialState(),
       pickerOpen: false,
       pickerAnchor: null,
     }
@@ -78,7 +81,7 @@ export default class PowerPackSettingDialog extends FormDialog<PowerPackSettingD
     return (
       <>
         <ValidatorForm
-          ref={(form) => this._form = form}
+          ref={this.getFormRef}
         >
           <AutoFocusTextValidator
             label="Power Pack Name"

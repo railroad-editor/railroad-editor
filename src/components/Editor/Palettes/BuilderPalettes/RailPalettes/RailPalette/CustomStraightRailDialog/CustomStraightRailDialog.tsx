@@ -22,15 +22,12 @@ export default class CustomStraightRailDialog extends FormDialog<CustomStraightR
   constructor(props: CustomStraightRailDialogProps) {
     super(props)
     this.state = this.getInitialState()
-
-    this.onDoubleChange = this.onDoubleChange.bind(this)
   }
 
   getInitialState = () => {
     return {
-      inputs: {},
+      ...super.getInitialState(),
       isDouble: false,
-      disabled: true,
     }
   }
 
@@ -63,7 +60,7 @@ export default class CustomStraightRailDialog extends FormDialog<CustomStraightR
   renderContent = () => {
     return (
       <ValidatorForm
-        ref={(form) => this._form = form}
+        ref={this.getFormRef}
       >
         <AutoFocusTextValidator
           autoFocus

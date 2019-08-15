@@ -1,15 +1,15 @@
 import * as React from 'react'
 import getLogger from "logging";
-import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
+import {FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
 import "react-fine-uploader/gallery/gallery.css";
-import {withStyles} from "@material-ui/core";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, withStyles} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_LAYOUT} from "../../../../../constants/stores";
 import {LayoutStore} from "../../../../../store/layoutStore";
 import Typography from "@material-ui/core/Typography";
-import {EvenGrid, OddGrid, Spacer} from "./SummaryDialog.style";
+import {EvenGrid, OddGrid, Spacer} from "./BomDialog.style";
 import {BuilderStore} from "../../../../../store/builderStore";
 import {Tools} from "../../../../../constants/tools";
 
@@ -38,22 +38,14 @@ export interface ShowSummaryDialogProps extends FormDialogProps {
 
 @inject(STORE_LAYOUT, STORE_BUILDER)
 @observer
-export class SummaryDialog extends FormDialog<ShowSummaryDialogProps, FormDialogState> {
+export class BomDialog extends React.Component<ShowSummaryDialogProps, FormDialogState> {
 
   constructor(props: ShowSummaryDialogProps) {
     super(props)
-    this.state = this.getInitialState()
   }
 
-  getInitialState = () => {
-    return {
-      inputs: {},
-      disabled: false
-    }
-  }
-
-  onOK = async () => {
-    this.onClose()
+  onOK = () => {
+    this.props.onClose()
   }
 
   renderRailList = (name: string) => {
@@ -114,8 +106,28 @@ export class SummaryDialog extends FormDialog<ShowSummaryDialogProps, FormDialog
       </>
     )
   }
+
+  render() {
+    const {open, title} = this.props
+    return (
+      <Dialog
+        open={open}
+        onClose={this.onOK}
+      >
+        <DialogTitle>{title}</DialogTitle>
+        <DialogContent>
+          {this.renderContent()}
+        </DialogContent>
+        <DialogActions>
+          <Button color="primary" onClick={this.onOK}>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+    )
+  }
 }
 
 export default compose<ShowSummaryDialogProps, ShowSummaryDialogProps | any>(
   withStyles(styles),
-)(SummaryDialog)
+)(BomDialog)

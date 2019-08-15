@@ -89,7 +89,7 @@ export class ResetPassword extends AuthPiece<ResetPasswordProps & RouteComponent
         <CenteredGrid container>
           <Grid item xs={12}>
             <ValidatorForm
-              ref={(form) => this._form = form}
+              ref={this.getFormRef}
             >
               <TextValidator
                 label="Password"

@@ -45,7 +45,7 @@ export class NewRailGroupDialog extends FormDialog<NewRailGroupDialogProps, Form
     console.log(this.state.inputs)
     return (
       <ValidatorForm
-        ref={(form) => this._form = form}
+        ref={this.getFormRef}
       >
         <AutoFocusTextValidator
           label="Rail Group Name"

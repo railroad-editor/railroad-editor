@@ -33,8 +33,7 @@ export default class SaveLayoutDialog extends FormDialog<SaveLayoutDialogProps, 
 
   getInitialState = () => {
     return {
-      inputs: {},
-      disabled: true,
+      ...super.getInitialState(),
       pickerOpen: false,
       pickerAnchor: null,
     }
@@ -72,7 +71,7 @@ export default class SaveLayoutDialog extends FormDialog<SaveLayoutDialogProps, 
   renderContent = () => {
     return (
       <ValidatorForm
-        ref={(form) => this._form = form}
+        ref={this.getFormRef}
       >
         <AutoFocusTextValidator
           label="Layout Name"

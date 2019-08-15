@@ -29,9 +29,8 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
 
   getInitialState = () => {
     return {
-      inputs: {},
+      ...super.getInitialState(),
       isDouble: false,
-      disabled: true,
     }
   }
 
@@ -97,7 +96,7 @@ export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDia
     // const { innerRadius, outerRadius, radius, centerAngle, name } = this.state.inputs
     return (
       <ValidatorForm
-        ref={(form) => this._form = form}
+        ref={this.getFormRef}
       >
         {this.state.isDouble &&
         <>

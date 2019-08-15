@@ -43,7 +43,7 @@ export class NewSwitcherDialog extends FormDialog<NewSwitcherDialogProps, FormDi
     return (
       <>
         <ValidatorForm
-          ref={(form) => this._form = form}
+          ref={this.getFormRef}
         >
           <AutoFocusTextValidator
             label="Switcher Name"

@@ -40,7 +40,7 @@ export class EditDialog extends FormDialog<EditDialogProps, FormDialogState> {
     console.log(this.state.inputs)
     return (
       <ValidatorForm
-        ref={(form) => this._form = form}
+        ref={this.getFormRef}
       >
         <AutoFocusTextValidator
           label={this.props.title}

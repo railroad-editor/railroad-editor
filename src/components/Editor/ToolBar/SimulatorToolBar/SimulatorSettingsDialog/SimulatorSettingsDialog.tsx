@@ -47,7 +47,7 @@ export class SimulatorSettingsDialog extends FormDialog<SettingsDialogProps, For
     return (
       <>
         <ValidatorForm
-          ref={(form) => this._form = form}
+          ref={this.getFormRef}
         >
           {/*<TextValidator*/}
           {/*label="Paper Width"*/}

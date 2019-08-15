@@ -1,6 +1,6 @@
 import * as React from "react";
 import AutoFocusTextValidator from "components/common/AutoFocusTextValidator";
-import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
+import {FormDialog, FormDialogProps, FormDialogState, FormInputs} from "components/common/FormDialog/FormDialog";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
 import {LayoutStore, PowerPackData} from "store/layoutStore";
@@ -33,14 +33,17 @@ export default class FeederSettingDialog extends FormDialog<FeederSettingDialogP
     this.state = this.getInitialState()
   }
 
+  getInitialInputs(): FormInputs {
+    return _.mapValues(this.props.feeder, (v) => String(v))
+  }
+
   getInitialState = () => {
     const {feeder, powerPacks} = this.props
     const connectedPowerPack = powerPacks.find(p => p.supplyingFeederIds.includes(feeder.id))
     const connectedPowerPackId = connectedPowerPack ? connectedPowerPack.id : null
     return {
-      inputs: _.mapValues(this.props.feeder, (v) => String(v)),
+      ...super.getInitialState(),
       connectedPowerPackId: connectedPowerPackId,
-      disabled: false
     }
   }
 
@@ -72,7 +75,7 @@ export default class FeederSettingDialog extends FormDialog<FeederSettingDialogP
     return (
       <>
         <ValidatorForm
-          ref={(form) => this._form = form}
+          ref={this.getFormRef}
         >
           <AutoFocusTextValidator
             label="Feeder Name"

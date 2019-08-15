@@ -7,13 +7,19 @@ import {TextValidator} from 'react-material-ui-form-validator';
  */
 export default class AutoFocusTextValidator extends React.Component<any, {}> {
 
+  input: any
+
   render() {
     const delay = this.props.delay ? this.props.delay : 250
     return (
       <TextValidator
         {...this.props}
         inputRef={(input) => {
-          if (input) setTimeout(() => input.focus(), delay)
+          // マウント直後の一回のみ実行
+          if (input && ! this.input) {
+            this.input = input
+            setTimeout(() => this.input.focus(), delay)
+          }
         }}
       >
       </TextValidator>

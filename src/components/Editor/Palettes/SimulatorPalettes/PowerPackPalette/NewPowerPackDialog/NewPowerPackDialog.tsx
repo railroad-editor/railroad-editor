@@ -21,13 +21,6 @@ export class NewPowerPackDialog extends FormDialog<NewPowerPackDialogProps, Form
     this.state = this.getInitialState()
   }
 
-  getInitialState = () => {
-    return {
-      inputs: this.props.defaultInputs || {},
-      disabled: false
-    }
-  }
-
   onOK = (e) => {
     this.props.addPowerPack(this.state.inputs.name)
     // this.props.snackbar.showMessage(`Copied to "${this.state.inputs.name}" rail group.`)  //`
@@ -38,7 +31,7 @@ export class NewPowerPackDialog extends FormDialog<NewPowerPackDialogProps, Form
     console.log(this.state.inputs)
     return (
       <ValidatorForm
-        ref={(form) => this._form = form}
+        ref={this.getFormRef}
       >
         <AutoFocusTextValidator
           label="Power Pack Name"

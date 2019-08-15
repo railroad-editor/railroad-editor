@@ -11,19 +11,22 @@ export interface FormDialogProps {
   open: boolean
   onClose: () => void
   title: string
-  defaultInputs?: Inputs
+  defaultInputs?: FormInputs
 }
 
 export interface FormDialogState {
-  inputs: Inputs
+  inputs: FormInputs
   disabled: boolean
 }
 
-export interface Inputs {
+export interface FormInputs {
   [key: string]: string
 }
 
 
+/**
+ *  ユーザーの入力を要求する Form Dialog のベースクラス。
+ */
 export abstract class FormDialog<P extends FormDialogProps, S extends FormDialogState> extends React.Component<P, S> {
 
   _form: ValidatorForm = null
@@ -32,24 +35,47 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
     super(props)
   }
 
-  getInitialState = () => {
+  /**
+   * override me
+   */
+  getInitialInputs(): FormInputs {
+    return {}
+  }
+
+  /**
+   * override and call me
+   */
+  getInitialState(): FormDialogState {
     return {
-      inputs: this.props.defaultInputs || {},
-      disabled: true
+      inputs: {
+        ...this.getInitialInputs(),
+        ...this.props.defaultInputs
+      },
+      disabled: false
     }
   }
 
   abstract onOK: (e: any) => void
 
-  onOKBase = (e) => {
+  abstract renderContent: () => React.ReactNode
+
+  /**
+   * use me to get ref of ValidationForm
+   */
+  getFormRef = (ref) => {
+    if (ref && ! this._form) {
+      this._form = ref
+    }
+  }
+
+  onOKWrapper = (e) => {
     this.onOK(e)
     this.onClose()
   }
 
-  abstract renderContent: () => React.ReactNode
-
   onEnter = () => {
     this.setState(this.getInitialState())
+    this.handleValidation()
   }
 
   onClose = () => {
@@ -100,8 +126,7 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
           {this.renderContent()}
         </DialogContent>
         <DialogActions>
-          <Button color="primary"
-                  disabled={this.state.disabled} onClick={this.onOKBase}>
+          <Button color="primary" disabled={this.state.disabled} onClick={this.onOKWrapper}>
             OK
           </Button>
           <Button onClick={this.onClose} color="primary" autoFocus>

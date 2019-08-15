@@ -1,6 +1,6 @@
 import * as React from "react";
 import AutoFocusTextValidator from "components/common/AutoFocusTextValidator";
-import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
+import {FormDialog, FormDialogProps, FormDialogState, FormInputs} from "components/common/FormDialog/FormDialog";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER} from "constants/stores";
@@ -25,13 +25,9 @@ export default class DistantPlacingDialog extends FormDialog<DistantPlacingDialo
     this.state = this.getInitialState()
   }
 
-  getInitialState = () => {
+  getInitialInputs(): FormInputs {
     return {
-      inputs: {
-        x: '0',
-        y: '0',
-      },
-      disabled: false
+      x: '0', y: '0'
     }
   }
 
@@ -45,7 +41,7 @@ export default class DistantPlacingDialog extends FormDialog<DistantPlacingDialo
     return (
       <>
         <ValidatorForm
-          ref={(form) => this._form = form}
+          ref={this.getFormRef}
         >
           <AutoFocusTextValidator
             label="X"

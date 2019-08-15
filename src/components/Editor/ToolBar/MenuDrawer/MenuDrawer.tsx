@@ -32,7 +32,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import {runInAction} from "mobx";
 import BugReportDialog from "./BugReportDialog/BugReportDialog";
-import ShowSummaryDialog from "./SummaryDialog/SummaryDialog";
+import BomDialog from "./BomDialog/BomDialog";
 
 const LOGGER = getLogger(__filename)
 
@@ -302,7 +302,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
               <ListItemIcon>
                 <AssignmentIcon/>
               </ListItemIcon>
-              <ListItemText primary="Layout Summary"/>
+              <ListItemText primary="Layout BOM"/>
             </ListItem>
             <Divider/>
             <ListItem button component="a" target="_blank" href="http://d2t6ssvra5p03o.cloudfront.net/index.html"
@@ -350,7 +350,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
           loadLayoutList={this.props.common.loadLayoutList}
         />
         <SettingsDialog
-          title={'Settings'}
+          title={'Layout Settings'}
           open={ui.settingsDialog}
           onClose={this.closeSettingsDialog}
           config={this.props.layout.config}
@@ -358,8 +358,8 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
           userInfo={this.props.common.userInfo}
           layoutMeta={this.props.layout.meta}
         />
-        <ShowSummaryDialog
-          title={"Layout Summary"}
+        <BomDialog
+          title={"Layout BOM"}
           open={ui.summaryDialog}
           onClose={this.closeSummaryDialog}
         />

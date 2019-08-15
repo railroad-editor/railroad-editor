@@ -124,7 +124,7 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
             }}
             ref={(view) => {
               this.view = view
-              if (view) window.CANVAS = view.canvas
+              if (view) window.CANVAS = view.canvas.current
             }}
       >
         <Layer

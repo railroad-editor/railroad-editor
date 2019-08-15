@@ -5,7 +5,7 @@ import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import {SmallButton, Spacer} from "components/Editor/Palettes/BuilderPalettes/LayerPalette/LayerSettingDialog/styles";
-import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
+import {FormDialog, FormDialogProps, FormDialogState, FormInputs} from "components/common/FormDialog/FormDialog";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {LayerData} from "store/layoutStore";
 
@@ -31,10 +31,13 @@ export default class LayerSettingDialog extends FormDialog<LayerSettingDialogPro
     this.state = this.getInitialState()
   }
 
+  getInitialInputs(): FormInputs {
+    return _.mapValues(this.props.layer, (v) => String(v))
+  }
+
   getInitialState = () => {
     return {
-      inputs: _.mapValues(this.props.layer, (v) => String(v)),
-      disabled: true,
+      ...super.getInitialState(),
       pickerOpen: false,
       pickerAnchor: null,
     }
@@ -86,7 +89,7 @@ export default class LayerSettingDialog extends FormDialog<LayerSettingDialogPro
     return (
       <>
         <ValidatorForm
-          ref={(form) => this._form = form}
+          ref={this.getFormRef}
         >
           <AutoFocusTextValidator
             label="Layer Name"
