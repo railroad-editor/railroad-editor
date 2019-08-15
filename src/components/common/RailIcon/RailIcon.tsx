@@ -1,6 +1,8 @@
 import * as React from 'react'
 import {ListItemProps} from "@material-ui/core/ListItem";
-import {View} from "react-paper-bindings";
+import {View as ViewComponent} from "react-paper-bindings";
+import {Point, View} from "paper";
+import {RailBase} from "react-rail-components";
 
 export interface RailIconProps extends ListItemProps {
   width: number
@@ -22,34 +24,18 @@ export default class RailIcon extends React.Component<RailIconProps, RailIconSta
     }
   }
 
-  _ref: any
-  _rail: any
+  _view: View
+  _rail: RailBase<any, any>
 
   componentDidMount() {
-    // this._ref.paper.activate()
     const rect = this._rail.railPart.path.bounds
 
-    // const r = new Path.Rectangle(rect)
-    // const position = this._ref.paper.view.projectToView(new Point(this.props.width, this.props.height))
-    const zoom = Math.min(this.props.height / rect.height, this.props.width / rect.width) - 0.01
-    // console.info(rect)
-    this.setState({
-      zoom: zoom
-    })
+    const zoom = Math.min(this.props.height / rect.height, this.props.width / rect.width) + 0.1
+    this._view.scale(zoom, new Point(this.props.width / 2, this.props.height / 2))
   }
 
   render() {
     const {width, height, rail} = this.props
-    const matrix = {
-      sx: width / 2, // scale center x
-      sy: height / 2, // scale center y
-      tx: 0, // translate x
-      ty: 0, // translate y
-      x: 0,
-      y: 0,
-      zoom: this.state.zoom
-    };
-
     const extendedRail = React.cloneElement(rail as any, {
       ...rail.props,
       position: {x: width / 2, y: height / 2},
@@ -66,18 +52,20 @@ export default class RailIcon extends React.Component<RailIconProps, RailIconSta
     })
 
     return (
-      <View width={width}
-            height={height}
-            matrix={matrix}
-            settings={{
-              applyMatrix: false
-            }}
-            ref={(v) => {
-              if (v) this._ref = v
-            }}
+      <ViewComponent
+        width={width}
+        height={height}
+        settings={{
+          applyMatrix: false
+        }}
+        ref={(ref) => {
+          if (ref) {
+            this._view = ref.scope.view
+          }
+        }}
       >
         {extendedRail}
-      </View>
+      </ViewComponent>
     )
   }
 }
