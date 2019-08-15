@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import {Button, CardContent, CardHeader, List} from '@material-ui/core';
-import Slider from '@material-ui/lab/Slider';
+import {Button, CardContent, CardHeader, List, Slider} from '@material-ui/core';
 
 
 export const StyledCardContent = styled(CardContent as any)`

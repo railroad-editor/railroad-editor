@@ -36,7 +36,6 @@ export interface PowerPackCardProps {
 export interface PowerPackCardState {
   anchorEl: HTMLElement
   sliderValue: number
-  sliderDragging: boolean
   dialogOpen: boolean
 }
 
@@ -45,14 +44,17 @@ export interface PowerPackCardState {
 @observer
 export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPackCardState> {
 
+  onSliderChangeThrottled: (e, value) => void
+
   constructor(props: PowerPackCardProps) {
     super(props)
     this.state = {
       anchorEl: null,
       sliderValue: 0,
-      sliderDragging: false,
       dialogOpen: false,
     }
+
+    this.onSliderChangeThrottled = _.throttle(this.onSliderChange, 500, {leading: true, trailing: true})
   }
 
   componentDidUpdate() {
@@ -90,34 +92,15 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
     this.onMenuClose(e)
   }
 
-  onSliderDragStart = (e) => {
-    this.setState({
-      sliderDragging: true
-    })
-  }
-
-  onSliderDragEnd = (e) => {
-    this.setState({
-      sliderDragging: false
-    })
-    this.props.layout.updatePowerPack({
-      id: this.props.item.id,
-      power: this.state.sliderValue
-    })
-
-  }
-
   onSliderChange = (e, value) => {
     const intValue = Math.round(value)
     this.setState({
       sliderValue: value
     })
-    if (! this.state.sliderDragging) {
-      this.props.layout.updatePowerPack({
-        id: this.props.item.id,
-        power: intValue
-      })
-    }
+    this.props.layout.updatePowerPack({
+      id: this.props.item.id,
+      power: intValue
+    })
   }
 
   onDirectionChange = (e) => {
@@ -188,9 +171,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
             <StyledSlider
               max={255}
               value={this.state.sliderValue}
-              onChange={this.onSliderChange}
-              onDragStart={this.onSliderDragStart}
-              onDragEnd={this.onSliderDragEnd}
+              onChange={this.onSliderChangeThrottled}
               aria-labelledby="label"
             />
             <StyledList>
