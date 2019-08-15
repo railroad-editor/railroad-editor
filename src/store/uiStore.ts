@@ -26,7 +26,7 @@ const INITIAL_STATE = {
   registeredRailGroupSnackbar: false,
   bugReportSnackbar: false,
   registeredRailGroupSnackbarMessage: "",
-  noSessionSnackbar: false,
+  remoteNotConnectedSnackbar: false,
   remoteConnectedSnackbar: false,
 }
 
@@ -50,14 +50,14 @@ export class UiStore {
   @observable registeredRailGroupSnackbar: boolean
   @observable registeredRailGroupSnackbarMessage: string
   @observable bugReportSnackbar: boolean
-  @observable noSessionSnackbar: boolean
+  @observable remoteNotConnectedSnackbar: boolean
   @observable remoteConnectedSnackbar: boolean
 
   constructor({
                 drawer, layoutsDialog, createNewDialog, saveNewDialog, loginDialog, signInDialog, settingsDialog,
                 bugReportDialog, summaryDialog, editorMode, savedLayoutSnackbar, requireLoginSnackbar, loggedInSnackbar,
                 noRailForGroupSnackbar, registeredRailGroupSnackbar, bugReportSnackbar, registeredRailGroupSnackbarMessage,
-                noSessionSnackbar, remoteConnectedSnackbar, loadedLayoutSnackbar
+                remoteNotConnectedSnackbar, remoteConnectedSnackbar, loadedLayoutSnackbar
               }) {
     this.drawer = drawer
     this.layoutsDialog = layoutsDialog
@@ -77,7 +77,7 @@ export class UiStore {
     this.registeredRailGroupSnackbar = registeredRailGroupSnackbar
     this.bugReportSnackbar = bugReportSnackbar
     this.registeredRailGroupSnackbarMessage = registeredRailGroupSnackbarMessage
-    this.noSessionSnackbar = noSessionSnackbar
+    this.remoteNotConnectedSnackbar = remoteNotConnectedSnackbar
     this.remoteConnectedSnackbar = remoteConnectedSnackbar
   }
 
@@ -174,8 +174,8 @@ export class UiStore {
   }
 
   @action
-  setNoSessionSnackbar = (open: boolean) => {
-    this.noSessionSnackbar = open
+  setRemoteNotConnectedSnackbar = (open: boolean) => {
+    this.remoteNotConnectedSnackbar = open
   }
 
   @action

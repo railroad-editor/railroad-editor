@@ -222,7 +222,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
   }
 
   closeNoSessionSnackbar = () => {
-    this.props.ui.setNoSessionSnackbar(false)
+    this.props.ui.setRemoteNotConnectedSnackbar(false)
   }
 
   closeRemoteConnectedSnackbar = () => {
@@ -419,48 +419,48 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
         <Portal container={this.appRoot}>
           <MySnackbar open={ui.requireLoginSnackbar}
                       onClose={this.closeRequireLoginSnackbar}
-                      message={<span>Please login.</span>}
+                      message={'Please login.'}
                       variant="error"
           />
           <MySnackbar open={ui.savedLayoutSnackbar}
                       onClose={this.closeSavedLayoutSnackbar}
-                      message={<span>Layout saved.</span>}
+                      message={'Layout saved.'}
                       variant="success"
           />
           <MySnackbar open={ui.loadedLayoutSnackbar}
                       onClose={this.closeLoadedLayoutSnackbar}
-                      message={<span>Layout loaded.</span>}
+                      message={'Layout loaded.'}
                       variant="success"
           />
           <MySnackbar open={ui.loggedInSnackbar}
                       onClose={this.closeLoggedInSnackbar}
-                      message={<span>Logged-in successfully.</span>}
+                      message={'Logged-in successfully.'}
                       variant="success"
           />
 
           <MySnackbar open={ui.noRailForGroupSnackbar}
                       onClose={this.closeNoRailForGroupSnackbar}
-                      message={<span>Please select at least one rail.</span>}
+                      message={'Please select at least one rail.'}
                       variant="warning"
           />
           <MySnackbar open={ui.registeredRailGroupSnackbar}
                       onClose={this.closeRegisteredRailGroupSnackbar}
-                      message={<span>{ui.registeredRailGroupSnackbarMessage}</span>}
+                      message={ui.registeredRailGroupSnackbarMessage}
                       variant="success"
           />
           <MySnackbar open={ui.bugReportSnackbar}
                       onClose={this.closeBugReportSnackbar}
-                      message={<span>Your issue is submitted successfully. Thank you for reporting!</span>}
+                      message={'Your issue is submitted successfully. Thank you for reporting!'}
                       variant="success"
           />
-          <MySnackbar open={ui.noSessionSnackbar}
+          <MySnackbar open={ui.remoteNotConnectedSnackbar}
                       onClose={this.closeNoSessionSnackbar}
-                      message={<span>No session found. Please run Railroad Controller CLI first.</span>}
+                      message={'Could not connect to remote Railroad Controller'}
                       variant="error"
           />
           <MySnackbar open={ui.remoteConnectedSnackbar}
                       onClose={this.closeRemoteConnectedSnackbar}
-                      message={<span>Connected to remote Railroad Controller.</span>}
+                      message={'Connected to remote Railroad Controller.'}
                       variant="success"
           />
         </Portal>

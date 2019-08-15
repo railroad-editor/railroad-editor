@@ -13,7 +13,7 @@ import SettingsRemoteIcon from '@material-ui/icons/SettingsRemote'
 import {BuilderStore} from "store/builderStore";
 import {SimulatorLogicStore} from "store/simulatorLogicStore";
 import {LayoutStore} from "store/layoutStore";
-import TrainController, {NoSessionError} from "components/Editor/ToolBar/SimulatorToolBar/TrainController";
+import TrainController from "components/Editor/ToolBar/SimulatorToolBar/TrainController";
 import {UiStore} from "../../../../store/uiStore";
 
 const LOGGER = getLogger(__filename)
@@ -51,14 +51,14 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
 
   onRemoteConnect = async (e) => {
     await TrainController.connect(this.props.common.userInfo.username, this.props.layout.meta.id)
-      .catch(err => {
-        if (err instanceof NoSessionError) {
-          this.props.ui.setNoSessionSnackbar(true)
-        }
+      .then(ret => {
+        this.props.ui.setRemoteConnectedSnackbar(true)
+        TrainController.configure(this.props.layout.trainControllerConfig)
       })
-    this.props.ui.setRemoteConnectedSnackbar(true)
-    await TrainController.configure(this.props.layout.trainControllerConfig)
-
+      .catch(err => {
+        this.props.ui.setRemoteNotConnectedSnackbar(true)
+        return {err}
+      })
   }
 
   render() {

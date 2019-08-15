@@ -7,10 +7,24 @@ import {TrainControllerConfig} from "store/layoutStore";
 
 const LOGGER = getLogger(__filename)
 
-export class NoSessionError extends Error {
+export class SessionError extends Error {
   constructor(...args) {
     super(...args)
-    Error.captureStackTrace(this, NoSessionError)
+    Error.captureStackTrace(this, SessionError)
+  }
+}
+
+export class PeerError extends Error {
+  constructor(...args) {
+    super(...args)
+    Error.captureStackTrace(this, PeerError)
+  }
+}
+
+export class ConnectionError extends Error {
+  constructor(...args) {
+    super(...args)
+    Error.captureStackTrace(this, ConnectionError)
   }
 }
 
@@ -22,8 +36,9 @@ class TrainController {
   connect = async (username: string, layoutId: string) => {
     // Controller CLIがセッションを作成済みか調べる
     let session: any = await SessionAPI.fetchSession(username, layoutId)
-      .catch((reason) => {
-        throw new NoSessionError('No session.')
+      .catch((err) => {
+        LOGGER.error(err)
+        throw new SessionError(err)
       })
 
     if (! session) {
@@ -37,10 +52,11 @@ class TrainController {
 
     this.peer.on('open', id => {
       this.peerId = id
-      console.log('This peer ID:', this.peerId)
+      LOGGER.info('This peer ID:', this.peerId)
     })
     this.peer.on('error', err => {
-      console.log(err)
+      LOGGER.error(err)
+      throw new PeerError(err)
     })
 
     // wait until peer is open
@@ -52,20 +68,21 @@ class TrainController {
 
     this.conn.once('open', () => {
       const remoteId = this.conn.remoteId;
-      console.log(`Connection opened. Remote Peer ID: ${remoteId}`);
-      console.log('Remote Peer ID', remoteId);
+      LOGGER.info(`Connection opened. Remote Peer ID: ${remoteId}`);
+      LOGGER.info('Remote Peer ID', remoteId);
     });
 
     this.conn.on('data', data => {
-      console.log(`Remote data: ${data}\n`);
+      LOGGER.info(`Remote data: ${data}\n`);
     });
 
     this.conn.once('close', () => {
-      console.log('Connection closed.');
+      LOGGER.info('Connection closed.');
     });
 
     this.conn.on('error', err => {
-      console.log(err);
+      LOGGER.error(err);
+      throw new ConnectionError(err)
     });
 
     // wait until connection is open
