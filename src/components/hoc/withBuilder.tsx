@@ -207,10 +207,10 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     keyDown_CtrlS = async (e) => {
       if (this.props.common.isAuth) {
         await this.props.layoutLogic.saveLayout()
-        this.props.ui.setSaveSnackbar(true)
+        this.props.ui.setSavedLayoutSnackbar(true)
       } else {
         this.props.ui.setLoginDialog(true)
-        this.props.ui.setLoginSnackbar(true)
+        this.props.ui.setRequireLoginSnackbar(true)
       }
     }
 

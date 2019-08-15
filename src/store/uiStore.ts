@@ -18,8 +18,9 @@ const INITIAL_STATE = {
   summaryDialog: false,
   bugReportDialog: false,
   editorMode: EditorMode.BUILDER,
-  saveSnackbar: false,
-  loginSnackbar: false,
+  savedLayoutSnackbar: false,
+  loadedLayoutSnackbar: false,
+  requireLoginSnackbar: false,
   loggedInSnackbar: false,
   noRailForGroupSnackbar: false,
   registeredRailGroupSnackbar: false,
@@ -41,8 +42,9 @@ export class UiStore {
   @observable summaryDialog: boolean
   @observable bugReportDialog: boolean
   @observable editorMode: EditorMode
-  @observable saveSnackbar: boolean
-  @observable loginSnackbar: boolean
+  @observable savedLayoutSnackbar: boolean
+  @observable loadedLayoutSnackbar: boolean
+  @observable requireLoginSnackbar: boolean
   @observable loggedInSnackbar: boolean
   @observable noRailForGroupSnackbar: boolean
   @observable registeredRailGroupSnackbar: boolean
@@ -53,9 +55,9 @@ export class UiStore {
 
   constructor({
                 drawer, layoutsDialog, createNewDialog, saveNewDialog, loginDialog, signInDialog, settingsDialog,
-                bugReportDialog, summaryDialog, editorMode, saveSnackbar, loginSnackbar, loggedInSnackbar,
+                bugReportDialog, summaryDialog, editorMode, savedLayoutSnackbar, requireLoginSnackbar, loggedInSnackbar,
                 noRailForGroupSnackbar, registeredRailGroupSnackbar, bugReportSnackbar, registeredRailGroupSnackbarMessage,
-                noSessionSnackbar, remoteConnectedSnackbar
+                noSessionSnackbar, remoteConnectedSnackbar, loadedLayoutSnackbar
               }) {
     this.drawer = drawer
     this.layoutsDialog = layoutsDialog
@@ -67,8 +69,9 @@ export class UiStore {
     this.settingsDialog = settingsDialog
     this.summaryDialog = summaryDialog
     this.bugReportDialog = bugReportDialog
-    this.saveSnackbar = saveSnackbar
-    this.loginSnackbar = loginSnackbar
+    this.savedLayoutSnackbar = savedLayoutSnackbar
+    this.loadedLayoutSnackbar = loadedLayoutSnackbar
+    this.requireLoginSnackbar = requireLoginSnackbar
     this.loggedInSnackbar = loggedInSnackbar
     this.noRailForGroupSnackbar = noRailForGroupSnackbar
     this.registeredRailGroupSnackbar = registeredRailGroupSnackbar
@@ -89,7 +92,7 @@ export class UiStore {
       this.layoutsDialog = open
     } else {
       this.setLoginDialog(open)
-      this.setLoginSnackbar(open)
+      this.setRequireLoginSnackbar(open)
     }
   }
 
@@ -104,7 +107,7 @@ export class UiStore {
       this.saveNewDialog = open
     } else {
       this.setLoginDialog(open)
-      this.setLoginSnackbar(open)
+      this.setRequireLoginSnackbar(open)
     }
   }
 
@@ -133,14 +136,20 @@ export class UiStore {
     this.bugReportDialog = open
   }
 
+
   @action
-  setSaveSnackbar = (open: boolean) => {
-    this.saveSnackbar = open
+  setSavedLayoutSnackbar = (open: boolean) => {
+    this.savedLayoutSnackbar = open
   }
 
   @action
-  setLoginSnackbar = (open: boolean) => {
-    this.loginSnackbar = open
+  setLoadedLayoutSnackbar = (open: boolean) => {
+    this.loadedLayoutSnackbar = open
+  }
+
+  @action
+  setRequireLoginSnackbar = (open: boolean) => {
+    this.requireLoginSnackbar = open
   }
 
   @action

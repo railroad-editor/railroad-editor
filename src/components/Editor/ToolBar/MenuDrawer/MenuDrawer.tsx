@@ -69,11 +69,16 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
     this.props.onClose()
   }
 
+  loadLayout = async (layoutId: string) => {
+    await this.props.layoutLogic.loadLayout(layoutId)
+    this.props.ui.setLoadedLayoutSnackbar(true)
+  }
+
   openLoginDialogIfNot = () => {
     if (! this.props.common.isAuth) {
       this.props.ui.setDrawer(false)
       this.props.ui.setLoginDialog(true)
-      this.props.ui.setLoginSnackbar(true)
+      this.props.ui.setRequireLoginSnackbar(true)
       return true
     }
     return false
@@ -138,7 +143,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
     // 先にDrawerを閉じる
     this.props.onClose()
     await this.props.layoutLogic.saveLayout()
-    this.props.ui.setSaveSnackbar(true)
+    this.props.ui.setSavedLayoutSnackbar(true)
   }
 
   onSaveAs = async (meta: LayoutMeta) => {
@@ -150,7 +155,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
     // metaを更新してから保存する
     this.props.layout.setLayoutMeta(meta)
     await this.props.layoutLogic.saveLayout()
-    this.props.ui.setSaveSnackbar(true)
+    this.props.ui.setSavedLayoutSnackbar(true)
   }
 
   openSettingsDialog = () => {
@@ -184,12 +189,16 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
     this.props.onClose()
   }
 
-  closeLoginSnackbar = () => {
-    this.props.ui.setLoginSnackbar(false)
+  closeRequireLoginSnackbar = () => {
+    this.props.ui.setRequireLoginSnackbar(false)
   }
 
-  closeSavedSnackbar = () => {
-    this.props.ui.setSaveSnackbar(false)
+  closeSavedLayoutSnackbar = () => {
+    this.props.ui.setSavedLayoutSnackbar(false)
+  }
+
+  closeLoadedLayoutSnackbar = () => {
+    this.props.ui.setLoadedLayoutSnackbar(false)
   }
 
   closeLoggedInSnackbar = () => {
@@ -262,7 +271,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
             onClose={this.closeLayoutsDialog}
             authData={this.props.common.userInfo}
             layouts={this.props.common.layouts}
-            loadLayout={this.props.layoutLogic.loadLayout}
+            loadLayout={this.loadLayout}
             loadLayoutList={this.props.common.loadLayoutList}
           />
         </>
@@ -406,14 +415,19 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
         {dialogs}
 
         <Portal container={this.appRoot}>
-          <MySnackbar open={ui.loginSnackbar}
-                      onClose={this.closeLoginSnackbar}
-                      message={<span>Please Login.</span>}
+          <MySnackbar open={ui.requireLoginSnackbar}
+                      onClose={this.closeRequireLoginSnackbar}
+                      message={<span>Please login.</span>}
                       variant="error"
           />
-          <MySnackbar open={ui.saveSnackbar}
-                      onClose={this.closeSavedSnackbar}
-                      message={<span>Layout Saved.</span>}
+          <MySnackbar open={ui.savedLayoutSnackbar}
+                      onClose={this.closeSavedLayoutSnackbar}
+                      message={<span>Layout saved.</span>}
+                      variant="success"
+          />
+          <MySnackbar open={ui.loadedLayoutSnackbar}
+                      onClose={this.closeLoadedLayoutSnackbar}
+                      message={<span>Layout loaded.</span>}
                       variant="success"
           />
           <MySnackbar open={ui.loggedInSnackbar}
