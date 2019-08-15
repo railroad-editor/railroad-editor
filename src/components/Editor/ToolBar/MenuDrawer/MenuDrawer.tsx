@@ -10,12 +10,13 @@ import LoginIcon from "@material-ui/icons/LockOpen";
 import LogoutIcon from "@material-ui/icons/Lock";
 import HelpIcon from "@material-ui/icons/Help";
 import BugReportIcon from "@material-ui/icons/BugReport";
+import ArchiveIcon from "@material-ui/icons/Archive";
 import OpenLayoutsDialog from "components/Editor/ToolBar/MenuDrawer/OpenLayoutsDialog/OpenLayoutsDialog";
 import Auth from "aws-amplify/lib/Auth";
 import Divider from "@material-ui/core/Divider";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI} from "constants/stores";
+import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_PAPER, STORE_UI} from "constants/stores";
 import {CommonStore} from "store/commonStore";
 import {LayoutMeta, LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
@@ -32,6 +33,8 @@ import {runInAction} from "mobx";
 import BugReportDialog from "./BugReportDialog/BugReportDialog";
 import BomDialog from "./BomDialog/BomDialog";
 import MySnackbar from "../../../common/Snackbar/MySnackbar";
+import {PaperStore} from "../../../../store/paperStore.";
+import * as moment from "moment";
 
 const LOGGER = getLogger(__filename)
 
@@ -45,13 +48,14 @@ export interface MenuDrawerProps {
   layoutLogic?: LayoutLogicStore
   builder?: BuilderStore
   ui?: UiStore
+  paper?: PaperStore
 }
 
 export interface MenuDrawerState {
 }
 
 
-@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI)
+@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI, STORE_PAPER)
 @observer
 export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState> {
 
@@ -226,20 +230,19 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
   }
 
   /**
-   * レイアウトをSVGファイルに変換し、ダウンロードする。
-   * 現在、実行後に画面に何も表示されなくなる問題を調査中。
-   * @param e
+   * レイアウトをSVGファイルに変換し、ダウンロードする
    */
   downloadAsSVG = (e) => {
-    // const basename = this.props.layout.meta.name
-    // const fileName = `${basename}-${moment().format('YYYYMMDD')}`  //`
-    //
-    // const svg = window.PAPER_SCOPE.project.exportSVG({asString: true})
-    // const url = "data:image/svg+xml;utf8," + encodeURIComponent(svg)
-    // const link = document.createElement("a");
-    // link.download = fileName;
-    // link.href = url;
-    // link.click();
+    const basename = this.props.layout.meta.name
+    const fileName = `${basename}-${moment().format('YYYYMMDD')}`  //`
+
+    const svg = this.props.paper.scope.project.exportSVG({asString: true})
+    const url = "data:image/svg+xml;utf8," + encodeURIComponent(svg as any)
+    const link = document.createElement("a");
+    link.download = fileName;
+    link.href = url;
+    link.click();
+    this.props.onClose()
   }
 
 
@@ -348,6 +351,12 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
               </ListItemIcon>
               <ListItemText primary="BOM"/>
             </ListItem>
+            <ListItem button onClick={this.downloadAsSVG}>
+              <ListItemIcon>
+                <ArchiveIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Export as SVG"/>
+            </ListItem>
             <Divider/>
             <ListItem button component="a" target="_blank" href="http://d2t6ssvra5p03o.cloudfront.net/index.html"
                       onClick={this.onOpenUserManual}
@@ -363,14 +372,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
               </ListItemIcon>
               <ListItemText primary="Report a Bug"/>
             </ListItem>
-            {/*<ListItem button onClick={this.downloadAsSVG}>*/}
-            {/*<ListItemIcon>*/}
-            {/*<ArchiveIcon/>*/}
-            {/*</ListItemIcon>*/}
-            {/*<ListItemText primary="Export as SVG"/>*/}
-            {/*</ListItem>*/}
           </List>
-
         </Drawer>
 
         <SaveLayoutDialog
