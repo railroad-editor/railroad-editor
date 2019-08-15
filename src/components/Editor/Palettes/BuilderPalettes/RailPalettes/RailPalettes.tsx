@@ -12,31 +12,31 @@ import CustomStraightRailDialog
 import CustomCurveRailDialog
   from "components/Editor/Palettes/BuilderPalettes/RailPalettes/RailPalette/CustomCurveRailDialog/CustomCurveRailDialog";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
+import {STORE_BUILDER, STORE_LAYOUT, STORE_UI} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
 import NewRailGroupDialog
   from "components/Editor/Palettes/BuilderPalettes/RailPalettes/RailPalette/NewRailGroupDialog/NewRailGroupDialog";
 import {compose} from "recompose";
 import withBuilder, {WithBuilderPublicProps} from "components/hoc/withBuilder";
 import {LayoutStore} from "store/layoutStore";
-import {withSnackbar} from 'material-ui-snackbar-provider'
+import {UiStore} from "../../../../../store/uiStore";
 
 
 export interface PaletteProps {
   className?: string
   builder?: BuilderStore
   layout?: LayoutStore
-  snackbar: any
+  ui?: UiStore
 }
 
 export interface PaletteState {
   customDialogOpen: boolean
 }
 
-type EnhancedPaletteProps = PaletteProps & WithBuilderPublicProps & WithSnackbarProps
+type EnhancedPaletteProps = PaletteProps & WithBuilderPublicProps
 
 
-@inject(STORE_BUILDER, STORE_LAYOUT)
+@inject(STORE_BUILDER, STORE_LAYOUT, STORE_UI)
 @observer
 export class RailPalettes extends React.Component<EnhancedPaletteProps, PaletteState> {
 
@@ -53,7 +53,7 @@ export class RailPalettes extends React.Component<EnhancedPaletteProps, PaletteS
 
   openCustomDialog = () => {
     if (this.props.layout.selectedRails.length === 0 && this.isActive(Tools.RAIL_GROUPS)) {
-      this.props.snackbar.showMessage(`Please select at least one rail.`)  //`
+      this.props.ui.setNoRailForGroupSnackbar(true)
       return
     }
     this.setState({
@@ -164,6 +164,5 @@ export class RailPalettes extends React.Component<EnhancedPaletteProps, PaletteS
 
 export default compose<PaletteProps, EnhancedPaletteProps | any>(
   withBuilder,
-  withSnackbar()
 )(RailPalettes)
 

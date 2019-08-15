@@ -63,7 +63,7 @@ class App extends React.Component<AppProps, {}> {
   render() {
     console.log(process.env)
     return (
-      <div className='App'>
+      <div id="app" className='App'>
         <Helmet>
           <meta charSet="utf-8"/>
           <title>Railroad Editor (Beta)</title>

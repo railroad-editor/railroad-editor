@@ -2,8 +2,9 @@ import * as React from 'react'
 import Dialog from "@material-ui/core/Dialog";
 import AuthWrapper from "components/common/AuthWrapper/AuthWrapper";
 import {AuthData, AuthState} from "components/common/Authenticator/AuthPiece/AuthPiece";
-import {withSnackbar} from 'material-ui-snackbar-provider'
-import {compose} from "recompose";
+import {inject, observer} from "mobx-react";
+import {STORE_UI} from "../../../../../constants/stores";
+import {UiStore} from "../../../../../store/uiStore";
 
 
 export interface LoginDialogProps {
@@ -11,12 +12,13 @@ export interface LoginDialogProps {
   onClose: () => void
   setAuthData: (authData: AuthData) => void
   loadLayoutList: () => void
-
-  snackbar?: any
+  ui?: UiStore
 }
 
 
-export class LoginDialog extends React.Component<LoginDialogProps, {}> {
+@inject(STORE_UI)
+@observer
+export default class LoginDialog extends React.Component<LoginDialogProps, {}> {
 
   constructor(props: LoginDialogProps) {
     super(props)
@@ -25,7 +27,7 @@ export class LoginDialog extends React.Component<LoginDialogProps, {}> {
   }
 
   onSignedIn = () => {
-    this.props.snackbar.showMessage('Logged-in successfully!')
+    this.props.ui.setLoggedInSnackbar(true)
     this.props.loadLayoutList()
     this.props.onClose()
   }
@@ -46,6 +48,3 @@ export class LoginDialog extends React.Component<LoginDialogProps, {}> {
   }
 }
 
-export default compose<LoginDialogProps, LoginDialogProps>(
-  withSnackbar(),
-)(LoginDialog)

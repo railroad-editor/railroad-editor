@@ -7,11 +7,6 @@ declare interface Window {
 }
 
 
-declare interface WithSnackbarProps {
-  snackbar: any
-}
-
-
 declare module paper {
   export interface Item {
     localToOther: (item: Item, point: Point) => Point

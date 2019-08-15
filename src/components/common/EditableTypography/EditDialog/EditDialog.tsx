@@ -3,8 +3,6 @@ import getLogger from "logging";
 import AutoFocusTextValidator from "components/common/AutoFocusTextValidator";
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
 import {ValidatorForm} from 'react-material-ui-form-validator';
-import {compose} from "recompose";
-import {withSnackbar} from 'material-ui-snackbar-provider'
 
 const LOGGER = getLogger(__filename)
 
@@ -15,7 +13,7 @@ export interface EditDialogProps extends FormDialogProps {
 }
 
 
-export class EditDialog extends FormDialog<EditDialogProps, FormDialogState> {
+export default class EditDialog extends FormDialog<EditDialogProps, FormDialogState> {
 
   constructor(props: EditDialogProps) {
     super(props)
@@ -59,7 +57,3 @@ export class EditDialog extends FormDialog<EditDialogProps, FormDialogState> {
   }
 }
 
-
-export default compose<EditDialogProps, EditDialogProps>(
-  withSnackbar()
-)(EditDialog)

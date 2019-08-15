@@ -10,8 +10,10 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Grid from "@material-ui/core/Grid";
 import FormControl from "@material-ui/core/FormControl";
 import IssuesAPI from "apis/issues";
-import {withSnackbar} from 'material-ui-snackbar-provider'
 import {compose} from "recompose";
+import {inject, observer} from "mobx-react";
+import {STORE_UI} from "../../../../../constants/stores";
+import {UiStore} from "../../../../../store/uiStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -28,10 +30,12 @@ const styles = theme => ({
 
 export interface BugReportDialogProps extends FormDialogProps {
   classes: any
-  snackbar: any
+  ui?: UiStore
 }
 
 
+@inject(STORE_UI)
+@observer
 export class BugReportDialog extends FormDialog<BugReportDialogProps, FormDialogState> {
 
   constructor(props: BugReportDialogProps) {
@@ -52,7 +56,7 @@ export class BugReportDialog extends FormDialog<BugReportDialogProps, FormDialog
       title: issueTitle,
       comment: issueComment,
     })
-    this.props.snackbar.showMessage('Your issue is submitted successfully. Thank you for reporting!')
+    this.props.ui.setBugReportSnackbar(true)
     this.onClose()
   }
 
@@ -119,5 +123,4 @@ export class BugReportDialog extends FormDialog<BugReportDialogProps, FormDialog
 
 export default compose<BugReportDialogProps, BugReportDialogProps | any>(
   withStyles(styles),
-  withSnackbar()
 )(BugReportDialog)

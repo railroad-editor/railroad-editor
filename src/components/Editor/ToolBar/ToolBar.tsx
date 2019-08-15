@@ -14,7 +14,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import getLogger from "logging";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
+import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
 import {CommonStore} from "store/commonStore";
 import MenuDrawer from "components/Editor/ToolBar/MenuDrawer/MenuDrawer";
@@ -25,7 +25,7 @@ import {LayoutLogicStore} from "store/layoutLogicStore";
 import BuilderToolBar from "components/Editor/ToolBar/BuilderToolBar/BuilderToolBar";
 import withMoveTool from "components/hoc/withMoveTool";
 import SimulatorToolBar from "components/Editor/ToolBar/SimulatorToolBar/SimulatorToolBar";
-import {EditorMode} from "store/uiStore";
+import {EditorMode, UiStore} from "store/uiStore";
 import BuildIcon from '@material-ui/icons/Build';
 import PlayArrowIcon from '@material-ui/icons/PlayCircleFilled';
 
@@ -37,33 +37,29 @@ export interface ToolBarProps {
   builder?: BuilderStore
   layout?: LayoutStore
   layoutLogic?: LayoutLogicStore
+  ui?: UiStore
 
   resetViewPosition: () => void
-  snackbar: any
   classes?: any
 }
 
 export interface ToolBarState {
-  openMenu: boolean
   openSettings: boolean
   el: HTMLElement | undefined
   editorMode: EditorMode
 }
 
 
-@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
+@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI)
 @observer
 export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
 
   myPeerId: string
   peer: Peer
-  targetPeerId: string
-  conn: any
 
   constructor(props: ToolBarProps) {
     super(props)
     this.state = {
-      openMenu: false,
       openSettings: false,
       el: undefined,
       editorMode: EditorMode.BUILDER
@@ -83,18 +79,13 @@ export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
 
   }
 
-
   openMenu = (e) => {
     LOGGER.info(this.props.layout.meta)
-    this.setState({
-      openMenu: true,
-    })
+    this.props.ui.setDrawer(true)
   }
 
   closeMenu = () => {
-    this.setState({
-      openMenu: false,
-    })
+    this.props.ui.setDrawer(false)
   }
 
   setLayoutName = (text: string) => {
@@ -119,7 +110,7 @@ export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
                   <MenuIcon/>
                 </StyledIconButton>
               </Tooltip>
-              <MenuDrawer open={this.state.openMenu} onClose={this.closeMenu}/>
+              <MenuDrawer open={this.props.ui.drawer} onClose={this.closeMenu}/>
 
               <Tooltip title={'Layout Name'}>
                 <EditableTypography

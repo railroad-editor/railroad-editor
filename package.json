@@ -39,7 +39,6 @@
     "logdown": "^3.2.3",
     "loglevel": "^1.6.1",
     "material-ui-image": "^3.0.0",
-    "material-ui-snackbar-provider": "^1.1.0",
     "mobx": "5.10.0",
     "mobx-devtools-mst": "^0.9.14",
     "mobx-react": "5.4.4",

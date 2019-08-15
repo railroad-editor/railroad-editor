@@ -204,7 +204,6 @@ export default compose<EditorProps | any, EditorProps | any>(
   withTools,
   withMoveTool,
   withSelectTool,
-  // withSnackbar(),
   // connect(mapStateToProps, mapDispatchToProps)
 )(Editor)
 

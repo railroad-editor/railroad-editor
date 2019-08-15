@@ -41,7 +41,6 @@ export interface BuilderToolBarProps {
   layoutLogic?: LayoutLogicStore
 
   resetViewPosition: () => void
-  snackbar: any
 }
 
 export interface BuilderToolBarState {

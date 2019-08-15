@@ -30,7 +30,7 @@ export class LayoutLogicStore {
    * レイアウト Save/Load
    */
   @action
-  saveLayout = async (showMessage?: any) => {
+  saveLayout = async () => {
 
     const userId = commonStore.userInfo.username
     // メタデータを更新
@@ -55,7 +55,6 @@ export class LayoutLogicStore {
     }
 
     await commonStore.loadLayoutList()
-    if (showMessage) showMessage("Saved successfully.")
   }
 
   @action

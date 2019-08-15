@@ -8,6 +8,7 @@ export enum EditorMode {
 
 
 const INITIAL_STATE = {
+  drawer: false,
   layoutsDialog: false,
   createNewDialog: false,
   saveNewDialog: false,
@@ -17,10 +18,20 @@ const INITIAL_STATE = {
   summaryDialog: false,
   bugReportDialog: false,
   editorMode: EditorMode.BUILDER,
+  saveSnackbar: false,
+  loginSnackbar: false,
+  loggedInSnackbar: false,
+  noRailForGroupSnackbar: false,
+  registeredRailGroupSnackbar: false,
+  bugReportSnackbar: false,
+  registeredRailGroupSnackbarMessage: "",
+  noSessionSnackbar: false,
+  remoteConnectedSnackbar: false,
 }
 
 
 export class UiStore {
+  @observable drawer: boolean
   @observable layoutsDialog: boolean
   @observable createNewDialog: boolean
   @observable saveNewDialog: boolean
@@ -30,11 +41,23 @@ export class UiStore {
   @observable summaryDialog: boolean
   @observable bugReportDialog: boolean
   @observable editorMode: EditorMode
+  @observable saveSnackbar: boolean
+  @observable loginSnackbar: boolean
+  @observable loggedInSnackbar: boolean
+  @observable noRailForGroupSnackbar: boolean
+  @observable registeredRailGroupSnackbar: boolean
+  @observable registeredRailGroupSnackbarMessage: string
+  @observable bugReportSnackbar: boolean
+  @observable noSessionSnackbar: boolean
+  @observable remoteConnectedSnackbar: boolean
 
   constructor({
-                layoutsDialog, createNewDialog, saveNewDialog, loginDialog, signInDialog, settingsDialog,
-                bugReportDialog, summaryDialog, editorMode
+                drawer, layoutsDialog, createNewDialog, saveNewDialog, loginDialog, signInDialog, settingsDialog,
+                bugReportDialog, summaryDialog, editorMode, saveSnackbar, loginSnackbar, loggedInSnackbar,
+                noRailForGroupSnackbar, registeredRailGroupSnackbar, bugReportSnackbar, registeredRailGroupSnackbarMessage,
+                noSessionSnackbar, remoteConnectedSnackbar
               }) {
+    this.drawer = drawer
     this.layoutsDialog = layoutsDialog
     this.createNewDialog = createNewDialog
     this.saveNewDialog = saveNewDialog
@@ -44,15 +67,29 @@ export class UiStore {
     this.settingsDialog = settingsDialog
     this.summaryDialog = summaryDialog
     this.bugReportDialog = bugReportDialog
+    this.saveSnackbar = saveSnackbar
+    this.loginSnackbar = loginSnackbar
+    this.loggedInSnackbar = loggedInSnackbar
+    this.noRailForGroupSnackbar = noRailForGroupSnackbar
+    this.registeredRailGroupSnackbar = registeredRailGroupSnackbar
+    this.bugReportSnackbar = bugReportSnackbar
+    this.registeredRailGroupSnackbarMessage = registeredRailGroupSnackbarMessage
+    this.noSessionSnackbar = noSessionSnackbar
+    this.remoteConnectedSnackbar = remoteConnectedSnackbar
   }
 
   @action
-  setLayoutsDialog = (open: boolean, showMessage?) => {
+  setDrawer = (open: boolean) => {
+    this.drawer = open
+  }
+
+  @action
+  setLayoutsDialog = (open: boolean) => {
     if (commonStore.isAuth) {
       this.layoutsDialog = open
     } else {
-      if (open) showMessage("Please login.")
       this.setLoginDialog(open)
+      this.setLoginSnackbar(open)
     }
   }
 
@@ -62,12 +99,12 @@ export class UiStore {
   }
 
   @action
-  setSaveNewDialog = (open: boolean, showMessage?) => {
+  setSaveNewDialog = (open: boolean) => {
     if (commonStore.isAuth) {
       this.saveNewDialog = open
     } else {
-      if (open) showMessage("Please login.")
       this.setLoginDialog(open)
+      this.setLoginSnackbar(open)
     }
   }
 
@@ -94,6 +131,47 @@ export class UiStore {
   @action
   setBugReportDialog = (open: boolean) => {
     this.bugReportDialog = open
+  }
+
+  @action
+  setSaveSnackbar = (open: boolean) => {
+    this.saveSnackbar = open
+  }
+
+  @action
+  setLoginSnackbar = (open: boolean) => {
+    this.loginSnackbar = open
+  }
+
+  @action
+  setLoggedInSnackbar = (open: boolean) => {
+    this.loggedInSnackbar = open
+  }
+
+  @action
+  setNoRailForGroupSnackbar = (open: boolean) => {
+    this.noRailForGroupSnackbar = open
+  }
+
+  @action
+  setRegisteredRailGroupSnackbar = (open: boolean, message: string) => {
+    this.registeredRailGroupSnackbar = open
+    this.registeredRailGroupSnackbarMessage = message
+  }
+
+  @action
+  setBugReportSnackbar = (open: boolean) => {
+    this.bugReportSnackbar = open
+  }
+
+  @action
+  setNoSessionSnackbar = (open: boolean) => {
+    this.noSessionSnackbar = open
+  }
+
+  @action
+  setRemoteConnectedSnackbar = (open: boolean) => {
+    this.remoteConnectedSnackbar = open
   }
 }
 

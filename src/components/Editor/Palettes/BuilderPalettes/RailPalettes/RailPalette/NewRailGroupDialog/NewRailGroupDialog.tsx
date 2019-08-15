@@ -3,19 +3,22 @@ import getLogger from "logging";
 import AutoFocusTextValidator from "components/common/AutoFocusTextValidator";
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
 import {ValidatorForm} from 'react-material-ui-form-validator';
-import {compose} from "recompose";
-import {withSnackbar} from 'material-ui-snackbar-provider'
+import {inject, observer} from "mobx-react";
+import {STORE_UI} from "../../../../../../../constants/stores";
+import {UiStore} from "../../../../../../../store/uiStore";
 
 const LOGGER = getLogger(__filename)
 
 export interface NewRailGroupDialogProps extends FormDialogProps {
   addUserRailGroup: (name: string, shouldDelete: boolean) => void
   definedItems: PaletteItem[]
-  snackbar: any
+  ui?: UiStore
 }
 
 
-export class NewRailGroupDialog extends FormDialog<NewRailGroupDialogProps, FormDialogState> {
+@inject(STORE_UI)
+@observer
+export default class NewRailGroupDialog extends FormDialog<NewRailGroupDialogProps, FormDialogState> {
 
   constructor(props: NewRailGroupDialogProps) {
     super(props)
@@ -37,7 +40,6 @@ export class NewRailGroupDialog extends FormDialog<NewRailGroupDialogProps, Form
 
   onOK = (e) => {
     this.props.addUserRailGroup(this.state.inputs.name, false)
-    this.props.snackbar.showMessage(`Copied to "${this.state.inputs.name}" rail group.`)  //`
     this.onClose()
   }
 
@@ -64,7 +66,3 @@ export class NewRailGroupDialog extends FormDialog<NewRailGroupDialogProps, Form
   }
 }
 
-
-export default compose<NewRailGroupDialogProps, NewRailGroupDialogProps | any>(
-  withSnackbar()
-)(NewRailGroupDialog)

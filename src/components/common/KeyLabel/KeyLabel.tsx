@@ -9,6 +9,7 @@ export interface KeyLabelProps {
 
 const LabelDiv = styled.div`
   padding: 4px 8px;
+  margin-left: 8px;
   font-size: 0.625rem;
   line-height: 1.4em;
   border-radius: 2px;

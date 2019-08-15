@@ -7,6 +7,13 @@ import {TrainControllerConfig} from "store/layoutStore";
 
 const LOGGER = getLogger(__filename)
 
+export class NoSessionError extends Error {
+  constructor(...args) {
+    super(...args)
+    Error.captureStackTrace(this, NoSessionError)
+  }
+}
+
 class TrainController {
   peer: Peer
   peerId: string
@@ -16,8 +23,7 @@ class TrainController {
     // Controller CLIがセッションを作成済みか調べる
     let session: any = await SessionAPI.fetchSession(username, layoutId)
       .catch((reason) => {
-        // this.props.snackbar.showMessage('No session yet.')
-        LOGGER.error('No session yet.')
+        throw new NoSessionError('No session.')
       })
 
     if (! session) {

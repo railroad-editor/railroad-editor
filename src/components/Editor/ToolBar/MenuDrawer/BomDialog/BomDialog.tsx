@@ -32,7 +32,6 @@ export interface ShowSummaryDialogProps extends FormDialogProps {
   builder?: BuilderStore
   layout?: LayoutStore
   classes: any
-  snackbar: any
 }
 
 

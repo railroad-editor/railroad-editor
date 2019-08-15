@@ -1,5 +1,5 @@
 import * as React from "react";
-import {ListItem, ListItemIcon, ListItemText} from '@material-ui/core';
+import {ListItem, ListItemIcon, ListItemText, Portal} from '@material-ui/core';
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import CloudIcon from "@material-ui/icons/Cloud";
@@ -20,8 +20,6 @@ import {CommonStore} from "store/commonStore";
 import {LayoutMeta, LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
 import SaveLayoutDialog from "components/Editor/ToolBar/MenuDrawer/SaveLayoutDialog/SaveLayoutDialog";
-import {withSnackbar} from 'material-ui-snackbar-provider'
-import {compose} from "recompose";
 import LoginDialog from "components/Editor/ToolBar/MenuDrawer/LoginDialog/LoginDialog";
 import SignUpDialog from "components/Editor/ToolBar/MenuDrawer/SignUpDialog/SignUpDialog";
 import {UiStore} from "store/uiStore";
@@ -33,6 +31,7 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 import {runInAction} from "mobx";
 import BugReportDialog from "./BugReportDialog/BugReportDialog";
 import BomDialog from "./BomDialog/BomDialog";
+import MySnackbar from "../../../common/Snackbar/MySnackbar";
 
 const LOGGER = getLogger(__filename)
 
@@ -46,8 +45,6 @@ export interface MenuDrawerProps {
   layoutLogic?: LayoutLogicStore
   builder?: BuilderStore
   ui?: UiStore
-
-  snackbar: any
 }
 
 export interface MenuDrawerState {
@@ -56,11 +53,14 @@ export interface MenuDrawerState {
 
 @inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI)
 @observer
-export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState> {
+export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState> {
+
+  appRoot: any
 
   constructor(props: MenuDrawerProps) {
     super(props)
     this.state = {}
+    this.appRoot = document.getElementById("app")
   }
 
   logout = async () => {
@@ -71,8 +71,9 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
 
   openLoginDialogIfNot = () => {
     if (! this.props.common.isAuth) {
-      this.props.snackbar.showMessage('Please login.')
+      this.props.ui.setDrawer(false)
       this.props.ui.setLoginDialog(true)
+      this.props.ui.setLoginSnackbar(true)
       return true
     }
     return false
@@ -97,7 +98,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
   }
 
   openLayoutsDialog = () => {
-    this.props.ui.setLayoutsDialog(true, this.props.snackbar.showMessage)
+    this.props.ui.setLayoutsDialog(true)
   }
 
   closeLayoutsDialog = () => {
@@ -115,7 +116,7 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
   }
 
   openSaveNewDialog = () => {
-    this.props.ui.setSaveNewDialog(true, this.props.snackbar.showMessage)
+    this.props.ui.setSaveNewDialog(true)
   }
 
   closeSaveNewDialog = () => {
@@ -134,19 +135,22 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
     if (this.openLoginDialogIfNot()) {
       return
     }
-    // 現在のストアのデータを保存する
-    this.props.layoutLogic.saveLayout(this.props.snackbar.showMessage)
+    // 先にDrawerを閉じる
     this.props.onClose()
+    await this.props.layoutLogic.saveLayout()
+    this.props.ui.setSaveSnackbar(true)
   }
 
   onSaveAs = async (meta: LayoutMeta) => {
     if (this.openLoginDialogIfNot()) {
       return
     }
+    // 先にDrawerを閉じる
+    this.props.onClose()
     // metaを更新してから保存する
     this.props.layout.setLayoutMeta(meta)
-    this.props.layoutLogic.saveLayout(this.props.snackbar.showMessage)
-    this.props.onClose()
+    await this.props.layoutLogic.saveLayout()
+    this.props.ui.setSaveSnackbar(true)
   }
 
   openSettingsDialog = () => {
@@ -180,6 +184,37 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
     this.props.onClose()
   }
 
+  closeLoginSnackbar = () => {
+    this.props.ui.setLoginSnackbar(false)
+  }
+
+  closeSavedSnackbar = () => {
+    this.props.ui.setSaveSnackbar(false)
+  }
+
+  closeLoggedInSnackbar = () => {
+    this.props.ui.setLoggedInSnackbar(false)
+  }
+
+  closeNoRailForGroupSnackbar = () => {
+    this.props.ui.setNoRailForGroupSnackbar(false)
+  }
+
+  closeRegisteredRailGroupSnackbar = () => {
+    this.props.ui.setRegisteredRailGroupSnackbar(false, "")
+  }
+
+  closeBugReportSnackbar = () => {
+    this.props.ui.setBugReportSnackbar(false)
+  }
+
+  closeNoSessionSnackbar = () => {
+    this.props.ui.setNoSessionSnackbar(false)
+  }
+
+  closeRemoteConnectedSnackbar = () => {
+    this.props.ui.setRemoteConnectedSnackbar(false)
+  }
 
   /**
    * レイアウトをSVGファイルに変換し、ダウンロードする。
@@ -369,12 +404,52 @@ export class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState
           onClose={this.closeBugReportDialog}
         />
         {dialogs}
+
+        <Portal container={this.appRoot}>
+          <MySnackbar open={ui.loginSnackbar}
+                      onClose={this.closeLoginSnackbar}
+                      message={<span>Please Login.</span>}
+                      variant="error"
+          />
+          <MySnackbar open={ui.saveSnackbar}
+                      onClose={this.closeSavedSnackbar}
+                      message={<span>Layout Saved.</span>}
+                      variant="success"
+          />
+          <MySnackbar open={ui.loggedInSnackbar}
+                      onClose={this.closeLoggedInSnackbar}
+                      message={<span>Logged-in successfully.</span>}
+                      variant="success"
+          />
+
+          <MySnackbar open={ui.noRailForGroupSnackbar}
+                      onClose={this.closeNoRailForGroupSnackbar}
+                      message={<span>Please select at least one rail.</span>}
+                      variant="warning"
+          />
+          <MySnackbar open={ui.registeredRailGroupSnackbar}
+                      onClose={this.closeRegisteredRailGroupSnackbar}
+                      message={<span>{ui.registeredRailGroupSnackbarMessage}</span>}
+                      variant="success"
+          />
+          <MySnackbar open={ui.bugReportSnackbar}
+                      onClose={this.closeBugReportSnackbar}
+                      message={<span>Your issue is submitted successfully. Thank you for reporting!</span>}
+                      variant="success"
+          />
+          <MySnackbar open={ui.noSessionSnackbar}
+                      onClose={this.closeNoSessionSnackbar}
+                      message={<span>No session found. Please run Railroad Controller CLI first.</span>}
+                      variant="error"
+          />
+          <MySnackbar open={ui.remoteConnectedSnackbar}
+                      onClose={this.closeRemoteConnectedSnackbar}
+                      message={<span>Connected to remote Railroad Controller.</span>}
+                      variant="success"
+          />
+        </Portal>
       </>
     )
   }
 }
 
-
-export default compose<MenuDrawerProps, MenuDrawerProps | any>(
-  withSnackbar()
-)(MenuDrawer)

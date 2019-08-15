@@ -16,8 +16,6 @@ import {
 import {BuilderStore, UserRailGroupData} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import * as $ from "jquery";
-import {compose} from "recompose";
-import {withSnackbar} from 'material-ui-snackbar-provider'
 import {UiStore} from "store/uiStore";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import {CommonStore} from "store/commonStore";
@@ -40,7 +38,6 @@ export interface WithBuilderPublicProps {
   builderAddRail: () => void
   builderSetTemporaryRailGroup: (railGroupData: Partial<RailGroupData>, childRails: RailData[]) => void
   builderRegisterRailGroup: (name: string, shouldDelete: boolean) => void
-  snackbar: any
 }
 
 
@@ -200,19 +197,20 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
 
     keyDown_CtrlO = (e) => {
-      this.props.ui.setLayoutsDialog(true, this.props.snackbar.showMessage)
+      this.props.ui.setLayoutsDialog(true)
     }
 
     keyDown_CtrlF = (e) => {
       this.props.ui.setCreateNewDialog(true)
     }
 
-    keyDown_CtrlS = (e) => {
-      if (this.props.common.userInfo) {
-        this.props.layoutLogic.saveLayout(this.props.snackbar.showMessage)
+    keyDown_CtrlS = async (e) => {
+      if (this.props.common.isAuth) {
+        await this.props.layoutLogic.saveLayout()
+        this.props.ui.setSaveSnackbar(true)
       } else {
-        this.props.snackbar.showMessage("Please login.")
         this.props.ui.setLoginDialog(true)
+        this.props.ui.setLoginSnackbar(true)
       }
     }
 
@@ -407,7 +405,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     registerRailGroup = (name: string, shouldDelete: boolean) => {
       const rails = this.props.layout.selectedRails
       if (rails.length === 0) {
-        this.props.snackbar.showMessage(`Please select at least one rail.`)  //`
+        this.props.ui.setNoRailForGroupSnackbar(true)
         return
       }
       this.registerRailGroupInner(rails, name)
@@ -416,7 +414,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       } else {
         this.props.layoutLogic.selectAllRails(false)
       }
-      this.props.snackbar.showMessage('Copied rails to "Clipboard" rail group.')
+      this.props.ui.setRegisteredRailGroupSnackbar(true, `Copied ${rails.length} rails as "${name}" rail group.`)  //`
     }
 
     protected registerRailGroupInner = (rails: RailData[], name: string) => {
@@ -490,9 +488,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
 
   }
 
-  return compose<WithBuilderProps, WithBuilderProps>(
-    withSnackbar()
-  )(WithBuilder)
+  return WithBuilder
 }
 
 
