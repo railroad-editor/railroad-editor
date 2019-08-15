@@ -340,13 +340,13 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
               <ListItemIcon>
                 <SettingsIcon/>
               </ListItemIcon>
-              <ListItemText primary="Layout Settings"/>
+              <ListItemText primary="Settings"/>
             </ListItem>
             <ListItem button onClick={this.openSummaryDialog}>
               <ListItemIcon>
                 <AssignmentIcon/>
               </ListItemIcon>
-              <ListItemText primary="Layout BOM"/>
+              <ListItemText primary="BOM"/>
             </ListItem>
             <Divider/>
             <ListItem button component="a" target="_blank" href="http://d2t6ssvra5p03o.cloudfront.net/index.html"
