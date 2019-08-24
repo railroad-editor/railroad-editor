@@ -1,18 +1,18 @@
 {
     "paths": [
         {
-            "name": "/users",
-            "lambdaFunction": "layoutApi",
+            "name": "/issues",
+            "lambdaFunction": "issueApi",
             "privacy": {
                 "open": true
             }
         }
     ],
-    "resourceName": "layout",
-    "apiName": "layout",
+    "resourceName": "issue",
+    "apiName": "issue",
     "functionArns": [
         {
-            "lambdaFunction": "layoutApi"
+            "lambdaFunction": "issueApi"
         }
     ],
     "privacy": {
@@ -24,12 +24,11 @@
     "dependsOn": [
         {
             "category": "function",
-            "resourceName": "layoutApi",
+            "resourceName": "issueApi",
             "attributes": [
                 "Name",
                 "Arn"
             ]
         }
-    ],
-    "uuid": "b501fbeb"
+    ]
 }

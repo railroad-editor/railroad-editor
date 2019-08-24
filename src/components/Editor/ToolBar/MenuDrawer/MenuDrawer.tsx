@@ -12,7 +12,7 @@ import HelpIcon from "@material-ui/icons/Help";
 import BugReportIcon from "@material-ui/icons/BugReport";
 import ArchiveIcon from "@material-ui/icons/Archive";
 import OpenLayoutsDialog from "components/Editor/ToolBar/MenuDrawer/OpenLayoutsDialog/OpenLayoutsDialog";
-import Auth from "aws-amplify/lib/Auth";
+import {Auth} from "aws-amplify";
 import Divider from "@material-ui/core/Divider";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";

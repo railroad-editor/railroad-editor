@@ -14,7 +14,6 @@ var region = process.env.REGION
 
 Amplify Params - DO NOT EDIT */
 
-var layoutApi = require("./layout")
 var express = require('express')
 var bodyParser = require('body-parser')
 var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
@@ -31,22 +30,65 @@ app.use(function(req, res, next) {
   next()
 });
 
-app.use(function (err, req, res, next) {
-  console.error(err.stack)
-  res.status(500).send('Something broke!')
-})
 
 /**********************
- Layout APIs
+ * Example get method *
  **********************/
 
-app.get('/users/:userId/layouts', layoutApi.getLayouts)
-app.get('/users/:userId/layouts/:layoutId', layoutApi.getLayout)
-app.put('/users/:userId/layouts/:layoutId', layoutApi.putLayout)
-app.delete('/users/:userId/layouts/:layoutId', layoutApi.deleteLayout)
+app.get('/issues', function(req, res) {
+  // Add your code here
+  res.json({success: 'get call succeed!', url: req.url});
+});
+
+app.get('/issues/*', function(req, res) {
+  // Add your code here
+  res.json({success: 'get call succeed!', url: req.url});
+});
+
+/****************************
+* Example post method *
+****************************/
+
+app.post('/issues', function(req, res) {
+  // Add your code here
+  res.json({success: 'post call succeed!', url: req.url, body: req.body})
+});
+
+app.post('/issues/*', function(req, res) {
+  // Add your code here
+  res.json({success: 'post call succeed!', url: req.url, body: req.body})
+});
+
+/****************************
+* Example put method *
+****************************/
+
+app.put('/issues', function(req, res) {
+  // Add your code here
+  res.json({success: 'put call succeed!', url: req.url, body: req.body})
+});
+
+app.put('/issues/*', function(req, res) {
+  // Add your code here
+  res.json({success: 'put call succeed!', url: req.url, body: req.body})
+});
+
+/****************************
+* Example delete method *
+****************************/
+
+app.delete('/issues', function(req, res) {
+  // Add your code here
+  res.json({success: 'delete call succeed!', url: req.url});
+});
+
+app.delete('/issues/*', function(req, res) {
+  // Add your code here
+  res.json({success: 'delete call succeed!', url: req.url});
+});
 
 app.listen(3000, function() {
-  console.log("App started")
+    console.log("App started")
 });
 
 // Export the app object. When executing the application local this does nothing. However,

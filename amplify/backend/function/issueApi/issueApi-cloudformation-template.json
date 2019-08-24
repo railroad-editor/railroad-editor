@@ -28,12 +28,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"layoutApi",
+						"issueApi",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"layoutApi",
+									"issueApi",
 									"-",
 									{
 										"Ref": "env"
@@ -63,7 +63,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "railroad-editor-test-20190824171740-deployment",
-					"S3Key": "amplify-builds/layoutApi-306d6b72766d5367662f-build.zip"
+					"S3Key": "amplify-builds/issueApi-687879354f6f306e6c43-build.zip"
 				}
 			}
 		},
@@ -73,12 +73,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"railroadeditorLambdaRole1a3cb9e0",
+						"railroadeditorLambdaRolee6201fea",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"railroadeditorLambdaRole1a3cb9e0",
+									"railroadeditorLambdaRolee6201fea",
 									"-",
 									{
 										"Ref": "env"

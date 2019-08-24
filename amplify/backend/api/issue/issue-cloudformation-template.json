@@ -14,15 +14,15 @@
         },
     
     
-          "functionlayoutApiName": {
+          "functionissueApiName": {
             "Type": "String",
-            "Default": "functionlayoutApiName"
+            "Default": "functionissueApiName"
           },
         
           
-          "functionlayoutApiArn": {
+          "functionissueApiArn": {
             "Type": "String",
-            "Default": "functionlayoutApiArn"
+            "Default": "functionissueApiArn"
           }
         
           
@@ -42,16 +42,16 @@
     "Resources": {
         
         
-      "layout": {
+      "issue": {
         "Type": "AWS::ApiGateway::RestApi",
         "Properties": {
           "Description": "",
-          "Name": "layout",
+          "Name": "issue",
           "Body": {
             "swagger": "2.0",
             "info": {
               "version": "2018-05-24T17:52:00Z",
-              "title": "layout"
+              "title": "issue"
             },
             "host": {
                 "Fn::Join": [
@@ -87,7 +87,7 @@
             ],
             "paths": {
               
-              "/users": {
+              "/issues": {
                 "options": {
                   "consumes": [
                     "application/json"
@@ -173,7 +173,7 @@
                             
                             {
                                 
-                                "Ref": "functionlayoutApiArn"
+                                "Ref": "functionissueApiArn"
                             },
                             
                             "/invocations"
@@ -186,7 +186,7 @@
                   }
                 }
               },
-              "/users/{proxy+}": {
+              "/issues/{proxy+}": {
                 "options": {
                   "consumes": [
                     "application/json"
@@ -272,7 +272,7 @@
                           
                           {
                             
-                            "Ref": "functionlayoutApiArn"
+                            "Ref": "functionissueApiArn"
                           },
                           
                           "/invocations"
@@ -329,12 +329,12 @@
                   
         
         
-        "functionlayoutApiPermissionlayout": {
+        "functionissueApiPermissionissue": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
                 "FunctionName": 
                     {
-                        "Ref":  "functionlayoutApiName"
+                        "Ref":  "functionissueApiName"
                     },
                     
                     "Action": "lambda:InvokeFunction",
@@ -353,7 +353,7 @@
                             },
                             ":",
                             {
-                                "Ref": "layout"
+                                "Ref": "issue"
                             },
                             "/*/*/*"
                         ]
@@ -364,7 +364,7 @@
         
         
         
-      "DeploymentAPIGWlayoutb501fbeb": {
+      "DeploymentAPIGWissue": {
         "Type": "AWS::ApiGateway::Deployment",
         "Properties": {
           "Description": "The Development stage deployment of your API.",
@@ -378,7 +378,7 @@
             ]
           },
           "RestApiId": {
-            "Ref": "layout"
+            "Ref": "issue"
           }
         }
       }
@@ -386,11 +386,11 @@
     "Outputs": {
         "RootUrl": {
             "Description": "Root URL of the API gateway",
-            "Value": {"Fn::Join": ["", ["https://", {"Ref": "layout"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com/", {"Fn::If": ["ShouldNotCreateEnvResources","Prod", {"Ref": "env"} ]}]]}
+            "Value": {"Fn::Join": ["", ["https://", {"Ref": "issue"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com/", {"Fn::If": ["ShouldNotCreateEnvResources","Prod", {"Ref": "env"} ]}]]}
         },
         "ApiName": {
           "Description": "API Friendly name",
-          "Value": "layout"
+          "Value": "issue"
         }
     }
   }

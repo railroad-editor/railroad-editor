@@ -1,0 +1,7 @@
+{
+    "tableName": "layouts",
+    "partitionKeyName": "userId",
+    "partitionKeyType": "S",
+    "sortKeyName": "layoutId",
+    "sortKeyType": "S"
+}
