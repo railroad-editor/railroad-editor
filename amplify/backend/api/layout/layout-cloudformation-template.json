@@ -766,7 +766,18 @@
         "Type": "AWS::ApiGateway::RestApi",
         "Properties": {
           "Description": "",
-          "Name": "layout",
+          "Name": {
+            "Fn::Join": [
+              "",
+              [
+                "layout",
+                "-",
+                {
+                  "Ref": "env"
+                }
+              ]
+            ]
+          },
           "Body": {
             "swagger": "2.0",
             "info": {

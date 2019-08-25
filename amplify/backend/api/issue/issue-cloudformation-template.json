@@ -46,7 +46,18 @@
         "Type": "AWS::ApiGateway::RestApi",
         "Properties": {
           "Description": "",
-          "Name": "issue",
+          "Name": {
+            "Fn::Join": [
+              "",
+              [
+                "issue",
+                "-",
+                {
+                  "Ref": "env"
+                }
+              ]
+            ]
+          },
           "Body": {
             "swagger": "2.0",
             "info": {
