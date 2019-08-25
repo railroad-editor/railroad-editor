@@ -103,7 +103,10 @@
 							]
 						}
 					]
-				}
+				},
+				"ManagedPolicyArns": [
+					"arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+				]
 			}
 		},
 		"lambdaexecutionpolicy": {
