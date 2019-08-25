@@ -62,7 +62,7 @@
 				"Runtime": "nodejs10.x",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "railroad-editor-test-20190824171740-deployment",
+					"S3Bucket": "railroad-editor-prod-20190824172308-deployment",
 					"S3Key": "amplify-builds/issueApi-4544566c6875754c2f67-build.zip"
 				}
 			}
