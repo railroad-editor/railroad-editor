@@ -3,7 +3,6 @@
  */
 
 import * as loglevel from 'loglevel'
-import * as logdown from 'logdown'
 
 // Loglevelを使う場合
 function initLoglevel(name) {
