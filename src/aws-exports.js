@@ -2,44 +2,21 @@
 
 const awsmobile = {
     "aws_project_region": "ap-northeast-1",
-    "aws_content_delivery_bucket": "railroad-editor-20190824171919-hostingbucket-test",
+    "aws_content_delivery_bucket": "railroad-editor-20190824171919-hostingbucket-prod",
     "aws_content_delivery_bucket_region": "ap-northeast-1",
-    "aws_content_delivery_url": "http://railroad-editor-20190824171919-hostingbucket-test.s3-website-ap-northeast-1.amazonaws.com",
-    "aws_cognito_identity_pool_id": "ap-northeast-1:70b328a2-6f72-46ea-8a9a-dc4729744f21",
+    "aws_content_delivery_url": "http://railroad-editor-20190824171919-hostingbucket-prod.s3-website-ap-northeast-1.amazonaws.com",
+    "aws_cognito_identity_pool_id": "ap-northeast-1:d5874b97-c161-415e-89e3-e6b46a2580b9",
     "aws_cognito_region": "ap-northeast-1",
-    "aws_user_pools_id": "ap-northeast-1_mYQhoEzeH",
-    "aws_user_pools_web_client_id": "1m7vhfak79i1296nkehr577n7o",
+    "aws_user_pools_id": "ap-northeast-1_GUllp0rXg",
+    "aws_user_pools_web_client_id": "6sp9ukc4nhin2otj1dm3v2m0lp",
     "oauth": {},
     "aws_cloud_logic_custom": [
         {
             "name": "layout",
-            "endpoint": "https://lxbxs0yn99.execute-api.ap-northeast-1.amazonaws.com/test",
-            "region": "ap-northeast-1"
-        },
-        {
-            "name": "issue",
-            "endpoint": "https://nqgvi6yd3g.execute-api.ap-northeast-1.amazonaws.com/test",
-            "region": "ap-northeast-1"
-        },
-        {
-            "name": "session",
-            "endpoint": "https://pug06oe7h9.execute-api.ap-northeast-1.amazonaws.com/test",
+            "endpoint": "https://yt681qbok8.execute-api.ap-northeast-1.amazonaws.com/prod",
             "region": "ap-northeast-1"
         }
     ],
-    "aws_dynamodb_all_tables_region": "ap-northeast-1",
-    "aws_dynamodb_table_schemas": [
-        {
-            "tableName": "layouts-test",
-            "region": "ap-northeast-1"
-        },
-        {
-            "tableName": "sessions-test",
-            "region": "ap-northeast-1"
-        }
-    ],
-    "aws_user_files_s3_bucket": "railroad-editor-user-files-test",
-    "aws_user_files_s3_bucket_region": "ap-northeast-1",
     "aws_cloud_logic": "enable",
     "aws_content_delivery": "enable",
     "aws_content_delivery_cloudfront": "enable",
