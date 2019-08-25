@@ -7,7 +7,7 @@ import Amplify, {Auth} from "aws-amplify";
 import aws_exports from './aws-exports';
 import ResetPassword from "components/common/Authenticator/ResetPassword/ResetPassword";
 import {inject, observer} from "mobx-react";
-import {STORE_COMMON} from "constants/stores";
+import {STORE_COMMON, STORE_UI} from "constants/stores";
 import {CommonStore} from "store/commonStore";
 import withRoot from './withRoot';
 import getLogger from "logging";
@@ -15,6 +15,8 @@ import 'typeface-roboto'
 import './App.css'
 import Home from "./components/Home/Home";
 import {Helmet} from "react-helmet";
+import {UiStore} from "./store/uiStore";
+import MySnackbar from "./components/common/Snackbar/MySnackbar";
 
 (window as any).LOG_LEVEL = 'DEBUG';
 
@@ -25,15 +27,23 @@ const LOGGER = getLogger(__filename)
 
 export interface AppProps {
   common?: CommonStore
+  ui?: UiStore
 }
 
 
-@inject(STORE_COMMON)
+@inject(STORE_COMMON, STORE_UI)
 @observer
 class App extends React.Component<AppProps, {}> {
 
   constructor(props: any) {
     super(props)
+  }
+
+  componentDidMount(): void {
+    const params = qs.parse((window as any).location.search)
+    if (params.confirmed === 'true') {
+      this.props.ui.setConfirmedSnackbar(true)
+    }
   }
 
   async componentWillMount() {
@@ -46,6 +56,9 @@ class App extends React.Component<AppProps, {}> {
     }
   }
 
+  closeConfirmedSnackbar = () => {
+    this.props.ui.setConfirmedSnackbar(false)
+  }
 
   render() {
     console.log(process.env)
@@ -70,6 +83,11 @@ class App extends React.Component<AppProps, {}> {
             />
           </div>
         </Router>
+        <MySnackbar open={this.props.ui.confirmedSnackbar}
+                    onClose={this.closeConfirmedSnackbar}
+                    message={'Confirmed successfully. Please login from Menu.'}
+                    variant="success"
+        />
       </div>
     )
   }

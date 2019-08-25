@@ -18,6 +18,8 @@ const INITIAL_STATE = {
   summaryDialog: false,
   bugReportDialog: false,
   editorMode: EditorMode.BUILDER,
+  // snackbars
+  confirmedSnackbar: false,
   savedLayoutSnackbar: false,
   loadedLayoutSnackbar: false,
   requireLoginSnackbar: false,
@@ -42,6 +44,8 @@ export class UiStore {
   @observable summaryDialog: boolean
   @observable bugReportDialog: boolean
   @observable editorMode: EditorMode
+  // snackbars
+  @observable confirmedSnackbar: boolean
   @observable savedLayoutSnackbar: boolean
   @observable loadedLayoutSnackbar: boolean
   @observable requireLoginSnackbar: boolean
@@ -55,9 +59,10 @@ export class UiStore {
 
   constructor({
                 drawer, layoutsDialog, createNewDialog, saveNewDialog, loginDialog, signInDialog, settingsDialog,
-                bugReportDialog, summaryDialog, editorMode, savedLayoutSnackbar, requireLoginSnackbar, loggedInSnackbar,
-                noRailForGroupSnackbar, registeredRailGroupSnackbar, bugReportSnackbar, registeredRailGroupSnackbarMessage,
-                remoteNotConnectedSnackbar, remoteConnectedSnackbar, loadedLayoutSnackbar
+                bugReportDialog, summaryDialog, editorMode, confirmedSnackbar, savedLayoutSnackbar, requireLoginSnackbar,
+                loggedInSnackbar, noRailForGroupSnackbar, registeredRailGroupSnackbar, bugReportSnackbar,
+                registeredRailGroupSnackbarMessage, remoteNotConnectedSnackbar, remoteConnectedSnackbar,
+                loadedLayoutSnackbar
               }) {
     this.drawer = drawer
     this.layoutsDialog = layoutsDialog
@@ -69,6 +74,8 @@ export class UiStore {
     this.settingsDialog = settingsDialog
     this.summaryDialog = summaryDialog
     this.bugReportDialog = bugReportDialog
+    // snackbars
+    this.confirmedSnackbar = confirmedSnackbar
     this.savedLayoutSnackbar = savedLayoutSnackbar
     this.loadedLayoutSnackbar = loadedLayoutSnackbar
     this.requireLoginSnackbar = requireLoginSnackbar
@@ -136,6 +143,12 @@ export class UiStore {
     this.bugReportDialog = open
   }
 
+  // snackbars
+
+  @action
+  setConfirmedSnackbar = (open: boolean) => {
+    this.confirmedSnackbar = open
+  }
 
   @action
   setSavedLayoutSnackbar = (open: boolean) => {

@@ -82,14 +82,6 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
     }
   }
 
-  isActive = (...tools: string[]) => {
-    if (this.props.common.editorMode === EditorMode.BUILDER) {
-      return tools.includes(this.props.builder.activeTool)
-    } else {
-      return tools.includes(this.props.simulatorLogic.activeTool)
-    }
-  }
-
   buildModeMouseDown = (e) => {
     // this.props.builderMouseDown(e)
     this.props.selectToolMouseDown(e);
