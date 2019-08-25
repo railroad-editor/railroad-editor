@@ -7,20 +7,13 @@ See the License for the specific language governing permissions and limitations 
 */
 
 
-/* Amplify Params - DO NOT EDIT
-You can access the following resource attributes as environment variables from your Lambda function
-var environment = process.env.ENV
-var region = process.env.REGION
-
-Amplify Params - DO NOT EDIT */
-
-var layoutApi = require("./layout")
-var express = require('express')
-var bodyParser = require('body-parser')
-var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
+const express = require('express')
+const bodyParser = require('body-parser')
+const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
+const layoutApi = require("./layout");
 
 // declare a new express app
-var app = express()
+const app = express()
 app.use(bodyParser.json())
 app.use(awsServerlessExpressMiddleware.eventContext())
 
@@ -37,17 +30,13 @@ app.use(function (err, req, res, next) {
 })
 
 /**********************
- Layout APIs
+ Routing
  **********************/
-
 app.get('/users/:userId/layouts', layoutApi.getLayouts)
 app.get('/users/:userId/layouts/:layoutId', layoutApi.getLayout)
 app.put('/users/:userId/layouts/:layoutId', layoutApi.putLayout)
 app.delete('/users/:userId/layouts/:layoutId', layoutApi.deleteLayout)
 
-app.listen(3000, function() {
-  console.log("App started")
-});
 
 // Export the app object. When executing the application local this does nothing. However,
 // to port it to AWS Lambda we will create a wrapper around that will load the app from

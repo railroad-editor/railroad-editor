@@ -3,6 +3,8 @@ import Editor from 'components/Editor/Editor'
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import {Redirect} from "react-router";
 import * as qs from "query-string"
+(window as any).LOG_LEVEL = 'DEBUG';
+
 import Amplify from "aws-amplify";
 import {Auth} from "aws-amplify";
 import aws_exports from './aws-exports';
@@ -54,8 +56,8 @@ class App extends React.Component<AppProps, {}> {
     const session = await Auth.currentSession()
     const userInfo = await Auth.currentUserInfo()
     if (userInfo) {
-      LOGGER.info(`UserInfo: ${userInfo}`)
-      this.props.common.setAuthData(userInfo)
+      LOGGER.info('Signed in as', userInfo) //`
+      this.props.common.setUserInfo(userInfo)
     }
   }
 

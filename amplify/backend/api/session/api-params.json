@@ -2,7 +2,7 @@
     "paths": [
         {
             "name": "/users",
-            "lambdaFunction": "layoutApi",
+            "lambdaFunction": "sessionApi",
             "privacy": {
                 "protected": true,
                 "auth": [
@@ -22,11 +22,11 @@
             }
         }
     ],
-    "resourceName": "layout",
-    "apiName": "layout",
+    "resourceName": "session",
+    "apiName": "session",
     "functionArns": [
         {
-            "lambdaFunction": "layoutApi"
+            "lambdaFunction": "sessionApi"
         }
     ],
     "privacy": {
@@ -38,12 +38,11 @@
     "dependsOn": [
         {
             "category": "function",
-            "resourceName": "layoutApi",
+            "resourceName": "sessionApi",
             "attributes": [
                 "Name",
                 "Arn"
             ]
         }
-    ],
-    "uuid": "4578d274"
+    ]
 }

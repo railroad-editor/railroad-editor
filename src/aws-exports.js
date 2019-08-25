@@ -20,6 +20,11 @@ const awsmobile = {
             "name": "issue",
             "endpoint": "https://nqgvi6yd3g.execute-api.ap-northeast-1.amazonaws.com/test",
             "region": "ap-northeast-1"
+        },
+        {
+            "name": "session",
+            "endpoint": "https://pug06oe7h9.execute-api.ap-northeast-1.amazonaws.com/test",
+            "region": "ap-northeast-1"
         }
     ],
     "aws_dynamodb_all_tables_region": "ap-northeast-1",
@@ -27,17 +32,18 @@ const awsmobile = {
         {
             "tableName": "layouts-test",
             "region": "ap-northeast-1"
+        },
+        {
+            "tableName": "sessions-test",
+            "region": "ap-northeast-1"
         }
     ],
     "aws_user_files_s3_bucket": "railroad-editor-user-files-test",
     "aws_user_files_s3_bucket_region": "ap-northeast-1",
-    "aws_app_analytics": "enable",
     "aws_cloud_logic": "enable",
     "aws_content_delivery": "enable",
     "aws_content_delivery_cloudfront": "enable",
     "aws_content_delivery_cloudfront_domain": "d2v8bu4e76jqt1.cloudfront.net",
-    "aws_mobile_analytics_app_id": "989b8b385f0147ee9c77e34caac43e50",
-    "aws_mobile_analytics_app_region": "us-east-1",
     "aws_project_id": "afb78a90-fb33-4b35-aabb-2be1304f8015",
     "aws_project_name": "railroad-editor",
     "aws_resource_name_prefix": "railroadeditor-mobilehub-69379349",

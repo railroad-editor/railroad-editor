@@ -1,11 +1,12 @@
 import * as React from "react";
 
-export interface AuthData {
-  username: string
+export interface UserInfo {
+  // same as cognitoIdentityId
+  id: string
 }
 
 export interface AuthPieceProps {
-  // userInfo: AuthData
+  // userInfo: UserInfo
   authState?: any
   onAuthEvent?: any
   onStateChange?: (state: string, data: any) => void

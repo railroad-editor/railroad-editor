@@ -19,7 +19,7 @@ export interface LayoutDataWithMeta {
 
 const fetchLayoutList = async (userId: string): Promise<LayoutMeta[]> => {
   const result = await API.get('layout', `/users/${userId}/layouts`, {headers: {}})
-  return result.layouts
+  return result.layouts.map(layout => layout.meta)
 }
 
 const fetchLayoutData = async (userId: string, layoutId: string): Promise<LayoutDataWithMeta> => {

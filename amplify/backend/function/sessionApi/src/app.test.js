@@ -1,3 +1,4 @@
+// TODO: use dev env
 process.env.ENV = 'test'
 var chai = require('chai')
 var chaiHttp = require('chai-http')
@@ -8,145 +9,154 @@ var expect = chai.expect
 chai.use(chaiHttp);
 
 describe("user ID verification", () => {
-  describe("getLayouts", () => {
+  describe("getSessions", () => {
     it("fails without identity", async () => {
       const res = await chai.request(app)
-        .get('/users/1234/layouts')
+        .get('/users/1234/sessions')
         .set(COGNITO_IDENTITY_ID_HEADER, '5678')
       expect(res.status).to.equal(403)
     });
   })
-  describe("getLayout", () => {
+  describe("getSession", () => {
     it("fails without identity", async () => {
-      const res = await chai.request(app).get('/users/1234/layouts/abcd')
+      const res = await chai.request(app).get('/users/1234/sessions/abcd')
         .set(COGNITO_IDENTITY_ID_HEADER, '5678')
       expect(res.status).to.equal(403)
     });
   })
-  describe("putLayout", () => {
+  describe("putSession", () => {
     it("fails without identity", async () => {
       const res = await chai.request(app)
-        .put('/users/1234/layouts/abcd')
+        .put('/users/1234/sessions/abcd')
         .set(COGNITO_IDENTITY_ID_HEADER, '5678')
-        .send({layout: {a: 1}})
+        .send({peerId: 'asdf', timestamp: 9876})
       expect(res.status).to.equal(403)
     });
   })
-  describe("deleteLayout", () => {
+  describe("deleteSession", () => {
     it("fails without identity", async () => {
       const res = await chai.request(app)
-        .delete('/users/1234/layouts/abcd')
+        .delete('/users/1234/sessions/abcd')
         .set(COGNITO_IDENTITY_ID_HEADER, '5678')
       expect(res.status).to.equal(403)
     });
   })
 })
 
-describe("when no layout exists", () => {
-  describe("getLayouts", () => {
-    it("gets an empty layout list", async () => {
+describe("when no session exists", () => {
+  describe("getSessions", () => {
+    it("gets an empty session list", async () => {
       const res = await chai.request(app)
-        .get('/users/1234/layouts')
+        .get('/users/1234/sessions')
         .set(COGNITO_IDENTITY_ID_HEADER, '1234')
       expect(res.status).to.equal(200)
-      expect(res.body).to.deep.equal({layouts: []})
+      expect(res.body).to.deep.equal({sessions: []})
     });
   })
-  describe("getLayout", () => {
-    it("gets no layout", async () => {
+  describe("getSession", () => {
+    it("gets no session", async () => {
       const res = await chai.request(app)
-        .get('/users/1234/layouts/abcd')
+        .get('/users/1234/sessions/abcd')
         .set(COGNITO_IDENTITY_ID_HEADER, '1234')
       expect(res.status).to.equal(404)
     });
   })
 })
 
-describe("put & get layouts", () => {
-  it("puts new layout", async () => {
+describe("put & get sessions", () => {
+
+  const SESSION_DATA = [
+    {peerId: 'asdf'},
+    {peerId: 'ghjk'},
+    {peerId: 'qwer'},
+  ]
+
+  it("puts new session", async () => {
     const res = await chai.request(app)
-      .put('/users/1234/layouts/abcd')
+      .put('/users/1234/sessions/abcd')
       .set(COGNITO_IDENTITY_ID_HEADER, '1234')
-      .send({layout: {a: 1}})
+      .send(SESSION_DATA[0])
     expect(res.status).to.equal(204)
   });
 
-  it("gets the new layout", async () => {
+  it("gets the new session", async () => {
     const res = await chai.request(app)
-      .get('/users/1234/layouts/abcd')
+      .get('/users/1234/sessions/abcd')
       .set(COGNITO_IDENTITY_ID_HEADER, '1234')
     expect(res.status).to.equal(200)
-    expect(res.body).to.deep.include({layout: {a: 1}})
+    expect(res.body).to.deep.include({ ...SESSION_DATA[0], userId: '1234', layoutId: 'abcd'})
   });
 
-  it("updates an existing layout", async () => {
+  it("updates an existing session", async () => {
     const res = await chai.request(app)
-      .put('/users/1234/layouts/abcd')
+      .put('/users/1234/sessions/abcd')
       .set(COGNITO_IDENTITY_ID_HEADER, '1234')
-      .send({layout: {b: 2}})
+      .send(SESSION_DATA[1])
     expect(res.status).to.equal(204)
   });
 
-  it("gets the updated layout", async () => {
+  it("gets the updated session", async () => {
     const res = await chai.request(app)
-      .get('/users/1234/layouts/abcd')
+      .get('/users/1234/sessions/abcd')
       .set(COGNITO_IDENTITY_ID_HEADER, '1234')
     expect(res.status).to.equal(200)
-    expect(res.body).to.deep.equal({layout: {b: 2}})
+    expect(res.body).to.deep.include({ ...SESSION_DATA[1], userId: '1234', layoutId: 'abcd' })
   });
 
-  it("puts one more layout", async () => {
+  it("puts one more session", async () => {
     const res = await chai.request(app)
-      .put('/users/1234/layouts/efgh')
+      .put('/users/1234/sessions/efgh')
       .set(COGNITO_IDENTITY_ID_HEADER, '1234')
-      .send({layout: {c: 3}})
+      .send(SESSION_DATA[2])
     expect(res.status).to.equal(204)
   });
 
-  it("get all layouts", async () => {
+  it("get all sessions", async () => {
     const res = await chai.request(app)
-      .get('/users/1234/layouts')
+      .get('/users/1234/sessions')
       .set(COGNITO_IDENTITY_ID_HEADER, '1234')
     expect(res.status).to.equal(200)
-    expect(res.body.layouts).to.deep.include({layout: {b: 2}})
-    expect(res.body.layouts).to.deep.include({layout: {c: 3}})
+    expect(res.body.sessions.find(s => s.peerId === SESSION_DATA[1].peerId))
+      .to.deep.include({ ...SESSION_DATA[1], userId: '1234', layoutId: 'abcd' })
+    expect(res.body.sessions.find(s => s.peerId === SESSION_DATA[2].peerId))
+      .to.deep.include({ ...SESSION_DATA[2], userId: '1234', layoutId: 'efgh' })
   });
 })
 
 
-describe("delete & get layout", () => {
-  it("deletes a layout", async () => {
+describe("delete & get session", () => {
+  it("deletes a session", async () => {
     const res = await chai.request(app)
-      .delete('/users/1234/layouts/abcd')
+      .delete('/users/1234/sessions/abcd')
       .set(COGNITO_IDENTITY_ID_HEADER, '1234')
     expect(res.status).to.equal(204)
   });
 
-  it("no longer get the layout", async () => {
+  it("no longer get the session", async () => {
     const res = await chai.request(app)
-      .get('/users/1234/layouts/abcd')
+      .get('/users/1234/sessions/abcd')
       .set(COGNITO_IDENTITY_ID_HEADER, '1234')
     expect(res.status).to.equal(404)
   });
 
-  it("deletes the same layout again", async () => {
+  it("deletes the same session again", async () => {
     const res = await chai.request(app)
-      .delete('/users/1234/layouts/abcd')
+      .delete('/users/1234/sessions/abcd')
       .set(COGNITO_IDENTITY_ID_HEADER, '1234')
     expect(res.status).to.equal(204)
   });
 
-  it("deletes one more layout", async () => {
+  it("deletes one more session", async () => {
     const res = await chai.request(app)
-      .delete('/users/1234/layouts/efgh')
+      .delete('/users/1234/sessions/efgh')
       .set(COGNITO_IDENTITY_ID_HEADER, '1234')
   });
 
-  it("gets an empty layout list", async () => {
+  it("gets an empty session list", async () => {
     const res = await chai.request(app)
-      .get('/users/1234/layouts')
+      .get('/users/1234/sessions')
       .set(COGNITO_IDENTITY_ID_HEADER, '1234')
     expect(res.status).to.equal(200)
-    expect(res.body).to.deep.equal({layouts: []})
+    expect(res.body).to.deep.equal({sessions: []})
   });
 })

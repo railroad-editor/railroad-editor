@@ -6,10 +6,11 @@ or in the "license" file accompanying this file. This file is distributed on an 
 See the License for the specific language governing permissions and limitations under the License.
 */
 
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
-const issueApi = require('./issue')
+const sessionApi = require("./session");
 
 // declare a new express app
 const app = express()
@@ -31,7 +32,10 @@ app.use(function (err, req, res, next) {
 /**********************
  Routing
  **********************/
-app.post('/issues', issueApi.postIssue)
+app.get('/users/:userId/sessions', sessionApi.getSessions)
+app.get('/users/:userId/sessions/:layoutId', sessionApi.getSession)
+app.put('/users/:userId/sessions/:layoutId', sessionApi.putSession)
+app.delete('/users/:userId/sessions/:layoutId', sessionApi.deleteSession)
 
 // Export the app object. When executing the application local this does nothing. However,
 // to port it to AWS Lambda we will create a wrapper around that will load the app from

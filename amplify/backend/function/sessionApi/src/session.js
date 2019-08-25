@@ -2,7 +2,7 @@ const aws = require('aws-sdk')
 const {COGNITO_IDENTITY_ID_HEADER} = require("./constants");
 const dynamoDB = new aws.DynamoDB({'region': 'ap-northeast-1'})
 
-const getTableName = () => `layouts-${process.env.ENV}`
+const getTableName = () => `sessions-${process.env.ENV}`
 
 const verifyUserId = (req) => {
   const cognitoIdentityId = req.headers[COGNITO_IDENTITY_ID_HEADER]
@@ -11,7 +11,7 @@ const verifyUserId = (req) => {
   return cognitoIdentityId === userIdPathParam
 }
 
-const getLayouts = async (req, res) => {
+const getSessions = async (req, res) => {
   if (! verifyUserId(req)) {
     res.status(403).send()
     return
@@ -32,13 +32,20 @@ const getLayouts = async (req, res) => {
       res.status(404).send()
       return
     }
-    const layouts = data.Items
-      .map(item => JSON.parse(item.layoutData.S))
-    res.json({layouts})
+
+    const sessions = data.Items
+      .map(item => {
+        return {
+          userId: item.userId.S,
+          layoutId: item.layoutId.S,
+          peerId: item.peerId.S,
+          timestamp: Number(item.timestamp.N)
+        }})
+    res.json({sessions})
   })
 };
 
-const getLayout = async (req, res) => {
+const getSession = async (req, res) => {
   if (! verifyUserId(req)) {
     res.status(403).send()
     return
@@ -61,24 +68,31 @@ const getLayout = async (req, res) => {
       res.status(404).send()
       return
     }
-    const layoutData = JSON.parse(data.Item.layoutData.S)
-    res.json(layoutData)
+    const session = {
+      userId: data.Item.userId.S,
+      layoutId: data.Item.layoutId.S,
+      peerId: data.Item.peerId.S,
+      timestamp: Number(data.Item.timestamp.N)
+    }
+    res.json(session)
   })
 };
 
-const putLayout = (req, res) => {
+const putSession = (req, res) => {
   if (! verifyUserId(req)) {
     res.status(403).send()
     return
   }
   const userId = req.params.userId
   const layoutId = req.params.layoutId
-  const layoutData = JSON.stringify(req.body)
+  const peerId = req.body.peerId
+  const timestamp = String(new Date().getTime())
   dynamoDB.putItem({
     Item: {
       userId: { S: userId },
       layoutId: { S: layoutId },
-      layoutData: {S: layoutData}
+      peerId: {S: peerId},
+      timestamp: {N: timestamp}
     },
     TableName: getTableName()
   }, (err, data) => {
@@ -90,7 +104,7 @@ const putLayout = (req, res) => {
     res.status(204).send()
   })
 };
-const deleteLayout = (req, res) => {
+const deleteSession = (req, res) => {
   if (! verifyUserId(req)) {
     res.status(403).send()
     return
@@ -116,8 +130,8 @@ const deleteLayout = (req, res) => {
 
 
 module.exports = {
-  getLayouts,
-  getLayout,
-  putLayout,
-  deleteLayout
+  getSessions,
+  getSession,
+  putSession,
+  deleteSession
 }

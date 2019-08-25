@@ -69,7 +69,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
 
   logout = async () => {
     await Auth.signOut()
-    this.props.common.setAuthData(null)
+    this.props.common.setUserInfo(null)
     this.props.onClose()
   }
 
@@ -272,7 +272,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
           <OpenLayoutsDialog
             open={ui.layoutsDialog}
             onClose={this.closeLayoutsDialog}
-            authData={this.props.common.userInfo}
+            userInfo={this.props.common.userInfo}
             layouts={this.props.common.layouts}
             loadLayout={this.loadLayout}
             loadLayoutList={this.props.common.loadLayoutList}
@@ -386,13 +386,13 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
         <LoginDialog
           open={ui.loginDialog}
           onClose={this.closeLoginDialog}
-          setAuthData={this.props.common.setAuthData}
+          setAuthData={this.props.common.setUserInfo}
           loadLayoutList={this.props.common.loadLayoutList}
         />
         <SignUpDialog
           open={ui.signInDialog}
           onClose={this.closeSignUpDialog}
-          setAuthData={this.props.common.setAuthData}
+          setAuthData={this.props.common.setUserInfo}
           loadLayoutList={this.props.common.loadLayoutList}
         />
         <SettingsDialog
