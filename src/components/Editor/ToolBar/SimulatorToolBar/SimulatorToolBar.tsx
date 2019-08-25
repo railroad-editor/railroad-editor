@@ -50,7 +50,7 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
   }
 
   onRemoteConnect = async (e) => {
-    await TrainController.connect(this.props.common.userInfo.username, this.props.layout.meta.id)
+    await TrainController.connect(this.props.common.userInfo.id, this.props.layout.meta.id)
       .then(ret => {
         this.props.ui.setRemoteConnectedSnackbar(true)
         TrainController.configure(this.props.layout.trainControllerConfig)

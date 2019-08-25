@@ -1,5 +1,5 @@
 import {action, computed, observable, reaction, runInAction} from "mobx";
-import {AuthData} from "components/common/Authenticator/AuthPiece/AuthPiece";
+import {UserInfo} from "components/common/Authenticator/AuthPiece/AuthPiece";
 import {LayoutMeta} from "store/layoutStore";
 import LayoutAPI from "apis/layout";
 import {DEFAULT_INITIAL_ZOOM} from "constants/tools";
@@ -28,7 +28,7 @@ const INITIAL_STATE = {
 
 export class CommonStore {
   @observable layouts: LayoutMeta[]
-  @observable userInfo: AuthData
+  @observable userInfo: UserInfo
   @observable isPaperLoaded: boolean
   @observable initialZoom: number
   @observable editorMode: EditorMode
@@ -76,15 +76,15 @@ export class CommonStore {
 
   @computed
   get currentUser() {
-    return this.userInfo.username
+    return this.userInfo.id
   }
 
 
   @action
-  setAuthData = (authData: any) => {
-    this.userInfo = authData
+  setUserInfo = (userInfo: any) => {
+    this.userInfo = userInfo
     // ログインしたらロードする
-    if (authData) {
+    if (userInfo) {
       this.loadLayoutList()
     }
   }

@@ -3,6 +3,7 @@ import * as React from "react";
 import getLogger from "logging";
 import Authenticator from "components/common/Authenticator/Authenticator";
 import {AuthState} from "components/common/Authenticator/AuthPiece/AuthPiece";
+import {Auth} from "aws-amplify";
 
 const LOGGER = getLogger(__filename)
 
@@ -23,14 +24,14 @@ export default class AuthWrapper extends React.Component<AuthWrapperProps, {}> {
 
   constructor(props: AuthWrapperProps) {
     super(props)
-    this.onStateChange = this.onStateChange.bind(this)
   }
 
-  onStateChange(state, data) {
+  onStateChange = async (state, data) => {
     if (state == 'signedIn' && this.props.onSignedIn) {
-      this.props.setAuthData(data)
-      this.props.onSignedIn(data)
-      LOGGER.info('Signed in as', data) //`
+      const userInfo = await Auth.currentUserInfo()
+      this.props.setAuthData(userInfo)
+      this.props.onSignedIn(userInfo)
+      LOGGER.info('Signed in as', userInfo) //`
     }
   }
 

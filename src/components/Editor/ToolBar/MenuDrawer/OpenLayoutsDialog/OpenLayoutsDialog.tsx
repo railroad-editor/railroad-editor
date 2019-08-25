@@ -9,6 +9,7 @@ import {LayoutCard} from "components/Editor/ToolBar/MenuDrawer/OpenLayoutsDialog
 import {LayoutMeta} from "store/layoutStore";
 import Grid from "@material-ui/core/Grid";
 import {ConfirmationDialog} from "components/Editor/Palettes/BuilderPalettes/LayerPalette/ConfirmationDialog/ConfirmationDialog";
+import {UserInfo} from "../../../../common/Authenticator/AuthPiece/AuthPiece";
 
 const LOGGER = getLogger(__filename)
 
@@ -17,7 +18,7 @@ export interface OpenLayoutDialogProps {
   onClose: () => void
 
   layouts: LayoutMeta[]
-  authData: any
+  userInfo: UserInfo
   loadLayout: (layoutId: string) => void
   loadLayoutList: () => void
 }
@@ -44,7 +45,7 @@ export default class OpenLayoutsDialog extends React.Component<OpenLayoutDialogP
   }
 
   deleteLayout = (layoutId) => async () => {
-    await LayoutAPI.deleteLayoutData(this.props.authData.username, layoutId)
+    await LayoutAPI.deleteLayoutData(this.props.userInfo.id, layoutId)
     await this.props.loadLayoutList()
   }
 
@@ -69,14 +70,39 @@ export default class OpenLayoutsDialog extends React.Component<OpenLayoutDialogP
     })
   }
 
+  renderLayoutCards = () => {
+    const sortedLayouts = this.props.layouts.sort((a, b) => b.lastModified - a.lastModified)
+    if (sortedLayouts.length == 0) {
+      return null
+    }
+
+    return (
+      <Grid container spacing={4}>
+        {sortedLayouts.map((meta, idx) => {
+          const layoutImageFile = getLayoutImageFileName(this.props.userInfo.id, meta.id)
+          return (
+            <Grid item xs={4}>
+              <LayoutCard
+                key={`card-${idx}`}
+                imgKey={layoutImageFile}
+                title={meta.name}
+                lastModified={meta.lastModified}
+                onClick={this.onClick(meta)}
+                onDelete={this.openDeleteDialog(meta.id)}
+                onRename={this.openDeleteDialog(meta.id)}
+              />
+            </Grid>
+          )
+        })}
+      </Grid>
+    )
+  }
+
   render() {
     let layoutName = ''
     if (this.state.targetLayoutId) {
       layoutName = this.props.layouts.find(layout => layout.id === this.state.targetLayoutId).name
     }
-
-    const sortedLayouts = this.props.layouts.sort((a, b) => b.lastModified - a.lastModified)
-
 
     return (
       <Dialog
@@ -91,24 +117,7 @@ export default class OpenLayoutsDialog extends React.Component<OpenLayoutDialogP
           <Typography>
             You have {this.props.layouts.length} layouts.
           </Typography>
-          <Grid container spacing={4}>
-            {sortedLayouts.map((meta, idx) => {
-              const layoutImageFile = getLayoutImageFileName(this.props.authData.username, meta.id)
-              return (
-                <Grid item xs={4}>
-                  <LayoutCard
-                    key={`card-${idx}`}
-                    imgKey={layoutImageFile}
-                    title={meta.name}
-                    lastModified={meta.lastModified}
-                    onClick={this.onClick(meta)}
-                    onDelete={this.openDeleteDialog(meta.id)}
-                    onRename={this.openDeleteDialog(meta.id)}
-                  />
-                </Grid>
-              )
-            })}
-          </Grid>
+          {this.renderLayoutCards()}
         </DialogContent>
         <ConfirmationDialog
           title={'Delete Layout'}

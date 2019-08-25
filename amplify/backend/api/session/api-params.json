@@ -1,0 +1,48 @@
+{
+    "paths": [
+        {
+            "name": "/users",
+            "lambdaFunction": "sessionApi",
+            "privacy": {
+                "protected": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ],
+                "unauth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
+            }
+        }
+    ],
+    "resourceName": "session",
+    "apiName": "session",
+    "functionArns": [
+        {
+            "lambdaFunction": "sessionApi"
+        }
+    ],
+    "privacy": {
+        "auth": 1,
+        "unauth": 1,
+        "authRoleName": "railroad-editor-test-20190824171740-authRole",
+        "unAuthRoleName": "railroad-editor-test-20190824171740-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "sessionApi",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}

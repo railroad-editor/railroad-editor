@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Dialog from "@material-ui/core/Dialog";
 import AuthWrapper from "components/common/AuthWrapper/AuthWrapper";
-import {AuthData, AuthState} from "components/common/Authenticator/AuthPiece/AuthPiece";
+import {UserInfo, AuthState} from "components/common/Authenticator/AuthPiece/AuthPiece";
 import {inject, observer} from "mobx-react";
 import {STORE_UI} from "../../../../../constants/stores";
 import {UiStore} from "../../../../../store/uiStore";
@@ -10,7 +10,7 @@ import {UiStore} from "../../../../../store/uiStore";
 export interface SignUpDialogProps {
   open: boolean
   onClose: () => void
-  setAuthData: (authData: AuthData) => void
+  setAuthData: (authData: UserInfo) => void
   loadLayoutList: () => void
   ui?: UiStore
 }

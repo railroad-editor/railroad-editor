@@ -47,7 +47,7 @@ export default class SaveLayoutDialog extends FormDialog<SaveLayoutDialogProps, 
 
   createLayoutId = () => {
     const time = new Date().getTime()
-    const userId = this.props.authData.username
+    const userId = this.props.authData.id
     return md5(`${userId}.${time}`)
   }
 

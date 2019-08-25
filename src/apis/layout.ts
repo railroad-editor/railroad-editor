@@ -18,12 +18,12 @@ export interface LayoutDataWithMeta {
 
 
 const fetchLayoutList = async (userId: string): Promise<LayoutMeta[]> => {
-  const result = await API.get('Layout', `/users/${userId}/layouts`, {headers: {}})
-  return result.layouts
+  const result = await API.get('layout', `/users/${userId}/layouts`, {headers: {}})
+  return result.layouts.map(layout => layout.meta)
 }
 
 const fetchLayoutData = async (userId: string, layoutId: string): Promise<LayoutDataWithMeta> => {
-  return await API.get('Layout', `/users/${userId}/layouts/${layoutId}`, {headers: {}})
+  return await API.get('layout', `/users/${userId}/layouts/${layoutId}`, {headers: {}})
 }
 
 const saveLayoutData = async (userId: string,
@@ -41,14 +41,14 @@ const saveLayoutData = async (userId: string,
     userRailGroups: userRailGroups,
     userRails: userCustomRails
   }
-  return await API.put('Layout', `/users/${userId}/layouts/${layoutId}`, {
+  return await API.put('layout', `/users/${userId}/layouts/${layoutId}`, {
     headers: {'Content-Type': 'application/json'},
     body: body
   })
 }
 
 const deleteLayoutData = async (userId: string, layoutId: string) => {
-  return await API.del('Layout', `/users/${userId}/layouts/${layoutId}`, {headers: {}})
+  return await API.del('layout', `/users/${userId}/layouts/${layoutId}`, {headers: {}})
 }
 
 export default {

@@ -41,10 +41,6 @@ export default class SignUp extends AuthPiece<AuthPieceProps, SignUpState> {
     Auth.signUp({
       username: email,
       password: password,
-      email: email,
-      attributes: {
-        'custom:env': process.env.REACT_APP_ENV,
-      }
     })
       .then(() => {
         this.changeState(AuthState.CONFIRM_SIGN_UP, email)

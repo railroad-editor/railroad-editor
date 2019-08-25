@@ -3,8 +3,7 @@ import Editor from 'components/Editor/Editor'
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import {Redirect} from "react-router";
 import * as qs from "query-string"
-import Amplify from "aws-amplify";
-import Auth from "aws-amplify/lib/Auth";
+import Amplify, {Auth} from "aws-amplify";
 import aws_exports from './aws-exports';
 import ResetPassword from "components/common/Authenticator/ResetPassword/ResetPassword";
 import {inject, observer} from "mobx-react";
@@ -17,19 +16,7 @@ import './App.css'
 import Home from "./components/Home/Home";
 import {Helmet} from "react-helmet";
 
-
-const API_ENDPOINTS = {
-  beta: "https://foo866bgvk.execute-api.ap-northeast-1.amazonaws.com/beta",
-  prod: "https://foo866bgvk.execute-api.ap-northeast-1.amazonaws.com/prod",
-}
-
-aws_exports.aws_cloud_logic_custom[0].endpoint = API_ENDPOINTS[process.env.REACT_APP_ENV]
-aws_exports.aws_cloud_logic_custom[0].custom_header = async () => {
-  console.log('api', process.env.REACT_APP_AWS_API_KEY)
-  return {'x-api-key': process.env.REACT_APP_AWS_API_KEY}
-}
-
-console.log('api', process.env.REACT_APP_AWS_API_KEY)
+(window as any).LOG_LEVEL = 'DEBUG';
 
 Amplify.configure(aws_exports)
 
@@ -54,8 +41,8 @@ class App extends React.Component<AppProps, {}> {
     const session = await Auth.currentSession()
     const userInfo = await Auth.currentUserInfo()
     if (userInfo) {
-      LOGGER.info(`UserInfo: ${userInfo}`)
-      this.props.common.setAuthData(userInfo)
+      LOGGER.info('Signed in as', userInfo) //`
+      this.props.common.setUserInfo(userInfo)
     }
   }
 

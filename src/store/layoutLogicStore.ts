@@ -32,7 +32,7 @@ export class LayoutLogicStore {
   @action
   saveLayout = async () => {
 
-    const userId = commonStore.userInfo.username
+    const userId = commonStore.userInfo.id
     // メタデータを更新
     layoutStore.setLayoutMeta({
       ...layoutStore.meta,
