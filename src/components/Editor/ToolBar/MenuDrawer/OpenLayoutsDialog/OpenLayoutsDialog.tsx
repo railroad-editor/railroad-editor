@@ -81,9 +81,9 @@ export default class OpenLayoutsDialog extends React.Component<OpenLayoutDialogP
         {sortedLayouts.map((meta, idx) => {
           const layoutImageFile = getLayoutImageFileName(this.props.userInfo.id, meta.id)
           return (
-            <Grid item xs={4}>
+            <Grid key={`open-layout-dialog-grid-${idx}`} item xs={4}>
               <LayoutCard
-                key={`card-${idx}`}
+                key={`open-layout-dialog-card-${idx}`}
                 imgKey={layoutImageFile}
                 title={meta.name}
                 lastModified={meta.lastModified}

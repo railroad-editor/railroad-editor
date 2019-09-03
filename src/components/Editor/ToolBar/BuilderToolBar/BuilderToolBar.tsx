@@ -92,7 +92,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
 
   render() {
     return (
-      <Grid xs justify="center" alignItems="center" style={{display: 'flex'}}>
+      <Grid item xs justify="center" alignItems="center" style={{display: 'flex'}}>
         <Tooltip title={"Straight Rails (S)"}>
           <StyledIconButton
             className={classNames({

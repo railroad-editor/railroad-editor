@@ -17,6 +17,7 @@ const INITIAL_STATE = {
   settingsDialog: false,
   summaryDialog: false,
   bugReportDialog: false,
+  scriptDialog: false,
   editorMode: EditorMode.BUILDER,
   // snackbars
   confirmedSnackbar: false,
@@ -43,6 +44,7 @@ export class UiStore {
   @observable settingsDialog: boolean
   @observable summaryDialog: boolean
   @observable bugReportDialog: boolean
+  @observable scriptDialog: boolean
   @observable editorMode: EditorMode
   // snackbars
   @observable confirmedSnackbar: boolean
@@ -59,8 +61,10 @@ export class UiStore {
 
   constructor({
                 drawer, layoutsDialog, createNewDialog, saveNewDialog, loginDialog, signInDialog, settingsDialog,
-                bugReportDialog, summaryDialog, editorMode, confirmedSnackbar, savedLayoutSnackbar, requireLoginSnackbar,
-                loggedInSnackbar, noRailForGroupSnackbar, registeredRailGroupSnackbar, bugReportSnackbar,
+                bugReportDialog, summaryDialog, scriptDialog,
+                editorMode,
+                confirmedSnackbar, savedLayoutSnackbar, requireLoginSnackbar, loggedInSnackbar,
+                noRailForGroupSnackbar, registeredRailGroupSnackbar, bugReportSnackbar,
                 registeredRailGroupSnackbarMessage, remoteNotConnectedSnackbar, remoteConnectedSnackbar,
                 loadedLayoutSnackbar
               }) {
@@ -74,6 +78,7 @@ export class UiStore {
     this.settingsDialog = settingsDialog
     this.summaryDialog = summaryDialog
     this.bugReportDialog = bugReportDialog
+    this.scriptDialog = scriptDialog
     // snackbars
     this.confirmedSnackbar = confirmedSnackbar
     this.savedLayoutSnackbar = savedLayoutSnackbar
@@ -141,6 +146,11 @@ export class UiStore {
   @action
   setBugReportDialog = (open: boolean) => {
     this.bugReportDialog = open
+  }
+
+  @action
+  setScriptDialog = (open: boolean) => {
+    this.scriptDialog = open
   }
 
   // snackbars
