@@ -2,7 +2,6 @@ import * as React from 'react'
 import getLogger from "logging";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {FormDialog, FormDialogProps, FormDialogState, FormInputs} from "components/common/FormDialog/FormDialog";
-import "react-fine-uploader/gallery/gallery.css";
 import {withStyles} from "@material-ui/core";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
