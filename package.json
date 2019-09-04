@@ -62,6 +62,8 @@
     "mobx-state-tree": "3.14.1",
     "mobx-utils": "5.4.1",
     "moment": "2.22.1",
+    "monaco-editor": "^0.17.1",
+    "monaco-editor-webpack-plugin": "^1.7.0",
     "optimize-css-assets-webpack-plugin": "5.0.3",
     "pnp-webpack-plugin": "1.5.0",
     "postcss-flexbugs-fixes": "4.1.0",
