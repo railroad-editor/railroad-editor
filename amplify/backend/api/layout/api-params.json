@@ -1,0 +1,49 @@
+{
+    "paths": [
+        {
+            "name": "/users",
+            "lambdaFunction": "layoutApi",
+            "privacy": {
+                "protected": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ],
+                "unauth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
+            }
+        }
+    ],
+    "resourceName": "layout",
+    "apiName": "layout",
+    "functionArns": [
+        {
+            "lambdaFunction": "layoutApi"
+        }
+    ],
+    "privacy": {
+        "auth": 1,
+        "unauth": 1,
+        "authRoleName": "railroad-editor-test-20190824171740-authRole",
+        "unAuthRoleName": "railroad-editor-test-20190824171740-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "layoutApi",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ],
+    "uuid": "4578d274"
+}

@@ -1,0 +1,45 @@
+{
+    "test": {
+        "awscloudformation": {
+            "AuthRoleName": "railroad-editor-test-20190824171740-authRole",
+            "UnauthRoleArn": "arn:aws:iam::035232340433:role/railroad-editor-test-20190824171740-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::035232340433:role/railroad-editor-test-20190824171740-authRole",
+            "Region": "ap-northeast-1",
+            "DeploymentBucketName": "railroad-editor-test-20190824171740-deployment",
+            "UnauthRoleName": "railroad-editor-test-20190824171740-unauthRole",
+            "StackName": "railroad-editor-test-20190824171740",
+            "StackId": "arn:aws:cloudformation:ap-northeast-1:035232340433:stack/railroad-editor-test-20190824171740/a3f8ccc0-c647-11e9-a939-0a73531ad5e4"
+        },
+        "categories": {
+            "auth": {
+                "railroadeditorbe0a4b20": {}
+            },
+            "function": {
+                "layoutApi": {},
+                "cognitoCustomMessage": {}
+            }
+        }
+    },
+    "prod": {
+        "awscloudformation": {
+            "AuthRoleName": "railroad-editor-prod-20190824172308-authRole",
+            "UnauthRoleArn": "arn:aws:iam::035232340433:role/railroad-editor-prod-20190824172308-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::035232340433:role/railroad-editor-prod-20190824172308-authRole",
+            "Region": "ap-northeast-1",
+            "DeploymentBucketName": "railroad-editor-prod-20190824172308-deployment",
+            "UnauthRoleName": "railroad-editor-prod-20190824172308-unauthRole",
+            "StackName": "railroad-editor-prod-20190824172308",
+            "StackId": "arn:aws:cloudformation:ap-northeast-1:035232340433:stack/railroad-editor-prod-20190824172308/67f1de00-c648-11e9-aa4b-0e819627e6da"
+        },
+        "categories": {
+            "auth": {
+                "railroadeditorbe0a4b20": {}
+            },
+            "function": {
+                "layoutApi": {},
+                "issueApi": {},
+                "sessionApi": {}
+            }
+        }
+    }
+}
