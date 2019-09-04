@@ -1,7 +1,6 @@
 import * as React from 'react'
 import getLogger from "logging";
 import {FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
-import "react-fine-uploader/gallery/gallery.css";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, withStyles} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import {compose} from "recompose";

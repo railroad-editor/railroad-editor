@@ -44,13 +44,6 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
       )
     }
 
-
-    dialogExists = () => {
-      const dialogDivs = $('div[role="dialog"]')
-      return dialogDivs.length > 0
-    }
-
-
     keyDown = (e: KeyboardEvent | any) => {
       // ダイアログの表示中はツールの切替を行わない
       if (this.dialogExists()) return
@@ -114,6 +107,10 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
     componentWillUnmount() {
       document.removeEventListener('keydown', this.keyDown)
       document.removeEventListener('keyup', this.keyUp)
+    }
+
+    private dialogExists = () => {
+      return document.querySelector("div[role='dialog']") != null
     }
 
     render() {

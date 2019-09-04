@@ -478,8 +478,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
 
     private dialogExists = () => {
-      const dialogDivs = $('div[role="dialog"]')
-      return dialogDivs.length > 0
+      return document.querySelector("div[role='dialog']") != null
     }
 
     private getRailDataById = (id: number) => {

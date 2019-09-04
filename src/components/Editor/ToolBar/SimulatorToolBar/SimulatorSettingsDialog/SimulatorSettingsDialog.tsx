@@ -3,7 +3,6 @@ import getLogger from "logging";
 import {LayoutConfig, LayoutMeta} from "store/layoutStore";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
-import "react-fine-uploader/gallery/gallery.css";
 
 
 const LOGGER = getLogger(__filename)
