@@ -8,7 +8,7 @@ import {getRailComponent} from "components/rails/utils";
 import commonStore from "./commonStore";
 import StorageAPI from "apis/storage"
 import LayoutAPI from "apis/layout";
-import * as moment from "moment";
+import moment from "moment";
 import simulatorLogicStore from "store/simulatorLogicStore";
 import {EditorMode} from "store/uiStore";
 import {FlowDirection, Pivot} from "react-rail-components/lib/parts/primitives/PartBase";

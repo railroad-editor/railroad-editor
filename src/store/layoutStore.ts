@@ -5,7 +5,7 @@ import {DEFAULT_GRID_SIZE, DEFAULT_PAPER_HEIGHT, DEFAULT_PAPER_WIDTH} from "cons
 import {getAllOpenCloseJoints} from "components/rails/utils";
 import getLogger from "logging";
 import * as uuidv4 from "uuid/v4";
-import * as moment from "moment";
+import moment from "moment";
 import TrainController from "components/Editor/ToolBar/SimulatorToolBar/TrainController";
 import railItems from "constants/railItems.json";
 import {computedFn} from "mobx-utils";

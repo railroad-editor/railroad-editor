@@ -4,7 +4,7 @@ import {CardContent, CardHeader, MenuItem} from '@material-ui/core'
 import Typography from "@material-ui/core/Typography";
 import {S3Image} from 'aws-amplify-react';
 import getLogger from "logging";
-import * as moment from "moment";
+import moment from "moment";
 import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
 import MoreVertIcon from '@material-ui/icons/MoreVert';

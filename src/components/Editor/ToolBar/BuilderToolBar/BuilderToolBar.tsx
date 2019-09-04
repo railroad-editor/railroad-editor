@@ -28,7 +28,7 @@ import {CommonStore} from "store/commonStore";
 import {compose} from "recompose";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import {StyledIconButton, VerticalDivider} from "components/Editor/ToolBar/styles";
-import withMoveTool from "components/hoc/withMoveTool";
+import withMoveTool, {WithMoveToolProps} from "components/hoc/withMoveTool";
 import PowerIcon from "@material-ui/icons/Power";
 
 const LOGGER = getLogger(__filename)
@@ -39,15 +39,13 @@ export interface BuilderToolBarProps {
   builder?: BuilderStore
   layout?: LayoutStore
   layoutLogic?: LayoutLogicStore
-
-  resetViewPosition: () => void
 }
 
 export interface BuilderToolBarState {
   el: HTMLElement | undefined
 }
 
-type EnhancedBuilderToolBarProps = BuilderToolBarProps & WithBuilderPublicProps
+type EnhancedBuilderToolBarProps = BuilderToolBarProps & WithBuilderPublicProps & WithMoveToolProps
 
 
 @inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
@@ -260,7 +258,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
 }
 
 
-export default compose<BuilderToolBarProps, BuilderToolBarProps | any>(
+export default compose<EnhancedBuilderToolBarProps, BuilderToolBarProps>(
   withBuilder,
   withMoveTool
 )(BuilderToolBar)

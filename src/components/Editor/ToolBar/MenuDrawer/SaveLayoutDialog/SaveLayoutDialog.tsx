@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as md5 from "js-md5";
 import getLogger from "logging";
-import * as moment from "moment";
+import moment from "moment";
 import {default as AutoFocusTextValidator} from "components/common/AutoFocusTextValidator";
 import {FormDialog, FormDialogProps, FormDialogState} from "components/common/FormDialog/FormDialog";
 import {ValidatorForm} from 'react-material-ui-form-validator';

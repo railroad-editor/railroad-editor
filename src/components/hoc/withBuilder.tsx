@@ -15,7 +15,6 @@ import {
 } from 'constants/stores';
 import {BuilderStore, UserRailGroupData} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
-import * as $ from "jquery";
 import {UiStore} from "store/uiStore";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import {CommonStore} from "store/commonStore";
@@ -36,7 +35,7 @@ export interface WithBuilderPublicProps {
   builderChangeJointState: (pairs: JointPair[], state: DetectionState, isError?: boolean) => void
   builderSetTemporaryRail: (railData: Partial<RailData>) => void
   builderAddRail: () => void
-  builderSetTemporaryRailGroup: (railGroupData: Partial<RailGroupData>, childRails: RailData[]) => void
+  builderSetTemporaryRailGroup: (railGroupData: RailGroupData | Partial<RailGroupData>, childRails: RailData[]) => void
   builderRegisterRailGroup: (name: string, shouldDelete: boolean) => void
 }
 
@@ -468,7 +467,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
             builderKeyDown={this.keyDown}
             builderKeyUp={this.keyUp}
             builderSetTemporaryRail={this.setTemporaryRail}
-            builderSetTemporaryRailGroup={this.setTemporaryRailGroup}
+            builderSetTemporaryRailGroup={this.setTemporaryRailGroup as any}
             builderAddRail={this.addRail}
             builderChangeJointState={this.changeJointState}
             builderRegisterRailGroup={this.registerRailGroup}

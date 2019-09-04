@@ -37,8 +37,10 @@ function withRoot(Component: React.ComponentType) {
         <MuiThemeProvider theme={theme}>
           {/* Reboot kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline>
-            {/* the rest of your app belongs here, e.g. the router */}
-            <Component {...props} />
+            <div>
+              {/* the rest of your app belongs here, e.g. the router */}
+              <Component {...props} />
+            </div>
           </CssBaseline>
         </MuiThemeProvider>
       </MobxProvider>

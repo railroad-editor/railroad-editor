@@ -10,6 +10,10 @@ import {getCloseJointsOf, intersectsOf} from "../components/rails/utils";
 import {FeederInfo, JointInfo, RailGroupProps} from "react-rail-components";
 
 
+export interface PresetPaletteItemsByVendor {
+  [key: string]: PresetPaletteItems
+}
+
 export interface PresetPaletteItems {
   [key: string]: PaletteItem[]
 }
@@ -27,7 +31,7 @@ export interface UserRailGroupData extends RailGroupProps {
 
 
 export interface BuilderStoreState {
-  presetPaletteItems: PresetPaletteItems
+  presetPaletteItems: PresetPaletteItemsByVendor
   paletteItem: PaletteItem
   lastPaletteItems: LastPaletteItems
   placingMode: PlacingMode

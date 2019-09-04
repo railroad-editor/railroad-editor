@@ -16,7 +16,7 @@ import {DialogTitle} from '@material-ui/core';
 const logger = new Logger('ResetPassword');
 
 
-interface ResetPasswordProps extends AuthPieceProps {
+interface ResetPasswordProps extends AuthPieceProps, RouteComponentProps {
   code: string
   userName: string
 }
@@ -26,7 +26,7 @@ interface ResetPasswordState extends AuthPieceState {
 }
 
 
-export class ResetPassword extends AuthPiece<ResetPasswordProps & RouteComponentProps<{}>, ResetPasswordState> {
+export class ResetPassword extends AuthPiece<ResetPasswordProps, ResetPasswordState> {
   public static defaultProps: Partial<ResetPasswordProps> = {
     authState: AuthState.FORGOT_PASSWORD
   }
