@@ -162,7 +162,7 @@ export class RailPalettes extends React.Component<EnhancedPaletteProps, PaletteS
 }
 
 
-export default compose<PaletteProps, EnhancedPaletteProps | any>(
+export default compose<EnhancedPaletteProps, PaletteProps>(
   withBuilder,
 )(RailPalettes)
 

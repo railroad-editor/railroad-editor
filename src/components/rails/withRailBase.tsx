@@ -574,7 +574,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
 
   }
 
-  return compose<WithRailBaseProps, WithRailBaseProps | any>(
+  return compose<RailBaseEnhancedProps, WithRailBaseProps | any>(
     withBuilder,
   )(WithRailBase)
 }

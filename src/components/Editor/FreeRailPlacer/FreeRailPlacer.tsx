@@ -350,6 +350,6 @@ const getSteppedAngleByMousePosition = (anchor: Point2D, cursor: Point2D, step: 
 }
 
 
-export default compose<FreeRailPlacerProps, FreeRailPlacerProps | any>(
+export default compose<FreeRailPlacerEnhancedProps, FreeRailPlacerProps>(
   withBuilder,
 )(FreeRailPlacer)
