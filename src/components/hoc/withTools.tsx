@@ -3,7 +3,6 @@ import {Tools} from "constants/tools";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_COMMON} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
-import * as $ from "jquery";
 import {CommonStore} from "store/commonStore";
 import {when} from "mobx";
 

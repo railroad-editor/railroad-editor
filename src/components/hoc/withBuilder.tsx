@@ -15,7 +15,6 @@ import {
 } from 'constants/stores';
 import {BuilderStore, UserRailGroupData} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
-import * as $ from "jquery";
 import {UiStore} from "store/uiStore";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import {CommonStore} from "store/commonStore";
