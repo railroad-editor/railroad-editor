@@ -3,7 +3,7 @@ import {Grid, Tooltip} from '@material-ui/core'
 import {Commands} from "constants/tools";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {STORE_COMMON, STORE_LAYOUT, STORE_SIMULATOR_LOGIC, STORE_UI} from "constants/stores";
+import {STORE_COMMON, STORE_LAYOUT, STORE_SIMULATOR, STORE_SIMULATOR_LOGIC, STORE_UI} from "constants/stores";
 import {CommonStore} from "store/commonStore";
 import {compose} from "recompose";
 import withMoveTool from "components/hoc/withMoveTool";
@@ -15,6 +15,8 @@ import {LayoutStore} from "store/layoutStore";
 import TrainController from "components/Editor/ToolBar/SimulatorToolBar/TrainController";
 import {UiStore} from "../../../../store/uiStore";
 import ScriptDialog from "./ScriptDialog/ScriptDialog";
+import MySnackbar from "../../../common/Snackbar/MySnackbar";
+import {SimulatorStore} from "../../../../store/simulatorStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -24,6 +26,7 @@ export interface SimulatorToolBarProps {
 
   resetViewPosition: () => void
   layout?: LayoutStore
+  simulator?: SimulatorStore
   simulatorLogic?: SimulatorLogicStore
   ui?: UiStore
 }
@@ -36,7 +39,7 @@ export interface SimulatorToolBarState {
 type EnhancedSimulatorToolBarProps = SimulatorToolBarProps
 
 
-@inject(STORE_COMMON, STORE_LAYOUT, STORE_SIMULATOR_LOGIC, STORE_UI)
+@inject(STORE_COMMON, STORE_LAYOUT, STORE_SIMULATOR_LOGIC, STORE_UI, STORE_SIMULATOR)
 @observer
 export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarProps, SimulatorToolBarState> {
 
@@ -66,6 +69,10 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
 
   closeScriptDialog = () => {
     this.props.ui.setScriptDialog(false)
+  }
+
+  closeErrorSnackbar = () => {
+    this.props.simulator.setErrorSnackbar(false, '')
   }
 
   render() {
@@ -100,6 +107,11 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
           title={'Script'}
           powerPacks={this.props.layout.currentLayoutData.powerPacks}
           switchers={this.props.layout.currentLayoutData.switchers}
+        />
+        <MySnackbar open={this.props.simulator.errorSnackbar}
+                    onClose={this.closeErrorSnackbar}
+                    message={this.props.simulator.errorSnackbarMessage}
+                    variant="error"
         />
       </>
     )

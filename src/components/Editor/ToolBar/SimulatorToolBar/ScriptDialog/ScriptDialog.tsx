@@ -2,11 +2,14 @@ import {FormDialog, FormDialogProps, FormDialogState} from "../../../../common/F
 import * as React from "react";
 import Grid from "@material-ui/core/Grid";
 import {compose} from "recompose";
-import {withStyles} from "@material-ui/core";
+import {FormControlLabel, Switch, withStyles} from "@material-ui/core";
 import * as monaco from 'monaco-editor';
-import {runInSandbox} from "./sandbox"
-import {PowerPacks} from "./PowerPacks";
-import {PowerPackData, SwitcherData} from "../../../../../store/layoutStore";
+import {editor} from 'monaco-editor';
+import {SimulatorSandbox} from "./sandbox"
+import {LayoutStore} from "../../../../../store/layoutStore";
+import {inject, observer} from "mobx-react";
+import {STORE_LAYOUT, STORE_SIMULATOR} from "../../../../../constants/stores";
+import {SimulatorStore} from "../../../../../store/simulatorStore";
 
 const styles = theme => ({
   grid: {
@@ -19,18 +22,21 @@ const styles = theme => ({
 });
 
 export interface ScriptDialogProps extends FormDialogProps {
-  powerPacks: PowerPackData[]
-  switchers: SwitcherData[]
+  layout?: LayoutStore
+  simulator?: SimulatorStore
   classes: any
 }
 
 export interface ScriptDialogState extends FormDialogState {
+  enableScript: boolean
 }
 
 
+@inject(STORE_LAYOUT, STORE_SIMULATOR)
+@observer
 export class ScriptDialog extends FormDialog<ScriptDialogProps, ScriptDialogState> {
 
-  editor: any
+  editor: editor.IStandaloneCodeEditor
 
   constructor(props: ScriptDialogProps) {
     super(props)
@@ -43,64 +49,54 @@ export class ScriptDialog extends FormDialog<ScriptDialogProps, ScriptDialogStat
   getInitialState = () => {
     return {
       ...super.getInitialState(),
+      enableScript: this.props.simulator.sandboxEnabled
     }
   }
 
   onEnter = () => {
     this.setState(this.getInitialState());
-
-    this.editor = monaco.editor.create(document.getElementById('aaaa'), {
-      value: [
-        ` 
- const p = PowerPacks.getById(1);
- p.setPower(10); 
- p.onPowerChange(function(power) { console.log('power changed', power) })
-`
-      ].join('\n'),
+    // initialize monaco-editor
+    this.editor = monaco.editor.create(document.getElementById('simulator-script-editor'), {
+      value: this.props.layout.currentLayoutData.script,
       language: 'javascript'
     });
   }
 
   onOK = (e) => {
-    let code = this.editor.getValue()
-    code = `
-      window.addEventListener('message', function(e) {
-        const {type, func, payload} = e.data
-        console.log('Message to railroad-editor-script: ', type, payload);
-        
-        const HANDLERS = {
-          PowerPack: {
-            setPower: function(payload) {
-              const {id, power} = payload
-              PowerPacks.getById(id)._updatePower(power)
-            }
-          }
-        }
-        HANDLERS[type][func](payload)
-      })
-    ` + code
-    const sandboxGlobal = {
-      PowerPacks: new PowerPacks(this.props.powerPacks),
+    const code = this.editor.getValue()
+    if (this.state.enableScript) {
+      // recreate sandbox and execute
+      const sandbox = new SimulatorSandbox(code, this.props.layout, this.props.simulator)
+      sandbox.execute()
+      this.props.simulator.setSandbox(sandbox)
+    } else {
+      this.props.simulator.setSandbox(null)
     }
-    const sandbox = runInSandbox(code, sandboxGlobal, false)
-    sandbox.execute((data) => {
-      if (data.source === 'railroad-editor-script') {
-        console.log('Message from railroad-editor-script: ', data);
-      }
-    });
-
-    setTimeout(() => {
-      sandbox.postMessage({type: 'PowerPack', func: 'setPower', payload: {id: 1, power: 100}})
-    }, 100)
-
+    this.props.layout.setScript(code)
     this.onClose()
+  }
+
+  onSwitchChange = (e) => {
+    this.setState({
+      enableScript: e.target.checked
+    })
   }
 
   renderContent = () => {
     return (
       <Grid container spacing={1} className={this.props.classes.grid}>
-        <Grid id={'aaaa'} item xs={12}>
+        <Grid id={'simulator-script-editor'} item xs={12}>
         </Grid>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={this.state.enableScript}
+              onChange={this.onSwitchChange}
+              value="checkedA"
+            />}
+          label={"Enable Script"}
+        />
+
       </Grid>
     )
   }

@@ -1,7 +1,3 @@
-// function postMessage(className, funcName, data) {
-//   // parent.postMessage(JSON.stringify({className, funcName, data}), '*')
-//   // console.info('postMessage:', className, funcName, args)
-// }
 
 
 export function PowerPacks(powerPacksData) {
@@ -9,13 +5,14 @@ export function PowerPacks(powerPacksData) {
 }
 
 PowerPacks.prototype.getById = function (id) {
-  console.log('getById')
+  console.log('getById', id)
   let powerPack = this.powerPacks.find(p => p.id === id)
   if (!powerPack) {
     window.parent.postMessage({
-      source: 'railroad-editor-script',
-      type: 'error',
-      data: {message: `PowerPack with id: ${id} not found`}
+      source: 'simulator-script',
+      type: 'Error',
+      func: 'show',
+      payload: {message: `PowerPack with ID: ${id} not found`}
     }, '*');
     throw new Error()
   }
@@ -27,9 +24,10 @@ PowerPacks.prototype.getByName = function (name) {
   let powerPack = this.powerPacks.find(p => p.name === name)
   if (!powerPack) {
     window.parent.postMessage({
-      source: 'railroad-editor-script',
-      type: 'error',
-      data: {message: `PowerPack with name: ${name} not found`}
+      source: 'simulator-script',
+      type: 'Error',
+      func: 'show',
+      payload: {message: `PowerPack with name: ${name} not found`}
     }, '*');
     throw new Error()
   }
@@ -41,23 +39,32 @@ export function PowerPack(powerPackData) {
   this.power = powerPackData.power
   this.direction = powerPackData.direction
   this.onPowerChangeCallback = null
-  this.onDirectionChange = null
+  this.onDirectionChangeCallback = null
 }
 
 PowerPack.prototype.setPower = function (power) {
-  let data = {id: this.id, power: power, direction: this.direction}
+  let payload = {id: this.id, power: power}
   // notify to editor
-  window.parent.postMessage({source: 'railroad-editor-script', type: 'setPower', data: data}, '*');
+  window.parent.postMessage({source: 'simulator-script', type: 'PowerPack', func: 'setPower', payload: payload}, '*');
 }
 
 PowerPack.prototype.setDirection = function (direction) {
-  let data = {id: this.id, power: this.power, direction: direction}
+  let payload = {id: this.id, direction: direction}
   // notify to editor
-  window.parent.postMessage({source: 'railroad-editor-script', type: 'setDirection', data: data}, '*');
+  window.parent.postMessage({
+    source: 'simulator-script',
+    type: 'PowerPack',
+    func: 'setDirection',
+    payload: payload
+  }, '*');
 }
 
 PowerPack.prototype.onPowerChange = function (callback) {
   this.onPowerChangeCallback = callback
+}
+
+PowerPack.prototype.onDirectionChange = function (callback) {
+  this.onDirectionChangeCallback = callback
 }
 
 PowerPack.prototype._updatePower = function (power) {
@@ -65,4 +72,11 @@ PowerPack.prototype._updatePower = function (power) {
     this.onPowerChangeCallback(power)
   }
   this.power = power
+}
+
+PowerPack.prototype._updateDirection = function (direction) {
+  if (this.direction !== direction && this.onDirectionChangeCallback) {
+    this.onDirectionChangeCallback(direction)
+  }
+  this.direction = direction
 }

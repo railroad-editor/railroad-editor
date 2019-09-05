@@ -15,5 +15,14 @@ declare module paper {
   }
 }
 
+// somewhere in your project
+declare module _ {
+  interface LoDashStatic {
+    product(any: any, any: any): any
+
+    combinations(...any: any): any
+  }
+}
+
 declare var _: any
 declare var $: any

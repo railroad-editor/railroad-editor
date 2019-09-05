@@ -10,6 +10,7 @@ import TrainController from "components/Editor/ToolBar/SimulatorToolBar/TrainCon
 import railItems from "constants/railItems.json";
 import {computedFn} from "mobx-utils";
 import {FeederInfo, GapJoinerInfo} from "react-rail-components";
+import simulatorStore from "./simulatorStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -42,6 +43,7 @@ export interface LayoutData {
   gapJoiners: GapJoinerInfo[]
   powerPacks: PowerPackData[]
   switchers: SwitcherData[]
+  script: string
 }
 
 export interface LayerData {
@@ -149,6 +151,7 @@ export const INITIAL_STATE: LayoutStoreState = {
       gapJoiners: [],
       powerPacks: [],
       switchers: [],
+      script: ''
     }
   ],
   historyIndex: 0,
@@ -617,8 +620,14 @@ export class LayoutStore {
     if (item.direction != null && item.direction !== target.direction) {
       item.power = 0
       TrainController.setPowerPackDirection(target.id, item.direction)
+      if (simulatorStore.sandbox) {
+        simulatorStore.sandbox.setPowerPackDirection(target.id, item.power)
+      }
     } else if (item.power != null && item.power !== target.power) {
       TrainController.setPowerPackValue(target.id, item.power)
+      if (simulatorStore.sandbox) {
+        simulatorStore.sandbox.setPowerPackPower(target.id, item.power)
+      }
     }
 
     this.currentLayoutData.powerPacks[index] = {
@@ -660,6 +669,9 @@ export class LayoutStore {
 
     if (item.currentState != null && item.currentState !== target.currentState) {
       TrainController.setSwitcherState(target.id, item.currentState)
+      if (simulatorStore.sandbox) {
+        simulatorStore.sandbox.setSwitcherDirection(target.id, item.currentState)
+      }
     }
 
     this.currentLayoutData.switchers[index] = {
@@ -671,6 +683,11 @@ export class LayoutStore {
   @action
   deleteSwitcher = (item: Partial<SwitcherData>) => {
     this.currentLayoutData.switchers = this.currentLayoutData.switchers.filter(feeder => feeder.id !== item.id)
+  }
+
+  @action
+  setScript = (script: string) => {
+    this.currentLayoutData.script = script
   }
 
 
