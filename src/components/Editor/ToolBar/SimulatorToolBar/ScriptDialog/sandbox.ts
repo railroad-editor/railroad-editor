@@ -2,6 +2,7 @@ import {PowerPacks} from "./PowerPacks";
 import {LayoutStore} from "../../../../../store/layoutStore";
 import {SimulatorStore} from "../../../../../store/simulatorStore";
 import {Switchers} from "./Switchers";
+import {LayoutLogicStore} from "../../../../../store/layoutLogicStore";
 
 
 export class Sandbox {
@@ -89,7 +90,7 @@ export class SimulatorSandbox extends Sandbox {
       });
   `
 
-  constructor(code: string, layout: LayoutStore, simulator: SimulatorStore) {
+  constructor(code: string, layout: LayoutStore, layoutLogic: LayoutLogicStore, simulator: SimulatorStore) {
     code = SimulatorSandbox.BASE_CODE + code
     const global = {
       PowerPacks: new PowerPacks(layout.currentLayoutData.powerPacks),
@@ -115,7 +116,7 @@ export class SimulatorSandbox extends Sandbox {
         Switcher: {
           setDirection: function (payload) {
             const {id, direction} = payload
-            layout.updateSwitcher({id, currentState: direction})
+            layoutLogic.changeSwitcherState(id, direction)
           }
         },
         Error: {

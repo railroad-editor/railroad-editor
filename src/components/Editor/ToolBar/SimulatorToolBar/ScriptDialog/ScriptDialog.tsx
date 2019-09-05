@@ -8,8 +8,9 @@ import {editor} from 'monaco-editor';
 import {SimulatorSandbox} from "./sandbox"
 import {LayoutStore} from "../../../../../store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_LAYOUT, STORE_SIMULATOR} from "../../../../../constants/stores";
+import {STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SIMULATOR} from "../../../../../constants/stores";
 import {SimulatorStore} from "../../../../../store/simulatorStore";
+import {LayoutLogicStore} from "../../../../../store/layoutLogicStore";
 
 const styles = theme => ({
   grid: {
@@ -23,6 +24,7 @@ const styles = theme => ({
 
 export interface ScriptDialogProps extends FormDialogProps {
   layout?: LayoutStore
+  layoutLogic?: LayoutLogicStore
   simulator?: SimulatorStore
   classes: any
 }
@@ -32,7 +34,7 @@ export interface ScriptDialogState extends FormDialogState {
 }
 
 
-@inject(STORE_LAYOUT, STORE_SIMULATOR)
+@inject(STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SIMULATOR)
 @observer
 export class ScriptDialog extends FormDialog<ScriptDialogProps, ScriptDialogState> {
 
@@ -66,7 +68,7 @@ export class ScriptDialog extends FormDialog<ScriptDialogProps, ScriptDialogStat
     const code = this.editor.getValue()
     if (this.state.enableScript) {
       // recreate sandbox and execute
-      const sandbox = new SimulatorSandbox(code, this.props.layout, this.props.simulator)
+      const sandbox = new SimulatorSandbox(code, this.props.layout, this.props.layoutLogic, this.props.simulator)
       sandbox.execute()
       this.props.simulator.setSandbox(sandbox)
     } else {
