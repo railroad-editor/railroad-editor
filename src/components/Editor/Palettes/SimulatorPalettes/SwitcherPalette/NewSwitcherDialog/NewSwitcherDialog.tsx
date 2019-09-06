@@ -35,7 +35,6 @@ export default class NewSwitcherDialog extends FormDialog<NewSwitcherDialogProps
   }
 
   renderContent = () => {
-    console.log(this.state.inputs)
     return (
       <>
         <ValidatorForm

@@ -57,12 +57,14 @@ export class CommonStore {
     reaction(
       () => this.editorMode,
       (mode) => {
-        if (mode === EditorMode.BUILDER) {
-          builderStore.changeMode(builderStore.activeTool)
-          simulatorLogicStore.stopCurrentFlowSimulation()
-        } else {
-          simulatorLogicStore.changeMode(simulatorLogicStore.activeTool)
-          simulatorLogicStore.startCurrentFlowSimulation()
+        switch (mode) {
+          case EditorMode.BUILDER:
+            builderStore.changeMode(builderStore.activeTool)
+            simulatorLogicStore.stopCurrentFlowSimulation()
+            break
+          case EditorMode.SIMULATOR:
+            simulatorLogicStore.startCurrentFlowSimulation()
+            break
         }
       }
     )

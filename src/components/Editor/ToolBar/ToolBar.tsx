@@ -104,7 +104,7 @@ export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
       <AppBar>
         <MuiToolbar>
           <Grid container justify="space-between" spacing={0}>
-            <Grid xs justify="flex-start" alignItems="center" style={{display: 'flex'}}>
+            <Grid item xs alignItems="center" style={{display: 'flex'}}>
               <Tooltip title={"Menu"}>
                 <StyledIconButton onClick={this.openMenu}>
                   <MenuIcon/>
@@ -132,7 +132,7 @@ export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
             }
 
 
-            <Grid xs justify="flex-end" alignItems="center" style={{display: 'flex'}}>
+            <Grid item xs justify="flex-end" alignItems="center" style={{display: 'flex'}}>
               <Tooltip title={'Editor Mode'}
                 // PopperProps={{style: {zIndex: '1000'}}}
               >

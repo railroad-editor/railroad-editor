@@ -206,7 +206,7 @@ export const intersectsBetween = (r1: number, r2: number): boolean => {
     r2Paths = getRailComponent(r2).railPart.path.children
   }
 
-  const combinations = (_ as any).product(r1Paths, r2Paths)
+  const combinations = _.product(r1Paths, r2Paths)
   const result = combinations.map(cmb => cmb[0].intersects(cmb[1])).some(e => e)
   LOGGER.debug(`Rail intersection of ${r1} and {r2}: ${result}`)
   return result
@@ -235,7 +235,7 @@ export const getCloseJointsBetween = (r1: number, r2: number): JointPair[] => {
   const r1Joints = getRailComponent(r1).joints
   const r2Joints = getRailComponent(r2).joints
 
-  const combinations = (_ as any).product(r1Joints, r2Joints)
+  const combinations = _.product(r1Joints, r2Joints)
   const closeJointPairs = []
   combinations.forEach(cmb => {
     // 両方が未接続でなければ抜ける
@@ -292,7 +292,7 @@ export const getAllCloseJoints = (rails: RailData[]): JointPair[] => {
   if (rails.length < 2) {
     return []
   } else {
-    const combinations = (_ as any).combinations(rails.map(r => r.id), 2)
+    const combinations = _.combinations(rails.map(r => r.id), 2)
     return _.flatMap(combinations, cmb => getCloseJointsBetween(cmb[0], cmb[1]))
   }
 }
@@ -308,7 +308,7 @@ export const getAllOpenCloseJoints = (rails: RailData[]): JointPair[] => {
   if (railsWithOpenJoints.length < 2) {
     return []
   } else {
-    const combinations = (_ as any).combinations(railsWithOpenJoints.map(r => r.id), 2)
+    const combinations = _.combinations(railsWithOpenJoints.map(r => r.id), 2)
     LOGGER.info(combinations)
     return _.flatMap(combinations, cmb => getCloseJointsBetween(cmb[0], cmb[1]))
   }

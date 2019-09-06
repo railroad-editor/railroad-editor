@@ -5,6 +5,7 @@ import UiStore from "store/uiStore";
 import LayoutLogicStore from "store/layoutLogicStore";
 import SimulatorLogicStore from "store/simulatorLogicStore";
 import PaperStore from "./paperStore.";
+import SimulatorStore from "./simulatorStore";
 
 export function createStores() {
   return {
@@ -12,6 +13,7 @@ export function createStores() {
     builder: BuilderStore,
     layout: LayoutStore,
     layoutLogic: LayoutLogicStore,
+    simulator: SimulatorStore,
     simulatorLogic: SimulatorLogicStore,
     ui: UiStore,
     paper: PaperStore
