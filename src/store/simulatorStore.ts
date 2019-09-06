@@ -29,9 +29,6 @@ export class SimulatorStore {
 
   @action
   setSandbox = (sandbox: any) => {
-    if (this.sandbox) {
-      this.sandbox.destroy()
-    }
     this.sandbox = sandbox
     this.sandboxEnabled = !! sandbox;
   }

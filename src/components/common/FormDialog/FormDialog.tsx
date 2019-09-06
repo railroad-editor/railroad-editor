@@ -13,6 +13,7 @@ export interface FormDialogProps {
   title: string
   defaultInputs?: FormInputs
   classes?: any
+  disableEsc?: boolean
 }
 
 export interface FormDialogState {
@@ -115,7 +116,7 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
   }
 
   render() {
-    const {open, title, classes} = this.props
+    const {open, title, classes, disableEsc} = this.props
     return (
       <Dialog
         open={open}
@@ -123,6 +124,7 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
         onClose={this.onClose}
         maxWidth={'md'}
         classes={classes}
+        disableEscapeKeyDown={disableEsc}
       >
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>

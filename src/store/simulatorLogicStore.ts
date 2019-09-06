@@ -5,7 +5,6 @@ import {getRailComponent} from "components/rails/utils";
 import commonStore from "./commonStore";
 import {EditorMode} from "store/uiStore";
 import {Tools} from "constants/tools";
-import layoutLogicStore from "store/layoutLogicStore";
 import {FlowDirection, Pivot} from "react-rail-components/lib/parts/primitives/PartBase";
 
 const LOGGER = getLogger(__filename)
@@ -34,81 +33,38 @@ export class SimulatorLogicStore {
 
   constructor() {
     // シミュレーション更新タイミング
-    // TODO: もっと簡潔に書けないのか？
-    // 電流に変更があれば更新
+    // 1. 電流のON/OFFまたは向きの変更時
+    // 2. パワーパックの接続先フィーダーの変更時
     reaction(
-      () => layoutStore.currentLayoutData.powerPacks.map(p => p.power * (p.direction ? 1 : -1)),
+      () => {
+        return {
+          powers: layoutStore.currentLayoutData.powerPacks.map(p => (p.power > 0 ? 1 : 0) * (p.direction ? 1 : -1)),
+          feederIds: layoutStore.currentLayoutData.powerPacks.map(p => p.supplyingFeederIds),
+        }
+      },
       (data) => {
-        LOGGER.info('reaction 1', data)
         if (commonStore.editorMode === EditorMode.SIMULATOR) {
           this.startCurrentFlowSimulation()
         }
       },
+      // Deep Equal を利用
       {
-        equals: (v1, v2) => {
-          return comparer.structural(v1, v2)
-        }
+        equals: comparer.structural
       }
     )
-    // パワーパックに接続されたフィーダーが変更されたら更新
-    reaction(
-      () => layoutStore.currentLayoutData.powerPacks.map(p => p.supplyingFeederIds),
-      (data) => {
-        LOGGER.info('reaction 2', data)
-        if (commonStore.editorMode === EditorMode.SIMULATOR) {
-          this.startCurrentFlowSimulation()
-        }
-      },
-      {
-        equals: (v1, v2) => {
-          return comparer.structural(v1, v2)
-        }
-      }
-    )
-    // スイッチが切り替わったら更新
-    reaction(
-      () => layoutStore.currentLayoutData.switchers.map(p => p.currentState),
-      (data) => {
-        LOGGER.info('reaction 3')
-        if (commonStore.editorMode === EditorMode.SIMULATOR) {
-          this.startCurrentFlowSimulation()
-        }
-      }
-    )
-    // スイッチに接続されたポイントが変更されたら更新
+    // 3. スイッチの接続先の導電状態の変更時
     reaction(
       () => _.flatMap(layoutStore.currentLayoutData.switchers, sw => sw.conductionStates),
-      (data) => {
-        LOGGER.info('reaction 4')
+      () => {
         if (commonStore.editorMode === EditorMode.SIMULATOR) {
           this.startCurrentFlowSimulation()
         }
-      }
-    )
-    // ツール変更時
-    reaction(
-      () => this.activeTool,
-      (tool) => {
-        LOGGER.info('reaction 5')
-        this.changeMode(tool)
       }
     )
 
     this.errorRails = []
     this.errorPowerPacks = []
   }
-
-  @action
-  changeMode = (tool: Tools) => {
-    this.setCursorShape(tool)
-    layoutLogicStore.changeToSimulationMode()
-  }
-
-  @action
-  setActiveTool = (tool: Tools) => {
-    this.activeTool = tool
-  }
-
 
   /**
    * 全てのフィーダーに通電し、レール電流のシミュレーションを開始する
@@ -153,7 +109,7 @@ export class SimulatorLogicStore {
   }
 
 
-  initializeCurrentFlows = () => {
+  private initializeCurrentFlows = () => {
     this.temporaryRailFlows = {}
     layoutStore.updateRails(layoutStore.currentLayoutData.rails.map(r => {
       return {
@@ -171,17 +127,7 @@ export class SimulatorLogicStore {
   }
 
 
-  toggleFeederDirection = (direction: FlowDirection) => {
-    switch (direction) {
-      case FlowDirection.RIGHT_TO_LEFT:
-        return FlowDirection.LEFT_TO_RIGHT
-      case FlowDirection.LEFT_TO_RIGHT:
-        return FlowDirection.RIGHT_TO_LEFT
-    }
-    return direction
-  }
-
-  simulateFeederCurrentFlow = (feederId: number, powerPacks: PowerPackData[]) => {
+  private simulateFeederCurrentFlow = (feederId: number, powerPacks: PowerPackData[]) => {
     // パワーパックに接続されてないか、電流が0なら何もしない
     const powerPack = powerPacks.find(p => p.supplyingFeederIds.includes(feederId))
     if (! powerPack || powerPack.power === 0) {
@@ -220,14 +166,26 @@ export class SimulatorLogicStore {
     })
   }
 
-  isGapJoiner = (railId: number, jointId: number) => {
+
+  private toggleFeederDirection = (direction: FlowDirection) => {
+    switch (direction) {
+      case FlowDirection.RIGHT_TO_LEFT:
+        return FlowDirection.LEFT_TO_RIGHT
+      case FlowDirection.LEFT_TO_RIGHT:
+        return FlowDirection.RIGHT_TO_LEFT
+    }
+    return direction
+  }
+
+
+  private isGapJoiner = (railId: number, jointId: number) => {
     const gapJoiner = layoutStore.currentLayoutData.gapJoiners.find(gj =>
       gj.railId === railId && gj.jointId === jointId)
     return !! gapJoiner
   }
 
 
-  setCurrentFlowToRail = (railId: number, jointId: number, feederId: number, isComing: boolean) => {
+  private setCurrentFlowToRail = (railId: number, jointId: number, feederId: number, isComing: boolean) => {
     const rail = layoutStore.getRailDataById(railId)
     const railPart = getRailComponent(railId).railPart
     const joint = railPart.joints[jointId]
@@ -259,7 +217,7 @@ export class SimulatorLogicStore {
   }
 
 
-  getDirection = (pivot: Pivot, isComing: boolean) => {
+  private getDirection = (pivot: Pivot, isComing: boolean) => {
     const MAP = {
       [Pivot.LEFT]: isComing ? FlowDirection.LEFT_TO_RIGHT : FlowDirection.RIGHT_TO_LEFT,
       [Pivot.RIGHT]: isComing ? FlowDirection.RIGHT_TO_LEFT : FlowDirection.LEFT_TO_RIGHT
@@ -268,7 +226,7 @@ export class SimulatorLogicStore {
   }
 
 
-  isCurrentGoing = (pivot: Pivot, direction: FlowDirection) => {
+  private isCurrentGoing = (pivot: Pivot, direction: FlowDirection) => {
     const MAP = {
       [Pivot.LEFT]: {
         [FlowDirection.LEFT_TO_RIGHT]: false,
@@ -283,7 +241,7 @@ export class SimulatorLogicStore {
   }
 
 
-  setTemporaryFlow = (railId: number, partId: number, feederId: number, direction: FlowDirection) => {
+  private setTemporaryFlow = (railId: number, partId: number, feederId: number, direction: FlowDirection) => {
 
     if (! this.temporaryRailFlows[railId]) {
       this.temporaryRailFlows[railId] = {}
@@ -302,7 +260,7 @@ export class SimulatorLogicStore {
   }
 
 
-  setFlow = (railId: number, partId: number, tempFlows: TemporaryFlowDirection[]) => {
+  private setFlow = (railId: number, partId: number, tempFlows: TemporaryFlowDirection[]) => {
     let direction = FlowDirection.NONE
     const directions = tempFlows.map(tf => tf.direction)
     const l2r = directions.find(d => d === FlowDirection.LEFT_TO_RIGHT)
@@ -329,15 +287,6 @@ export class SimulatorLogicStore {
       this.errorPowerPacks = _.unionWith(this.errorPowerPacks, errorPowerPacks, (p1, p2) => p1.id === p2.id)
     } else {
       _.remove(this.errorRails, r => _.isEqual(r, {id: railId, partId: partId}))
-    }
-  }
-
-  @action
-  setCursorShape = (tool: Tools) => {
-    // カーソル形状を変更する
-    switch (tool) {
-      default:
-        document.body.style.cursor = 'crosshair'
     }
   }
 }

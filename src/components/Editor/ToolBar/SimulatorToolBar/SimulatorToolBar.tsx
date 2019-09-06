@@ -9,6 +9,7 @@ import {compose} from "recompose";
 import withMoveTool from "components/hoc/withMoveTool";
 import {StyledIconButton} from "components/Editor/ToolBar/styles";
 import AspectRatioIcon from "@material-ui/icons/AspectRatio";
+import CreateIcon from "@material-ui/icons/Create";
 import SettingsRemoteIcon from '@material-ui/icons/SettingsRemote'
 import {SimulatorLogicStore} from "store/simulatorLogicStore";
 import {LayoutStore} from "store/layoutStore";
@@ -93,20 +94,21 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
               <SettingsRemoteIcon/>
             </StyledIconButton>
           </Tooltip>
-          <Tooltip title={"Script"}>
+          <Tooltip title={"Simulator Script"}>
             <StyledIconButton
               onClick={this.openScriptDialog}
             >
-              <SettingsRemoteIcon/>
+              <CreateIcon/>
             </StyledIconButton>
           </Tooltip>
         </Grid>
         <ScriptDialog
           open={this.props.ui.scriptDialog}
           onClose={this.closeScriptDialog}
-          title={'Script'}
+          title={'Simulator Script Editor'}
           powerPacks={this.props.layout.currentLayoutData.powerPacks}
           switchers={this.props.layout.currentLayoutData.switchers}
+          disableEsc={true}
         />
         <MySnackbar open={this.props.simulator.errorSnackbar}
                     onClose={this.closeErrorSnackbar}

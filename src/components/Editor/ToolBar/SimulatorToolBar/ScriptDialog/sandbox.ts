@@ -25,8 +25,10 @@ export class Sandbox {
   }
 
   destroy() {
-    window.removeEventListener('message', this.callback);
-    document.body.removeChild(this.iframe);
+    if (this.iframe) {
+      window.removeEventListener('message', this.callback);
+      document.body.removeChild(this.iframe);
+    }
     this.iframe = this.callback = null
   }
 
@@ -59,6 +61,7 @@ export class Sandbox {
 }
 
 
+// TODO: Reactコンポーネントにする
 export class SimulatorSandbox extends Sandbox {
 
   static BASE_CODE = `

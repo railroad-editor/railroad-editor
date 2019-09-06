@@ -22,6 +22,7 @@ import {
   Triangle
 } from "components/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard.style";
 import {FeederInfo} from "react-rail-components";
+import {reaction} from "mobx";
 
 const LOGGER = getLogger(__filename)
 
@@ -44,7 +45,7 @@ export interface PowerPackCardState {
 @observer
 export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPackCardState> {
 
-  onSliderChangeThrottled: (e, value) => void
+  throttledUpdatePowerPack: (item: Partial<PowerPackData>) => void
 
   constructor(props: PowerPackCardProps) {
     super(props)
@@ -54,7 +55,19 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
       dialogOpen: false,
     }
 
-    this.onSliderChangeThrottled = _.throttle(this.onSliderChange, 500, {leading: true, trailing: true})
+    // スライダーの値をPropsと同期する
+    reaction(() => this.props.item.power,
+      () => this.setState({
+        sliderValue: this.props.item.power
+      })
+    )
+
+    // スライダーをドラッグした時に、画面の再描画とコントローラーのコマンド送信の頻度を抑えるためにPowerPackの状態更新をスロットルする
+    // TODO: Wait時間を再考する
+    this.throttledUpdatePowerPack = _.throttle((data) => this.props.layout.updatePowerPack(data), 1000, {
+      leading: true,
+      trailing: true
+    })
   }
 
   componentDidUpdate() {
@@ -94,12 +107,9 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
 
   onSliderChange = (e, value) => {
     const intValue = Math.round(value)
+    this.throttledUpdatePowerPack({id: this.props.item.id, power: intValue})
     this.setState({
       sliderValue: value
-    })
-    this.props.layout.updatePowerPack({
-      id: this.props.item.id,
-      power: intValue
     })
   }
 
@@ -107,7 +117,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
     // TODO: 電流を自動で0にするかどうかは設定で変えられるようにすべき
     this.props.layout.updatePowerPack({
       id: this.props.item.id,
-      // power: 0,
+      power: 0,
       direction: e.target.checked,
     })
   }
@@ -171,7 +181,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
             <StyledSlider
               max={255}
               value={this.state.sliderValue}
-              onChange={this.onSliderChangeThrottled}
+              onChange={this.onSliderChange}
               aria-labelledby="label"
             />
             <StyledList>

@@ -1513,7 +1513,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@16.9.2", "@types/react@^16.8.23":
+"@types/react@*", "@types/react@16.9.2", "@types/react@^16.8.23", "@types/react@^16.9.2":
   version "16.9.2"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.2.tgz#6d1765431a1ad1877979013906731aae373de268"
   integrity sha512-jYP2LWwlh+FTqGd9v7ynUKZzjj98T8x7Yclz479QdRhHfuW9yQ+0jjnD31eXSXutmBpppj5PYNLYLRfnZJvcfg==
@@ -7148,7 +7148,7 @@ monaco-editor-webpack-plugin@^1.7.0:
   dependencies:
     "@types/webpack" "^4.4.19"
 
-monaco-editor@^0.17.1:
+monaco-editor@0.17.1:
   version "0.17.1"
   resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.17.1.tgz#8fbe96ca54bfa75262706e044f8f780e904aa45c"
   integrity sha512-JAc0mtW7NeO+0SwPRcdkfDbWLgkqL9WfP1NbpP9wNASsW6oWqgZqNIWt4teymGjZIXTElx3dnQmUYHmVrJ7HxA==
@@ -9065,6 +9065,14 @@ react-material-ui-form-validator@2.0.8:
   dependencies:
     react-form-validator-core "0.6.3"
 
+react-monaco-editor@^0.31.0:
+  version "0.31.0"
+  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.31.0.tgz#67d7e9e6e810c8fa1241f9c41304510b19d66c0e"
+  integrity sha512-hU7YXEV2oer1xrRw+wwRi1NuPfUvBbwcU5Ft1XTBdktFnsRd0eK3xgy82zis7B6PaK0mKeI/CP5GiWz+EPYDFg==
+  dependencies:
+    "@types/react" "^16.9.2"
+    prop-types "^15.7.2"
+
 "react-paper-bindings@https://github.com/railroad-editor/react-paper-bindings#dist":
   version "0.0.1"
   resolved "https://github.com/railroad-editor/react-paper-bindings#cf4b026843faff32dcdde6931f14585f6c5c216d"
@@ -9078,7 +9086,7 @@ react-material-ui-form-validator@2.0.8:
 
 "react-rail-components@https://github.com/railroad-editor/react-rail-components#dist":
   version "0.0.1"
-  resolved "https://github.com/railroad-editor/react-rail-components#11282b0d86d85110f7d768ce03e42d86cbe546d2"
+  resolved "https://github.com/railroad-editor/react-rail-components#3dfca022bef090fa08efbb43b95974910acef894"
   dependencies:
     "@types/react" "^16.8.23"
     "@types/react-dom" "^16.8.5"

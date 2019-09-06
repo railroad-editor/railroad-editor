@@ -3,17 +3,17 @@ import * as React from "react";
 import Grid from "@material-ui/core/Grid";
 import {compose} from "recompose";
 import {FormControlLabel, Switch, withStyles} from "@material-ui/core";
-import * as monaco from 'monaco-editor';
-import {editor} from 'monaco-editor';
 import {SimulatorSandbox} from "./sandbox"
 import {LayoutStore} from "../../../../../store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SIMULATOR} from "../../../../../constants/stores";
 import {SimulatorStore} from "../../../../../store/simulatorStore";
 import {LayoutLogicStore} from "../../../../../store/layoutLogicStore";
+import MonacoEditor from "react-monaco-editor";
 
 const styles = theme => ({
   grid: {
+    paddingTop: '20px',
     width: '800px',
     height: '600px'
   },
@@ -31,6 +31,7 @@ export interface ScriptDialogProps extends FormDialogProps {
 
 export interface ScriptDialogState extends FormDialogState {
   enableScript: boolean
+  code: string
 }
 
 
@@ -38,7 +39,7 @@ export interface ScriptDialogState extends FormDialogState {
 @observer
 export class ScriptDialog extends FormDialog<ScriptDialogProps, ScriptDialogState> {
 
-  editor: editor.IStandaloneCodeEditor
+  sandbox: SimulatorSandbox
 
   constructor(props: ScriptDialogProps) {
     super(props)
@@ -46,36 +47,80 @@ export class ScriptDialog extends FormDialog<ScriptDialogProps, ScriptDialogStat
   }
 
   componentDidMount() {
+    this.sandbox = new SimulatorSandbox(this.props.layout.currentLayoutData.script, this.props.layout, this.props.layoutLogic, this.props.simulator)
+    this.sandbox.execute()
+    this.props.simulator.setSandbox(this.sandbox)
   }
 
   getInitialState = () => {
     return {
       ...super.getInitialState(),
+      code: this.props.layout.currentLayoutData.script,
       enableScript: this.props.simulator.sandboxEnabled
     }
   }
 
   onEnter = () => {
-    this.setState(this.getInitialState());
-    // initialize monaco-editor
-    this.editor = monaco.editor.create(document.getElementById('simulator-script-editor'), {
-      value: this.props.layout.currentLayoutData.script,
-      language: 'javascript'
+    this.setState(this.getInitialState())
+  }
+
+  editorDidMount = (editor, monaco) => {
+    console.log('editorDidMount', editor);
+    editor.focus();
+  }
+
+  editorWillMount = (monaco) => {
+    // compiler options
+    monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
+      allowNonTsExtensions: true
     });
+    monaco.languages.typescript.javascriptDefaults.addExtraLib([
+      `
+       declare class PowerPacks {
+         static getById(id: number): PowerPack
+         static getByName(name: string): PowerPack
+       }
+       
+       declare class PowerPack {
+         setPower(power: number): void
+         setDirection(direction: number): void
+        
+         onPowerChange(callback: (power: number) => void)
+         onDirectionChange(callback: (direction: number) => void)
+       }
+       
+       declare class Switchers {
+         static getById(id: number): Switcher
+         static getByName(name: string): Switcher
+       }
+       
+       declare class Switcher {
+         setDirection(direction: number): void
+         onDirectionChange(callback: (direction: number) => void)
+       }
+      `
+    ].join('\n'), 'filename/facts.d.ts');
   }
 
   onOK = (e) => {
-    const code = this.editor.getValue()
+    const code = this.state.code
+    this.sandbox.destroy()
     if (this.state.enableScript) {
       // recreate sandbox and execute
-      const sandbox = new SimulatorSandbox(code, this.props.layout, this.props.layoutLogic, this.props.simulator)
-      sandbox.execute()
-      this.props.simulator.setSandbox(sandbox)
+      this.sandbox = new SimulatorSandbox(code, this.props.layout, this.props.layoutLogic, this.props.simulator)
+      this.sandbox.execute()
+      this.props.simulator.setSandbox(this.sandbox)
     } else {
       this.props.simulator.setSandbox(null)
     }
     this.props.layout.setScript(code)
     this.onClose()
+  }
+
+  onCodeChange = (newValue, e) => {
+    this.setState({
+      code: newValue
+    })
   }
 
   onSwitchChange = (e) => {
@@ -87,7 +132,25 @@ export class ScriptDialog extends FormDialog<ScriptDialogProps, ScriptDialogStat
   renderContent = () => {
     return (
       <Grid container spacing={1} className={this.props.classes.grid}>
-        <Grid id={'simulator-script-editor'} item xs={12}>
+        <Grid item xs={12}>
+          <MonacoEditor
+            width="800"
+            height="500"
+            language="javascript"
+            // theme="vs-dark"
+            value={this.state.code}
+            options={{
+              fontSize: 14,
+              scrollBeyondLastLine: false,
+              minimap: {
+                enabled: false
+              }
+            }}
+            onChange={this.onCodeChange}
+            editorWillMount={this.editorWillMount}
+            editorDidMount={this.editorDidMount}
+
+          />
         </Grid>
         <FormControlLabel
           control={
