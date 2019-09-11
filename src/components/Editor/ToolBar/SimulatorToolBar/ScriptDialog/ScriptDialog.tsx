@@ -3,7 +3,6 @@ import * as React from "react";
 import Grid from "@material-ui/core/Grid";
 import {compose} from "recompose";
 import {FormControlLabel, Switch, withStyles} from "@material-ui/core";
-import {SimulatorSandbox} from "./sandbox"
 import {LayoutStore} from "../../../../../store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SIMULATOR} from "../../../../../constants/stores";
@@ -39,17 +38,9 @@ export interface ScriptDialogState extends FormDialogState {
 @observer
 export class ScriptDialog extends FormDialog<ScriptDialogProps, ScriptDialogState> {
 
-  sandbox: SimulatorSandbox
-
   constructor(props: ScriptDialogProps) {
     super(props)
     this.state = this.getInitialState()
-  }
-
-  componentDidMount() {
-    this.sandbox = new SimulatorSandbox(this.props.layout.currentLayoutData.script, this.props.layout, this.props.layoutLogic, this.props.simulator)
-    this.sandbox.execute()
-    this.props.simulator.setSandbox(this.sandbox)
   }
 
   getInitialState = () => {
@@ -103,17 +94,8 @@ export class ScriptDialog extends FormDialog<ScriptDialogProps, ScriptDialogStat
   }
 
   onOK = (e) => {
-    const code = this.state.code
-    this.sandbox.destroy()
-    if (this.state.enableScript) {
-      // recreate sandbox and execute
-      this.sandbox = new SimulatorSandbox(code, this.props.layout, this.props.layoutLogic, this.props.simulator)
-      this.sandbox.execute()
-      this.props.simulator.setSandbox(this.sandbox)
-    } else {
-      this.props.simulator.setSandbox(null)
-    }
-    this.props.layout.setScript(code)
+    this.props.layout.setScript(this.state.code)
+    this.props.simulator.setSandboxEnabled(this.state.enableScript)
     this.onClose()
   }
 
@@ -161,7 +143,6 @@ export class ScriptDialog extends FormDialog<ScriptDialogProps, ScriptDialogStat
             />}
           label={"Enable Script"}
         />
-
       </Grid>
     )
   }
