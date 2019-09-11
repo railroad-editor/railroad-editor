@@ -1,6 +1,5 @@
 import {action, observable} from "mobx";
 import getLogger from "logging";
-import {SimulatorSandbox} from "../components/Editor/ToolBar/SimulatorToolBar/ScriptDialog/sandbox";
 
 const LOGGER = getLogger(__filename)
 
@@ -15,7 +14,7 @@ const INITIAL_STATE = {
 
 export class SimulatorStore {
 
-  @observable sandbox: SimulatorSandbox
+  @observable sandbox: any
   @observable sandboxEnabled: boolean
   @observable errorSnackbar: boolean
   @observable errorSnackbarMessage: string
