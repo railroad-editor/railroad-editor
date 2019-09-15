@@ -24,7 +24,7 @@ import {LayoutStore} from "store/layoutStore";
 import TrainController from "containers/Editor/ToolBar/SimulatorToolBar/TrainController";
 import {UiStore} from "../../../../store/uiStore";
 import ScriptDialog from "./ScriptDialog/ScriptDialog";
-import MySnackbar from "../../../common/Snackbar/MySnackbar";
+import {Snackbar} from "../../../../components/Snackbar/Snackbar";
 import {SimulatorStore} from "../../../../store/simulatorStore";
 import {SimulatorSandbox} from "./ScriptDialog/SimulatorSandbox";
 import {LayoutLogicStore} from "../../../../store/layoutLogicStore";
@@ -160,10 +160,10 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
           onError={this.onError}
         />
         }
-        <MySnackbar open={this.props.simulator.errorSnackbar}
-                    onClose={this.closeErrorSnackbar}
-                    message={this.props.simulator.errorSnackbarMessage}
-                    variant="error"
+        <Snackbar open={this.props.simulator.errorSnackbar}
+                  onClose={this.closeErrorSnackbar}
+                  message={this.props.simulator.errorSnackbarMessage}
+                  variant="error"
         />
       </>
     )

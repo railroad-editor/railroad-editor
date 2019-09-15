@@ -212,6 +212,7 @@ export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {
                     active={!! railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === conductionState)}
                     onClick={this.onSwitcherStateChange(
                       Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === conductionState)))))}
+                    color="secondary"
                   >
                     <RailIcon
                       width={30}
@@ -243,6 +244,7 @@ export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {
                     active={!! railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === conductionState)}
                     onClick={this.onSwitcherStateChange(
                       Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === conductionState)))))}
+                    color="secondary"
                   >
                     <RailIcon
                       width={25}
@@ -283,6 +285,7 @@ export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {
                     active={!! railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === conductionState)}
                     onClick={this.onSwitcherStateChange(
                       Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === conductionState)))))}
+                    color="secondary"
                   >
                     <RailIcon
                       width={30}
@@ -314,6 +317,7 @@ export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {
                     active={!! railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === conductionState)}
                     onClick={this.onSwitcherStateChange(
                       Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === conductionState)))))}
+                    color="secondary"
                   >
                     <RailIcon
                       width={25}

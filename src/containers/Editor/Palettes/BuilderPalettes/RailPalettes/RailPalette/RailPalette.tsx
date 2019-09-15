@@ -89,7 +89,7 @@ export default class RailPalette extends React.Component<RailPaletteProps, {}> {
           <PaletteBodyPaper>
             <TitleDiv className='Palette__title'>
               {this.props.icon}
-              <TitleTypography variant="subheading" color="inherit">
+              <TitleTypography variant="subtitle1" color="inherit">
                 {this.props.title}
               </TitleTypography>
               {this.props.customDialog &&

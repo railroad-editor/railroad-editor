@@ -1,11 +1,9 @@
 import * as React from "react";
 import styled from "styled-components";
 
-
-export interface KeyLabelProps {
+interface Props {
   text: string
 }
-
 
 const LabelDiv = styled.div`
   padding: 4px 8px;
@@ -18,13 +16,11 @@ const LabelDiv = styled.div`
 `
 
 
-export class KeyLabel extends React.Component<KeyLabelProps, {}> {
-  render() {
-    return (
-      <LabelDiv>
-        {this.props.text}
-      </LabelDiv>
-    )
-  }
-}
+export const KeyLabel: React.FC<Props> = (props) => {
+  return (
+    <LabelDiv>
+      {props.text}
+    </LabelDiv>
+  )
+};
 

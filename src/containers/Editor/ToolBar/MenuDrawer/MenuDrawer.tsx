@@ -24,7 +24,7 @@ import SaveLayoutDialog from "containers/Editor/ToolBar/MenuDrawer/SaveLayoutDia
 import LoginDialog from "containers/Editor/ToolBar/MenuDrawer/LoginDialog/LoginDialog";
 import SignUpDialog from "containers/Editor/ToolBar/MenuDrawer/SignUpDialog/SignUpDialog";
 import {UiStore} from "store/uiStore";
-import {KeyLabel} from "containers/common/KeyLabel/KeyLabel";
+import {KeyLabel} from "components/KeyLabel/KeyLabel";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import {SettingsDialog} from "./SettingsDialog/SettingsDialog";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -32,7 +32,7 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 import {runInAction} from "mobx";
 import BugReportDialog from "./BugReportDialog/BugReportDialog";
 import BomDialog from "./BomDialog/BomDialog";
-import MySnackbar from "../../../common/Snackbar/MySnackbar";
+import {Snackbar} from "../../../../components/Snackbar/Snackbar";
 import {PaperStore} from "../../../../store/paperStore.";
 import moment from 'moment';
 
@@ -418,51 +418,51 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
 
         <Portal container={this.appRoot}>
           <div>
-            <MySnackbar open={ui.requireLoginSnackbar}
-                        onClose={this.closeRequireLoginSnackbar}
-                        message={'Please login.'}
-                        variant="error"
+            <Snackbar open={ui.requireLoginSnackbar}
+                      onClose={this.closeRequireLoginSnackbar}
+                      message={'Please login.'}
+                      variant="error"
             />
-            <MySnackbar open={ui.savedLayoutSnackbar}
-                        onClose={this.closeSavedLayoutSnackbar}
-                        message={'Layout saved.'}
-                        variant="success"
+            <Snackbar open={ui.savedLayoutSnackbar}
+                      onClose={this.closeSavedLayoutSnackbar}
+                      message={'Layout saved.'}
+                      variant="success"
             />
-            <MySnackbar open={ui.loadedLayoutSnackbar}
-                        onClose={this.closeLoadedLayoutSnackbar}
-                        message={'Layout loaded.'}
-                        variant="success"
+            <Snackbar open={ui.loadedLayoutSnackbar}
+                      onClose={this.closeLoadedLayoutSnackbar}
+                      message={'Layout loaded.'}
+                      variant="success"
             />
-            <MySnackbar open={ui.loggedInSnackbar}
-                        onClose={this.closeLoggedInSnackbar}
-                        message={'Logged-in successfully.'}
-                        variant="success"
+            <Snackbar open={ui.loggedInSnackbar}
+                      onClose={this.closeLoggedInSnackbar}
+                      message={'Logged-in successfully.'}
+                      variant="success"
             />
 
-            <MySnackbar open={ui.noRailForGroupSnackbar}
-                        onClose={this.closeNoRailForGroupSnackbar}
-                        message={'Please select at least one rail.'}
-                        variant="warning"
+            <Snackbar open={ui.noRailForGroupSnackbar}
+                      onClose={this.closeNoRailForGroupSnackbar}
+                      message={'Please select at least one rail.'}
+                      variant="warning"
             />
-            <MySnackbar open={ui.registeredRailGroupSnackbar}
-                        onClose={this.closeRegisteredRailGroupSnackbar}
-                        message={ui.registeredRailGroupSnackbarMessage}
-                        variant="success"
+            <Snackbar open={ui.registeredRailGroupSnackbar}
+                      onClose={this.closeRegisteredRailGroupSnackbar}
+                      message={ui.registeredRailGroupSnackbarMessage}
+                      variant="success"
             />
-            <MySnackbar open={ui.bugReportSnackbar}
-                        onClose={this.closeBugReportSnackbar}
-                        message={'Your issue is submitted successfully. Thank you for reporting!'}
-                        variant="success"
+            <Snackbar open={ui.bugReportSnackbar}
+                      onClose={this.closeBugReportSnackbar}
+                      message={'Your issue is submitted successfully. Thank you for reporting!'}
+                      variant="success"
             />
-            <MySnackbar open={ui.remoteNotConnectedSnackbar}
-                        onClose={this.closeNoSessionSnackbar}
-                        message={'Could not connect to remote Railroad Controller'}
-                        variant="error"
+            <Snackbar open={ui.remoteNotConnectedSnackbar}
+                      onClose={this.closeNoSessionSnackbar}
+                      message={'Could not connect to remote Railroad Controller'}
+                      variant="error"
             />
-            <MySnackbar open={ui.remoteConnectedSnackbar}
-                        onClose={this.closeRemoteConnectedSnackbar}
-                        message={'Connected to remote Railroad Controller.'}
-                        variant="success"
+            <Snackbar open={ui.remoteConnectedSnackbar}
+                      onClose={this.closeRemoteConnectedSnackbar}
+                      message={'Connected to remote Railroad Controller.'}
+                      variant="success"
             />
           </div>
         </Portal>

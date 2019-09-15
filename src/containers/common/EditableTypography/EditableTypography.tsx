@@ -1,17 +1,11 @@
 import * as React from 'react'
 import {TypographyProps} from "@material-ui/core/Typography";
-import {inject, observer} from "mobx-react";
-import {STORE_COMMON, STORE_LAYOUT} from "constants/stores";
-import {CommonStore} from "store/commonStore";
-import {LayoutStore} from "store/layoutStore";
 import EditDialog from "containers/common/EditableTypography/EditDialog/EditDialog";
 import {StyledTypography} from "containers/common/EditableTypography/styles";
 
 export interface EditableTitleProps extends TypographyProps {
   onOK: (text: string) => void
   text: string
-  common?: CommonStore
-  layout?: LayoutStore
 }
 
 export interface EditableTitleState {
@@ -20,8 +14,6 @@ export interface EditableTitleState {
 }
 
 
-@inject(STORE_COMMON, STORE_LAYOUT)
-@observer
 export class EditableTypography extends React.Component<EditableTitleProps, EditableTitleState> {
 
   constructor(props: EditableTitleProps) {
@@ -52,7 +44,7 @@ export class EditableTypography extends React.Component<EditableTitleProps, Edit
   }
 
   render() {
-    const {onOK, text, common, layout, ...restProps} = this.props
+    const {onOK, text, ...restProps} = this.props
     return (
       <>
         <StyledTypography onClick={this.openDialog} {...restProps}>

@@ -120,7 +120,7 @@ export default class PowerPackPalette extends React.Component<PowerPackPalettePr
             <PaletteBodyPaper>
               <TitleDiv className='Palette__title'>
                 <PowerIcon/>
-                <TitleTypography variant="subheading" color="inherit">
+                <TitleTypography variant="subtitle1" color="inherit">
                   {'Power Packs'}
                 </TitleTypography>
                 <Tooltip title={'Add Power Pack'}>

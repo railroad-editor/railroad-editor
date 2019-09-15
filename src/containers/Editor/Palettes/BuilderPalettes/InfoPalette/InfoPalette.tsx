@@ -104,7 +104,7 @@ export default class InfoPalette extends React.Component<InfoPaletteProps, InfoP
           <TitleDiv className='Info__title'>
             <InfoIcon/>
             {/* プラスアイコンを右端に配置するためのスタイル */}
-            <TitleTypography variant="subheading" color="inherit">
+            <TitleTypography variant="subtitle1" color="inherit">
               Rail Info
             </TitleTypography>
           </TitleDiv>

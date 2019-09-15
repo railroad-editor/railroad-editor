@@ -16,7 +16,7 @@ import './App.css'
 import Home from "./containers/Home/Home";
 import {Helmet} from "react-helmet";
 import {UiStore} from "./store/uiStore";
-import MySnackbar from "./containers/common/Snackbar/MySnackbar";
+import {Snackbar} from "./components/Snackbar/Snackbar";
 
 (window as any).LOG_LEVEL = 'DEBUG';
 
@@ -83,10 +83,10 @@ class App extends React.Component<AppProps, {}> {
             />
           </div>
         </Router>
-        <MySnackbar open={this.props.ui.confirmedSnackbar}
-                    onClose={this.closeConfirmedSnackbar}
-                    message={'Confirmed successfully. Please login from Menu.'}
-                    variant="success"
+        <Snackbar open={this.props.ui.confirmedSnackbar}
+                  onClose={this.closeConfirmedSnackbar}
+                  message={'Confirmed successfully. Please login from Menu.'}
+                  variant="success"
         />
       </div>
     )

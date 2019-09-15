@@ -130,7 +130,7 @@ export default class SwitcherPalette extends React.Component<SwitcherPaletteProp
             <PaletteBodyPaper>
               <TitleDiv className='Palette__title'>
                 <CallSplitIcon/>
-                <TitleTypography variant="subheading" color="inherit">
+                <TitleTypography variant="subtitle1" color="inherit">
                   {'Switchers'}
                 </TitleTypography>
                 <Tooltip title={'Add Switcher'}>

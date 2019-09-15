@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {ListItemText, MenuItem} from '@material-ui/core'
-import {PrimaryColorActiveListItem} from "containers/common/ActiveListItem/index";
+import {ActiveListItem} from "components/ActiveListItem/ActiveListItem";
 import Menu from "@material-ui/core/Menu";
 import {PrimaryPaletteListItemSettingButton} from "../../../../../../common/PaletteListItemSettingButton/PaletteListItemSettingButton";
 
@@ -63,14 +63,15 @@ export default class PaletteListItem extends React.Component<PaletteListItemProp
 
     return (
       <>
-        <PrimaryColorActiveListItem
+        <ActiveListItem
           button
           active={item.name === paletteItem.name}
           onClick={this.handleClick}
+          color="primary"
         >
           <ListItemText primary={item.name}/>
           {menuButton}
-        </PrimaryColorActiveListItem>
+        </ActiveListItem>
         {menu}
       </>
     )

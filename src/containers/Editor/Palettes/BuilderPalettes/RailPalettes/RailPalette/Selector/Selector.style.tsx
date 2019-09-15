@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import ActiveListItem from "containers/common/ActiveListItem/index";
+import {ActiveListItem} from "components/ActiveListItem/ActiveListItem";
 import {theme} from "withRoot";
 
 

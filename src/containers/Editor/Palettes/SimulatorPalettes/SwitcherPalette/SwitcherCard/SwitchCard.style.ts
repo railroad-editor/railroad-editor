@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import {SecondaryColorActiveButton} from "containers/common/ActiveButton/index";
+import {ActiveButton} from "components/ActiveButton/ActiveButton";
 import {CardContent, CardHeader} from "@material-ui/core";
 
 
-export const ActiveSmallButton = styled(SecondaryColorActiveButton as any)`
+export const ActiveSmallButton = styled(ActiveButton)`
   && {
     min-width: 30px;
     display: block;   // for centerize to parent div
