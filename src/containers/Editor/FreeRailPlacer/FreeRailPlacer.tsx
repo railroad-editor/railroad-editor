@@ -6,12 +6,12 @@ import getLogger from "logging";
 import {default as withBuilder, WithBuilderPublicProps} from "containers/hoc/withBuilder";
 import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_COMMON, STORE_FREE_RAIL_PLACER, STORE_LAYOUT} from "constants/stores";
+import {STORE_BUILDER, STORE_EDITOR, STORE_FREE_RAIL_PLACER, STORE_LAYOUT} from "constants/stores";
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {isRailTool, RAIL_PUTTER_MARKER_RADIUS} from "constants/tools";
 import {JOINT_DETECTION_OPACITY_RATE, JOINT_FILL_COLORS} from "constants/parts";
-import {CommonStore} from "store/commonStore";
+import {EditorStore} from "store/editorStore";
 import {EditorMode} from "store/uiStore";
 import {reaction} from "mobx";
 import CirclePart from "react-rail-components/lib/parts/primitives/CirclePart";
@@ -29,7 +29,7 @@ enum Phase {
 
 export interface FreeRailPlacerProps {
   mousePosition: Point2D
-  common?: CommonStore
+  editor?: EditorStore
   builder?: BuilderStore
   layout?: LayoutStore
   freeRailPlacer?: FreeRailPlacerStore
@@ -45,7 +45,7 @@ export interface FreeRailPlacerState {
 type FreeRailPlacerEnhancedProps = FreeRailPlacerProps & WithBuilderPublicProps
 
 
-@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_FREE_RAIL_PLACER)
+@inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, STORE_FREE_RAIL_PLACER)
 @observer
 export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps, FreeRailPlacerState> {
 
@@ -183,7 +183,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
   }
 
   isActive = () => {
-    return this.props.common.editorMode === EditorMode.BUILDER &&
+    return this.props.editor.editorMode === EditorMode.BUILDER &&
       isRailTool(this.props.builder.activeTool) &&
       this.props.builder.placingMode === PlacingMode.FREE
   }

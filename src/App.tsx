@@ -7,8 +7,8 @@ import Amplify, {Auth} from "aws-amplify";
 import aws_exports from './aws-exports';
 import ResetPassword from "containers/common/Authenticator/ResetPassword/ResetPassword";
 import {inject, observer} from "mobx-react";
-import {STORE_COMMON, STORE_UI} from "constants/stores";
-import {CommonStore} from "store/commonStore";
+import {STORE_EDITOR, STORE_UI} from "constants/stores";
+import {EditorStore} from "store/editorStore";
 import withRoot from './withRoot';
 import getLogger from "logging";
 import 'typeface-roboto'
@@ -26,12 +26,12 @@ const LOGGER = getLogger(__filename)
 
 
 export interface AppProps {
-  common?: CommonStore
+  editor: EditorStore
   ui?: UiStore
 }
 
 
-@inject(STORE_COMMON, STORE_UI)
+@inject(STORE_EDITOR, STORE_UI)
 @observer
 class App extends React.Component<AppProps, {}> {
 
@@ -52,7 +52,7 @@ class App extends React.Component<AppProps, {}> {
     const userInfo = await Auth.currentUserInfo()
     if (userInfo) {
       LOGGER.info('Signed in as', userInfo) //`
-      this.props.common.setUserInfo(userInfo)
+      this.props.editor.setUserInfo(userInfo)
     }
   }
 

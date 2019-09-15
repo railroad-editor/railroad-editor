@@ -1,4 +1,3 @@
-import CommonStore from "store/commonStore";
 import BuilderStore, {BuilderStoreState} from "store/builderStore";
 import LayoutStore, {LayoutStoreState} from "store/layoutStore";
 import UiStore from "store/uiStore";
@@ -8,6 +7,7 @@ import PaperStore from "./paperStore.";
 import SimulatorStore from "./simulatorStore";
 import FreeRailPlacerStore, {FreeRailPlacerStoreState} from "./freeRailPlacerStore";
 import MeasureStore, {MeasureStoreState} from "./measureStore";
+import EditorStore from "./editorStore";
 
 export interface AppState {
   builder: BuilderStoreState
@@ -18,7 +18,7 @@ export interface AppState {
 
 export default () => {
   return {
-    common: CommonStore,
+    editor: EditorStore,
     builder: BuilderStore,
     freeRailPlacer: FreeRailPlacerStore,
     measure: MeasureStore,

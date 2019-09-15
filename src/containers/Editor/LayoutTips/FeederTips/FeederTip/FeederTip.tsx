@@ -2,11 +2,11 @@ import * as React from "react";
 import {normAngle} from "containers/rails/utils";
 import getLogger from "logging";
 import {compose} from "recompose";
-import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "constants/stores";
 import {inject, observer} from "mobx-react";
 import {LayoutStore} from "store/layoutStore";
 import {Tooltip, withStyles} from "@material-ui/core";
-import {CommonStore} from "store/commonStore";
+import {EditorStore} from "store/editorStore";
 import FeederSettingDialog
   from "containers/Editor/LayoutTips/FeederTips/FeederTip/FeederSettingDialog/FeederSettingDialog";
 import {FlowDirection} from "react-rail-components/lib/parts/primitives/PartBase";
@@ -28,7 +28,7 @@ export interface FeederTipProps {
   open: boolean
   color?: string
   layout?: LayoutStore
-  common?: CommonStore
+  editor?: EditorStore
 }
 
 export interface FeederTipState {
@@ -36,7 +36,7 @@ export interface FeederTipState {
 }
 
 
-@inject(STORE_BUILDER, STORE_LAYOUT, STORE_COMMON)
+@inject(STORE_BUILDER, STORE_LAYOUT, STORE_EDITOR)
 @observer
 export class FeederTip extends React.Component<FeederTipProps, FeederTipState> {
 

@@ -7,7 +7,7 @@ import {TEMPORARY_RAIL_OPACITY, Tools} from "constants/tools";
 import {inject, observer} from "mobx-react";
 import {
   STORE_BUILDER,
-  STORE_COMMON,
+  STORE_EDITOR,
   STORE_LAYOUT,
   STORE_LAYOUT_LOGIC,
   STORE_SIMULATOR_LOGIC,
@@ -17,7 +17,7 @@ import {BuilderStore, UserRailGroupData} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {UiStore} from "store/uiStore";
 import {LayoutLogicStore} from "store/layoutLogicStore";
-import {CommonStore} from "store/commonStore";
+import {EditorStore} from "store/editorStore";
 import {SimulatorLogicStore} from "store/simulatorLogicStore";
 import {runInAction} from "mobx";
 import {DetectionState} from "react-rail-components/lib/parts/primitives/DetectablePart";
@@ -41,7 +41,7 @@ export interface WithBuilderPublicProps {
 
 
 interface WithBuilderPrivateProps {
-  common?: CommonStore
+  editor?: EditorStore
   builder?: BuilderStore
   layout?: LayoutStore
   layoutLogic?: LayoutLogicStore
@@ -70,7 +70,7 @@ export interface WithBuilderState {
  */
 export default function withBuilder(WrappedComponent: React.ComponentClass<WithBuilderPublicProps>) {
 
-  @inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SIMULATOR_LOGIC, STORE_UI)
+  @inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SIMULATOR_LOGIC, STORE_UI)
   @observer
   class WithBuilder extends React.Component<WithBuilderProps, WithBuilderState> {
 
@@ -204,7 +204,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
 
     keyDown_CtrlS = async (e) => {
-      if (this.props.common.isAuth) {
+      if (this.props.editor.isAuth) {
         await this.props.layoutLogic.saveLayout()
         this.props.ui.setSavedLayoutSnackbar(true)
       } else {

@@ -13,9 +13,9 @@ import withBuilder, {WithBuilderPublicProps} from "../hoc/withBuilder";
 import getLogger from "logging";
 import withSelectTool, {WithSelectToolProps} from "containers/hoc/withSelectTool";
 import {inject, observer} from "mobx-react";
-import {CommonStore} from "store/commonStore";
+import {EditorStore} from "store/editorStore";
 import {LayoutStore} from "store/layoutStore";
-import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_SIMULATOR_LOGIC} from "constants/stores";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_SIMULATOR_LOGIC} from "constants/stores";
 import {GridPaper} from "containers/Editor/GridPaper/GridPaper";
 import Layout from "containers/Editor/Layout/Layout";
 import {
@@ -46,7 +46,7 @@ export interface EditorProps {
   width: number
   height: number
   builder?: BuilderStore
-  common?: CommonStore
+  editor?: EditorStore
   layout?: LayoutStore
   simulatorLogic?: SimulatorLogicStore
 }
@@ -63,7 +63,7 @@ export interface EditorState {
 }
 
 
-@inject(STORE_COMMON, STORE_LAYOUT, STORE_BUILDER, STORE_SIMULATOR_LOGIC)
+@inject(STORE_EDITOR, STORE_LAYOUT, STORE_BUILDER, STORE_SIMULATOR_LOGIC)
 @observer
 class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
@@ -155,7 +155,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             gridSize={gridSize}
             onWheel={this.props.moveToolMouseWheel}
             onFrame={this.onFrame}
-            setPaperLoaded={this.props.common.setPaperLoaded}
+            setPaperLoaded={this.props.editor.setPaperLoaded}
           >
             {/* 後から書いたコンポーネントの方が前面に配置される */}
             <MeasureEventHandler
@@ -172,13 +172,13 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             {this.props.selectionLayer}
 
             {
-              this.props.common.editorMode === EditorMode.BUILDER &&
+              this.props.editor.editorMode === EditorMode.BUILDER &&
               this.props.builder.activeTool === Tools.MEASURE &&
               <Measure mousePosition={this.mousePosition}/>
             }
 
             <Tool
-              active={this.props.common.editorMode === EditorMode.BUILDER}
+              active={this.props.editor.editorMode === EditorMode.BUILDER}
               name={'Builder Mode Global Handler'}
               onMouseDown={this.buildModeMouseDown}
               onMouseMove={this.buildModeMouseMove}

@@ -22,9 +22,9 @@ import Tooltip from "@material-ui/core/Tooltip";
 import withBuilder, {WithBuilderPublicProps} from "containers/hoc/withBuilder";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {BuilderStore, PlacingMode} from "store/builderStore";
-import {CommonStore} from "store/commonStore";
+import {EditorStore} from "store/editorStore";
 import {compose} from "recompose";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import {StyledIconButton, VerticalDivider} from "containers/Editor/ToolBar/styles";
@@ -35,7 +35,7 @@ const LOGGER = getLogger(__filename)
 
 
 export interface BuilderToolBarProps {
-  common?: CommonStore
+  editor?: EditorStore
   builder?: BuilderStore
   layout?: LayoutStore
   layoutLogic?: LayoutLogicStore
@@ -48,7 +48,7 @@ export interface BuilderToolBarState {
 type EnhancedBuilderToolBarProps = BuilderToolBarProps & WithBuilderPublicProps & WithMoveToolProps
 
 
-@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
+@inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
 @observer
 export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps, BuilderToolBarState> {
 

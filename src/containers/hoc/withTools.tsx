@@ -1,14 +1,14 @@
 import * as React from 'react'
 import {Tools} from "constants/tools";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_COMMON} from "constants/stores";
+import {STORE_BUILDER, STORE_EDITOR} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
-import {CommonStore} from "store/commonStore";
+import {EditorStore} from "store/editorStore";
 import {when} from "mobx";
 
 export interface WithToolsPrivateProps {
   builder?: BuilderStore
-  common?: CommonStore
+  editor?: EditorStore
 }
 
 export interface WithToolsPublicProps {
@@ -23,7 +23,7 @@ type WithToolsProps = WithToolsPublicProps & WithToolsPrivateProps
  */
 export default function withTools(WrappedComponent: React.ComponentClass<WithToolsProps>) {
 
-  @inject(STORE_BUILDER, STORE_COMMON)
+  @inject(STORE_BUILDER, STORE_EDITOR)
   @observer
   class WithTools extends React.Component<WithToolsProps, {}> {
     private _prevTool: Tools
@@ -38,7 +38,7 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
       // Paperがマウントされて、ToolsのEventListenerが登録されてから
       // このHOCのEventListenerを登録する
       when(
-        () => this.props.common.isPaperLoaded,
+        () => this.props.editor.isPaperLoaded,
         () => this.setKeyEventListener()
       )
     }

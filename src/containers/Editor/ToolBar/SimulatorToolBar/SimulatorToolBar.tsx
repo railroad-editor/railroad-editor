@@ -5,14 +5,14 @@ import {Commands} from "constants/tools";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
 import {
-  STORE_COMMON,
+  STORE_EDITOR,
   STORE_LAYOUT,
   STORE_LAYOUT_LOGIC,
   STORE_SIMULATOR,
   STORE_SIMULATOR_LOGIC,
   STORE_UI
 } from "constants/stores";
-import {CommonStore} from "store/commonStore";
+import {EditorStore} from "store/editorStore";
 import {compose} from "recompose";
 import withMoveTool from "containers/hoc/withMoveTool";
 import {StyledIconButton} from "containers/Editor/ToolBar/styles";
@@ -33,7 +33,7 @@ const LOGGER = getLogger(__filename)
 
 
 export interface SimulatorToolBarProps {
-  common?: CommonStore
+  editor?: EditorStore
 
   resetViewPosition: () => void
   layout?: LayoutStore
@@ -51,7 +51,7 @@ export interface SimulatorToolBarState {
 type EnhancedSimulatorToolBarProps = SimulatorToolBarProps
 
 
-@inject(STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SIMULATOR_LOGIC, STORE_UI, STORE_SIMULATOR)
+@inject(STORE_EDITOR, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SIMULATOR_LOGIC, STORE_UI, STORE_SIMULATOR)
 @observer
 export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarProps, SimulatorToolBarState> {
 
@@ -75,7 +75,7 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
   }
 
   onRemoteConnect = async (e) => {
-    await TrainController.connect(this.props.common.userInfo.id, this.props.layout.meta.id)
+    await TrainController.connect(this.props.editor.userInfo.id, this.props.layout.meta.id)
       .then(ret => {
         this.props.ui.setRemoteConnectedSnackbar(true)
         TrainController.configure(this.props.layout.trainControllerConfig)

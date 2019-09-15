@@ -3,10 +3,10 @@ import {DEFAULT_INITIAL_ZOOM, ZOOM_CORRECTION, ZOOM_FACTOR, ZOOM_MAX, ZOOM_MIN} 
 import {PaperScope, Point, ToolEvent, View} from 'paper'
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {STORE_COMMON, STORE_LAYOUT, STORE_PAPER} from "constants/stores";
+import {STORE_EDITOR, STORE_LAYOUT, STORE_PAPER} from "constants/stores";
 import {LayoutStore} from "store/layoutStore";
 import {reaction} from "mobx";
-import {CommonStore} from "store/commonStore";
+import {EditorStore} from "store/editorStore";
 import {PaperStore} from "../../store/paperStore.";
 
 const LOGGER = getLogger(__filename)
@@ -20,7 +20,7 @@ export interface WithMoveToolProps {
   moveToolMouseDrag: (e: ToolEvent) => void
   resetViewPosition: () => void
   layout?: LayoutStore
-  common?: CommonStore
+  editor?: EditorStore
   paper?: PaperStore
 }
 
@@ -46,7 +46,7 @@ interface PanEventData {
 export default function withMoveTool(WrappedComponent: React.ComponentClass<WithMoveToolProps>) {
 
 
-  @inject(STORE_LAYOUT, STORE_COMMON, STORE_PAPER)
+  @inject(STORE_LAYOUT, STORE_EDITOR, STORE_PAPER)
   @observer
   class WithMoveTool extends React.Component<WithMoveToolProps, WithMoveToolState> {
 
@@ -62,7 +62,7 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
       this.isFocused = true
 
       reaction(
-        () => this.props.common.isPaperLoaded,
+        () => this.props.editor.isPaperLoaded,
         () => this.setInitialZoom()
       )
       reaction(
@@ -133,7 +133,7 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
         }
 
         this.props.paper.scope.view.scale(newZoom, zoomCenter)
-        this.props.common.setZoom(newZoom)
+        this.props.editor.setZoom(newZoom)
       }
     }
 
@@ -174,7 +174,7 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
       const t = point.subtract(view.viewToProject(prev.point))
       view.translate(t.x, t.y)
       this.pan = next
-      this.props.common.setPan(t)
+      this.props.editor.setPan(t)
       // change cursor shape
       document.body.style.cursor = 'move'
     }
@@ -197,7 +197,7 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
       if (view) {
         const {paperWidth, paperHeight} = this.props.layout.config
         // 初期ズームをセットする
-        view.zoom = this.props.common.initialZoom
+        view.zoom = this.props.editor.initialZoom
 
         // TODO: 何故か縦方向の位置が少し低い。ひとまず固定値で補正して調査中。
         const windowCenter = this.props.paper.scope.view.viewToProject(new Point(window.innerWidth / 2, window.innerHeight / 2 - 30))
@@ -211,7 +211,7 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
       const {paperWidth, paperHeight} = this.props.layout.config
       const zoom = Math.min(window.innerWidth / paperWidth, window.innerHeight / paperHeight)
       const correctedZoom = zoom - ZOOM_CORRECTION
-      this.props.common.setInitialZoom(correctedZoom)
+      this.props.editor.setInitialZoom(correctedZoom)
       LOGGER.info('Corrected Zoom', correctedZoom)
       return zoom
     }

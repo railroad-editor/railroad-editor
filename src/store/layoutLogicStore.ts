@@ -5,7 +5,7 @@ import builderStore, {PlacingMode} from "store/builderStore";
 import {JointPair} from "containers/hoc/withBuilder";
 import {Tools} from "constants/tools";
 import {getRailComponent} from "containers/rails/utils";
-import commonStore from "./commonStore";
+import commonStore from "./editorStore";
 import StorageAPI from "apis/storage"
 import LayoutAPI from "apis/layout";
 import moment from "moment";

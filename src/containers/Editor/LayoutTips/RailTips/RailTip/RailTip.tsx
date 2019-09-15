@@ -1,10 +1,10 @@
 import * as React from "react";
 import getLogger from "logging";
 import {compose} from "recompose";
-import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "constants/stores";
 import {inject, observer} from "mobx-react";
 import {LayoutStore, SwitcherData} from "store/layoutStore";
-import {CommonStore} from "store/commonStore";
+import {EditorStore} from "store/editorStore";
 import TurnoutSettingDialog
   from "containers/Editor/LayoutTips/RailTips/RailTip/TurnoutSettingDialog/TurnoutSettingDialog";
 import {RailData} from "containers/rails";
@@ -27,7 +27,7 @@ export interface FeederTipProps {
   open: boolean
   color?: string
   layout?: LayoutStore
-  common?: CommonStore
+  editor?: EditorStore
 }
 
 export interface FeederTipState {
@@ -35,7 +35,7 @@ export interface FeederTipState {
 }
 
 
-@inject(STORE_BUILDER, STORE_LAYOUT, STORE_COMMON)
+@inject(STORE_BUILDER, STORE_LAYOUT, STORE_EDITOR)
 @observer
 export class RailTip extends React.Component<FeederTipProps, FeederTipState> {
 

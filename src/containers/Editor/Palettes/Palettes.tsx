@@ -1,18 +1,18 @@
 import * as React from 'react'
 import {inject, observer} from "mobx-react";
-import {STORE_COMMON} from "constants/stores";
+import {STORE_EDITOR} from "constants/stores";
 import {compose} from "recompose";
 import {EditorMode} from "store/uiStore";
-import {CommonStore} from "store/commonStore";
+import {EditorStore} from "store/editorStore";
 import BuilderPalettes from "./BuilderPalettes/BuilderPalettes";
 import {SimulatorPalettes} from "./SimulatorPalettes/SimulatorPalettes";
 
 
 export interface PalettesProps {
-  common?: CommonStore
+  editor?: EditorStore
 }
 
-@inject(STORE_COMMON)
+@inject(STORE_EDITOR)
 @observer
 export class Palettes extends React.Component<PalettesProps> {
 
@@ -23,10 +23,10 @@ export class Palettes extends React.Component<PalettesProps> {
   render() {
     return (
       <>
-        <div hidden={this.props.common.editorMode !== EditorMode.BUILDER}>
+        <div hidden={this.props.editor.editorMode !== EditorMode.BUILDER}>
           <BuilderPalettes/>
         </div>
-        <div hidden={this.props.common.editorMode !== EditorMode.SIMULATOR}>
+        <div hidden={this.props.editor.editorMode !== EditorMode.SIMULATOR}>
           <SimulatorPalettes/>
         </div>
       </>

@@ -26,7 +26,7 @@ const INITIAL_STATE = {
 }
 
 
-export class CommonStore {
+export class EditorStore {
   @observable layouts: LayoutMeta[]
   @observable userInfo: UserInfo
   @observable isPaperLoaded: boolean
@@ -130,7 +130,7 @@ export class CommonStore {
   }
 }
 
-const store = new CommonStore(INITIAL_STATE)
+const store = new EditorStore(INITIAL_STATE)
 
 export default store
 

@@ -2,10 +2,10 @@ import * as React from "react";
 import {getRailComponent} from "containers/rails/utils";
 import getLogger from "logging";
 import {compose} from "recompose";
-import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_PAPER} from "constants/stores";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_PAPER} from "constants/stores";
 import {inject, observer} from "mobx-react";
 import {LayoutStore} from "store/layoutStore";
-import {CommonStore} from "store/commonStore";
+import {EditorStore} from "store/editorStore";
 import {reaction} from "mobx";
 import FeederTip from "containers/Editor/LayoutTips/FeederTips/FeederTip/FeederTip";
 import {PaperStore} from "../../../../store/paperStore.";
@@ -16,7 +16,7 @@ const LOGGER = getLogger(__filename)
 
 export interface FeederTipProps {
   layout?: LayoutStore
-  common?: CommonStore
+  editor?: EditorStore
   paper?: PaperStore
 }
 
@@ -25,13 +25,13 @@ export interface FeederTipState {
 }
 
 
-@inject(STORE_BUILDER, STORE_LAYOUT, STORE_COMMON, STORE_PAPER)
+@inject(STORE_BUILDER, STORE_LAYOUT, STORE_EDITOR, STORE_PAPER)
 @observer
 export class FeederTips extends React.Component<FeederTipProps, FeederTipState> {
 
   constructor(props: FeederTipProps) {
     super(props)
-    reaction(() => this.props.common.zooming,
+    reaction(() => this.props.editor.zooming,
       () => this.forceUpdate())
   }
 

@@ -16,8 +16,8 @@ import {Auth} from "aws-amplify";
 import Divider from "@material-ui/core/Divider";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_PAPER, STORE_UI} from "constants/stores";
-import {CommonStore} from "store/commonStore";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_PAPER, STORE_UI} from "constants/stores";
+import {EditorStore} from "store/editorStore";
 import {LayoutMeta, LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
 import SaveLayoutDialog from "containers/Editor/ToolBar/MenuDrawer/SaveLayoutDialog/SaveLayoutDialog";
@@ -43,7 +43,7 @@ export interface MenuDrawerProps {
   open: boolean
   onClose: () => void
 
-  common?: CommonStore
+  editor?: EditorStore
   layout?: LayoutStore
   layoutLogic?: LayoutLogicStore
   builder?: BuilderStore
@@ -55,7 +55,7 @@ export interface MenuDrawerState {
 }
 
 
-@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI, STORE_PAPER)
+@inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI, STORE_PAPER)
 @observer
 export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState> {
 
@@ -69,7 +69,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
 
   logout = async () => {
     await Auth.signOut()
-    this.props.common.setUserInfo(null)
+    this.props.editor.setUserInfo(null)
     this.props.onClose()
   }
 
@@ -79,7 +79,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
   }
 
   openLoginDialogIfNot = () => {
-    if (! this.props.common.isAuth) {
+    if (! this.props.editor.isAuth) {
       this.props.ui.setDrawer(false)
       this.props.ui.setLoginDialog(true)
       this.props.ui.setRequireLoginSnackbar(true)
@@ -250,7 +250,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
     const {open, onClose, ui} = this.props
 
     let authMenu, dialogs
-    if (this.props.common.isAuth) {
+    if (this.props.editor.isAuth) {
       // For logined users
       authMenu = (
         <ListItem button onClick={this.logout}>
@@ -266,16 +266,16 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
             title={"Save Layout"}
             open={ui.saveNewDialog} onClose={this.closeSaveNewDialog}
             onOK={this.onSaveAs}
-            authData={this.props.common.userInfo}
+            authData={this.props.editor.userInfo}
             layoutConfig={this.props.layout.config}
           />
           <OpenLayoutsDialog
             open={ui.layoutsDialog}
             onClose={this.closeLayoutsDialog}
-            userInfo={this.props.common.userInfo}
-            layouts={this.props.common.layouts}
+            userInfo={this.props.editor.userInfo}
+            layouts={this.props.editor.layouts}
             loadLayout={this.loadLayout}
-            loadLayoutList={this.props.common.loadLayoutList}
+            loadLayoutList={this.props.editor.loadLayoutList}
           />
         </>
       )
@@ -380,20 +380,20 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
           open={ui.createNewDialog}
           onClose={this.closeCreateNewDialog}
           onOK={this.onCreateNew}
-          authData={this.props.common.userInfo}
+          authData={this.props.editor.userInfo}
           layoutConfig={this.props.layout.config}
         />
         <LoginDialog
           open={ui.loginDialog}
           onClose={this.closeLoginDialog}
-          setAuthData={this.props.common.setUserInfo}
-          loadLayoutList={this.props.common.loadLayoutList}
+          setAuthData={this.props.editor.setUserInfo}
+          loadLayoutList={this.props.editor.loadLayoutList}
         />
         <SignUpDialog
           open={ui.signInDialog}
           onClose={this.closeSignUpDialog}
-          setAuthData={this.props.common.setUserInfo}
-          loadLayoutList={this.props.common.loadLayoutList}
+          setAuthData={this.props.editor.setUserInfo}
+          loadLayoutList={this.props.editor.loadLayoutList}
         />
         <SettingsDialog
           title={'Layout Settings'}
@@ -401,7 +401,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
           onClose={this.closeSettingsDialog}
           config={this.props.layout.config}
           setConfig={this.props.layout.setConfig}
-          userInfo={this.props.common.userInfo}
+          userInfo={this.props.editor.userInfo}
           layoutMeta={this.props.layout.meta}
         />
         <BomDialog

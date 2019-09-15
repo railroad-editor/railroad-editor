@@ -14,9 +14,9 @@ import MenuIcon from "@material-ui/icons/Menu";
 import getLogger from "logging";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI} from "constants/stores";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
-import {CommonStore} from "store/commonStore";
+import {EditorStore} from "store/editorStore";
 import MenuDrawer from "containers/Editor/ToolBar/MenuDrawer/MenuDrawer";
 import {compose} from "recompose";
 import {EditableTypography} from "containers/common/EditableTypography/EditableTypography";
@@ -33,7 +33,7 @@ const LOGGER = getLogger(__filename)
 
 
 export interface ToolBarProps {
-  common?: CommonStore
+  editor?: EditorStore
   builder?: BuilderStore
   layout?: LayoutStore
   layoutLogic?: LayoutLogicStore
@@ -50,7 +50,7 @@ export interface ToolBarState {
 }
 
 
-@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI)
+@inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI)
 @observer
 export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
 
@@ -95,7 +95,7 @@ export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
   }
 
   onChangeEditorMode = (e) => {
-    this.props.common.setEditorMode(e.target.value)
+    this.props.editor.setEditorMode(e.target.value)
   }
 
 
@@ -123,11 +123,11 @@ export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
             </Grid>
 
             {
-              this.props.common.editorMode === EditorMode.BUILDER &&
+              this.props.editor.editorMode === EditorMode.BUILDER &&
               <BuilderToolBar/>
             }
             {
-              this.props.common.editorMode === EditorMode.SIMULATOR &&
+              this.props.editor.editorMode === EditorMode.SIMULATOR &&
               <SimulatorToolBar/>
             }
 
@@ -137,7 +137,7 @@ export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
                 // PopperProps={{style: {zIndex: '1000'}}}
               >
                 <Select
-                  value={this.props.common.editorMode}
+                  value={this.props.editor.editorMode}
                   onChange={this.onChangeEditorMode}
                   renderValue={value => {
                     return (

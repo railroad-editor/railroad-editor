@@ -1,5 +1,5 @@
 import {action, observable} from "mobx";
-import commonStore from "./commonStore";
+import commonStore from "./editorStore";
 
 export enum EditorMode {
   BUILDER = 'Builder',
