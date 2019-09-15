@@ -4,7 +4,7 @@ import Divider from "@material-ui/core/Divider";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import * as classNames from "classnames"
-import {PrimaryPaletteAddButton} from "containers/common/PaletteAddButton/PaletteAddButton";
+import {PaletteAddButton} from "components/PaletteAddButton/PaletteAddButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 // import PowerIcon from '@material-ui/icons/Power';
@@ -124,7 +124,7 @@ export default class PowerPackPalette extends React.Component<PowerPackPalettePr
                   {'Power Packs'}
                 </TitleTypography>
                 <Tooltip title={'Add Power Pack'}>
-                  <PrimaryPaletteAddButton onClick={this.openDialog}/>
+                  <PaletteAddButton onClick={this.openDialog}/>
                 </Tooltip>
               </TitleDiv>
               <ScrollablePaper>

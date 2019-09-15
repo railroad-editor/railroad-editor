@@ -2,7 +2,7 @@ import * as React from 'react'
 import {ListItemText, MenuItem} from '@material-ui/core'
 import {ActiveListItem} from "components/ActiveListItem/ActiveListItem";
 import Menu from "@material-ui/core/Menu";
-import {PrimaryPaletteListItemSettingButton} from "../../../../../../common/PaletteListItemSettingButton/PaletteListItemSettingButton";
+import {PaletteListItemSettingButton} from "../../../../../../../components/PaletteListItemSettingButton/PaletteListItemSettingButton";
 
 export interface PaletteListItemProps {
   item: PaletteItem
@@ -48,7 +48,7 @@ export default class PaletteListItem extends React.Component<PaletteListItemProp
     let menuButton, menu
     if (hasMenu) {
       menuButton = (
-        <PrimaryPaletteListItemSettingButton onClick={this.openMenu}/>
+        <PaletteListItemSettingButton onClick={this.openMenu}/>
       )
       menu = (
         <Menu

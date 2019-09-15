@@ -4,7 +4,7 @@ import {ConductionStates, LayoutStore, SwitcherData, SwitcherType} from "store/l
 import {inject, observer} from 'mobx-react';
 import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {LayoutLogicStore} from "store/layoutLogicStore";
-import RailIcon from "containers/common/RailIcon/RailIcon";
+import RailIcon from "components/RailIcon/RailIcon";
 import {RailComponentClasses, RailData} from "containers/rails/index";
 import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css'

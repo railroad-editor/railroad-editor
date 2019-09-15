@@ -3,7 +3,7 @@ import {ReactEventHandler} from "react";
 import {ActiveListItem, ActiveListItemProps,} from "components/ActiveListItem/ActiveListItem";
 import {ListItemText, MenuItem} from '@material-ui/core';
 import Menu from "@material-ui/core/Menu";
-import {PrimaryPaletteListItemSettingButton} from "containers/common/PaletteListItemSettingButton/PaletteListItemSettingButton";
+import {PaletteListItemSettingButton} from "components/PaletteListItemSettingButton/PaletteListItemSettingButton";
 
 
 export interface LayerListItemProps extends ActiveListItemProps {
@@ -56,7 +56,7 @@ export class LayerListItem extends React.Component<LayerListItemProps, LayerList
           color="secondary"
         >
           <ListItemText primary={text}/>
-          <PrimaryPaletteListItemSettingButton onClick={this.openMenu}/>
+          <PaletteListItemSettingButton onClick={this.openMenu}/>
         </ActiveListItem>
         <Menu
           anchorEl={this.state.anchorEl}

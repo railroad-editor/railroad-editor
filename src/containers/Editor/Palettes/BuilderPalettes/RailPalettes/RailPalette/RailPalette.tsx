@@ -7,7 +7,7 @@ import {inject, observer} from "mobx-react";
 import {STORE_BUILDER} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
 import * as classNames from "classnames"
-import {PrimaryPaletteAddButton} from "containers/common/PaletteAddButton/PaletteAddButton";
+import {PaletteAddButton} from "components/PaletteAddButton/PaletteAddButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
@@ -94,7 +94,7 @@ export default class RailPalette extends React.Component<RailPaletteProps, {}> {
               </TitleTypography>
               {this.props.customDialog &&
               <Tooltip title={this.props.tooltipTitle}>
-                <PrimaryPaletteAddButton onClick={this.props.openCustomDialog}/>
+                <PaletteAddButton onClick={this.props.openCustomDialog}/>
               </Tooltip>
               }
             </TitleDiv>

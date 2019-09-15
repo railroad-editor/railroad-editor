@@ -12,7 +12,7 @@ import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores"
 import {inject, observer} from "mobx-react";
 import {DEFAULT_LAYER_DATA, LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
-import {SecondaryPaletteAddButton} from "containers/common/PaletteAddButton/PaletteAddButton";
+import {PaletteAddButton} from "components/PaletteAddButton/PaletteAddButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import {DEFAULT_LAYER_TRANSLUCENT_OPACITY} from "constants/tools";
 import {LayoutLogicStore} from "store/layoutLogicStore";
@@ -153,7 +153,7 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
               Layers
             </TitleTypography>
             <Tooltip title="Add Layer">
-              <SecondaryPaletteAddButton onClick={this.openAddDialog}/>
+              <PaletteAddButton color="secondary" onClick={this.openAddDialog}/>
             </Tooltip>
           </TitleDiv>
 
