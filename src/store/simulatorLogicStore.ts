@@ -1,7 +1,7 @@
 import {action, comparer, observable, reaction} from "mobx";
 import getLogger from "logging";
 import layoutStore, {PowerPackData} from "store/layoutStore";
-import {getRailComponent} from "components/rails/utils";
+import {getRailComponent} from "containers/rails/utils";
 import commonStore from "./commonStore";
 import {EditorMode} from "store/uiStore";
 import {Tools} from "constants/tools";

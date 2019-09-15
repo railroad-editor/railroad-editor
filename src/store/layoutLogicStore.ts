@@ -2,9 +2,9 @@ import {action} from "mobx";
 import getLogger from "logging";
 import layoutStore, {ConductionStates} from "store/layoutStore";
 import builderStore, {PlacingMode} from "store/builderStore";
-import {JointPair} from "components/hoc/withBuilder";
+import {JointPair} from "containers/hoc/withBuilder";
 import {Tools} from "constants/tools";
-import {getRailComponent} from "components/rails/utils";
+import {getRailComponent} from "containers/rails/utils";
 import commonStore from "./commonStore";
 import StorageAPI from "apis/storage"
 import LayoutAPI from "apis/layout";
