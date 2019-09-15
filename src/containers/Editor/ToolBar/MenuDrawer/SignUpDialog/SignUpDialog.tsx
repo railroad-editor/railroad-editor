@@ -5,6 +5,8 @@ import {AuthState, UserInfo} from "containers/common/Authenticator/AuthPiece/Aut
 import {inject, observer} from "mobx-react";
 import {STORE_UI} from "../../../../../constants/stores";
 import {UiStore} from "../../../../../store/uiStore";
+import {I18n} from "aws-amplify";
+import {LOGGED_IN} from "../../../../../constants/messages";
 
 
 export interface SignUpDialogProps {
@@ -27,7 +29,8 @@ export default class SignUpDialog extends React.Component<SignUpDialogProps, {}>
   }
 
   onSignedIn = () => {
-    this.props.ui.setLoggedInSnackbar(true)
+    this.props.ui.setCommonSnackbar(true, I18n.get(LOGGED_IN), 'success')
+
     this.props.loadLayoutList()
     this.props.onClose()
   }

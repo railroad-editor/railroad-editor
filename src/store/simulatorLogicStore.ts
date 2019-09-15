@@ -2,8 +2,7 @@ import {action, comparer, observable, reaction} from "mobx";
 import getLogger from "logging";
 import layoutStore, {PowerPackData} from "store/layoutStore";
 import {getRailComponent} from "containers/rails/utils";
-import commonStore from "./editorStore";
-import {EditorMode} from "store/uiStore";
+import commonStore, {EditorMode} from "./editorStore";
 import {Tools} from "constants/tools";
 import {FlowDirection, Pivot} from "react-rail-components/lib/parts/primitives/PartBase";
 

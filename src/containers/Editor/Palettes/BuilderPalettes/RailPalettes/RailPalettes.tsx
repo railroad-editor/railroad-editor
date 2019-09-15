@@ -20,6 +20,8 @@ import {compose} from "recompose";
 import withBuilder, {WithBuilderPublicProps} from "containers/hoc/withBuilder";
 import {LayoutStore} from "store/layoutStore";
 import {UiStore} from "../../../../../store/uiStore";
+import {NO_RAIL_FOR_GROUP} from "../../../../../constants/messages";
+import {I18n} from "aws-amplify";
 
 
 export interface PaletteProps {
@@ -53,7 +55,7 @@ export class RailPalettes extends React.Component<EnhancedPaletteProps, PaletteS
 
   openCustomDialog = () => {
     if (this.props.layout.selectedRails.length === 0 && this.isActive(Tools.RAIL_GROUPS)) {
-      this.props.ui.setNoRailForGroupSnackbar(true)
+      this.props.ui.setCommonSnackbar(true, I18n.get(NO_RAIL_FOR_GROUP), 'warning')
       return
     }
     this.setState({

@@ -13,9 +13,9 @@ import withBuilder, {WithBuilderPublicProps} from "../hoc/withBuilder";
 import getLogger from "logging";
 import withSelectTool, {WithSelectToolProps} from "containers/hoc/withSelectTool";
 import {inject, observer} from "mobx-react";
-import {EditorStore} from "store/editorStore";
+import {EditorMode, EditorStore} from "store/editorStore";
 import {LayoutStore} from "store/layoutStore";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_SIMULATOR_LOGIC} from "constants/stores";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "constants/stores";
 import {GridPaper} from "containers/Editor/GridPaper/GridPaper";
 import Layout from "containers/Editor/Layout/Layout";
 import {
@@ -30,14 +30,14 @@ import FreeRailPlacer from "containers/Editor/FreeRailPlacer/FreeRailPlacer";
 import {BuilderStore} from "store/builderStore";
 import {getAllRailComponents} from "containers/rails/utils";
 import LayoutTips from "containers/Editor/LayoutTips/LayoutTips";
-import {EditorMode} from "store/uiStore";
-import {SimulatorLogicStore} from "store/simulatorLogicStore";
 import Palettes from "./Palettes/Palettes";
 import {DistantRailPlacer} from "./DistantRailPlacer/DistantRailPlacer";
 import TemporaryLayer from "./TemporaryLayer/TemporaryLayer";
 import {Measure} from "./Measure/Measure";
 import {MeasureEventHandler} from "./MeasureEventHandler/MeasureEventHandler";
 import {observable} from "mobx";
+import {Snackbar} from "../../components/Snackbar/Snackbar";
+import {UiStore} from "../../store/uiStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -48,7 +48,7 @@ export interface EditorProps {
   builder?: BuilderStore
   editor?: EditorStore
   layout?: LayoutStore
-  simulatorLogic?: SimulatorLogicStore
+  ui?: UiStore
 }
 
 
@@ -63,7 +63,7 @@ export interface EditorState {
 }
 
 
-@inject(STORE_EDITOR, STORE_LAYOUT, STORE_BUILDER, STORE_SIMULATOR_LOGIC)
+@inject(STORE_EDITOR, STORE_LAYOUT, STORE_BUILDER, STORE_UI)
 @observer
 class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
@@ -127,6 +127,10 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
     return false;
   }
 
+  closeCommonSnackbar = () => {
+    this.props.ui.setCommonSnackbar(false)
+  }
+
 
   render() {
 
@@ -188,6 +192,11 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             />
           </GridPaper>
         </EditorBody>
+        <Snackbar open={this.props.ui.commonSnackbar}
+                  onClose={this.closeCommonSnackbar}
+                  message={this.props.ui.commonSnackbarMessage}
+                  variant={this.props.ui.commonSnackbarVariant}
+        />
       </StyledWrapper>
     )
   }

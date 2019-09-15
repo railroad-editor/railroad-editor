@@ -16,7 +16,7 @@ import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
-import {EditorStore} from "store/editorStore";
+import {EditorMode, EditorStore} from "store/editorStore";
 import MenuDrawer from "containers/Editor/ToolBar/MenuDrawer/MenuDrawer";
 import {compose} from "recompose";
 import {EditableTypography} from "containers/common/EditableTypography/EditableTypography";
@@ -25,7 +25,7 @@ import {LayoutLogicStore} from "store/layoutLogicStore";
 import BuilderToolBar from "containers/Editor/ToolBar/BuilderToolBar/BuilderToolBar";
 import withMoveTool from "containers/hoc/withMoveTool";
 import SimulatorToolBar from "containers/Editor/ToolBar/SimulatorToolBar/SimulatorToolBar";
-import {EditorMode, UiStore} from "store/uiStore";
+import {UiStore} from "store/uiStore";
 import BuildIcon from '@material-ui/icons/Build';
 import PlayArrowIcon from '@material-ui/icons/PlayCircleFilled';
 

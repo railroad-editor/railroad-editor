@@ -18,6 +18,8 @@ import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
 import {STORE_UI} from "../../../../../constants/stores";
 import {UiStore} from "../../../../../store/uiStore";
+import {BUG_REPORT_SUBMITTED} from "../../../../../constants/messages";
+import {I18n} from "aws-amplify";
 
 const LOGGER = getLogger(__filename)
 
@@ -60,7 +62,7 @@ export class BugReportDialog extends FormDialogBase<BugReportDialogProps, FormDi
       title: issueTitle,
       comment: issueComment,
     })
-    this.props.ui.setBugReportSnackbar(true)
+    this.props.ui.setCommonSnackbar(true, I18n.get(BUG_REPORT_SUBMITTED), 'success')
     this.onClose()
   }
 

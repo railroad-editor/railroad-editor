@@ -5,12 +5,11 @@ import builderStore, {PlacingMode} from "store/builderStore";
 import {JointPair} from "containers/hoc/withBuilder";
 import {Tools} from "constants/tools";
 import {getRailComponent} from "containers/rails/utils";
-import commonStore from "./editorStore";
+import commonStore, {EditorMode} from "./editorStore";
 import StorageAPI from "apis/storage"
 import LayoutAPI from "apis/layout";
 import moment from "moment";
 import simulatorLogicStore from "store/simulatorLogicStore";
-import {EditorMode} from "store/uiStore";
 import {FlowDirection, Pivot} from "react-rail-components/lib/parts/primitives/PartBase";
 
 const LOGGER = getLogger(__filename)

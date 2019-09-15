@@ -1,8 +1,27 @@
 import {action, observable} from "mobx";
 import commonStore from "./editorStore";
+import {SnackbarVariant} from "../components/Snackbar/Snackbar";
+import {REQUIRE_LOGIN} from "../constants/messages";
+import {I18n} from "aws-amplify";
 
 
-const INITIAL_STATE = {
+export interface UiStoreState {
+  drawer: boolean
+  layoutsDialog: boolean
+  createNewDialog: boolean
+  saveNewDialog: boolean
+  loginDialog: boolean
+  signInDialog: boolean
+  settingsDialog: boolean
+  summaryDialog: boolean
+  bugReportDialog: boolean
+  scriptDialog: boolean
+  confirmedSnackbar: boolean
+  commonSnackbar: boolean
+  commonSnackbarMessage: string
+}
+
+const INITIAL_STATE: UiStoreState = {
   drawer: false,
   layoutsDialog: false,
   createNewDialog: false,
@@ -13,18 +32,9 @@ const INITIAL_STATE = {
   summaryDialog: false,
   bugReportDialog: false,
   scriptDialog: false,
-  // snackbars
   confirmedSnackbar: false,
-  savedLayoutSnackbar: false,
-  loadedLayoutSnackbar: false,
-  requireLoginSnackbar: false,
-  loggedInSnackbar: false,
-  noRailForGroupSnackbar: false,
-  registeredRailGroupSnackbar: false,
-  bugReportSnackbar: false,
-  registeredRailGroupSnackbarMessage: "",
-  remoteNotConnectedSnackbar: false,
-  remoteConnectedSnackbar: false,
+  commonSnackbar: false,
+  commonSnackbarMessage: null,
 }
 
 
@@ -39,26 +49,15 @@ export class UiStore {
   @observable summaryDialog: boolean
   @observable bugReportDialog: boolean
   @observable scriptDialog: boolean
-  // snackbars
   @observable confirmedSnackbar: boolean
-  @observable savedLayoutSnackbar: boolean
-  @observable loadedLayoutSnackbar: boolean
-  @observable requireLoginSnackbar: boolean
-  @observable loggedInSnackbar: boolean
-  @observable noRailForGroupSnackbar: boolean
-  @observable registeredRailGroupSnackbar: boolean
-  @observable registeredRailGroupSnackbarMessage: string
-  @observable bugReportSnackbar: boolean
-  @observable remoteNotConnectedSnackbar: boolean
-  @observable remoteConnectedSnackbar: boolean
+  @observable commonSnackbar: boolean
+  @observable commonSnackbarMessage: string
+  @observable commonSnackbarVariant: SnackbarVariant
 
   constructor({
                 drawer, layoutsDialog, createNewDialog, saveNewDialog, loginDialog, signInDialog, settingsDialog,
                 bugReportDialog, summaryDialog, scriptDialog,
-                confirmedSnackbar, savedLayoutSnackbar, requireLoginSnackbar, loggedInSnackbar,
-                noRailForGroupSnackbar, registeredRailGroupSnackbar, bugReportSnackbar,
-                registeredRailGroupSnackbarMessage, remoteNotConnectedSnackbar, remoteConnectedSnackbar,
-                loadedLayoutSnackbar
+                confirmedSnackbar, commonSnackbar, commonSnackbarMessage
               }) {
     this.drawer = drawer
     this.layoutsDialog = layoutsDialog
@@ -70,18 +69,9 @@ export class UiStore {
     this.summaryDialog = summaryDialog
     this.bugReportDialog = bugReportDialog
     this.scriptDialog = scriptDialog
-    // snackbars
     this.confirmedSnackbar = confirmedSnackbar
-    this.savedLayoutSnackbar = savedLayoutSnackbar
-    this.loadedLayoutSnackbar = loadedLayoutSnackbar
-    this.requireLoginSnackbar = requireLoginSnackbar
-    this.loggedInSnackbar = loggedInSnackbar
-    this.noRailForGroupSnackbar = noRailForGroupSnackbar
-    this.registeredRailGroupSnackbar = registeredRailGroupSnackbar
-    this.bugReportSnackbar = bugReportSnackbar
-    this.registeredRailGroupSnackbarMessage = registeredRailGroupSnackbarMessage
-    this.remoteNotConnectedSnackbar = remoteNotConnectedSnackbar
-    this.remoteConnectedSnackbar = remoteConnectedSnackbar
+    this.commonSnackbar = commonSnackbar
+    this.commonSnackbarMessage = commonSnackbarMessage
   }
 
   @action
@@ -95,7 +85,7 @@ export class UiStore {
       this.layoutsDialog = open
     } else {
       this.setLoginDialog(open)
-      this.setRequireLoginSnackbar(open)
+      this.setCommonSnackbar(true, I18n.get(REQUIRE_LOGIN), 'error')
     }
   }
 
@@ -110,7 +100,7 @@ export class UiStore {
       this.saveNewDialog = open
     } else {
       this.setLoginDialog(open)
-      this.setRequireLoginSnackbar(open)
+      this.setCommonSnackbar(open, I18n.get(REQUIRE_LOGIN), 'error')
     }
   }
 
@@ -145,56 +135,20 @@ export class UiStore {
   }
 
   // snackbars
-
   @action
   setConfirmedSnackbar = (open: boolean) => {
     this.confirmedSnackbar = open
   }
 
   @action
-  setSavedLayoutSnackbar = (open: boolean) => {
-    this.savedLayoutSnackbar = open
-  }
-
-  @action
-  setLoadedLayoutSnackbar = (open: boolean) => {
-    this.loadedLayoutSnackbar = open
-  }
-
-  @action
-  setRequireLoginSnackbar = (open: boolean) => {
-    this.requireLoginSnackbar = open
-  }
-
-  @action
-  setLoggedInSnackbar = (open: boolean) => {
-    this.loggedInSnackbar = open
-  }
-
-  @action
-  setNoRailForGroupSnackbar = (open: boolean) => {
-    this.noRailForGroupSnackbar = open
-  }
-
-  @action
-  setRegisteredRailGroupSnackbar = (open: boolean, message: string) => {
-    this.registeredRailGroupSnackbar = open
-    this.registeredRailGroupSnackbarMessage = message
-  }
-
-  @action
-  setBugReportSnackbar = (open: boolean) => {
-    this.bugReportSnackbar = open
-  }
-
-  @action
-  setRemoteNotConnectedSnackbar = (open: boolean) => {
-    this.remoteNotConnectedSnackbar = open
-  }
-
-  @action
-  setRemoteConnectedSnackbar = (open: boolean) => {
-    this.remoteConnectedSnackbar = open
+  setCommonSnackbar = (open: boolean, message?: string, variant?: SnackbarVariant) => {
+    this.commonSnackbar = open
+    if (message) {
+      this.commonSnackbarMessage = message
+    }
+    if (variant) {
+      this.commonSnackbarVariant = variant
+    }
   }
 }
 

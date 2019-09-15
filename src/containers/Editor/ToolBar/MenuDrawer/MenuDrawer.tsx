@@ -1,5 +1,5 @@
 import * as React from "react";
-import {ListItem, ListItemIcon, ListItemText, Portal} from '@material-ui/core';
+import {ListItem, ListItemIcon, ListItemText} from '@material-ui/core';
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import CloudIcon from "@material-ui/icons/Cloud";
@@ -12,7 +12,7 @@ import HelpIcon from "@material-ui/icons/Help";
 import BugReportIcon from "@material-ui/icons/BugReport";
 import ArchiveIcon from "@material-ui/icons/Archive";
 import OpenLayoutsDialog from "containers/Editor/ToolBar/MenuDrawer/OpenLayoutsDialog/OpenLayoutsDialog";
-import {Auth} from "aws-amplify";
+import {Auth, I18n} from "aws-amplify";
 import Divider from "@material-ui/core/Divider";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
@@ -32,8 +32,8 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 import {runInAction} from "mobx";
 import BugReportDialog from "./BugReportDialog/BugReportDialog";
 import BomDialog from "./BomDialog/BomDialog";
-import {Snackbar} from "../../../../components/Snackbar/Snackbar";
 import moment from 'moment';
+import {LAYOUT_LOADED, LAYOUT_SAVED, REQUIRE_LOGIN} from "../../../../constants/messages";
 
 const LOGGER = getLogger(__filename)
 
@@ -73,14 +73,14 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
 
   loadLayout = async (layoutId: string) => {
     await this.props.layoutLogic.loadLayout(layoutId)
-    this.props.ui.setLoadedLayoutSnackbar(true)
+    this.props.ui.setCommonSnackbar(true, I18n.get(LAYOUT_LOADED), 'success')
   }
 
   openLoginDialogIfNot = () => {
     if (! this.props.editor.isAuth) {
       this.props.ui.setDrawer(false)
       this.props.ui.setLoginDialog(true)
-      this.props.ui.setRequireLoginSnackbar(true)
+      this.props.ui.setCommonSnackbar(true, I18n.get(REQUIRE_LOGIN), 'error')
       return true
     }
     return false
@@ -145,7 +145,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
     // 先にDrawerを閉じる
     this.props.onClose()
     await this.props.layoutLogic.saveLayout()
-    this.props.ui.setSavedLayoutSnackbar(true)
+    this.props.ui.setCommonSnackbar(true, I18n.get(LAYOUT_SAVED), 'success')
   }
 
   onSaveAs = async (meta: LayoutMeta) => {
@@ -157,7 +157,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
     // metaを更新してから保存する
     this.props.layout.setLayoutMeta(meta)
     await this.props.layoutLogic.saveLayout()
-    this.props.ui.setSavedLayoutSnackbar(true)
+    this.props.ui.setCommonSnackbar(true, I18n.get(LAYOUT_SAVED), 'success')
   }
 
   openSettingsDialog = () => {
@@ -189,42 +189,6 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
   closeBugReportDialog = () => {
     this.props.ui.setBugReportDialog(false)
     this.props.onClose()
-  }
-
-  closeRequireLoginSnackbar = () => {
-    this.props.ui.setRequireLoginSnackbar(false)
-  }
-
-  closeSavedLayoutSnackbar = () => {
-    this.props.ui.setSavedLayoutSnackbar(false)
-  }
-
-  closeLoadedLayoutSnackbar = () => {
-    this.props.ui.setLoadedLayoutSnackbar(false)
-  }
-
-  closeLoggedInSnackbar = () => {
-    this.props.ui.setLoggedInSnackbar(false)
-  }
-
-  closeNoRailForGroupSnackbar = () => {
-    this.props.ui.setNoRailForGroupSnackbar(false)
-  }
-
-  closeRegisteredRailGroupSnackbar = () => {
-    this.props.ui.setRegisteredRailGroupSnackbar(false, "")
-  }
-
-  closeBugReportSnackbar = () => {
-    this.props.ui.setBugReportSnackbar(false)
-  }
-
-  closeNoSessionSnackbar = () => {
-    this.props.ui.setRemoteNotConnectedSnackbar(false)
-  }
-
-  closeRemoteConnectedSnackbar = () => {
-    this.props.ui.setRemoteConnectedSnackbar(false)
   }
 
   /**
@@ -413,57 +377,6 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
           onClose={this.closeBugReportDialog}
         />
         {dialogs}
-
-        <Portal container={this.appRoot}>
-          <div>
-            <Snackbar open={ui.requireLoginSnackbar}
-                      onClose={this.closeRequireLoginSnackbar}
-                      message={'Please login.'}
-                      variant="error"
-            />
-            <Snackbar open={ui.savedLayoutSnackbar}
-                      onClose={this.closeSavedLayoutSnackbar}
-                      message={'Layout saved.'}
-                      variant="success"
-            />
-            <Snackbar open={ui.loadedLayoutSnackbar}
-                      onClose={this.closeLoadedLayoutSnackbar}
-                      message={'Layout loaded.'}
-                      variant="success"
-            />
-            <Snackbar open={ui.loggedInSnackbar}
-                      onClose={this.closeLoggedInSnackbar}
-                      message={'Logged-in successfully.'}
-                      variant="success"
-            />
-
-            <Snackbar open={ui.noRailForGroupSnackbar}
-                      onClose={this.closeNoRailForGroupSnackbar}
-                      message={'Please select at least one rail.'}
-                      variant="warning"
-            />
-            <Snackbar open={ui.registeredRailGroupSnackbar}
-                      onClose={this.closeRegisteredRailGroupSnackbar}
-                      message={ui.registeredRailGroupSnackbarMessage}
-                      variant="success"
-            />
-            <Snackbar open={ui.bugReportSnackbar}
-                      onClose={this.closeBugReportSnackbar}
-                      message={'Your issue is submitted successfully. Thank you for reporting!'}
-                      variant="success"
-            />
-            <Snackbar open={ui.remoteNotConnectedSnackbar}
-                      onClose={this.closeNoSessionSnackbar}
-                      message={'Could not connect to remote Railroad Controller'}
-                      variant="error"
-            />
-            <Snackbar open={ui.remoteConnectedSnackbar}
-                      onClose={this.closeRemoteConnectedSnackbar}
-                      message={'Connected to remote Railroad Controller.'}
-                      variant="success"
-            />
-          </div>
-        </Portal>
       </>
     )
   }

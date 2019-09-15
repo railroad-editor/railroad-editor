@@ -56,7 +56,7 @@ interface SnackbarProps extends MuiSnackbarProps {
   variant: SnackbarVariant
 }
 
-type SnackbarVariant = 'success' | 'error' | 'info' | 'warning'
+export type SnackbarVariant = 'success' | 'error' | 'info' | 'warning'
 
 
 export const Snackbar: React.FC<SnackbarProps> = (props) => {

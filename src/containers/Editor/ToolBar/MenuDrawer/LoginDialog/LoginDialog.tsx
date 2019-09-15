@@ -5,6 +5,8 @@ import {AuthState, UserInfo} from "containers/common/Authenticator/AuthPiece/Aut
 import {inject, observer} from "mobx-react";
 import {STORE_UI} from "../../../../../constants/stores";
 import {UiStore} from "../../../../../store/uiStore";
+import {LOGGED_IN} from "../../../../../constants/messages";
+import {I18n} from "aws-amplify";
 
 
 export interface LoginDialogProps {
@@ -27,7 +29,7 @@ export default class LoginDialog extends React.Component<LoginDialogProps, {}> {
   }
 
   onSignedIn = () => {
-    this.props.ui.setLoggedInSnackbar(true)
+    this.props.ui.setCommonSnackbar(true, I18n.get(LOGGED_IN), 'success')
     this.props.loadLayoutList()
     this.props.onClose()
   }

@@ -28,6 +28,8 @@ import {Snackbar} from "../../../../components/Snackbar/Snackbar";
 import {SimulatorStore} from "../../../../store/simulatorStore";
 import {SimulatorSandbox} from "./ScriptDialog/SimulatorSandbox";
 import {LayoutLogicStore} from "../../../../store/layoutLogicStore";
+import {CONNECTED_REMOTE, NO_REMOTE_SESSION} from "../../../../constants/messages";
+import {I18n} from "aws-amplify";
 
 const LOGGER = getLogger(__filename)
 
@@ -77,11 +79,11 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
   onRemoteConnect = async (e) => {
     await TrainController.connect(this.props.editor.userInfo.id, this.props.layout.meta.id)
       .then(ret => {
-        this.props.ui.setRemoteConnectedSnackbar(true)
+        this.props.ui.setCommonSnackbar(true, I18n.get(CONNECTED_REMOTE), 'success')
         TrainController.configure(this.props.layout.trainControllerConfig)
       })
       .catch(err => {
-        this.props.ui.setRemoteNotConnectedSnackbar(true)
+        this.props.ui.setCommonSnackbar(true, I18n.get(NO_REMOTE_SESSION), 'success')
         return {err}
       })
   }

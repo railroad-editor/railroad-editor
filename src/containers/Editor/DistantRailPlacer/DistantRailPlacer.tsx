@@ -4,8 +4,7 @@ import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER, STORE_EDITOR, STORE_FREE_RAIL_PLACER} from "constants/stores";
 import {BuilderStore, PlacingMode} from "store/builderStore";
-import {EditorStore} from "store/editorStore";
-import {EditorMode} from "store/uiStore";
+import {EditorMode, EditorStore} from "store/editorStore";
 import DistantPlacingDialog from "./DistantPlacingDialog/DistantPlacingDialog";
 import {FreeRailPlacerStore} from "../../../store/freeRailPlacerStore";
 

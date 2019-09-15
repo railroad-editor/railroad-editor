@@ -2,8 +2,7 @@ import * as React from 'react'
 import {inject, observer} from "mobx-react";
 import {STORE_EDITOR} from "constants/stores";
 import {compose} from "recompose";
-import {EditorMode} from "store/uiStore";
-import {EditorStore} from "store/editorStore";
+import {EditorMode, EditorStore} from "store/editorStore";
 import BuilderPalettes from "./BuilderPalettes/BuilderPalettes";
 import {SimulatorPalettes} from "./SimulatorPalettes/SimulatorPalettes";
 

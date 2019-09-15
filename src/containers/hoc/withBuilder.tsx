@@ -22,6 +22,8 @@ import {SimulatorLogicStore} from "store/simulatorLogicStore";
 import {runInAction} from "mobx";
 import {DetectionState} from "react-rail-components/lib/parts/primitives/DetectablePart";
 import {JointInfo, OpposingJoints} from "react-rail-components";
+import {LAYOUT_SAVED, NEW_RAIL_GROUP, NO_RAIL_FOR_GROUP, REQUIRE_LOGIN} from "../../constants/messages";
+import {I18n} from "aws-amplify";
 
 
 const LOGGER = getLogger(__filename)
@@ -206,10 +208,11 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     keyDown_CtrlS = async (e) => {
       if (this.props.editor.isAuth) {
         await this.props.layoutLogic.saveLayout()
-        this.props.ui.setSavedLayoutSnackbar(true)
+        this.props.ui.setCommonSnackbar(true, I18n.get(LAYOUT_SAVED), 'success')
       } else {
         this.props.ui.setLoginDialog(true)
-        this.props.ui.setRequireLoginSnackbar(true)
+        this.props.ui.setCommonSnackbar(true, I18n.get(REQUIRE_LOGIN), 'error')
+
       }
     }
 
@@ -404,7 +407,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     registerRailGroup = (name: string, shouldDelete: boolean) => {
       const rails = this.props.layout.selectedRails
       if (rails.length === 0) {
-        this.props.ui.setNoRailForGroupSnackbar(true)
+        this.props.ui.setCommonSnackbar(true, I18n.get(NO_RAIL_FOR_GROUP), 'warning')
         return
       }
       this.registerRailGroupInner(rails, name)
@@ -413,7 +416,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       } else {
         this.props.layoutLogic.selectAllRails(false)
       }
-      this.props.ui.setRegisteredRailGroupSnackbar(true, `Copied ${rails.length} rails as "${name}" rail group.`)  //`
+      this.props.ui.setCommonSnackbar(true, I18n.get(NEW_RAIL_GROUP)(rails.length, name), 'success')
     }
 
     protected registerRailGroupInner = (rails: RailData[], name: string) => {
