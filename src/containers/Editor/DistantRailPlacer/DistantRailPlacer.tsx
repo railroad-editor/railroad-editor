@@ -41,7 +41,7 @@ export class DistantRailPlacer extends React.Component<DistantRailPlacerProps, D
     return (
       <>
         {
-          this.props.editor.editorMode === EditorMode.BUILDER &&
+          this.props.editor.mode === EditorMode.BUILDER &&
           this.props.builder.placingMode === PlacingMode.FREE &&
           <DistantPlacingDialog
             title={'Distance from the joint'}

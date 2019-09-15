@@ -43,7 +43,7 @@ export class SimulatorLogicStore {
         }
       },
       (data) => {
-        if (commonStore.editorMode === EditorMode.SIMULATOR) {
+        if (commonStore.mode === EditorMode.SIMULATOR) {
           this.startCurrentFlowSimulation()
         }
       },
@@ -56,7 +56,7 @@ export class SimulatorLogicStore {
     reaction(
       () => _.flatMap(layoutStore.currentLayoutData.switchers, sw => sw.conductionStates),
       () => {
-        if (commonStore.editorMode === EditorMode.SIMULATOR) {
+        if (commonStore.mode === EditorMode.SIMULATOR) {
           this.startCurrentFlowSimulation()
         }
       }

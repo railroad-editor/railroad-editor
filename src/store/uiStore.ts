@@ -1,11 +1,6 @@
 import {action, observable} from "mobx";
 import commonStore from "./editorStore";
 
-export enum EditorMode {
-  BUILDER = 'Builder',
-  SIMULATOR = 'Simulator'
-}
-
 
 const INITIAL_STATE = {
   drawer: false,
@@ -18,7 +13,6 @@ const INITIAL_STATE = {
   summaryDialog: false,
   bugReportDialog: false,
   scriptDialog: false,
-  editorMode: EditorMode.BUILDER,
   // snackbars
   confirmedSnackbar: false,
   savedLayoutSnackbar: false,
@@ -45,7 +39,6 @@ export class UiStore {
   @observable summaryDialog: boolean
   @observable bugReportDialog: boolean
   @observable scriptDialog: boolean
-  @observable editorMode: EditorMode
   // snackbars
   @observable confirmedSnackbar: boolean
   @observable savedLayoutSnackbar: boolean
@@ -62,7 +55,6 @@ export class UiStore {
   constructor({
                 drawer, layoutsDialog, createNewDialog, saveNewDialog, loginDialog, signInDialog, settingsDialog,
                 bugReportDialog, summaryDialog, scriptDialog,
-                editorMode,
                 confirmedSnackbar, savedLayoutSnackbar, requireLoginSnackbar, loggedInSnackbar,
                 noRailForGroupSnackbar, registeredRailGroupSnackbar, bugReportSnackbar,
                 registeredRailGroupSnackbarMessage, remoteNotConnectedSnackbar, remoteConnectedSnackbar,
@@ -74,7 +66,6 @@ export class UiStore {
     this.saveNewDialog = saveNewDialog
     this.loginDialog = loginDialog
     this.signInDialog = signInDialog
-    this.editorMode = editorMode
     this.settingsDialog = settingsDialog
     this.summaryDialog = summaryDialog
     this.bugReportDialog = bugReportDialog

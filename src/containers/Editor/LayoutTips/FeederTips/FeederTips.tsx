@@ -2,13 +2,12 @@ import * as React from "react";
 import {getRailComponent} from "containers/rails/utils";
 import getLogger from "logging";
 import {compose} from "recompose";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_PAPER} from "constants/stores";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "constants/stores";
 import {inject, observer} from "mobx-react";
 import {LayoutStore} from "store/layoutStore";
 import {EditorStore} from "store/editorStore";
 import {reaction} from "mobx";
 import FeederTip from "containers/Editor/LayoutTips/FeederTips/FeederTip/FeederTip";
-import {PaperStore} from "../../../../store/paperStore.";
 import {Pivot} from "react-rail-components/lib/parts/primitives/PartBase";
 
 const LOGGER = getLogger(__filename)
@@ -17,7 +16,6 @@ const LOGGER = getLogger(__filename)
 export interface FeederTipProps {
   layout?: LayoutStore
   editor?: EditorStore
-  paper?: PaperStore
 }
 
 export interface FeederTipState {
@@ -25,7 +23,7 @@ export interface FeederTipState {
 }
 
 
-@inject(STORE_BUILDER, STORE_LAYOUT, STORE_EDITOR, STORE_PAPER)
+@inject(STORE_BUILDER, STORE_LAYOUT, STORE_EDITOR)
 @observer
 export class FeederTips extends React.Component<FeederTipProps, FeederTipState> {
 
@@ -46,7 +44,7 @@ export class FeederTips extends React.Component<FeederTipProps, FeederTipState> 
           layout.feeders.map(feeder => {
             const c = getRailComponent(feeder.railId)
             const positionOnCanvas = c.feeders[feeder.socketId].part.getGlobalPosition(Pivot.CENTER)
-            const position = this.props.paper.scope.view.projectToView(positionOnCanvas)
+            const position = this.props.editor.paper.view.projectToView(positionOnCanvas)
             const powerPack = this.props.layout.getPowerPackByFeederId(feeder.id)
             const color = powerPack ? powerPack.color : null
             return (

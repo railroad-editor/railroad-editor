@@ -95,7 +95,7 @@ export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
   }
 
   onChangeEditorMode = (e) => {
-    this.props.editor.setEditorMode(e.target.value)
+    this.props.editor.setMode(e.target.value)
   }
 
 
@@ -123,11 +123,11 @@ export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
             </Grid>
 
             {
-              this.props.editor.editorMode === EditorMode.BUILDER &&
+              this.props.editor.mode === EditorMode.BUILDER &&
               <BuilderToolBar/>
             }
             {
-              this.props.editor.editorMode === EditorMode.SIMULATOR &&
+              this.props.editor.mode === EditorMode.SIMULATOR &&
               <SimulatorToolBar/>
             }
 
@@ -137,7 +137,7 @@ export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
                 // PopperProps={{style: {zIndex: '1000'}}}
               >
                 <Select
-                  value={this.props.editor.editorMode}
+                  value={this.props.editor.mode}
                   onChange={this.onChangeEditorMode}
                   renderValue={value => {
                     return (

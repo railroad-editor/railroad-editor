@@ -28,11 +28,11 @@ export class LayoutTips extends React.Component<RailTipsProps, RailTipsState> {
   }
 
   render() {
-    const {editorMode, zooming, panning} = this.props.editor
+    const {mode, zooming, panning} = this.props.editor
     return (
       <>
         {
-          editorMode === EditorMode.SIMULATOR && ! zooming && ! panning &&
+          mode === EditorMode.SIMULATOR && ! zooming && ! panning &&
           <>
             <FeederTips/>
             <RailTips/>

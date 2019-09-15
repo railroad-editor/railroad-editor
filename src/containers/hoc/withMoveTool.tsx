@@ -3,11 +3,10 @@ import {DEFAULT_INITIAL_ZOOM, ZOOM_CORRECTION, ZOOM_FACTOR, ZOOM_MAX, ZOOM_MIN} 
 import {PaperScope, Point, ToolEvent, View} from 'paper'
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {STORE_EDITOR, STORE_LAYOUT, STORE_PAPER} from "constants/stores";
+import {STORE_EDITOR, STORE_LAYOUT} from "constants/stores";
 import {LayoutStore} from "store/layoutStore";
 import {reaction} from "mobx";
 import {EditorStore} from "store/editorStore";
-import {PaperStore} from "../../store/paperStore.";
 
 const LOGGER = getLogger(__filename)
 
@@ -21,7 +20,6 @@ export interface WithMoveToolProps {
   resetViewPosition: () => void
   layout?: LayoutStore
   editor?: EditorStore
-  paper?: PaperStore
 }
 
 interface WithMoveToolState {
@@ -46,7 +44,7 @@ interface PanEventData {
 export default function withMoveTool(WrappedComponent: React.ComponentClass<WithMoveToolProps>) {
 
 
-  @inject(STORE_LAYOUT, STORE_EDITOR, STORE_PAPER)
+  @inject(STORE_LAYOUT, STORE_EDITOR)
   @observer
   class WithMoveTool extends React.Component<WithMoveToolProps, WithMoveToolState> {
 
@@ -128,11 +126,11 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
         } else {
           const {pageX, pageY} = e
           const {offsetLeft, offsetTop} = e.currentTarget
-          zoomCenter = this.props.paper.scope.view.viewToProject(new Point(pageX - offsetLeft, pageY - offsetTop))
+          zoomCenter = this.props.editor.paper.view.viewToProject(new Point(pageX - offsetLeft, pageY - offsetTop))
           LOGGER.debug(`zoomCenter=${zoomCenter} (not focused)`)
         }
 
-        this.props.paper.scope.view.scale(newZoom, zoomCenter)
+        this.props.editor.paper.view.scale(newZoom, zoomCenter)
         this.props.editor.setZoom(newZoom)
       }
     }
@@ -190,17 +188,17 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
     }
 
     resetViewPosition = () => {
-      if (! this.props.paper.scope) {
+      if (! this.props.editor.paper) {
         return
       }
-      let view = this.props.paper.scope.view
+      let view = this.props.editor.paper.view
       if (view) {
         const {paperWidth, paperHeight} = this.props.layout.config
         // 初期ズームをセットする
         view.zoom = this.props.editor.initialZoom
 
         // TODO: 何故か縦方向の位置が少し低い。ひとまず固定値で補正して調査中。
-        const windowCenter = this.props.paper.scope.view.viewToProject(new Point(window.innerWidth / 2, window.innerHeight / 2 - 30))
+        const windowCenter = this.props.editor.paper.view.viewToProject(new Point(window.innerWidth / 2, window.innerHeight / 2 - 30))
         const boardCenter = new Point(paperWidth / 2, paperHeight / 2)
         const diff = windowCenter.subtract(boardCenter)
         view.translate(diff)

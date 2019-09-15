@@ -72,7 +72,7 @@ export class LayoutLogicStore {
     }
 
     // TODO: 本当はセーブするときに全ての電流をOFFにしておくのが良い
-    if (commonStore.editorMode === EditorMode.BUILDER) {
+    if (commonStore.mode === EditorMode.BUILDER) {
       simulatorLogicStore.stopCurrentFlowSimulation()
     }
   }

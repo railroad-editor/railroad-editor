@@ -16,7 +16,7 @@ import {Auth} from "aws-amplify";
 import Divider from "@material-ui/core/Divider";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_PAPER, STORE_UI} from "constants/stores";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI} from "constants/stores";
 import {EditorStore} from "store/editorStore";
 import {LayoutMeta, LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
@@ -33,7 +33,6 @@ import {runInAction} from "mobx";
 import BugReportDialog from "./BugReportDialog/BugReportDialog";
 import BomDialog from "./BomDialog/BomDialog";
 import {Snackbar} from "../../../../components/Snackbar/Snackbar";
-import {PaperStore} from "../../../../store/paperStore.";
 import moment from 'moment';
 
 const LOGGER = getLogger(__filename)
@@ -48,14 +47,13 @@ export interface MenuDrawerProps {
   layoutLogic?: LayoutLogicStore
   builder?: BuilderStore
   ui?: UiStore
-  paper?: PaperStore
 }
 
 export interface MenuDrawerState {
 }
 
 
-@inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI, STORE_PAPER)
+@inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI)
 @observer
 export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState> {
 
@@ -236,7 +234,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
     const basename = this.props.layout.meta.name
     const fileName = `${basename}-${moment().format('YYYYMMDD')}`  //`
 
-    const svg = this.props.paper.scope.project.exportSVG({asString: true})
+    const svg = this.props.editor.paper.project.exportSVG({asString: true})
     const url = "data:image/svg+xml;utf8," + encodeURIComponent(svg as any)
     const link = document.createElement("a");
     link.download = fileName;

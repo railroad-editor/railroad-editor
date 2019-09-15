@@ -5,6 +5,5 @@ export const STORE_EDITOR = 'editor';
 export const STORE_UI = 'ui';
 export const STORE_SIMULATOR = 'simulator';
 export const STORE_SIMULATOR_LOGIC = 'simulatorLogic';
-export const STORE_PAPER = 'paper';
 export const STORE_FREE_RAIL_PLACER = 'freeRailPlacer';
 export const STORE_MEASURE = 'measure';

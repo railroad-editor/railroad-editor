@@ -3,51 +3,59 @@ import {UserInfo} from "containers/common/Authenticator/AuthPiece/AuthPiece";
 import {LayoutMeta} from "store/layoutStore";
 import LayoutAPI from "apis/layout";
 import {DEFAULT_INITIAL_ZOOM} from "constants/tools";
-import {EditorMode} from "store/uiStore";
-import {Point} from "paper";
 import builderStore from "store/builderStore";
 import simulatorLogicStore from "store/simulatorLogicStore";
+import {PaperScope} from "paper";
+
+export enum EditorMode {
+  BUILDER = 'Builder',
+  SIMULATOR = 'Simulator'
+}
+
+export interface EditorStoreState {
+  layouts: LayoutMeta[]
+  userInfo: UserInfo
+  paper: PaperScope
+  mode: EditorMode
+  initialZoom: number
+  zoom: number
+  zooming: boolean
+  pan: Point2D
+  panning: boolean
+}
 
 
-const INITIAL_STATE = {
+const INITIAL_STATE: EditorStoreState = {
   layouts: [],
   userInfo: null,
-  isPaperLoaded: false,
+  paper: null,
   initialZoom: DEFAULT_INITIAL_ZOOM,
-  editorMode: EditorMode.BUILDER,
+  mode: EditorMode.BUILDER,
   zoom: null,
   zooming: false,
   pan: null,
   panning: false,
-  builderPalettePosition: new Point(10, 10),
-  layerPalettePosition: new Point(10, 10),
-  powerPackPalettePosition: new Point(10, 10),
-  switcherPalettePosition: new Point(10, 10)
 }
 
 
 export class EditorStore {
   @observable layouts: LayoutMeta[]
   @observable userInfo: UserInfo
-  @observable isPaperLoaded: boolean
+  @observable paper: PaperScope
+  @observable mode: EditorMode
   @observable initialZoom: number
-  @observable editorMode: EditorMode
   @observable zoom: number
   @observable zooming: boolean
-  @observable pan: Point
+  @observable pan: Point2D
   @observable panning: boolean
-  @observable builderPalettePosition: Point
-  @observable layerPalettePosition: Point
-  @observable powerPackPalettePosition: Point
-  @observable switcherPalettePosition: Point
 
 
-  constructor({layouts, userInfo, isPaperLoaded, initialZoom, editorMode, zoom, zooming, pan, panning,}) {
+  constructor({layouts, userInfo, paper, initialZoom, mode, zoom, zooming, pan, panning}: EditorStoreState) {
     this.layouts = layouts
     this.userInfo = userInfo
-    this.isPaperLoaded = isPaperLoaded
+    this.paper = paper
     this.initialZoom = initialZoom
-    this.editorMode = editorMode
+    this.mode = mode
     this.zoom = zoom
     this.zooming = zooming
     this.pan = pan
@@ -55,7 +63,7 @@ export class EditorStore {
 
     // モード変更時に各モードの状態を復元する
     reaction(
-      () => this.editorMode,
+      () => this.mode,
       (mode) => {
         switch (mode) {
           case EditorMode.BUILDER:
@@ -81,6 +89,11 @@ export class EditorStore {
     return this.userInfo.id
   }
 
+  @computed
+  get isPaperLoaded() {
+    return !! this.paper
+  }
+
 
   @action
   setUserInfo = (userInfo: any) => {
@@ -97,8 +110,8 @@ export class EditorStore {
   }
 
   @action
-  setPaperLoaded = (loaded: boolean) => {
-    this.isPaperLoaded = loaded
+  setPaperScope = (paperScope: PaperScope) => {
+    this.paper = paperScope
   }
 
   @action
@@ -107,8 +120,8 @@ export class EditorStore {
   }
 
   @action
-  setEditorMode = (editorMode: EditorMode) => {
-    this.editorMode = editorMode
+  setMode = (mode: EditorMode) => {
+    this.mode = mode
   }
 
   @action
@@ -121,7 +134,7 @@ export class EditorStore {
   }
 
   @action
-  setPan = (point: Point) => {
+  setPan = (point: Point2D) => {
     this.pan = point
     this.panning = true
     setTimeout(() =>  runInAction(() => {

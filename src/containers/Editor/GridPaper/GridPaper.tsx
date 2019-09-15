@@ -3,8 +3,8 @@ import {Layer, Line, Raster, Rectangle, View} from 'react-paper-bindings'
 import {Point} from 'paper';
 import * as _ from "lodash";
 import {inject, observer} from "mobx-react";
-import {STORE_PAPER} from "../../../constants/stores";
-import {PaperStore} from "../../../store/paperStore.";
+import {STORE_EDITOR} from "../../../constants/stores";
+import {EditorStore} from "../../../store/editorStore";
 
 export interface GridPaperProps {
   viewWidth: number
@@ -18,12 +18,11 @@ export interface GridPaperProps {
   backgroundImageUrl: string
   onWheel: any
   onFrame: any
-  setPaperLoaded: (loaded: boolean) => void
-  paper?: PaperStore
+  editor?: EditorStore
 }
 
 
-@inject(STORE_PAPER)
+@inject(STORE_EDITOR)
 @observer
 export class GridPaper extends React.Component<GridPaperProps, {}> {
 
@@ -35,8 +34,7 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
 
 
   componentDidMount() {
-    this.props.paper.setPaperScope(this.view.scope)
-    this.props.setPaperLoaded(true)
+    this.props.editor.setPaperScope(this.view.scope)
   }
 
   createVerticalLines = () => {

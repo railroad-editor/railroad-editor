@@ -6,9 +6,8 @@ import {getRailComponent} from "containers/rails/utils";
 import {BuilderStore} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_PAPER} from "constants/stores";
+import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
 import {LayoutLogicStore} from "store/layoutLogicStore";
-import {PaperStore} from "../../store/paperStore.";
 import {Layer as LayerComponent, Rectangle as RectangleComponent} from "react-paper-bindings";
 
 const LOGGER = getLogger(__filename)
@@ -23,7 +22,6 @@ export interface WithSelectToolProps {
   builder?: BuilderStore
   layout?: LayoutStore
   layoutLogic?: LayoutLogicStore
-  paper?: PaperStore
 }
 
 interface WithSelectToolState {
@@ -37,7 +35,7 @@ interface WithSelectToolState {
  */
 export default function withSelectTool(WrappedComponent: React.ComponentClass<WithSelectToolProps>) {
 
-  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_PAPER)
+  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
   @observer
   class WithSelectTool extends React.Component<WithSelectToolProps, WithSelectToolState> {
 

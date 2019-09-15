@@ -183,7 +183,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
   }
 
   isActive = () => {
-    return this.props.editor.editorMode === EditorMode.BUILDER &&
+    return this.props.editor.mode === EditorMode.BUILDER &&
       isRailTool(this.props.builder.activeTool) &&
       this.props.builder.placingMode === PlacingMode.FREE
   }

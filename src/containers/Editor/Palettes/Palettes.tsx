@@ -23,10 +23,10 @@ export class Palettes extends React.Component<PalettesProps> {
   render() {
     return (
       <>
-        <div hidden={this.props.editor.editorMode !== EditorMode.BUILDER}>
+        <div hidden={this.props.editor.mode !== EditorMode.BUILDER}>
           <BuilderPalettes/>
         </div>
-        <div hidden={this.props.editor.editorMode !== EditorMode.SIMULATOR}>
+        <div hidden={this.props.editor.mode !== EditorMode.SIMULATOR}>
           <SimulatorPalettes/>
         </div>
       </>

@@ -155,7 +155,6 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             gridSize={gridSize}
             onWheel={this.props.moveToolMouseWheel}
             onFrame={this.onFrame}
-            setPaperLoaded={this.props.editor.setPaperLoaded}
           >
             {/* 後から書いたコンポーネントの方が前面に配置される */}
             <MeasureEventHandler
@@ -172,13 +171,13 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             {this.props.selectionLayer}
 
             {
-              this.props.editor.editorMode === EditorMode.BUILDER &&
+              this.props.editor.mode === EditorMode.BUILDER &&
               this.props.builder.activeTool === Tools.MEASURE &&
               <Measure mousePosition={this.mousePosition}/>
             }
 
             <Tool
-              active={this.props.editor.editorMode === EditorMode.BUILDER}
+              active={this.props.editor.mode === EditorMode.BUILDER}
               name={'Builder Mode Global Handler'}
               onMouseDown={this.buildModeMouseDown}
               onMouseMove={this.buildModeMouseMove}
