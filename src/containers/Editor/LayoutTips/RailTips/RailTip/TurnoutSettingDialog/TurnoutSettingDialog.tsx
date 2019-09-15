@@ -1,6 +1,11 @@
 import * as React from "react";
 import AutoFocusTextValidator from "containers/common/AutoFocusTextValidator";
-import {FormDialog, FormDialogProps, FormDialogState, FormInputs} from "containers/common/FormDialog/FormDialog";
+import {
+  FormDialogBase,
+  FormDialogProps,
+  FormDialogState,
+  FormInputs
+} from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {FormControl, InputLabel, List, ListItem, MenuItem, Select} from "@material-ui/core";
 import {ConductionStates, LayoutStore, SwitcherData, SwitcherType} from "store/layoutStore";
@@ -25,7 +30,7 @@ export interface TurnoutSettingDialogState extends FormDialogState {
 
 @inject(STORE_LAYOUT, STORE_LAYOUT_LOGIC)
 @observer
-export default class TurnoutSettingDialog extends FormDialog<TurnoutSettingDialogProps, TurnoutSettingDialogState> {
+export default class TurnoutSettingDialog extends FormDialogBase<TurnoutSettingDialogProps, TurnoutSettingDialogState> {
 
   anchorEl: any
 

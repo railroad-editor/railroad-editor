@@ -3,7 +3,7 @@ import * as md5 from "js-md5";
 import getLogger from "logging";
 import moment from "moment";
 import {default as AutoFocusTextValidator} from "containers/common/AutoFocusTextValidator";
-import {FormDialog, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialog";
+import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {LayoutConfig, LayoutMeta} from "store/layoutStore";
 import * as uuidv4 from "uuid/v4";
@@ -22,7 +22,7 @@ export interface SaveLayoutDialogState extends FormDialogState {
 }
 
 
-export default class SaveLayoutDialog extends FormDialog<SaveLayoutDialogProps, SaveLayoutDialogState> {
+export default class SaveLayoutDialog extends FormDialogBase<SaveLayoutDialogProps, SaveLayoutDialogState> {
 
   constructor(props: SaveLayoutDialogProps) {
     super(props)

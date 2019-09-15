@@ -1,7 +1,7 @@
 import * as React from 'react'
 import getLogger from "logging";
 import AutoFocusTextValidator from "containers/common/AutoFocusTextValidator";
-import {FormDialog, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialog";
+import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {inject, observer} from "mobx-react";
 import {STORE_UI} from "../../../../../../../constants/stores";
@@ -18,7 +18,7 @@ export interface NewRailGroupDialogProps extends FormDialogProps {
 
 @inject(STORE_UI)
 @observer
-export default class NewRailGroupDialog extends FormDialog<NewRailGroupDialogProps, FormDialogState> {
+export default class NewRailGroupDialog extends FormDialogBase<NewRailGroupDialogProps, FormDialogState> {
 
   constructor(props: NewRailGroupDialogProps) {
     super(props)

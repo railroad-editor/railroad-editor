@@ -2,7 +2,7 @@ import * as React from 'react'
 import getLogger from "logging";
 import {LayoutConfig, LayoutMeta} from "store/layoutStore";
 import {ValidatorForm} from 'react-material-ui-form-validator';
-import {FormDialog, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialog";
+import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 
 
 const LOGGER = getLogger(__filename)
@@ -15,7 +15,7 @@ export interface SettingsDialogProps extends FormDialogProps {
 }
 
 
-export class SimulatorSettingsDialog extends FormDialog<SettingsDialogProps, FormDialogState> {
+export class SimulatorSettingsDialog extends FormDialogBase<SettingsDialogProps, FormDialogState> {
 
   constructor(props: SettingsDialogProps) {
     super(props)

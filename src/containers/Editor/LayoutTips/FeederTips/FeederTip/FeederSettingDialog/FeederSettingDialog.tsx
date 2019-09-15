@@ -1,6 +1,11 @@
 import * as React from "react";
 import AutoFocusTextValidator from "containers/common/AutoFocusTextValidator";
-import {FormDialog, FormDialogProps, FormDialogState, FormInputs} from "containers/common/FormDialog/FormDialog";
+import {
+  FormDialogBase,
+  FormDialogProps,
+  FormDialogState,
+  FormInputs
+} from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
 import {LayoutStore, PowerPackData} from "store/layoutStore";
@@ -24,7 +29,7 @@ export interface FeederSettingDialogState extends FormDialogState {
 
 @inject(STORE_LAYOUT, STORE_LAYOUT_LOGIC)
 @observer
-export default class FeederSettingDialog extends FormDialog<FeederSettingDialogProps, FeederSettingDialogState> {
+export default class FeederSettingDialog extends FormDialogBase<FeederSettingDialogProps, FeederSettingDialogState> {
 
   anchorEl: any
 

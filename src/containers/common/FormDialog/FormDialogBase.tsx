@@ -17,7 +17,9 @@ export interface FormDialogProps {
 }
 
 export interface FormDialogState {
-  inputs: FormInputs
+  inputs: {
+    [key: string]: string
+  }
   disabled: boolean
 }
 
@@ -29,9 +31,9 @@ export interface FormInputs {
 /**
  *  ユーザーの入力を要求する Form Dialog のベースクラス。
  */
-export abstract class FormDialog<P extends FormDialogProps, S extends FormDialogState> extends React.Component<P, S> {
+export abstract class FormDialogBase<P extends FormDialogProps, S extends FormDialogState> extends React.Component<P, S> {
 
-  _form: ValidatorForm = null
+  protected _form: ValidatorForm = null
 
   protected constructor(props: P) {
     super(props)
@@ -122,7 +124,7 @@ export abstract class FormDialog<P extends FormDialogProps, S extends FormDialog
         open={open}
         onEnter={this.onEnter}
         onClose={this.onClose}
-        maxWidth={'md'}
+        maxWidth="md"
         classes={classes}
         disableEscapeKeyDown={disableEsc}
       >

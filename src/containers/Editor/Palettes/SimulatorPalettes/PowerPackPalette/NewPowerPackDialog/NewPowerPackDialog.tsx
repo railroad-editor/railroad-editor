@@ -1,7 +1,7 @@
 import * as React from 'react'
 import getLogger from "logging";
 import AutoFocusTextValidator from "containers/common/AutoFocusTextValidator";
-import {FormDialog, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialog";
+import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 
 const LOGGER = getLogger(__filename)
@@ -11,7 +11,7 @@ export interface NewPowerPackDialogProps extends FormDialogProps {
 }
 
 
-export default class NewPowerPackDialog extends FormDialog<NewPowerPackDialogProps, FormDialogState> {
+export default class NewPowerPackDialog extends FormDialogBase<NewPowerPackDialogProps, FormDialogState> {
 
   constructor(props: NewPowerPackDialogProps) {
     super(props)

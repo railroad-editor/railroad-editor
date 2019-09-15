@@ -1,4 +1,4 @@
-import {FormDialog, FormDialogProps, FormDialogState} from "../../../../common/FormDialog/FormDialog";
+import {FormDialogBase, FormDialogProps, FormDialogState} from "../../../../common/FormDialog/FormDialogBase";
 import * as React from "react";
 import Grid from "@material-ui/core/Grid";
 import {compose} from "recompose";
@@ -36,7 +36,7 @@ export interface ScriptDialogState extends FormDialogState {
 
 @inject(STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SIMULATOR)
 @observer
-export class ScriptDialog extends FormDialog<ScriptDialogProps, ScriptDialogState> {
+export class ScriptDialog extends FormDialogBase<ScriptDialogProps, ScriptDialogState> {
 
   constructor(props: ScriptDialogProps) {
     super(props)

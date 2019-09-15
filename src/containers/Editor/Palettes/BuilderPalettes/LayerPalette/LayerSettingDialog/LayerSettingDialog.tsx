@@ -5,7 +5,12 @@ import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import {SmallButton, Spacer} from "containers/Editor/Palettes/BuilderPalettes/LayerPalette/LayerSettingDialog/styles";
-import {FormDialog, FormDialogProps, FormDialogState, FormInputs} from "containers/common/FormDialog/FormDialog";
+import {
+  FormDialogBase,
+  FormDialogProps,
+  FormDialogState,
+  FormInputs
+} from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {LayerData} from "store/layoutStore";
 
@@ -22,7 +27,7 @@ export interface LayerSettingDialogState extends FormDialogState {
 }
 
 
-export default class LayerSettingDialog extends FormDialog<LayerSettingDialogProps, LayerSettingDialogState> {
+export default class LayerSettingDialog extends FormDialogBase<LayerSettingDialogProps, LayerSettingDialogState> {
 
   anchorEl: any
 

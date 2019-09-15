@@ -4,7 +4,12 @@ import ChromePicker from "react-color/lib/components/chrome/Chrome";
 import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import {FormDialog, FormDialogProps, FormDialogState, FormInputs} from "containers/common/FormDialog/FormDialog";
+import {
+  FormDialogBase,
+  FormDialogProps,
+  FormDialogState,
+  FormInputs
+} from "containers/common/FormDialog/FormDialogBase";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {LayoutStore, SwitcherData, SwitcherType} from "store/layoutStore";
 import {
@@ -31,7 +36,7 @@ export interface SwitcherSettingDialogState extends FormDialogState {
 
 @inject(STORE_LAYOUT)
 @observer
-export default class SwitcherSettingDialog extends FormDialog<SwitcherSettingDialogProps, SwitcherSettingDialogState> {
+export default class SwitcherSettingDialog extends FormDialogBase<SwitcherSettingDialogProps, SwitcherSettingDialogState> {
 
   anchorEl: any
 

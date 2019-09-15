@@ -1,6 +1,11 @@
 import * as React from "react";
 import AutoFocusTextValidator from "containers/common/AutoFocusTextValidator";
-import {FormDialog, FormDialogProps, FormDialogState, FormInputs} from "containers/common/FormDialog/FormDialog";
+import {
+  FormDialogBase,
+  FormDialogProps,
+  FormDialogState,
+  FormInputs
+} from "containers/common/FormDialog/FormDialogBase";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER} from "constants/stores";
@@ -18,7 +23,7 @@ export interface DistantPlacingDialogState extends FormDialogState {
 
 @inject(STORE_BUILDER)
 @observer
-export default class DistantPlacingDialog extends FormDialog<DistantPlacingDialogProps, DistantPlacingDialogState> {
+export default class DistantPlacingDialog extends FormDialogBase<DistantPlacingDialogProps, DistantPlacingDialogState> {
 
   constructor(props: DistantPlacingDialogProps) {
     super(props)

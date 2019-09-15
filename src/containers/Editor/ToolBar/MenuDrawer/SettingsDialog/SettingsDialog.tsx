@@ -2,7 +2,12 @@ import * as React from 'react'
 import getLogger from "logging";
 import {LayoutConfig, LayoutMeta} from "store/layoutStore";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import {FormDialog, FormDialogProps, FormDialogState, FormInputs} from "containers/common/FormDialog/FormDialog";
+import {
+  FormDialogBase,
+  FormDialogProps,
+  FormDialogState,
+  FormInputs
+} from "containers/common/FormDialog/FormDialogBase";
 import Button from "@material-ui/core/Button";
 import styled from "styled-components";
 import Grid from "@material-ui/core/Grid";
@@ -44,7 +49,7 @@ export interface SettingsDialogProps extends FormDialogProps {
 }
 
 
-export class SettingsDialog extends FormDialog<SettingsDialogProps, FormDialogState> {
+export class SettingsDialog extends FormDialogBase<SettingsDialogProps, FormDialogState> {
 
   constructor(props: SettingsDialogProps) {
     super(props)

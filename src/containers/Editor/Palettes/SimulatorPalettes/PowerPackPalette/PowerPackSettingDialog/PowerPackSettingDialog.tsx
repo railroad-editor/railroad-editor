@@ -4,7 +4,7 @@ import ChromePicker from "react-color/lib/components/chrome/Chrome";
 import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import {FormDialog, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialog";
+import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {PowerPackData} from "store/layoutStore";
 import {
@@ -24,7 +24,7 @@ export interface PowerPackSettingDialogState extends FormDialogState {
 }
 
 
-export default class PowerPackSettingDialog extends FormDialog<PowerPackSettingDialogProps, PowerPackSettingDialogState> {
+export default class PowerPackSettingDialog extends FormDialogBase<PowerPackSettingDialogProps, PowerPackSettingDialogState> {
 
   anchorEl: any
 

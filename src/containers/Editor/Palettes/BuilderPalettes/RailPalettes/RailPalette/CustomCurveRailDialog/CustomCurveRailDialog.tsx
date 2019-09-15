@@ -4,7 +4,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import {Tools} from "constants/tools";
 import AutoFocusTextValidator from "containers/common/AutoFocusTextValidator";
 import {RailItemData} from "containers/rails/index";
-import {FormDialog, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialog";
+import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {RAIL_SPACE} from "constants/parts";
 
@@ -18,7 +18,7 @@ export interface CustomCurveRailDialogState extends FormDialogState {
 }
 
 
-export default class CustomCurveRailDialog extends FormDialog<CustomCurveRailDialogProps, CustomCurveRailDialogState> {
+export default class CustomCurveRailDialog extends FormDialogBase<CustomCurveRailDialogProps, CustomCurveRailDialogState> {
 
   constructor(props: CustomCurveRailDialogProps) {
     super(props)

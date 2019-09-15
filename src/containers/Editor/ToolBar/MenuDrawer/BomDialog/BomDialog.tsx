@@ -1,6 +1,6 @@
 import * as React from 'react'
 import getLogger from "logging";
-import {FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialog";
+import {FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, withStyles} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import {compose} from "recompose";

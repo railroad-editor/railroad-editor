@@ -1,7 +1,7 @@
 import * as React from 'react'
 import getLogger from "logging";
 import AutoFocusTextValidator from "containers/common/AutoFocusTextValidator";
-import {FormDialog, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialog";
+import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
 import {SwitcherType} from "store/layoutStore";
@@ -13,7 +13,7 @@ export interface NewSwitcherDialogProps extends FormDialogProps {
 }
 
 
-export default class NewSwitcherDialog extends FormDialog<NewSwitcherDialogProps, FormDialogState> {
+export default class NewSwitcherDialog extends FormDialogBase<NewSwitcherDialogProps, FormDialogState> {
 
   constructor(props: NewSwitcherDialogProps) {
     super(props)

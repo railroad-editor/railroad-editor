@@ -3,7 +3,7 @@ import {FormControlLabel} from '@material-ui/core';
 import Checkbox from "@material-ui/core/Checkbox";
 import {Tools} from "constants/tools";
 import {RailItemData} from "containers/rails/index";
-import {FormDialog, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialog";
+import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import AutoFocusTextValidator from "containers/common/AutoFocusTextValidator";
 
@@ -17,7 +17,7 @@ export interface CustomStraightRailDialogState extends FormDialogState {
 }
 
 
-export default class CustomStraightRailDialog extends FormDialog<CustomStraightRailDialogProps, CustomStraightRailDialogState> {
+export default class CustomStraightRailDialog extends FormDialogBase<CustomStraightRailDialogProps, CustomStraightRailDialogState> {
 
   constructor(props: CustomStraightRailDialogProps) {
     super(props)
