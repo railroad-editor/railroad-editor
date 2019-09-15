@@ -1,11 +1,11 @@
 import * as React from 'react'
-import Editor from 'components/Editor/Editor'
+import Editor from 'containers/Editor/Editor'
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import {Redirect} from "react-router";
 import * as qs from "query-string"
 import Amplify, {Auth} from "aws-amplify";
 import aws_exports from './aws-exports';
-import ResetPassword from "components/common/Authenticator/ResetPassword/ResetPassword";
+import ResetPassword from "containers/common/Authenticator/ResetPassword/ResetPassword";
 import {inject, observer} from "mobx-react";
 import {STORE_COMMON, STORE_UI} from "constants/stores";
 import {CommonStore} from "store/commonStore";
@@ -13,10 +13,10 @@ import withRoot from './withRoot';
 import getLogger from "logging";
 import 'typeface-roboto'
 import './App.css'
-import Home from "./components/Home/Home";
+import Home from "./containers/Home/Home";
 import {Helmet} from "react-helmet";
 import {UiStore} from "./store/uiStore";
-import MySnackbar from "./components/common/Snackbar/MySnackbar";
+import MySnackbar from "./containers/common/Snackbar/MySnackbar";
 
 (window as any).LOG_LEVEL = 'DEBUG';
 

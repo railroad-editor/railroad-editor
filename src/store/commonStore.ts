@@ -1,5 +1,5 @@
 import {action, computed, observable, reaction, runInAction} from "mobx";
-import {UserInfo} from "components/common/Authenticator/AuthPiece/AuthPiece";
+import {UserInfo} from "containers/common/Authenticator/AuthPiece/AuthPiece";
 import {LayoutMeta} from "store/layoutStore";
 import LayoutAPI from "apis/layout";
 import {DEFAULT_INITIAL_ZOOM} from "constants/tools";

@@ -1,12 +1,12 @@
-import {RailComponentClasses, RailData} from "components/rails";
+import {RailComponentClasses, RailData} from "containers/rails";
 import {action, computed, observable, toJS} from "mobx";
 import builderStore from "./builderStore";
 import {DEFAULT_GRID_SIZE, DEFAULT_PAPER_HEIGHT, DEFAULT_PAPER_WIDTH} from "constants/tools";
-import {getAllOpenCloseJoints} from "components/rails/utils";
+import {getAllOpenCloseJoints} from "containers/rails/utils";
 import getLogger from "logging";
 import * as uuidv4 from "uuid/v4";
 import moment from "moment";
-import TrainController from "components/Editor/ToolBar/SimulatorToolBar/TrainController";
+import TrainController from "containers/Editor/ToolBar/SimulatorToolBar/TrainController";
 import railItems from "constants/railItems.json";
 import {computedFn} from "mobx-utils";
 import {FeederInfo, GapJoinerInfo} from "react-rail-components";

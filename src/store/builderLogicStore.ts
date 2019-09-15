@@ -1,6 +1,6 @@
-// import {RailComponentClasses, RailData, RailGroupData, RailItemData} from "components/rails";
-// import {FeederInfo, JointInfo} from "components/rails/RailBase";
-// import {RailGroupProps} from "components/rails/RailGroup/RailGroup";
+// import {RailComponentClasses, RailData, RailGroupData, RailItemData} from "containers/rails";
+// import {FeederInfo, JointInfo} from "containers/rails/RailBase";
+// import {RailGroupProps} from "containers/rails/RailGroup/RailGroup";
 // import {action, computed, observable, reaction, when} from "mobx";
 // import {TEMPORARY_RAIL_OPACITY, Tools} from "constants/tools";
 // import builderPaletteData from "constants/builderPaletteItems.json"
@@ -8,7 +8,7 @@
 // import layoutLogicStore from "store/layoutLogicStore";
 // import builderStore from "store/builderStore";
 // import getLogger from "logging";
-// import PartGroup from "components/rails/parts/primitives/PartGroup";
+// import PartGroup from "containers/rails/parts/primitives/PartGroup";
 //
 // const LOGGER = getLogger(__filename)
 //

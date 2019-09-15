@@ -1,5 +1,5 @@
 import {API} from "aws-amplify";
-import {RailItemData} from "components/rails";
+import {RailItemData} from "containers/rails";
 import {LayoutConfig, LayoutData, LayoutMeta} from "store/layoutStore";
 import {UserRailGroupData} from "store/builderStore";
 
