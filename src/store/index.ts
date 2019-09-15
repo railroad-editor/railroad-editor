@@ -7,7 +7,7 @@ import SimulatorLogicStore from "store/simulatorLogicStore";
 import PaperStore from "./paperStore.";
 import SimulatorStore from "./simulatorStore";
 
-export function createStores() {
+export default () => {
   return {
     common: CommonStore,
     builder: BuilderStore,
