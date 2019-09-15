@@ -3,7 +3,7 @@ import LayoutStore, {LayoutStoreState} from "store/layoutStore";
 import UiStore from "store/uiStore";
 import LayoutLogicStore from "store/layoutLogicStore";
 import SimulatorLogicStore from "store/simulatorLogicStore";
-import SimulatorStore from "./simulatorStore";
+import SimulatorStore from "./sandboxStore";
 import FreeRailPlacerStore, {FreeRailPlacerStoreState} from "./freeRailPlacerStore";
 import MeasureStore, {MeasureStoreState} from "./measureStore";
 import EditorStore from "./editorStore";
@@ -23,7 +23,7 @@ export default () => {
     measure: MeasureStore,
     layout: LayoutStore,
     layoutLogic: LayoutLogicStore,
-    simulator: SimulatorStore,
+    sandbox: SimulatorStore,
     simulatorLogic: SimulatorLogicStore,
     ui: UiStore,
   };

@@ -8,7 +8,7 @@ import {
   STORE_EDITOR,
   STORE_LAYOUT,
   STORE_LAYOUT_LOGIC,
-  STORE_SIMULATOR,
+  STORE_SANDBOX,
   STORE_SIMULATOR_LOGIC,
   STORE_UI
 } from "constants/stores";
@@ -25,7 +25,7 @@ import TrainController from "containers/Editor/ToolBar/SimulatorToolBar/TrainCon
 import {UiStore} from "../../../../store/uiStore";
 import ScriptDialog from "./ScriptDialog/ScriptDialog";
 import {Snackbar} from "../../../../components/Snackbar/Snackbar";
-import {SimulatorStore} from "../../../../store/simulatorStore";
+import {SandboxStore} from "../../../../store/sandboxStore";
 import {SimulatorSandbox} from "./ScriptDialog/SimulatorSandbox";
 import {LayoutLogicStore} from "../../../../store/layoutLogicStore";
 import {CONNECTED_REMOTE, NO_REMOTE_SESSION} from "../../../../constants/messages";
@@ -40,7 +40,7 @@ export interface SimulatorToolBarProps {
   resetViewPosition: () => void
   layout?: LayoutStore
   layoutLogic?: LayoutLogicStore
-  simulator?: SimulatorStore
+  sandbox?: SandboxStore
   simulatorLogic?: SimulatorLogicStore
   ui?: UiStore
 }
@@ -53,7 +53,7 @@ export interface SimulatorToolBarState {
 type EnhancedSimulatorToolBarProps = SimulatorToolBarProps
 
 
-@inject(STORE_EDITOR, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SIMULATOR_LOGIC, STORE_UI, STORE_SIMULATOR)
+@inject(STORE_EDITOR, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SIMULATOR_LOGIC, STORE_UI, STORE_SANDBOX)
 @observer
 export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarProps, SimulatorToolBarState> {
 
@@ -69,11 +69,11 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
   }
 
   componentDidMount() {
-    this.props.simulator.setSandbox(this.sandboxRef.current)
+    this.props.sandbox.setSandbox(this.sandboxRef.current)
   }
 
   componentDidUpdate() {
-    this.props.simulator.setSandbox(this.sandboxRef.current)
+    this.props.sandbox.setSandbox(this.sandboxRef.current)
   }
 
   onRemoteConnect = async (e) => {
@@ -97,7 +97,7 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
   }
 
   closeErrorSnackbar = () => {
-    this.props.simulator.setErrorSnackbar(false, '')
+    this.props.sandbox.setErrorSnackbar(false, '')
   }
 
   onSetPowerPackPower = (id, power) => {
@@ -113,7 +113,7 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
   }
 
   onError = (message) => {
-    this.props.simulator.setErrorSnackbar(true, 'Error: ' + message)
+    this.props.sandbox.setErrorSnackbar(true, 'Error: ' + message)
   }
 
   render() {
@@ -150,7 +150,7 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
           switchers={this.props.layout.currentLayoutData.switchers}
           disableEsc={true}
         />
-        {this.props.simulator.sandboxEnabled &&
+        {this.props.sandbox.sandboxEnabled &&
         <SimulatorSandbox
           ref={this.sandboxRef}
           code={this.props.layout.currentLayoutData.script}
@@ -162,9 +162,9 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
           onError={this.onError}
         />
         }
-        <Snackbar open={this.props.simulator.errorSnackbar}
+        <Snackbar open={this.props.sandbox.errorSnackbar}
                   onClose={this.closeErrorSnackbar}
-                  message={this.props.simulator.errorSnackbarMessage}
+                  message={this.props.sandbox.errorSnackbarMessage}
                   variant="error"
         />
       </>

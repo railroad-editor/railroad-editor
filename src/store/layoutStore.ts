@@ -10,7 +10,7 @@ import TrainController from "containers/Editor/ToolBar/SimulatorToolBar/TrainCon
 import railItems from "constants/railItems.json";
 import {computedFn} from "mobx-utils";
 import {FeederInfo, GapJoinerInfo} from "react-rail-components";
-import simulatorStore from "./simulatorStore";
+import simulatorStore from "./sandboxStore";
 
 const LOGGER = getLogger(__filename)
 

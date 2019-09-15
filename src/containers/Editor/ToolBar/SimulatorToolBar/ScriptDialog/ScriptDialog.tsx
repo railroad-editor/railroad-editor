@@ -5,8 +5,8 @@ import {compose} from "recompose";
 import {FormControlLabel, Switch, withStyles} from "@material-ui/core";
 import {LayoutStore} from "../../../../../store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SIMULATOR} from "../../../../../constants/stores";
-import {SimulatorStore} from "../../../../../store/simulatorStore";
+import {STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SANDBOX} from "../../../../../constants/stores";
+import {SandboxStore} from "../../../../../store/sandboxStore";
 import {LayoutLogicStore} from "../../../../../store/layoutLogicStore";
 import MonacoEditor from "react-monaco-editor";
 
@@ -24,7 +24,7 @@ const styles = theme => ({
 export interface ScriptDialogProps extends FormDialogProps {
   layout?: LayoutStore
   layoutLogic?: LayoutLogicStore
-  simulator?: SimulatorStore
+  sandbox?: SandboxStore
   classes: any
 }
 
@@ -34,7 +34,7 @@ export interface ScriptDialogState extends FormDialogState {
 }
 
 
-@inject(STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SIMULATOR)
+@inject(STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SANDBOX)
 @observer
 export class ScriptDialog extends FormDialogBase<ScriptDialogProps, ScriptDialogState> {
 
@@ -47,7 +47,7 @@ export class ScriptDialog extends FormDialogBase<ScriptDialogProps, ScriptDialog
     return {
       ...super.getInitialState(),
       code: this.props.layout.currentLayoutData.script,
-      enableScript: this.props.simulator.sandboxEnabled
+      enableScript: this.props.sandbox.sandboxEnabled
     }
   }
 
@@ -95,7 +95,7 @@ export class ScriptDialog extends FormDialogBase<ScriptDialogProps, ScriptDialog
 
   onOK = (e) => {
     this.props.layout.setScript(this.state.code)
-    this.props.simulator.setSandboxEnabled(this.state.enableScript)
+    this.props.sandbox.setSandboxEnabled(this.state.enableScript)
     this.onClose()
   }
 

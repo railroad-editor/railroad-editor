@@ -4,7 +4,14 @@ import getLogger from "logging";
 const LOGGER = getLogger(__filename)
 
 
-const INITIAL_STATE = {
+export interface SandboxStoreState {
+  sandbox: any
+  sandboxEnabled: boolean
+  errorSnackbar: boolean
+  errorSnackbarMessage: string
+}
+
+const INITIAL_STATE: SandboxStoreState = {
   sandbox: null,
   sandboxEnabled: true,
   errorSnackbar: false,
@@ -12,14 +19,13 @@ const INITIAL_STATE = {
 }
 
 
-export class SimulatorStore {
-
+export class SandboxStore {
   @observable sandbox: any
   @observable sandboxEnabled: boolean
   @observable errorSnackbar: boolean
   @observable errorSnackbarMessage: string
 
-  constructor({sandbox, sandboxEnabled, errorSnackbar, errorSnackbarMessage}) {
+  constructor({sandbox, sandboxEnabled, errorSnackbar, errorSnackbarMessage}: SandboxStoreState) {
     this.sandbox = sandbox
     this.sandboxEnabled = sandboxEnabled
     this.errorSnackbar = errorSnackbar
@@ -44,4 +50,4 @@ export class SimulatorStore {
   }
 }
 
-export default new SimulatorStore(INITIAL_STATE)
+export default new SandboxStore(INITIAL_STATE)
