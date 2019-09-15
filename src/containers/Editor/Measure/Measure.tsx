@@ -1,21 +1,16 @@
 import * as React from "react";
 import getLogger from "logging";
-import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_COMMON} from "constants/stores";
-import {BuilderStore} from "store/builderStore";
-import {Tools} from "constants/tools";
-import {CommonStore} from "store/commonStore";
-import {EditorMode} from "store/uiStore";
+import {STORE_MEASURE} from "constants/stores";
 import {Point} from "paper";
 import {Layer, Line, PointText} from "react-paper-bindings";
+import {MeasureStore} from "../../../store/measureStore";
 
 const LOGGER = getLogger(__filename)
 
 export interface MeasureProps {
   mousePosition: Point2D
-  common?: CommonStore
-  builder?: BuilderStore
+  measure?: MeasureStore
 }
 
 export interface MeasureState {
@@ -23,7 +18,7 @@ export interface MeasureState {
 }
 
 
-@inject(STORE_COMMON, STORE_BUILDER)
+@inject(STORE_MEASURE)
 @observer
 export class Measure extends React.Component<MeasureProps, MeasureState> {
 
@@ -32,12 +27,6 @@ export class Measure extends React.Component<MeasureProps, MeasureState> {
     this.state = {
       fixedPosition: null
     }
-
-    this.onCloseDialog = this.onCloseDialog.bind(this)
-  }
-
-  onCloseDialog = () => {
-    this.props.builder.setFreePlacingDialog(false)
   }
 
   renderLine = (from: Point2D, mouse: Point2D, to: Point2D) => {
@@ -65,7 +54,7 @@ export class Measure extends React.Component<MeasureProps, MeasureState> {
     let diff = new Point(to).subtract(new Point(from))
     // マウスカーソルの位置から、Y軸方向にのみずらした場所にテキストを表示する
     let textPosition = new Point(to).add(new Point(0, (to.y - from.y >= 0 ? 1 : -1) * 40))
-    if (this.props.builder.measureEndPosition) {
+    if (this.props.measure.endPosition) {
       if (! this.state.fixedPosition) {
         this.setState({
           fixedPosition: textPosition
@@ -93,14 +82,12 @@ export class Measure extends React.Component<MeasureProps, MeasureState> {
   }
 
   render() {
-    let from = this.props.builder.measureStartPosition
-    let to = this.props.builder.measureEndPosition
+    let from = this.props.measure.startPosition
+    let to = this.props.measure.endPosition
     let mouse = this.props.mousePosition
     return (
       <>
         {
-          this.props.common.editorMode === EditorMode.BUILDER &&
-          this.props.builder.activeTool === Tools.MEASURE &&
           from != null &&
           <Layer>
             {this.renderLine(from, mouse, to)}
@@ -112,5 +99,3 @@ export class Measure extends React.Component<MeasureProps, MeasureState> {
   }
 }
 
-export default compose<MeasureProps, MeasureProps | any>(
-)(Measure)

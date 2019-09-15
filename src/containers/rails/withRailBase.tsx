@@ -6,12 +6,14 @@ import {compose} from "recompose";
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
+import {STORE_BUILDER, STORE_FREE_RAIL_PLACER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_MEASURE} from "constants/stores";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import {isRailTool, Tools} from "constants/tools";
 import {FlowDirection} from "react-rail-components/lib/parts/primitives/PartBase";
 import {ArcDirection} from "react-rail-components/lib/parts/primitives/ArcPart";
 import {RailBase, RailBaseProps, RailBaseState} from "react-rail-components";
+import {MeasureStore} from "../../store/measureStore";
+import {FreeRailPlacerStore} from "../../store/freeRailPlacerStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -52,6 +54,8 @@ export interface WithRailBaseProps {
   builder?: BuilderStore
   layout?: LayoutStore
   layoutLogic?: LayoutLogicStore
+  measure?: MeasureStore
+  freeRailPlacer?: FreeRailPlacerStore
 }
 
 export type RailBaseEnhancedProps = RailBaseProps & WithRailBaseProps & WithBuilderPublicProps
@@ -64,7 +68,7 @@ export type RailBaseEnhancedProps = RailBaseProps & WithRailBaseProps & WithBuil
 export default function withRailBase(WrappedComponent: React.ComponentClass<RailBaseEnhancedProps>) {
 
 
-  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
+  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_MEASURE, STORE_FREE_RAIL_PLACER)
   @observer
   class WithRailBase extends React.Component<RailBaseEnhancedProps, {}> {
 
@@ -331,14 +335,14 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
     }
 
     onJointLeftClickForMeasureTool = (jointId: number, e: MouseEvent) => {
-      const start = this.props.builder.measureStartPosition
-      const end = this.props.builder.measureEndPosition
+      const start = this.props.measure.startPosition
+      const end = this.props.measure.endPosition
       if (! start && ! end || start && end) {
-        this.props.builder.setMeasureEndPosition(null)
-        this.props.builder.setMeasureStartPosition(this.joints[jointId].globalPosition)
+        this.props.measure.setEndPosition(null)
+        this.props.measure.setStartPosition(this.joints[jointId].globalPosition)
       }
       if (start && ! end) {
-        this.props.builder.setMeasureEndPosition(this.joints[jointId].globalPosition)
+        this.props.measure.setEndPosition(this.joints[jointId].globalPosition)
       }
       return false
     }
@@ -351,8 +355,8 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
     onJointLeftClickForRailTool = (jointId: number, e: MouseEvent) => {
       if (this.props.builder.placingMode == PlacingMode.FREE) {
         // クリックしたジョイントの位置を記録し、ダイアログを表示する
-        this.props.builder.setClickedJointPosition(this.joints[jointId].globalPosition)
-        this.props.builder.setFreePlacingDialog(true)
+        this.props.freeRailPlacer.setClickedJointPosition(this.joints[jointId].globalPosition)
+        this.props.freeRailPlacer.setFreePlacingDialog(true)
         return false
       }
       // Joint Placing Mode

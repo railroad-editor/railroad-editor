@@ -6,7 +6,7 @@ import getLogger from "logging";
 import {default as withBuilder, WithBuilderPublicProps} from "containers/hoc/withBuilder";
 import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_COMMON, STORE_LAYOUT} from "constants/stores";
+import {STORE_BUILDER, STORE_COMMON, STORE_FREE_RAIL_PLACER, STORE_LAYOUT} from "constants/stores";
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {isRailTool, RAIL_PUTTER_MARKER_RADIUS} from "constants/tools";
@@ -16,6 +16,7 @@ import {EditorMode} from "store/uiStore";
 import {reaction} from "mobx";
 import CirclePart from "react-rail-components/lib/parts/primitives/CirclePart";
 import RectPart from "react-rail-components/lib/parts/primitives/RectPart";
+import {FreeRailPlacerStore} from "../../../store/freeRailPlacerStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -31,6 +32,7 @@ export interface FreeRailPlacerProps {
   common?: CommonStore
   builder?: BuilderStore
   layout?: LayoutStore
+  freeRailPlacer?: FreeRailPlacerStore
 }
 
 export interface FreeRailPlacerState {
@@ -43,7 +45,7 @@ export interface FreeRailPlacerState {
 type FreeRailPlacerEnhancedProps = FreeRailPlacerProps & WithBuilderPublicProps
 
 
-@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT)
+@inject(STORE_COMMON, STORE_BUILDER, STORE_LAYOUT, STORE_FREE_RAIL_PLACER)
 @observer
 export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps, FreeRailPlacerState> {
 
@@ -59,10 +61,10 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
     }
 
     // 自由設置モードの差分距離がセットされた時、ジョイントの位置に基づいてレール位置を固定する
-    reaction(() => this.props.builder.freePlacingDifference,
+    reaction(() => this.props.freeRailPlacer.freePlacingDifference,
       (position) => {
         if (this.isActive()) {
-          let newPosition = new Point(this.props.builder.clickedJointPosition).add(new Point(position))
+          let newPosition = new Point(this.props.freeRailPlacer.clickedJointPosition).add(new Point(position))
           this.setState({
             fixedPosition: newPosition,
             phase: Phase.SET_ANGLE

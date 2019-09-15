@@ -36,7 +36,7 @@ import Palettes from "./Palettes/Palettes";
 import {DistantRailPlacer} from "./DistantRailPlacer/DistantRailPlacer";
 import TemporaryLayer from "./TemporaryLayer/TemporaryLayer";
 import {Measure} from "./Measure/Measure";
-import {LowestEventHandler} from "./LowestEventHandler/LowestEventHandler";
+import {MeasureEventHandler} from "./MeasureEventHandler/MeasureEventHandler";
 import {observable} from "mobx";
 
 const LOGGER = getLogger(__filename)
@@ -157,10 +157,12 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
             onFrame={this.onFrame}
             setPaperLoaded={this.props.common.setPaperLoaded}
           >
+            {/* 後から書いたコンポーネントの方が前面に配置される */}
+            <MeasureEventHandler
+              active={this.props.builder.activeTool === Tools.MEASURE}
+              mousePosition={this.mousePosition}
+            />
 
-            <LowestEventHandler mousePosition={this.mousePosition}/>
-
-            {/*/!* 後から書いたコンポーネントの方が前面に配置される *!/*/}
             <TemporaryLayer/>
 
             <FreeRailPlacer mousePosition={this.mousePosition}/>
@@ -169,7 +171,11 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
             {this.props.selectionLayer}
 
-            <Measure mousePosition={this.mousePosition}/>
+            {
+              this.props.common.editorMode === EditorMode.BUILDER &&
+              this.props.builder.activeTool === Tools.MEASURE &&
+              <Measure mousePosition={this.mousePosition}/>
+            }
 
             <Tool
               active={this.props.common.editorMode === EditorMode.BUILDER}

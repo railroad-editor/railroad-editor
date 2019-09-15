@@ -2,24 +2,26 @@ import * as React from "react";
 import getLogger from "logging";
 import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_COMMON} from "constants/stores";
+import {STORE_BUILDER, STORE_COMMON, STORE_FREE_RAIL_PLACER} from "constants/stores";
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {CommonStore} from "store/commonStore";
 import {EditorMode} from "store/uiStore";
 import DistantPlacingDialog from "./DistantPlacingDialog/DistantPlacingDialog";
+import {FreeRailPlacerStore} from "../../../store/freeRailPlacerStore";
 
 const LOGGER = getLogger(__filename)
 
 export interface DistantRailPlacerProps {
   common?: CommonStore
   builder?: BuilderStore
+  freeRailPlacer?: FreeRailPlacerStore
 }
 
 export interface DistantRailPlacerState {
 }
 
 
-@inject(STORE_COMMON, STORE_BUILDER)
+@inject(STORE_COMMON, STORE_BUILDER, STORE_FREE_RAIL_PLACER)
 @observer
 export class DistantRailPlacer extends React.Component<DistantRailPlacerProps, DistantRailPlacerState> {
 
@@ -31,7 +33,7 @@ export class DistantRailPlacer extends React.Component<DistantRailPlacerProps, D
   }
 
   onCloseDialog = () => {
-    this.props.builder.setFreePlacingDialog(false)
+    this.props.freeRailPlacer.setFreePlacingDialog(false)
   }
 
   render() {
@@ -43,7 +45,7 @@ export class DistantRailPlacer extends React.Component<DistantRailPlacerProps, D
           this.props.builder.placingMode === PlacingMode.FREE &&
           <DistantPlacingDialog
             title={'Distance from the joint'}
-            open={this.props.builder.freePlacingDialog}
+            open={this.props.freeRailPlacer.freePlacingDialog}
             onClose={this.onCloseDialog}
           />
         }

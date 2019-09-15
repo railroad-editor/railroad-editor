@@ -8,6 +8,7 @@ import layoutStore from "store/layoutStore";
 import {reactionWithOldValue} from "./utils";
 import {getCloseJointsOf, intersectsOf} from "../containers/rails/utils";
 import {FeederInfo, JointInfo, RailGroupProps} from "react-rail-components";
+import measureToolStore from "./measureStore";
 
 
 export interface PresetPaletteItemsByVendor {
@@ -44,12 +45,6 @@ export interface BuilderStoreState {
   activeTool: string
   selecting: boolean
   temporaryFeeder: FeederInfo
-  freePlacingDialog: boolean
-  freePlacingPosition: Point2D
-  clickedJointPosition: Point2D
-  measureStartPosition: Point2D
-  measureEndPosition: Point2D
-  measuredDistance: Point2D
   adjustmentAngle: number
   currentJointId: number
   currentRailId: number
@@ -82,12 +77,6 @@ export const INITIAL_STATE: BuilderStoreState = {
   activeTool: null,   // 後でreactionを起こさせるためにここではnullにしておく
   selecting: false,
   temporaryFeeder: null,
-  freePlacingDialog: false,
-  freePlacingPosition: {x: 0, y: 0},
-  clickedJointPosition: {x: 0, y: 0},
-  measureStartPosition: null,
-  measureEndPosition: null,
-  measuredDistance: null,
   adjustmentAngle: 0,
   currentJointId: null,
   currentRailId: null
@@ -122,16 +111,6 @@ export class BuilderStore {
   @observable selecting: boolean
   // 仮フィーダー
   @observable temporaryFeeder: FeederInfo
-  // [自由配置モード] ジョイントをクリックした際のレール位置入力ダイアログ表示
-  @observable freePlacingDialog: boolean
-  // [自由配置モード] ジョイントをクリックした際に入力した位置差分
-  @observable freePlacingDifference: Point2D
-  // [自由配置モード] クリックされたジョイントの位置
-  @observable clickedJointPosition: Point2D
-  // [メジャーツール] 測定を開始した位置
-  @observable measureStartPosition: Point2D
-  // [メジャーツール] 測定を終了した位置
-  @observable measureEndPosition: Point2D
   // [角度微調整機能] レール設置時の微調整角度
   @observable adjustmentAngle: number
   // 現在仮レールを表示しているジョイントのID
@@ -141,8 +120,8 @@ export class BuilderStore {
 
   constructor({
                 paletteItem, lastPaletteItems, placingMode, activeLayerId, temporaryRails, temporaryRailGroup, userRailGroups,
-                userRails, activeTool, selecting, temporaryFeeder, freePlacingDialog, freePlacingPosition, clickedJointPosition,
-                measureStartPosition, measureEndPosition, adjustmentAngle, currentJointId, currentRailId
+                userRails, activeTool, selecting, temporaryFeeder,
+                adjustmentAngle, currentJointId, currentRailId
               }) {
     this.paletteItem = paletteItem
     this.lastPaletteItems = lastPaletteItems
@@ -156,11 +135,6 @@ export class BuilderStore {
     this.activeTool = activeTool
     this.selecting = selecting
     this.temporaryFeeder = temporaryFeeder
-    this.freePlacingDialog = freePlacingDialog
-    this.freePlacingDifference = freePlacingPosition
-    this.clickedJointPosition = clickedJointPosition
-    this.measureStartPosition = measureStartPosition
-    this.measureEndPosition = measureEndPosition
     this.adjustmentAngle = adjustmentAngle
     this.currentJointId = currentJointId
     this.currentRailId = currentRailId
@@ -199,8 +173,8 @@ export class BuilderStore {
         break
       case Tools.MEASURE:
         runInAction(() => {
-          this.setMeasureStartPosition(null)
-          this.setMeasureEndPosition(null)
+          measureToolStore.setStartPosition(null)
+          measureToolStore.setEndPosition(null)
         })
         break
       default:
@@ -482,31 +456,6 @@ export class BuilderStore {
   @action
   setCursorShape = (tool: Tools) => {
     document.body.style.cursor = 'crosshair'
-  }
-
-  @action
-  setFreePlacingDialog = (open: boolean) => {
-    this.freePlacingDialog = open
-  }
-
-  @action
-  setFreePlacingDifference = (position: Point2D) => {
-    this.freePlacingDifference = position
-  }
-
-  @action
-  setClickedJointPosition = (position: Point2D) => {
-    this.clickedJointPosition = position
-  }
-
-  @action
-  setMeasureStartPosition = (position: Point2D) => {
-    this.measureStartPosition = position
-  }
-
-  @action
-  setMeasureEndPosition = (position: Point2D) => {
-    this.measureEndPosition = position
   }
 
   @action

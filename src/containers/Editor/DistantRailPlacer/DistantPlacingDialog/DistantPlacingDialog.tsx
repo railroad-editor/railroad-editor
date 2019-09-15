@@ -8,20 +8,22 @@ import {
 } from "containers/common/FormDialog/FormDialogBase";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER} from "constants/stores";
+import {STORE_BUILDER, STORE_FREE_RAIL_PLACER} from "constants/stores";
 import {BuilderStore} from "../../../../store/builderStore";
 import {Point} from "paper";
+import {FreeRailPlacerStore} from "../../../../store/freeRailPlacerStore";
 
 
 export interface DistantPlacingDialogProps extends FormDialogProps {
   builder?: BuilderStore
+  freeRailPlacer?: FreeRailPlacerStore
 }
 
 export interface DistantPlacingDialogState extends FormDialogState {
 }
 
 
-@inject(STORE_BUILDER)
+@inject(STORE_BUILDER, STORE_FREE_RAIL_PLACER)
 @observer
 export default class DistantPlacingDialog extends FormDialogBase<DistantPlacingDialogProps, DistantPlacingDialogState> {
 
@@ -38,7 +40,7 @@ export default class DistantPlacingDialog extends FormDialogBase<DistantPlacingD
 
   onOK = (e) => {
     let diff = new Point(Number(this.state.inputs.x), Number(this.state.inputs.y))
-    this.props.builder.setFreePlacingDifference(diff)
+    this.props.freeRailPlacer.setFreePlacingDifference(diff)
     this.onClose()
   }
 
