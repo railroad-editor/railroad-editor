@@ -22,7 +22,7 @@ export interface TemporaryRailFlows {
 }
 
 
-export class SimulatorLogicStore {
+export class SimulatorActions {
 
   @observable temporaryRailFlows: TemporaryRailFlows
   errorPowerPacks: PowerPackData[]
@@ -288,4 +288,4 @@ export class SimulatorLogicStore {
   }
 }
 
-export default new SimulatorLogicStore()
+export default new SimulatorActions()

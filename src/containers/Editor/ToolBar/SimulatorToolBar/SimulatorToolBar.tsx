@@ -19,7 +19,7 @@ import {StyledIconButton} from "containers/Editor/ToolBar/styles";
 import AspectRatioIcon from "@material-ui/icons/AspectRatio";
 import CreateIcon from "@material-ui/icons/Create";
 import SettingsRemoteIcon from '@material-ui/icons/SettingsRemote'
-import {SimulatorLogicStore} from "store/simulatorLogicStore";
+import {SimulatorActions} from "store/simulatorActions";
 import {LayoutStore} from "store/layoutStore";
 import TrainController from "containers/Editor/ToolBar/SimulatorToolBar/TrainController";
 import {UiStore} from "../../../../store/uiStore";
@@ -41,7 +41,7 @@ export interface SimulatorToolBarProps {
   layout?: LayoutStore
   layoutLogic?: LayoutLogicStore
   sandbox?: SandboxStore
-  simulatorLogic?: SimulatorLogicStore
+  simulatorActions?: SimulatorActions
   ui?: UiStore
 }
 

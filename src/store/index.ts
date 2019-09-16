@@ -2,7 +2,7 @@ import BuilderStore, {BuilderStoreState} from "store/builderStore";
 import LayoutStore, {LayoutStoreState} from "store/layoutStore";
 import UiStore from "store/uiStore";
 import LayoutLogicStore from "store/layoutLogicStore";
-import SimulatorLogicStore from "store/simulatorLogicStore";
+import SimulatorActions from "store/simulatorActions";
 import SimulatorStore from "./sandboxStore";
 import FreeRailPlacerStore, {FreeRailPlacerStoreState} from "./freeRailPlacerStore";
 import MeasureStore, {MeasureStoreState} from "./measureStore";
@@ -24,7 +24,7 @@ export default () => {
     layout: LayoutStore,
     layoutLogic: LayoutLogicStore,
     sandbox: SimulatorStore,
-    simulatorLogic: SimulatorLogicStore,
+    simulatorActions: SimulatorActions,
     ui: UiStore,
   };
 }

@@ -4,6 +4,6 @@ export const STORE_LAYOUT_LOGIC = 'layoutLogic';
 export const STORE_EDITOR = 'editor';
 export const STORE_UI = 'ui';
 export const STORE_SANDBOX = 'sandbox';
-export const STORE_SIMULATOR_LOGIC = 'simulatorLogic';
+export const STORE_SIMULATOR_LOGIC = 'simulatorActions';
 export const STORE_FREE_RAIL_PLACER = 'freeRailPlacer';
 export const STORE_MEASURE = 'measure';

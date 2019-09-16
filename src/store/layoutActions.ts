@@ -5,7 +5,7 @@ import commonStore, {EditorMode} from "./editorStore";
 import StorageAPI from "apis/storage"
 import LayoutAPI from "apis/layout";
 import moment from "moment";
-import simulatorLogicStore from "store/simulatorLogicStore";
+import simulatorActions from "store/simulatorActions";
 
 
 export class LayoutActions {
@@ -54,7 +54,7 @@ export class LayoutActions {
 
     // TODO: 本当はセーブするときに全ての電流をOFFにしておくのが良い
     if (commonStore.mode === EditorMode.BUILDER) {
-      simulatorLogicStore.stopCurrentFlowSimulation()
+      simulatorActions.stopCurrentFlowSimulation()
     }
   }
 }

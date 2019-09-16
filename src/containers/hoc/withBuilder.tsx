@@ -18,7 +18,7 @@ import {LayoutStore} from "store/layoutStore";
 import {UiStore} from "store/uiStore";
 import {LayoutLogicStore} from "store/layoutLogicStore";
 import {EditorStore} from "store/editorStore";
-import {SimulatorLogicStore} from "store/simulatorLogicStore";
+import {SimulatorActions} from "store/simulatorActions";
 import {runInAction} from "mobx";
 import {DetectionState} from "react-rail-components/lib/parts/primitives/DetectablePart";
 import {JointInfo, OpposingJoints} from "react-rail-components";
@@ -47,7 +47,7 @@ interface WithBuilderPrivateProps {
   builder?: BuilderStore
   layout?: LayoutStore
   layoutLogic?: LayoutLogicStore
-  simulatorLogic?: SimulatorLogicStore
+  simulatorActions?: SimulatorActions
   ui?: UiStore
 }
 
