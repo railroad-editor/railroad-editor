@@ -3,7 +3,6 @@ import getLogger from "logging";
 import layoutStore, {PowerPackData} from "store/layoutStore";
 import {getRailComponent} from "containers/rails/utils";
 import commonStore, {EditorMode} from "./editorStore";
-import {Tools} from "constants/tools";
 import {FlowDirection, Pivot} from "react-rail-components/lib/parts/primitives/PartBase";
 
 const LOGGER = getLogger(__filename)
@@ -25,7 +24,6 @@ export interface TemporaryRailFlows {
 
 export class SimulatorLogicStore {
 
-  @observable activeTool: Tools
   @observable temporaryRailFlows: TemporaryRailFlows
   errorPowerPacks: PowerPackData[]
   errorRails: any[]
