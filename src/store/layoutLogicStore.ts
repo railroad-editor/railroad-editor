@@ -1,6 +1,6 @@
 import {action} from "mobx";
 import getLogger from "logging";
-import layoutStore, {ConductionStates} from "store/layoutStore";
+import layoutStore from "store/layoutStore";
 import builderStore, {PlacingMode} from "store/builderStore";
 import {JointPair} from "containers/hoc/withBuilder";
 import {Tools} from "constants/tools";
@@ -8,7 +8,8 @@ import commonStore, {EditorMode} from "./editorStore";
 import StorageAPI from "apis/storage"
 import LayoutAPI from "apis/layout";
 import moment from "moment";
-import simulatorActions from "store/simulatorActions";
+import FlowSimulator from "./FlowSimulator";
+import simulatorActions from "./simulatorActions";
 
 const LOGGER = getLogger(__filename)
 
@@ -67,7 +68,7 @@ export class LayoutLogicStore {
 
     // TODO: 本当はセーブするときに全ての電流をOFFにしておくのが良い
     if (commonStore.mode === EditorMode.BUILDER) {
-      simulatorActions.stopCurrentFlowSimulation()
+      FlowSimulator.stop()
     }
   }
 
@@ -77,7 +78,7 @@ export class LayoutLogicStore {
    */
   @action
   deleteFeeder = (feederId: number) => {
-    this.disconnectFeederFromPowerPack(feederId)
+    simulatorActions.disconnectFeederFromPowerPack(feederId)
     layoutStore.deleteFeeder({id: feederId})
   }
 
@@ -93,7 +94,7 @@ export class LayoutLogicStore {
     // ジョイントを解除
     this.disconnectJoint(railId)
     // Switcherに接続されていたら削除
-    this.disconnectTurnoutFromSwitcher(railId)
+    simulatorActions.disconnectTurnoutFromSwitcher(railId)
     layoutStore.deleteRail({id: railId})
   }
 
@@ -364,7 +365,7 @@ export class LayoutLogicStore {
       .filter(feeder => feeder.selected)
       .map(feeder => feeder.id)
     feederIds.forEach(id => {
-      this.disconnectFeederFromPowerPack(id)
+      simulatorActions.disconnectFeederFromPowerPack(id)
       layoutStore.deleteFeeder({id})
     })
   }
@@ -422,124 +423,6 @@ export class LayoutLogicStore {
     this.selectAllGapJoiners(false)
   }
 
-  @action
-  connectFeederToPowerPack = (feederId: number, powerPackId: number) => {
-    const target = this.getPowerPackById(powerPackId)
-    if (target == null) {
-      return
-    }
-
-    if (target.supplyingFeederIds.includes(feederId)) {
-      return
-    }
-
-    this.disconnectFeederFromPowerPack(feederId)
-
-    layoutStore.updatePowerPack({
-      id: target.id,
-      supplyingFeederIds: [...target.supplyingFeederIds, feederId]
-    })
-  }
-
-  @action
-  disconnectFeederFromPowerPack = (feederId: number) => {
-    const target = layoutStore.currentLayoutData.powerPacks.find(p => p.supplyingFeederIds.includes(feederId))
-    if (target == null) {
-      return
-    }
-
-    if (! target.supplyingFeederIds.includes(feederId)) {
-      return
-    }
-
-    const newFeederIds = target.supplyingFeederIds.filter(id => id !== feederId)
-    layoutStore.updatePowerPack({
-      id: target.id,
-      supplyingFeederIds: newFeederIds
-    })
-  }
-
-  @action
-  connectTurnoutToSwitcher = (railId: number, conductionStates: ConductionStates, switcherId: number) => {
-    const target = this.getSwitcherById(switcherId)
-    if (target == null) {
-      return
-    }
-
-    this.disconnectTurnoutFromSwitcher(railId)
-
-    const newConductionStates = target.conductionStates
-    _.keys(conductionStates).forEach(idx => {
-      newConductionStates[idx] = [...target.conductionStates[idx], ...conductionStates[idx]]
-    })
-
-    layoutStore.updateSwitcher({
-      id: switcherId,
-      conductionStates: newConductionStates
-    })
-  }
-
-  @action
-  disconnectTurnoutFromSwitcher = (railId: number) => {
-    const target = layoutStore.getSwitcherByRailId(railId)
-    if (target == null) {
-      return
-    }
-
-    let newConductionStates = {}
-    _.keys(target.conductionStates).forEach(idx => {
-      newConductionStates[idx] = target.conductionStates[idx].filter(state => state.railId !== railId)
-    })
-
-    layoutStore.updateSwitcher({
-      id: target.id,
-      conductionStates: newConductionStates
-    })
-  }
-
-  @action
-  changeSwitcherState = (switcherId: number, state: number) => {
-    const target = this.getSwitcherById(switcherId)
-    if (target == null) {
-      return
-    }
-
-    // レールの状態更新
-    target.conductionStates[state].forEach(s => {
-      layoutStore.updateRail({
-        id: s.railId,
-        conductionState: s.conductionState
-      })
-    })
-
-    // Switcherの状態更新
-    layoutStore.updateSwitcher({
-      id: switcherId,
-      currentState: state
-    })
-  }
-
-  @action
-  changeSwitcherConductionTable = (switcherId: number, conductionStates: ConductionStates) => {
-    const target = this.getSwitcherById(switcherId)
-    if (target == null) {
-      return
-    }
-
-    conductionStates[target.currentState].forEach(s => {
-      layoutStore.updateRail({
-        id: s.railId,
-        conductionState: s.conductionState
-      })
-    })
-
-    // Switcherの状態更新
-    layoutStore.updateSwitcher({
-      id: switcherId,
-      conductionStates: conductionStates
-    })
-
-  }
 
 
   private getRailDataById = (id: number) => {
@@ -552,14 +435,6 @@ export class LayoutLogicStore {
 
   private getGapJoinerDataById = (id: number) => {
     return layoutStore.currentLayoutData.gapJoiners.find(item => item.id === id)
-  }
-
-  private getPowerPackById = (id: number) => {
-    return layoutStore.currentLayoutData.powerPacks.find(p => p.id === id)
-  }
-
-  private getSwitcherById = (id: number) => {
-    return layoutStore.currentLayoutData.switchers.find(p => p.id === id)
   }
 
 }

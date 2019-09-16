@@ -4,8 +4,8 @@ import {LayoutMeta} from "store/layoutStore";
 import LayoutAPI from "apis/layout";
 import {DEFAULT_INITIAL_ZOOM} from "constants/tools";
 import builderStore from "store/builderStore";
-import simulatorActions from "store/simulatorActions";
 import {PaperScope} from "paper";
+import FlowSimulator from "./FlowSimulator";
 
 export enum EditorMode {
   BUILDER = 'Builder',
@@ -68,10 +68,10 @@ export class EditorStore {
         switch (mode) {
           case EditorMode.BUILDER:
             builderStore.changeMode(builderStore.activeTool)
-            simulatorActions.stopCurrentFlowSimulation()
+            FlowSimulator.stop()
             break
           case EditorMode.SIMULATOR:
-            simulatorActions.startCurrentFlowSimulation()
+            FlowSimulator.start()
             break
         }
       }
