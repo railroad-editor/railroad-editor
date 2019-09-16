@@ -16,7 +16,7 @@ import {
 import {BuilderStore, UserRailGroupData} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {UiStore} from "store/uiStore";
-import {LayoutLogicStore} from "store/layoutLogicStore";
+import {BuilderActions} from "store/builderActions";
 import {EditorStore} from "store/editorStore";
 import {SimulatorActions} from "store/simulatorActions";
 import {runInAction} from "mobx";
@@ -24,6 +24,7 @@ import {DetectionState} from "react-rail-components/lib/parts/primitives/Detecta
 import {JointInfo, OpposingJoints} from "react-rail-components";
 import {LAYOUT_SAVED, NEW_RAIL_GROUP, NO_RAIL_FOR_GROUP, REQUIRE_LOGIN} from "../../constants/messages";
 import {I18n} from "aws-amplify";
+import LayoutActions from "../../store/layoutActions";
 
 
 const LOGGER = getLogger(__filename)
@@ -46,7 +47,7 @@ interface WithBuilderPrivateProps {
   editor?: EditorStore
   builder?: BuilderStore
   layout?: LayoutStore
-  layoutLogic?: LayoutLogicStore
+  layoutLogic?: BuilderActions
   simulatorActions?: SimulatorActions
   ui?: UiStore
 }
@@ -207,7 +208,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
 
     keyDown_CtrlS = async (e) => {
       if (this.props.editor.isAuth) {
-        await this.props.layoutLogic.saveLayout()
+        await LayoutActions.saveLayout()
         this.props.ui.setCommonSnackbar(true, I18n.get(LAYOUT_SAVED), 'success')
       } else {
         this.props.ui.setLoginDialog(true)

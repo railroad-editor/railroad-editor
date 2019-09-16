@@ -3,7 +3,7 @@ import {action, computed, observable, reaction, runInAction} from "mobx";
 import {Tools} from "constants/tools";
 import builderPaletteData from "constants/railPaletteItems.json"
 import railPaletteItems from "constants/railPaletteItems.json"
-import layoutLogicStore from "store/layoutLogicStore";
+import BuilderActions from "store/builderActions";
 import layoutStore from "store/layoutStore";
 import {reactionWithOldValue} from "./utils";
 import {getCloseJointsOf, intersectsOf} from "../containers/rails/utils";
@@ -166,10 +166,10 @@ export class BuilderStore {
     this.setCursorShape(tool)
     switch (tool) {
       case Tools.FEEDERS:
-        layoutLogicStore.changeToFeederMode()
+        BuilderActions.changeToFeederMode()
         break
       case Tools.GAP_JOINERS:
-        layoutLogicStore.changeToGapJoinerMode()
+        BuilderActions.changeToGapJoinerMode()
         break
       case Tools.MEASURE:
         runInAction(() => {
@@ -178,7 +178,7 @@ export class BuilderStore {
         })
         break
       default:
-        layoutLogicStore.changeToRailMode()
+        BuilderActions.changeToRailMode()
         break
     }
   }

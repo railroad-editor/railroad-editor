@@ -21,7 +21,7 @@ import MenuDrawer from "containers/Editor/ToolBar/MenuDrawer/MenuDrawer";
 import {compose} from "recompose";
 import {EditableTypography} from "containers/common/EditableTypography/EditableTypography";
 import Peer from 'skyway-js';
-import {LayoutLogicStore} from "store/layoutLogicStore";
+import {BuilderActions} from "store/builderActions";
 import BuilderToolBar from "containers/Editor/ToolBar/BuilderToolBar/BuilderToolBar";
 import withMoveTool from "containers/hoc/withMoveTool";
 import SimulatorToolBar from "containers/Editor/ToolBar/SimulatorToolBar/SimulatorToolBar";
@@ -36,7 +36,7 @@ export interface ToolBarProps {
   editor?: EditorStore
   builder?: BuilderStore
   layout?: LayoutStore
-  layoutLogic?: LayoutLogicStore
+  layoutLogic?: BuilderActions
   ui?: UiStore
 
   resetViewPosition: () => void

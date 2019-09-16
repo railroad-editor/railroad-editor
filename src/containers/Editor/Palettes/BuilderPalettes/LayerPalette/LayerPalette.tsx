@@ -15,7 +15,7 @@ import {BuilderStore} from "store/builderStore";
 import {PaletteAddButton} from "components/PaletteAddButton/PaletteAddButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import {DEFAULT_LAYER_TRANSLUCENT_OPACITY} from "constants/tools";
-import {LayoutLogicStore} from "store/layoutLogicStore";
+import {BuilderActions} from "store/builderActions";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
 
 const LOGGER = getLogger(__filename)
@@ -23,7 +23,7 @@ const LOGGER = getLogger(__filename)
 export interface LayerPaletteProps {
   className?: string
   layout?: LayoutStore
-  layoutLogic?: LayoutLogicStore
+  layoutLogic?: BuilderActions
   builder?: BuilderStore
 }
 

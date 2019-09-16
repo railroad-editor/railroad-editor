@@ -26,7 +26,7 @@ import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "con
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {EditorStore} from "store/editorStore";
 import {compose} from "recompose";
-import {LayoutLogicStore} from "store/layoutLogicStore";
+import {BuilderActions} from "store/builderActions";
 import {StyledIconButton, VerticalDivider} from "containers/Editor/ToolBar/styles";
 import withMoveTool, {WithMoveToolProps} from "containers/hoc/withMoveTool";
 import PowerIcon from "@material-ui/icons/Power";
@@ -38,7 +38,7 @@ export interface BuilderToolBarProps {
   editor?: EditorStore
   builder?: BuilderStore
   layout?: LayoutStore
-  layoutLogic?: LayoutLogicStore
+  layoutLogic?: BuilderActions
 }
 
 export interface BuilderToolBarState {

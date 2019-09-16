@@ -19,7 +19,7 @@ import {StyledIconButton} from "containers/Editor/ToolBar/styles";
 import AspectRatioIcon from "@material-ui/icons/AspectRatio";
 import CreateIcon from "@material-ui/icons/Create";
 import SettingsRemoteIcon from '@material-ui/icons/SettingsRemote'
-import {SimulatorActions} from "store/simulatorActions";
+import SimulatorActions from "store/simulatorActions";
 import {LayoutStore} from "store/layoutStore";
 import TrainController from "containers/Editor/ToolBar/SimulatorToolBar/TrainController";
 import {UiStore} from "../../../../store/uiStore";
@@ -27,7 +27,7 @@ import ScriptDialog from "./ScriptDialog/ScriptDialog";
 import {Snackbar} from "../../../../components/Snackbar/Snackbar";
 import {SandboxStore} from "../../../../store/sandboxStore";
 import {SimulatorSandbox} from "./ScriptDialog/SimulatorSandbox";
-import {LayoutLogicStore} from "../../../../store/layoutLogicStore";
+import {BuilderActions} from "../../../../store/builderActions";
 import {CONNECTED_REMOTE, NO_REMOTE_SESSION} from "../../../../constants/messages";
 import {I18n} from "aws-amplify";
 
@@ -39,9 +39,8 @@ export interface SimulatorToolBarProps {
 
   resetViewPosition: () => void
   layout?: LayoutStore
-  layoutLogic?: LayoutLogicStore
+  layoutLogic?: BuilderActions
   sandbox?: SandboxStore
-  simulatorActions?: SimulatorActions
   ui?: UiStore
 }
 
@@ -109,7 +108,7 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
   }
 
   onSetSwitcherDirection = (id, number) => {
-    this.props.layoutLogic.changeSwitcherState(id, number)
+    SimulatorActions.changeSwitcherState(id, number)
   }
 
   onError = (message) => {

@@ -7,7 +7,7 @@ import {LayoutStore} from "../../../../../store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SANDBOX} from "../../../../../constants/stores";
 import {SandboxStore} from "../../../../../store/sandboxStore";
-import {LayoutLogicStore} from "../../../../../store/layoutLogicStore";
+import {BuilderActions} from "../../../../../store/builderActions";
 import MonacoEditor from "react-monaco-editor";
 
 const styles = theme => ({
@@ -23,7 +23,7 @@ const styles = theme => ({
 
 export interface ScriptDialogProps extends FormDialogProps {
   layout?: LayoutStore
-  layoutLogic?: LayoutLogicStore
+  layoutLogic?: BuilderActions
   sandbox?: SandboxStore
   classes: any
 }

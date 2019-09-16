@@ -10,7 +10,7 @@ import Card from "@material-ui/core/Card";
 import {LayoutStore, PowerPackData} from "store/layoutStore";
 import {inject, observer} from 'mobx-react';
 import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
-import {LayoutLogicStore} from "store/layoutLogicStore";
+import {BuilderActions} from "store/builderActions";
 import PowerPackSettingDialog
   from "containers/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackSettingDialog/PowerPackSettingDialog";
 import {
@@ -23,6 +23,7 @@ import {
 } from "containers/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard.style";
 import {FeederInfo} from "react-rail-components";
 import {reaction} from "mobx";
+import SimulatorActions from "../../../../../../store/simulatorActions";
 
 const LOGGER = getLogger(__filename)
 
@@ -31,7 +32,7 @@ export interface PowerPackCardProps {
   item: PowerPackData
   feeders: FeederInfo[]
   layout?: LayoutStore
-  layoutLogic?: LayoutLogicStore
+  layoutLogic?: BuilderActions
 }
 
 export interface PowerPackCardState {
@@ -123,7 +124,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
   }
 
   onDisconnectFeeder = (id) => (e) => {
-    this.props.layoutLogic.disconnectFeederFromPowerPack(id)
+    SimulatorActions.disconnectFeederFromPowerPack(id)
   }
 
   /**

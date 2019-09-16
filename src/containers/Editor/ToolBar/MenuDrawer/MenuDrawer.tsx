@@ -25,7 +25,7 @@ import LoginDialog from "containers/Editor/ToolBar/MenuDrawer/LoginDialog/LoginD
 import SignUpDialog from "containers/Editor/ToolBar/MenuDrawer/SignUpDialog/SignUpDialog";
 import {UiStore} from "store/uiStore";
 import {KeyLabel} from "components/KeyLabel/KeyLabel";
-import {LayoutLogicStore} from "store/layoutLogicStore";
+import {BuilderActions} from "store/builderActions";
 import {SettingsDialog} from "./SettingsDialog/SettingsDialog";
 import SettingsIcon from "@material-ui/icons/Settings";
 import AssignmentIcon from "@material-ui/icons/Assignment";
@@ -34,6 +34,7 @@ import BugReportDialog from "./BugReportDialog/BugReportDialog";
 import BomDialog from "./BomDialog/BomDialog";
 import moment from 'moment';
 import {LAYOUT_LOADED, LAYOUT_SAVED, REQUIRE_LOGIN} from "../../../../constants/messages";
+import LayoutActions from "../../../../store/layoutActions";
 
 const LOGGER = getLogger(__filename)
 
@@ -44,7 +45,7 @@ export interface MenuDrawerProps {
 
   editor?: EditorStore
   layout?: LayoutStore
-  layoutLogic?: LayoutLogicStore
+  layoutLogic?: BuilderActions
   builder?: BuilderStore
   ui?: UiStore
 }
@@ -72,7 +73,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
   }
 
   loadLayout = async (layoutId: string) => {
-    await this.props.layoutLogic.loadLayout(layoutId)
+    await LayoutActions.loadLayout(layoutId)
     this.props.ui.setCommonSnackbar(true, I18n.get(LAYOUT_LOADED), 'success')
   }
 
@@ -144,7 +145,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
     }
     // 先にDrawerを閉じる
     this.props.onClose()
-    await this.props.layoutLogic.saveLayout()
+    await LayoutActions.saveLayout()
     this.props.ui.setCommonSnackbar(true, I18n.get(LAYOUT_SAVED), 'success')
   }
 
@@ -156,7 +157,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
     this.props.onClose()
     // metaを更新してから保存する
     this.props.layout.setLayoutMeta(meta)
-    await this.props.layoutLogic.saveLayout()
+    await LayoutActions.saveLayout()
     this.props.ui.setCommonSnackbar(true, I18n.get(LAYOUT_SAVED), 'success')
   }
 

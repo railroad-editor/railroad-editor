@@ -11,15 +11,16 @@ import {FormControl, InputLabel, List, ListItem, MenuItem, Select} from "@materi
 import {ConductionStates, LayoutStore, SwitcherData, SwitcherType} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
-import {LayoutLogicStore} from "store/layoutLogicStore";
+import {BuilderActions} from "store/builderActions";
 import {RailData} from "containers/rails";
+import SimulatorActions from "../../../../../../store/simulatorActions";
 
 
 export interface TurnoutSettingDialogProps extends FormDialogProps {
   rail: RailData
   switchers: SwitcherData[]
   layout?: LayoutStore
-  layoutLogic?: LayoutLogicStore
+  layoutLogic?: BuilderActions
 }
 
 export interface TurnoutSettingDialogState extends FormDialogState {
@@ -78,7 +79,7 @@ export default class TurnoutSettingDialog extends FormDialogBase<TurnoutSettingD
       turnoutName: this.state.inputs.turnoutName,
     })
     if (this.state.connectedSwitcherId) {
-      this.props.layoutLogic.connectTurnoutToSwitcher(
+      SimulatorActions.connectTurnoutToSwitcher(
         this.props.rail.id, this.state.conductionStates, this.state.connectedSwitcherId)
     } else {
       // this.props.layoutLogic.disconnectFeederFromSwitcher(this.props.feeder.id, this.state.connectedSwitcherId)

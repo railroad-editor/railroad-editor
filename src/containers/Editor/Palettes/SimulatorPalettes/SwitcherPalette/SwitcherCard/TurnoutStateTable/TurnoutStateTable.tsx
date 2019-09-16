@@ -2,8 +2,7 @@ import * as React from 'react'
 import getLogger from "logging";
 import {ConductionStates, LayoutStore, SwitcherData, SwitcherType} from "store/layoutStore";
 import {inject, observer} from 'mobx-react';
-import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
-import {LayoutLogicStore} from "store/layoutLogicStore";
+import {STORE_LAYOUT} from "constants/stores";
 import RailIcon from "components/RailIcon/RailIcon";
 import {RailComponentClasses, RailData} from "containers/rails/index";
 import GridLayout from 'react-grid-layout';
@@ -19,6 +18,7 @@ import {
   ThreeWayTurnout,
   ThreeWayTurnoutProps
 } from "react-rail-components";
+import SimulatorActions from "../../../../../../../store/simulatorActions";
 
 
 const LOGGER = getLogger(__filename)
@@ -28,12 +28,10 @@ export interface TurnoutStateTableProps {
   switcher: SwitcherData
   rail: RailData
   layout?: LayoutStore
-  layoutLogic?: LayoutLogicStore
-
 }
 
 
-@inject(STORE_LAYOUT_LOGIC, STORE_LAYOUT)
+@inject(STORE_LAYOUT)
 @observer
 export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {}> {
 
@@ -129,7 +127,7 @@ export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {
   onSwitcherStateChange = (state: number) => (e) => {
     // ドラッグ直後のクリックイベントも発生するので、ドラッグ中かどうか判断する
     if (! this.dragging) {
-      this.props.layoutLogic.changeSwitcherState(this.props.switcher.id, state)
+      SimulatorActions.changeSwitcherState(this.props.switcher.id, state)
     }
     this.dragging = false
     this.debounceCount = 0
@@ -168,7 +166,7 @@ export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {
     // LOGGER.info('rail', railId, 'table changed!!', switchStateTable)
     // ConductionStatesを元に戻し、Switcherの状態を変更する
     const switchStateTable = this.revertSwitcherConductionStates(transformedConductionStates)
-    this.props.layoutLogic.changeSwitcherConductionTable(this.props.switcher.id, switchStateTable)
+    SimulatorActions.changeSwitcherConductionTable(this.props.switcher.id, switchStateTable)
 
     this.stateGridLayout = _.cloneDeep(stateGridLayout)
   }

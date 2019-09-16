@@ -11,15 +11,16 @@ import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
 import {LayoutStore, PowerPackData} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
-import {LayoutLogicStore} from "store/layoutLogicStore";
+import {BuilderActions} from "store/builderActions";
 import {FeederInfo} from "react-rail-components";
+import SimulatorActions from "../../../../../../store/simulatorActions";
 
 
 export interface FeederSettingDialogProps extends FormDialogProps {
   feeder: FeederInfo
   powerPacks: PowerPackData[]
   layout?: LayoutStore
-  layoutLogic?: LayoutLogicStore
+  layoutLogic?: BuilderActions
 }
 
 export interface FeederSettingDialogState extends FormDialogState {
@@ -58,9 +59,9 @@ export default class FeederSettingDialog extends FormDialogBase<FeederSettingDia
       name: this.state.inputs.name,
     })
     if (this.state.connectedPowerPackId) {
-      this.props.layoutLogic.connectFeederToPowerPack(this.props.feeder.id, this.state.connectedPowerPackId)
+      SimulatorActions.connectFeederToPowerPack(this.props.feeder.id, this.state.connectedPowerPackId)
     } else {
-      this.props.layoutLogic.disconnectFeederFromPowerPack(this.props.feeder.id)
+      SimulatorActions.disconnectFeederFromPowerPack(this.props.feeder.id)
     }
     this.onClose()
   }
