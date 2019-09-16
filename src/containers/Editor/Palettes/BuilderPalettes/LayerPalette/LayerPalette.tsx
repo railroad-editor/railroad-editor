@@ -8,14 +8,14 @@ import getLogger from "logging";
 import LayerSettingDialog
   from "containers/Editor/Palettes/BuilderPalettes/LayerPalette/LayerSettingDialog/LayerSettingDialog";
 import {ConfirmationDialog} from "containers/Editor/Palettes/BuilderPalettes/LayerPalette/ConfirmationDialog/ConfirmationDialog";
-import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
+import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import {inject, observer} from "mobx-react";
 import {DEFAULT_LAYER_DATA, LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
 import {PaletteAddButton} from "components/PaletteAddButton/PaletteAddButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import {DEFAULT_LAYER_TRANSLUCENT_OPACITY} from "constants/tools";
-import {BuilderActions} from "store/builderActions";
+import BuilderActions from "store/builderActions";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
 
 const LOGGER = getLogger(__filename)
@@ -23,7 +23,6 @@ const LOGGER = getLogger(__filename)
 export interface LayerPaletteProps {
   className?: string
   layout?: LayoutStore
-  layoutLogic?: BuilderActions
   builder?: BuilderStore
 }
 
@@ -41,7 +40,7 @@ const LayerStates = {
 }
 
 
-@inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
+@inject(STORE_BUILDER, STORE_LAYOUT)
 @observer
 export default class LayerPalette extends React.Component<LayerPaletteProps, LayerPaletteState> {
 
@@ -131,7 +130,7 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
 
   deleteLayer = () => {
     const layerId = this.state.targetLayerId
-    this.props.layoutLogic.deleteLayer(layerId)
+    BuilderActions.deleteLayer(layerId)
   }
 
 

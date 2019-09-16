@@ -16,7 +16,7 @@ import {Auth, I18n} from "aws-amplify";
 import Divider from "@material-ui/core/Divider";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI} from "constants/stores";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "constants/stores";
 import {EditorStore} from "store/editorStore";
 import {LayoutMeta, LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
@@ -25,7 +25,6 @@ import LoginDialog from "containers/Editor/ToolBar/MenuDrawer/LoginDialog/LoginD
 import SignUpDialog from "containers/Editor/ToolBar/MenuDrawer/SignUpDialog/SignUpDialog";
 import {UiStore} from "store/uiStore";
 import {KeyLabel} from "components/KeyLabel/KeyLabel";
-import {BuilderActions} from "store/builderActions";
 import {SettingsDialog} from "./SettingsDialog/SettingsDialog";
 import SettingsIcon from "@material-ui/icons/Settings";
 import AssignmentIcon from "@material-ui/icons/Assignment";
@@ -45,7 +44,6 @@ export interface MenuDrawerProps {
 
   editor?: EditorStore
   layout?: LayoutStore
-  layoutLogic?: BuilderActions
   builder?: BuilderStore
   ui?: UiStore
 }
@@ -54,7 +52,7 @@ export interface MenuDrawerState {
 }
 
 
-@inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI)
+@inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, STORE_UI)
 @observer
 export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState> {
 

@@ -10,8 +10,7 @@ import {ValidatorForm} from 'react-material-ui-form-validator';
 import {FormControl, InputLabel, List, ListItem, MenuItem, Select} from "@material-ui/core";
 import {ConductionStates, LayoutStore, SwitcherData, SwitcherType} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
-import {BuilderActions} from "store/builderActions";
+import {STORE_LAYOUT} from "constants/stores";
 import {RailData} from "containers/rails";
 import SimulatorActions from "../../../../../../store/simulatorActions";
 
@@ -20,7 +19,6 @@ export interface TurnoutSettingDialogProps extends FormDialogProps {
   rail: RailData
   switchers: SwitcherData[]
   layout?: LayoutStore
-  layoutLogic?: BuilderActions
 }
 
 export interface TurnoutSettingDialogState extends FormDialogState {
@@ -29,7 +27,7 @@ export interface TurnoutSettingDialogState extends FormDialogState {
 }
 
 
-@inject(STORE_LAYOUT, STORE_LAYOUT_LOGIC)
+@inject(STORE_LAYOUT)
 @observer
 export default class TurnoutSettingDialog extends FormDialogBase<TurnoutSettingDialogProps, TurnoutSettingDialogState> {
 

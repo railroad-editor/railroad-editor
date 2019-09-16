@@ -6,8 +6,8 @@ import {compose} from "recompose";
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_FREE_RAIL_PLACER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_MEASURE} from "constants/stores";
-import {BuilderActions} from "store/builderActions";
+import {STORE_BUILDER, STORE_FREE_RAIL_PLACER, STORE_LAYOUT, STORE_MEASURE} from "constants/stores";
+import BuilderActions from "store/builderActions";
 import {isRailTool, Tools} from "constants/tools";
 import {FlowDirection} from "react-rail-components/lib/parts/primitives/PartBase";
 import {ArcDirection} from "react-rail-components/lib/parts/primitives/ArcPart";
@@ -53,7 +53,6 @@ export interface WithRailBaseProps {
 
   builder?: BuilderStore
   layout?: LayoutStore
-  layoutLogic?: BuilderActions
   measure?: MeasureStore
   freeRailPlacer?: FreeRailPlacerStore
 }
@@ -68,7 +67,7 @@ export type RailBaseEnhancedProps = RailBaseProps & WithRailBaseProps & WithBuil
 export default function withRailBase(WrappedComponent: React.ComponentClass<RailBaseEnhancedProps>) {
 
 
-  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_MEASURE, STORE_FREE_RAIL_PLACER)
+  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_MEASURE, STORE_FREE_RAIL_PLACER)
   @observer
   class WithRailBase extends React.Component<RailBaseEnhancedProps, {}> {
 
@@ -130,7 +129,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      */
     onGapJoinerLeftClick = (id: number, e: MouseEvent) => {
       if (this.props.builder.activeTool === Tools.GAP_JOINERS) {
-        this.props.layoutLogic.toggleSelectGapJoiner(id)
+        BuilderActions.toggleSelectGapJoiner(id)
       }
     }
 
@@ -212,7 +211,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      */
     onFeederLeftClick = (id: number, e: MouseEvent) => {
       if (this.props.builder.activeTool === Tools.FEEDERS) {
-        this.props.layoutLogic.toggleSelectFeeder(id)
+        BuilderActions.toggleSelectFeeder(id)
       }
     }
 
@@ -425,9 +424,9 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
         return false
       }
       if (e.modifiers.shift) {
-        this.props.layoutLogic.selectRail(this.props.id, ! this.props.selected)
+        BuilderActions.selectRail(this.props.id, ! this.props.selected)
       } else {
-        this.props.layoutLogic.toggleSelectRail(this.props.id)
+        BuilderActions.toggleSelectRail(this.props.id)
       }
       LOGGER.info(`${this.props.id} clicked.`)
       return false

@@ -9,8 +9,7 @@ import PowerIcon from "@material-ui/icons/Power";
 import Card from "@material-ui/core/Card";
 import {LayoutStore, PowerPackData} from "store/layoutStore";
 import {inject, observer} from 'mobx-react';
-import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
-import {BuilderActions} from "store/builderActions";
+import {STORE_LAYOUT} from "constants/stores";
 import PowerPackSettingDialog
   from "containers/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackSettingDialog/PowerPackSettingDialog";
 import {
@@ -32,7 +31,6 @@ export interface PowerPackCardProps {
   item: PowerPackData
   feeders: FeederInfo[]
   layout?: LayoutStore
-  layoutLogic?: BuilderActions
 }
 
 export interface PowerPackCardState {
@@ -42,7 +40,7 @@ export interface PowerPackCardState {
 }
 
 
-@inject(STORE_LAYOUT_LOGIC, STORE_LAYOUT)
+@inject(STORE_LAYOUT)
 @observer
 export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPackCardState> {
 

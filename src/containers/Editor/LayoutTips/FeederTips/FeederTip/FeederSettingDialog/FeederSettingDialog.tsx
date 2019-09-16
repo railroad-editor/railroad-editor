@@ -10,8 +10,7 @@ import {ValidatorForm} from 'react-material-ui-form-validator';
 import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
 import {LayoutStore, PowerPackData} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
-import {BuilderActions} from "store/builderActions";
+import {STORE_LAYOUT} from "constants/stores";
 import {FeederInfo} from "react-rail-components";
 import SimulatorActions from "../../../../../../store/simulatorActions";
 
@@ -20,7 +19,6 @@ export interface FeederSettingDialogProps extends FormDialogProps {
   feeder: FeederInfo
   powerPacks: PowerPackData[]
   layout?: LayoutStore
-  layoutLogic?: BuilderActions
 }
 
 export interface FeederSettingDialogState extends FormDialogState {
@@ -28,7 +26,7 @@ export interface FeederSettingDialogState extends FormDialogState {
 }
 
 
-@inject(STORE_LAYOUT, STORE_LAYOUT_LOGIC)
+@inject(STORE_LAYOUT)
 @observer
 export default class FeederSettingDialog extends FormDialogBase<FeederSettingDialogProps, FeederSettingDialogState> {
 

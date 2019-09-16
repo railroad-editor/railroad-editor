@@ -20,7 +20,7 @@ export const StyledRailPalette = styled(RailPalettes as any)`
   //z-index: 1100;
 `
 
-export const StyledLayerPalette = styled(LayerPalette as any)`
+export const StyledLayerPalette = styled(LayerPalette)`
   // Rndのインラインスタイルである top:0, left:0 を打ち消す
   top: 15px!important;
   left: auto!important;

@@ -5,18 +5,11 @@ import {RailData, RailGroupData} from "containers/rails";
 import {getRailComponent, getTemporaryRailGroupComponent} from "containers/rails/utils";
 import {TEMPORARY_RAIL_OPACITY, Tools} from "constants/tools";
 import {inject, observer} from "mobx-react";
-import {
-  STORE_BUILDER,
-  STORE_EDITOR,
-  STORE_LAYOUT,
-  STORE_LAYOUT_LOGIC,
-  STORE_SIMULATOR_LOGIC,
-  STORE_UI
-} from 'constants/stores';
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from 'constants/stores';
 import {BuilderStore, UserRailGroupData} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {UiStore} from "store/uiStore";
-import {BuilderActions} from "store/builderActions";
+import BuilderActions from "store/builderActions";
 import {EditorStore} from "store/editorStore";
 import {SimulatorActions} from "store/simulatorActions";
 import {runInAction} from "mobx";
@@ -47,7 +40,6 @@ interface WithBuilderPrivateProps {
   editor?: EditorStore
   builder?: BuilderStore
   layout?: LayoutStore
-  layoutLogic?: BuilderActions
   simulatorActions?: SimulatorActions
   ui?: UiStore
 }
@@ -73,7 +65,7 @@ export interface WithBuilderState {
  */
 export default function withBuilder(WrappedComponent: React.ComponentClass<WithBuilderPublicProps>) {
 
-  @inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SIMULATOR_LOGIC, STORE_UI)
+  @inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, STORE_UI)
   @observer
   class WithBuilder extends React.Component<WithBuilderProps, WithBuilderState> {
 
@@ -161,7 +153,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     keyDown_Backspace = (e) => {
       // this.deleteSelectedRails()
       this.props.layout.commit()
-      this.props.layoutLogic.deleteSelected()
+      BuilderActions.deleteSelected()
     }
 
     keyDown_CtrlC = (e) => {
@@ -195,7 +187,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
 
     keyDown_CtrlA = (e) => {
-      this.props.layoutLogic.selectRails(this.props.layout.currentLayoutData.rails.map(rail => rail.id), true)
+      BuilderActions.selectRails(this.props.layout.currentLayoutData.rails.map(rail => rail.id), true)
     }
 
     keyDown_CtrlO = (e) => {
@@ -323,7 +315,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       })
       // 未接続の近傍ジョイントを接続する
       // TODO: ここもRunInActionに入れられないか調べる
-      this.props.layoutLogic.connectUnconnectedCloseJoints()
+      BuilderActions.connectUnconnectedCloseJoints()
     }
 
     /**
@@ -413,9 +405,9 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       }
       this.registerRailGroupInner(rails, name)
       if (shouldDelete) {
-        this.props.layoutLogic.deleteRails(rails.map(r => r.id))
+        BuilderActions.deleteRails(rails.map(r => r.id))
       } else {
-        this.props.layoutLogic.selectAllRails(false)
+        BuilderActions.selectAllRails(false)
       }
       this.props.ui.setCommonSnackbar(true, I18n.get(NEW_RAIL_GROUP)(rails.length, name), 'success')
     }

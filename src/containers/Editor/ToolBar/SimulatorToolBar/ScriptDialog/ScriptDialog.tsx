@@ -5,9 +5,8 @@ import {compose} from "recompose";
 import {FormControlLabel, Switch, withStyles} from "@material-ui/core";
 import {LayoutStore} from "../../../../../store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SANDBOX} from "../../../../../constants/stores";
+import {STORE_LAYOUT, STORE_SANDBOX} from "../../../../../constants/stores";
 import {SandboxStore} from "../../../../../store/sandboxStore";
-import {BuilderActions} from "../../../../../store/builderActions";
 import MonacoEditor from "react-monaco-editor";
 
 const styles = theme => ({
@@ -23,7 +22,6 @@ const styles = theme => ({
 
 export interface ScriptDialogProps extends FormDialogProps {
   layout?: LayoutStore
-  layoutLogic?: BuilderActions
   sandbox?: SandboxStore
   classes: any
 }
@@ -34,7 +32,7 @@ export interface ScriptDialogState extends FormDialogState {
 }
 
 
-@inject(STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SANDBOX)
+@inject(STORE_LAYOUT, STORE_SANDBOX)
 @observer
 export class ScriptDialog extends FormDialogBase<ScriptDialogProps, ScriptDialogState> {
 

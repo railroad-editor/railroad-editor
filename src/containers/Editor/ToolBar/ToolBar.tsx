@@ -14,14 +14,13 @@ import MenuIcon from "@material-ui/icons/Menu";
 import getLogger from "logging";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI} from "constants/stores";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
 import {EditorMode, EditorStore} from "store/editorStore";
 import MenuDrawer from "containers/Editor/ToolBar/MenuDrawer/MenuDrawer";
 import {compose} from "recompose";
 import {EditableTypography} from "containers/common/EditableTypography/EditableTypography";
 import Peer from 'skyway-js';
-import {BuilderActions} from "store/builderActions";
 import BuilderToolBar from "containers/Editor/ToolBar/BuilderToolBar/BuilderToolBar";
 import withMoveTool from "containers/hoc/withMoveTool";
 import SimulatorToolBar from "containers/Editor/ToolBar/SimulatorToolBar/SimulatorToolBar";
@@ -36,7 +35,6 @@ export interface ToolBarProps {
   editor?: EditorStore
   builder?: BuilderStore
   layout?: LayoutStore
-  layoutLogic?: BuilderActions
   ui?: UiStore
 
   resetViewPosition: () => void
@@ -50,7 +48,7 @@ export interface ToolBarState {
 }
 
 
-@inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_UI)
+@inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, STORE_UI)
 @observer
 export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
 

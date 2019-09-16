@@ -7,8 +7,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Card from "@material-ui/core/Card";
 import {ConductionStates, LayoutStore, SwitcherData} from "store/layoutStore";
 import {inject, observer} from 'mobx-react';
-import {STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
-import {BuilderActions} from "store/builderActions";
+import {STORE_LAYOUT} from "constants/stores";
 import SwitcherSettingDialog
   from "containers/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherSettingDialog/SwitcherSettingDialog";
 import {
@@ -30,7 +29,6 @@ export interface SwitcherCardProps {
   item: SwitcherData
   feeders: FeederInfo[]
   layout?: LayoutStore
-  layoutLogic?: BuilderActions
 }
 
 export interface SwitcherCardState {
@@ -50,7 +48,7 @@ export interface InversedConductionState {
 }
 
 
-@inject(STORE_LAYOUT_LOGIC, STORE_LAYOUT)
+@inject(STORE_LAYOUT)
 @observer
 export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCardState> {
 

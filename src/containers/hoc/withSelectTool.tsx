@@ -6,8 +6,8 @@ import {getRailComponent} from "containers/rails/utils";
 import {BuilderStore} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
-import {BuilderActions} from "store/builderActions";
+import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
+import BuilderActions from "store/builderActions";
 import {Layer as LayerComponent, Rectangle as RectangleComponent} from "react-paper-bindings";
 
 const LOGGER = getLogger(__filename)
@@ -21,7 +21,6 @@ export interface WithSelectToolProps {
 
   builder?: BuilderStore
   layout?: LayoutStore
-  layoutLogic?: BuilderActions
 }
 
 interface WithSelectToolState {
@@ -35,7 +34,7 @@ interface WithSelectToolState {
  */
 export default function withSelectTool(WrappedComponent: React.ComponentClass<WithSelectToolProps>) {
 
-  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
+  @inject(STORE_BUILDER, STORE_LAYOUT)
   @observer
   class WithSelectTool extends React.Component<WithSelectToolProps, WithSelectToolState> {
 
@@ -78,7 +77,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
       // Shiftが押されておらず、RailPart上で無ければ選択状態をリセットする
       const isNotOnRailPart = (! e.item) || ! (['RailPart', 'Feeder', 'GapJoiner'].includes(e.item.data.type))
       if ((! e.modifiers.shift) && isNotOnRailPart) {
-        this.props.layoutLogic.selectAll(false)
+        BuilderActions.selectAll(false)
       }
       // 矩形の始点を保存する
       this.selectionRectFrom = e.point
@@ -156,7 +155,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
         }
       })
 
-      this.props.layoutLogic.selectRails(selected, true)
+      BuilderActions.selectRails(selected, true)
     }
 
     private selectFeeders = () => {
@@ -181,7 +180,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
         }
       })
 
-      this.props.layoutLogic.selectFeeders(selected, true)
+      BuilderActions.selectFeeders(selected, true)
     }
 
     private selectGapJoiners = () => {
@@ -206,7 +205,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
         }
       })
 
-      this.props.layoutLogic.selectGapJoiners(selected, true)
+      BuilderActions.selectGapJoiners(selected, true)
     }
 
     renderSelectionLayer = () => {

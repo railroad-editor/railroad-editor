@@ -2,7 +2,7 @@ import * as React from 'react'
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC} from "constants/stores";
+import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import * as classNames from "classnames"
 import {PaletteAddButton} from "components/PaletteAddButton/PaletteAddButton";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -38,7 +38,7 @@ export interface PowerPackPaletteState {
 }
 
 
-@inject(STORE_BUILDER, STORE_LAYOUT, STORE_LAYOUT_LOGIC)
+@inject(STORE_BUILDER, STORE_LAYOUT)
 @observer
 export default class PowerPackPalette extends React.Component<PowerPackPaletteProps, PowerPackPaletteState> {
 

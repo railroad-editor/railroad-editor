@@ -4,14 +4,7 @@ import {Grid, Tooltip} from '@material-ui/core'
 import {Commands} from "constants/tools";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {
-  STORE_EDITOR,
-  STORE_LAYOUT,
-  STORE_LAYOUT_LOGIC,
-  STORE_SANDBOX,
-  STORE_SIMULATOR_LOGIC,
-  STORE_UI
-} from "constants/stores";
+import {STORE_EDITOR, STORE_LAYOUT, STORE_SANDBOX, STORE_UI} from "constants/stores";
 import {EditorStore} from "store/editorStore";
 import {compose} from "recompose";
 import withMoveTool from "containers/hoc/withMoveTool";
@@ -27,7 +20,6 @@ import ScriptDialog from "./ScriptDialog/ScriptDialog";
 import {Snackbar} from "../../../../components/Snackbar/Snackbar";
 import {SandboxStore} from "../../../../store/sandboxStore";
 import {SimulatorSandbox} from "./ScriptDialog/SimulatorSandbox";
-import {BuilderActions} from "../../../../store/builderActions";
 import {CONNECTED_REMOTE, NO_REMOTE_SESSION} from "../../../../constants/messages";
 import {I18n} from "aws-amplify";
 
@@ -39,7 +31,6 @@ export interface SimulatorToolBarProps {
 
   resetViewPosition: () => void
   layout?: LayoutStore
-  layoutLogic?: BuilderActions
   sandbox?: SandboxStore
   ui?: UiStore
 }
@@ -52,7 +43,7 @@ export interface SimulatorToolBarState {
 type EnhancedSimulatorToolBarProps = SimulatorToolBarProps
 
 
-@inject(STORE_EDITOR, STORE_LAYOUT, STORE_LAYOUT_LOGIC, STORE_SIMULATOR_LOGIC, STORE_UI, STORE_SANDBOX)
+@inject(STORE_EDITOR, STORE_LAYOUT, STORE_UI, STORE_SANDBOX)
 @observer
 export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarProps, SimulatorToolBarState> {
 
