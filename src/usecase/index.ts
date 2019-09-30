@@ -13,7 +13,7 @@ import builderStore from "../store/builderStore";
 import editorStore from "../store/editorStore";
 import layerPaletteStore from "../store/layerPaletteStore";
 
-export * from "./types";
+export * from "./types.d";
 
 
 export type AppUseCases = {

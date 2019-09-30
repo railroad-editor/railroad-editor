@@ -33,10 +33,6 @@ export type WithUiStore = {
   ui?: UiStore
 }
 
-export type WithEditorStore = {
-  editor?: EditorStore
-}
-
 export type WithLayerPaletteStore = {
   layerPalette?: LayerPaletteStore
 }

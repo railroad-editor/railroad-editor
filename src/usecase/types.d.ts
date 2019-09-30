@@ -14,37 +14,37 @@ export type WithProjectUseCase = {
 }
 
 export type WithSelectionToolUseCase = {
-  selectionToolUseCase: SelectionToolUseCase
+  selectionToolUseCase?: SelectionToolUseCase
 }
 
 export type WithPowerPackUseCase = {
-  powerPackUseCase: PowerPackUseCase
+  powerPackUseCase?: PowerPackUseCase
 }
 
 export type WithSwitcherUseCase = {
-  switcherUseCase: SwitcherUseCase
+  switcherUseCase?: SwitcherUseCase
 }
 
 export type WithGapJoinerUseCase = {
-  gapJoinerUseCase: GapJoinerUseCase
+  gapJoinerUseCase?: GapJoinerUseCase
 }
 
 export type WithFeeerUseCase = {
-  feederUseCase: FeederUseCase
+  feederUseCase?: FeederUseCase
 }
 
 export type WithBuilderUseCase = {
-  builderUseCase: BuilderUseCase
+  builderUseCase?: BuilderUseCase
 }
 
 export type WithRailToolUseCase = {
-  railToolUseCase: RailToolUseCase
+  railToolUseCase?: RailToolUseCase
 }
 
 export type WithLayerUseCase = {
-  layerUseCase: LayerUseCase
+  layerUseCase?: LayerUseCase
 }
 
 export type WithSimulationUseCase = {
-  simulationUseCase: SimulationUseCase
+  simulationUseCase?: SimulationUseCase
 }

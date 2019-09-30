@@ -7,7 +7,7 @@ import measureStore, {MeasureStore} from "./measureStore";
 import editorStore, {EditorStore} from "./editorStore";
 import layerPaletteStore, {LayerPaletteStore} from "./layerPaletteStore";
 
-export * from "./types"
+export * from "./types.d"
 
 export type AppStores = {
   editor: EditorStore,
