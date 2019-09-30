@@ -366,7 +366,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
       if (_.isEmpty(this.props.builder.temporaryRails)) {
         return false
       }
-      this.props.builderAddRail()
+      this.props.railToolUseCase.addRail()
       // 検出済状態に移行する
       return true
     }
@@ -538,7 +538,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
         angle: this.railPart.getGlobalJointAngle(jointId) + this.props.builder.adjustmentAngle
       }
 
-      this.props.builderSetTemporaryRailGroup(railGroup, rails)
+      this.props.railToolUseCase.setTemporaryRailGroup(railGroup, rails)
     }
 
 
@@ -558,7 +558,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
 
       const position = this.railPart.getGlobalJointPosition(jointId)
       // 仮レールを設置する
-      this.props.builderSetTemporaryRail({
+      this.props.railToolUseCase.setTemporaryRail({
         ...railData,
         position: {x: position.x, y: position.y},
         angle: this.railPart.getGlobalJointAngle(jointId) + this.props.builder.adjustmentAngle,

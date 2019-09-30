@@ -3,7 +3,6 @@ import {compose} from 'recompose'
 
 import {Tool} from 'react-paper-bindings'
 
-import withTools, {WithToolsPrivateProps} from '../hoc/withTools'
 import withMoveTool, {WithMoveToolProps} from '../hoc/withMoveTool'
 
 import {EditorBody, StyledToolBar, StyledWrapper} from "./Editor.style";
@@ -38,6 +37,7 @@ import {observable} from "mobx";
 import {Snackbar} from "../../components/Snackbar/Snackbar";
 import {UiStore} from "../../store/uiStore";
 import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "../../store";
+import withKeyHandler, {WithKeyHandlerProps} from "../hoc/withKeyHandler";
 
 const LOGGER = getLogger(__filename)
 
@@ -53,7 +53,7 @@ export interface EditorProps {
 
 
 type EnhancedEditorProps = EditorProps
-  & WithToolsPrivateProps
+  & WithKeyHandlerProps
   & WithMoveToolProps
   & WithBuilderPublicProps
   & WithSelectToolProps
@@ -207,7 +207,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 export default compose<EditorProps | any, EditorProps | any>(
   withBuilder,
   // withFullscreen,
-  withTools,
+  withKeyHandler,
   withMoveTool,
   withSelectTool,
   // connect(mapStateToProps, mapDispatchToProps)

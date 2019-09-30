@@ -1,34 +1,57 @@
 import * as React from 'react'
 import {Tools} from "constants/tools";
 import {inject, observer} from "mobx-react";
-import {BuilderStore} from "store/builderStore";
-import {EditorStore} from "store/editorStore";
 import {when} from "mobx";
-import {STORE_BUILDER, STORE_EDITOR} from "../../store";
+import {
+  STORE_BUILDER,
+  STORE_EDITOR,
+  STORE_LAYOUT,
+  STORE_UI,
+  WithBuilderStore,
+  WithEditorStore,
+  WithLayoutStore,
+  WithUiStore
+} from "../../store";
+import {
+  USECASE_PROJECT,
+  USECASE_RAIL_TOOL,
+  USECASE_SELECTION,
+  WithProjectUseCase,
+  WithRailToolUseCase,
+  WithSelectionToolUseCase
+} from "../../usecase";
+import {LAYOUT_SAVED, REQUIRE_LOGIN} from "../../constants/messages";
+import {I18n} from "aws-amplify";
 
-export interface WithToolsPrivateProps {
-  builder?: BuilderStore
-  editor?: EditorStore
+export type KeyHandler = {
+  keyDown: (e: KeyboardEvent | any) => void
+  keyUp: (e: KeyboardEvent | any) => void
 }
 
-export interface WithToolsPublicProps {
-  // None
-}
-
-type WithToolsProps = WithToolsPublicProps & WithToolsPrivateProps
+export type WithKeyHandlerProps =
+  {
+    // keyHandler: KeyHandler
+  }
+  & WithBuilderStore
+  & WithEditorStore
+  & WithLayoutStore
+  & WithUiStore
+  & WithRailToolUseCase
+  & WithSelectionToolUseCase
+  & WithProjectUseCase
 
 
 /**
  * キーボードでのツールの切替機能を提供するHOC。
  */
-export default function withTools(WrappedComponent: React.ComponentClass<WithToolsProps>) {
+export default function withKeyHandler(WrappedComponent: React.ComponentClass<WithKeyHandlerProps>) {
 
-  @inject(STORE_BUILDER, STORE_EDITOR)
+  @inject(STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI, USECASE_RAIL_TOOL, USECASE_SELECTION, USECASE_PROJECT)
   @observer
-  class WithTools extends React.Component<WithToolsProps, {}> {
+  class WithTools extends React.Component<WithKeyHandlerProps, {}> {
     private _prevTool: Tools
 
-    constructor(props: WithToolsProps) {
+    constructor(props: WithKeyHandlerProps) {
       super(props)
       this.state = {
         activeTool: 'select',
@@ -47,14 +70,20 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
       // ダイアログの表示中はツールの切替を行わない
       if (this.dialogExists()) return
 
-      // ツールの切替はModifierを押さない状態で行うものとする。
-      // Ctrl: コマンド
-      // Alt: パンツール
-      // Shift: 各ツールでの挙動切替
-      if (e.shiftKey || e.ctrlKey || e.metaKey) {
-        return
+      let result
+      if (e.ctrlKey) {
+        result = this.keyDownCtrl(e)
+      } else {
+        result = this.keyDownNormal(e)
       }
 
+      if (result) {
+        e.preventDefault()
+        e.stopPropagation()
+      }
+    }
+
+    keyDownNormal = (e) => {
       switch (e.key) {
         case 's':
           this.props.builder.setActiveTool(Tools.STRAIGHT_RAILS)
@@ -85,10 +114,53 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
         case 'm':
           this.props.builder.setActiveTool(Tools.MEASURE)
           break
+        default:
+          return false
       }
-      e.preventDefault()
-      e.stopPropagation()
+      return true
     }
+
+
+    keyDownCtrl = (e) => {
+      switch (e.key) {
+        case 'c':
+          this.props.railToolUseCase.registerRailGroup('Clipboard')
+          break
+        case 'x':
+          this.props.layout.commit()
+          this.props.railToolUseCase.registerRailGroup('Clipboard')
+          this.props.railToolUseCase.deleteSelectedRails()
+          break
+        case 'a':
+          this.props.selectionToolUseCase.selectRails(this.props.layout.currentLayoutData.rails.map(rail => rail.id), true)
+          break
+        case 'o':
+          this.props.ui.setLayoutsDialog(true)
+          break
+        case 'f':
+          this.props.ui.setCreateNewDialog(true)
+          break
+        case 's':
+          if (this.props.editor.isAuth) {
+            this.props.projectUseCase.saveLayout()
+            this.props.ui.setCommonSnackbar(true, I18n.get(LAYOUT_SAVED), 'success')
+          } else {
+            this.props.ui.setLoginDialog(true)
+            this.props.ui.setCommonSnackbar(true, I18n.get(REQUIRE_LOGIN), 'error')
+          }
+          break
+        case 'z':
+          this.props.layout.undo()
+          break
+        case 'y':
+          this.props.layout.redo()
+          break
+        default:
+          return false
+      }
+      return true
+    }
+
 
     keyUp = (e: KeyboardEvent) => {
       switch (e.key) {
@@ -113,9 +185,15 @@ export default function withTools(WrappedComponent: React.ComponentClass<WithToo
     }
 
     render() {
+      const keyHandler = {
+        keyDown: this.keyDown,
+        keyUp: this.keyUp
+      }
+
       return (
         <WrappedComponent
           {...this.props}
+          // keyHandler={keyHandler}
         />
       )
     }
