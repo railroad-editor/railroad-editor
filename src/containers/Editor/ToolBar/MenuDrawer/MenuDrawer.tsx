@@ -16,7 +16,6 @@ import {Auth, I18n} from "aws-amplify";
 import Divider from "@material-ui/core/Divider";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {STORE_EDITOR, STORE_LAYOUT, STORE_UI, USECASE_PROJECT} from "constants/stores";
 import {EditorStore} from "store/editorStore";
 import {LayoutMeta, LayoutStore} from "store/layoutStore";
 import SaveLayoutDialog from "containers/Editor/ToolBar/MenuDrawer/SaveLayoutDialog/SaveLayoutDialog";
@@ -33,8 +32,8 @@ import BomDialog from "./BomDialog/BomDialog";
 import moment from 'moment';
 import {LAYOUT_LOADED, LAYOUT_SAVED, REQUIRE_LOGIN} from "../../../../constants/messages";
 import {ProjectUseCase} from "../../../../usecase/projectUseCase";
-import {WithEditorStore, WithLayoutStore, WithUiStore} from "../../../../store";
-import {WithProjectUseCase} from "../../../../usecase";
+import {STORE_EDITOR, STORE_LAYOUT, STORE_UI, WithEditorStore, WithLayoutStore, WithUiStore} from "../../../../store";
+import {USECASE_PROJECT, WithProjectUseCase} from "../../../../usecase";
 
 const LOGGER = getLogger(__filename)
 

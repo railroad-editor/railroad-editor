@@ -8,6 +8,7 @@ import editorStore, {EditorStore} from "./editorStore";
 import layerPaletteStore, {LayerPaletteStore} from "./layerPaletteStore";
 
 export * from "./types.d"
+export * from "./constants"
 
 export type AppStores = {
   editor: EditorStore,

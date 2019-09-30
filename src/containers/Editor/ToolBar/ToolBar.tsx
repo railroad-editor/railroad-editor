@@ -14,7 +14,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import getLogger from "logging";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
 import {EditorMode, EditorStore} from "store/editorStore";
 import MenuDrawer from "containers/Editor/ToolBar/MenuDrawer/MenuDrawer";
@@ -27,6 +26,7 @@ import SimulatorToolBar from "containers/Editor/ToolBar/SimulatorToolBar/Simulat
 import {UiStore} from "store/uiStore";
 import BuildIcon from '@material-ui/icons/Build';
 import PlayArrowIcon from '@material-ui/icons/PlayCircleFilled';
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "../../../store";
 
 const LOGGER = getLogger(__filename)
 

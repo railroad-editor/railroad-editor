@@ -7,7 +7,6 @@ import Amplify, {Auth} from "aws-amplify";
 import aws_exports from './aws-exports';
 import ResetPassword from "containers/common/Authenticator/ResetPassword/ResetPassword";
 import {inject, observer} from "mobx-react";
-import {STORE_EDITOR, STORE_UI, USECASE_PROJECT} from "constants/stores";
 import withRoot from './withRoot';
 import getLogger from "logging";
 import 'typeface-roboto'
@@ -15,8 +14,8 @@ import './App.css'
 import Home from "./containers/Home/Home";
 import {Helmet} from "react-helmet";
 import {Snackbar} from "./components/Snackbar/Snackbar";
-import {WithEditorStore, WithUiStore} from "./store";
-import {WithProjectUseCase} from "./usecase";
+import {STORE_EDITOR, STORE_UI, WithEditorStore, WithUiStore} from "./store";
+import {USECASE_PROJECT, WithProjectUseCase} from "./usecase";
 
 (window as any).LOG_LEVEL = 'DEBUG';
 

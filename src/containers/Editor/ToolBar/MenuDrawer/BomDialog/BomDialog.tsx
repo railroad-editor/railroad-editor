@@ -5,12 +5,12 @@ import {Button, Dialog, DialogActions, DialogContent, DialogTitle, withStyles} f
 import Grid from "@material-ui/core/Grid";
 import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_LAYOUT} from "../../../../../constants/stores";
 import {LayoutStore} from "../../../../../store/layoutStore";
 import Typography from "@material-ui/core/Typography";
 import {EvenGrid, OddGrid, Spacer} from "./BomDialog.style";
 import {BuilderStore} from "../../../../../store/builderStore";
 import {Tools} from "../../../../../constants/tools";
+import {STORE_BUILDER, STORE_LAYOUT} from "../../../../../store";
 
 const LOGGER = getLogger(__filename)
 

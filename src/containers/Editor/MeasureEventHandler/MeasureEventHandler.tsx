@@ -1,13 +1,13 @@
 import * as React from "react";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {STORE_LAYOUT, STORE_MEASURE} from "constants/stores";
 import {LayoutStore} from "../../../store/layoutStore";
 import {Layer} from "react-paper-bindings";
 import {Point} from "paper";
 import {runInAction} from "mobx";
 import RectPart from "react-rail-components/lib/parts/primitives/RectPart";
 import {MeasureStore} from "../../../store/measureStore";
+import {STORE_LAYOUT, STORE_MEASURE} from "../../../store";
 
 const LOGGER = getLogger(__filename)
 

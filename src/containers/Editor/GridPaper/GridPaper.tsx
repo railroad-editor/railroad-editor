@@ -3,8 +3,8 @@ import {Layer, Line, Raster, Rectangle, View} from 'react-paper-bindings'
 import {Point} from 'paper';
 import * as _ from "lodash";
 import {inject, observer} from "mobx-react";
-import {STORE_EDITOR} from "../../../constants/stores";
 import {EditorStore} from "../../../store/editorStore";
+import {STORE_EDITOR} from "../../../store";
 
 export interface GridPaperProps {
   viewWidth: number

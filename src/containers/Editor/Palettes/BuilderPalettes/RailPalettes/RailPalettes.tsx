@@ -12,7 +12,6 @@ import CustomStraightRailDialog
 import CustomCurveRailDialog
   from "containers/Editor/Palettes/BuilderPalettes/RailPalettes/RailPalette/CustomCurveRailDialog/CustomCurveRailDialog";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_LAYOUT, STORE_UI} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
 import NewRailGroupDialog
   from "containers/Editor/Palettes/BuilderPalettes/RailPalettes/RailPalette/NewRailGroupDialog/NewRailGroupDialog";
@@ -22,6 +21,7 @@ import {LayoutStore} from "store/layoutStore";
 import {UiStore} from "../../../../../store/uiStore";
 import {NO_RAIL_FOR_GROUP} from "../../../../../constants/messages";
 import {I18n} from "aws-amplify";
+import {STORE_BUILDER, STORE_LAYOUT, STORE_UI} from "../../../../../store";
 
 
 export interface PaletteProps {

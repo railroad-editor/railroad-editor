@@ -2,7 +2,6 @@ import * as React from 'react'
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import * as classNames from "classnames"
 import {PaletteAddButton} from "components/PaletteAddButton/PaletteAddButton";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -22,6 +21,7 @@ import NewSwitcherDialog
 import {SwitcherCard} from "containers/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwticherCard";
 import {DEFAULT_SWITCHER_COLOR} from "constants/tools";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
+import {STORE_BUILDER, STORE_LAYOUT} from 'store';
 
 
 export interface SwitcherPaletteProps {

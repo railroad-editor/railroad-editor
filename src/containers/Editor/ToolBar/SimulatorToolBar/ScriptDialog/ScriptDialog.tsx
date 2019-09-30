@@ -5,9 +5,9 @@ import {compose} from "recompose";
 import {FormControlLabel, Switch, withStyles} from "@material-ui/core";
 import {LayoutStore} from "../../../../../store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_LAYOUT, STORE_SANDBOX} from "../../../../../constants/stores";
 import {SandboxStore} from "../../../../../store/sandboxStore";
 import MonacoEditor from "react-monaco-editor";
+import {STORE_LAYOUT, STORE_SANDBOX} from "../../../../../store";
 
 const styles = theme => ({
   grid: {

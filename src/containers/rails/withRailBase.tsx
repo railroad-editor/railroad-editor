@@ -6,14 +6,6 @@ import {compose} from "recompose";
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {
-  STORE_BUILDER,
-  STORE_FREE_RAIL_PLACER,
-  STORE_LAYOUT,
-  STORE_MEASURE,
-  USECASE_RAIL_TOOL,
-  USECASE_SELECTION
-} from "constants/stores";
 import {isRailTool, Tools} from "constants/tools";
 import {FlowDirection} from "react-rail-components/lib/parts/primitives/PartBase";
 import {ArcDirection} from "react-rail-components/lib/parts/primitives/ArcPart";
@@ -22,6 +14,8 @@ import {MeasureStore} from "../../store/measureStore";
 import {FreeRailPlacerStore} from "../../store/freeRailPlacerStore";
 import {RailToolUseCase} from "../../usecase/railToolUseCase";
 import {SelectionToolUseCase} from "../../usecase/selectionToolUseCase";
+import {STORE_BUILDER, STORE_FREE_RAIL_PLACER, STORE_LAYOUT, STORE_MEASURE} from "../../store";
+import {USECASE_RAIL_TOOL, USECASE_SELECTION} from "../../usecase";
 
 const LOGGER = getLogger(__filename)
 

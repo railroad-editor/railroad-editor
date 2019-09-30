@@ -6,8 +6,8 @@ import AutoFocusTextValidator from "containers/common/AutoFocusTextValidator";
 import {RailItemData} from "containers/rails/index";
 import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import {RAIL_SPACE} from "constants/parts";
 import {PaletteItem} from "../../../../../../../store/types";
+import {RAIL_SPACE} from "react-rail-components/lib/constants";
 
 export interface CustomCurveRailDialogProps extends FormDialogProps {
   addUserRail: (item: RailItemData) => void

@@ -4,7 +4,6 @@ import {Grid, Tooltip} from '@material-ui/core'
 import {Commands} from "constants/tools";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {STORE_EDITOR, STORE_LAYOUT, STORE_SANDBOX, STORE_UI, USECASE_SWITCHER} from "constants/stores";
 import {compose} from "recompose";
 import withMoveTool from "containers/hoc/withMoveTool";
 import {StyledIconButton} from "containers/Editor/ToolBar/styles";
@@ -17,8 +16,17 @@ import {Snackbar} from "../../../../components/Snackbar/Snackbar";
 import {SimulatorSandbox} from "./ScriptDialog/SimulatorSandbox";
 import {CONNECTED_REMOTE, NO_REMOTE_SESSION} from "../../../../constants/messages";
 import {I18n} from "aws-amplify";
-import {WithEditorStore, WithLayoutStore, WithSandboxStore, WithUiStore} from "../../../../store";
-import {WithSwitcherUseCase} from "../../../../usecase";
+import {
+  STORE_EDITOR,
+  STORE_LAYOUT,
+  STORE_SANDBOX,
+  STORE_UI,
+  WithEditorStore,
+  WithLayoutStore,
+  WithSandboxStore,
+  WithUiStore
+} from "../../../../store";
+import {USECASE_SWITCHER, WithSwitcherUseCase} from "../../../../usecase";
 
 const LOGGER = getLogger(__filename)
 

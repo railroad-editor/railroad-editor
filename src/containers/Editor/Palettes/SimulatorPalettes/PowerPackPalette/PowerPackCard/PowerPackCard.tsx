@@ -9,7 +9,6 @@ import PowerIcon from "@material-ui/icons/Power";
 import Card from "@material-ui/core/Card";
 import {PowerPackData} from "store/layoutStore";
 import {inject, observer} from 'mobx-react';
-import {STORE_LAYOUT, USECASE_POWERPACK} from "constants/stores";
 import PowerPackSettingDialog
   from "containers/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackSettingDialog/PowerPackSettingDialog";
 import {
@@ -22,8 +21,8 @@ import {
 } from "containers/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard.style";
 import {FeederInfo} from "react-rail-components";
 import {reaction} from "mobx";
-import {WithPowerPackUseCase} from "../../../../../../usecase";
-import {WithLayoutStore} from "../../../../../../store";
+import {USECASE_POWERPACK, WithPowerPackUseCase} from "../../../../../../usecase";
+import {STORE_LAYOUT, WithLayoutStore} from "../../../../../../store";
 
 const LOGGER = getLogger(__filename)
 

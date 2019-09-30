@@ -3,10 +3,10 @@ import {DEFAULT_INITIAL_ZOOM, ZOOM_CORRECTION, ZOOM_FACTOR, ZOOM_MAX, ZOOM_MIN} 
 import {PaperScope, Point, ToolEvent, View} from 'paper'
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {STORE_EDITOR, STORE_LAYOUT} from "constants/stores";
 import {LayoutStore} from "store/layoutStore";
 import {reaction} from "mobx";
 import {EditorStore} from "store/editorStore";
+import {STORE_EDITOR, STORE_LAYOUT} from "../../store";
 
 const LOGGER = getLogger(__filename)
 

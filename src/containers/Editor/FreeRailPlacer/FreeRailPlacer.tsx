@@ -6,16 +6,16 @@ import getLogger from "logging";
 import {default as withBuilder, WithBuilderPublicProps} from "containers/hoc/withBuilder";
 import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_EDITOR, STORE_FREE_RAIL_PLACER, STORE_LAYOUT} from "constants/stores";
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {isRailTool, RAIL_PUTTER_MARKER_RADIUS} from "constants/tools";
-import {JOINT_DETECTION_OPACITY_RATE, JOINT_FILL_COLORS} from "constants/parts";
 import {EditorMode, EditorStore} from "store/editorStore";
 import {reaction} from "mobx";
 import CirclePart from "react-rail-components/lib/parts/primitives/CirclePart";
 import RectPart from "react-rail-components/lib/parts/primitives/RectPart";
 import {FreeRailPlacerStore} from "../../../store/freeRailPlacerStore";
+import {STORE_BUILDER, STORE_EDITOR, STORE_FREE_RAIL_PLACER, STORE_LAYOUT} from "../../../store";
+import {JOINT_DETECTION_OPACITY_RATE, JOINT_FILL_COLORS} from "react-rail-components/lib/constants";
 
 const LOGGER = getLogger(__filename)
 

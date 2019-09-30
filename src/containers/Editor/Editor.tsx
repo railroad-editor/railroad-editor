@@ -15,7 +15,6 @@ import withSelectTool, {WithSelectToolProps} from "containers/hoc/withSelectTool
 import {inject, observer} from "mobx-react";
 import {EditorMode, EditorStore} from "store/editorStore";
 import {LayoutStore} from "store/layoutStore";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "constants/stores";
 import {GridPaper} from "containers/Editor/GridPaper/GridPaper";
 import Layout from "containers/Editor/Layout/Layout";
 import {
@@ -38,6 +37,7 @@ import {MeasureEventHandler} from "./MeasureEventHandler/MeasureEventHandler";
 import {observable} from "mobx";
 import {Snackbar} from "../../components/Snackbar/Snackbar";
 import {UiStore} from "../../store/uiStore";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "../../store";
 
 const LOGGER = getLogger(__filename)
 

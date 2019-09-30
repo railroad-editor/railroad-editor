@@ -7,7 +7,6 @@ import IconButton from "@material-ui/core/IconButton";
 import Card from "@material-ui/core/Card";
 import {ConductionStates, SwitcherData} from "store/layoutStore";
 import {inject, observer} from 'mobx-react';
-import {STORE_LAYOUT, USECASE_SWITCHER} from "constants/stores";
 import SwitcherSettingDialog
   from "containers/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherSettingDialog/SwitcherSettingDialog";
 import {
@@ -19,8 +18,8 @@ import 'react-grid-layout/css/styles.css'
 import {TurnoutStateTable} from "containers/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherCard/TurnoutStateTable/TurnoutStateTable";
 import {Triangle} from "containers/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard.style";
 import {FeederInfo} from "react-rail-components";
-import {WithLayoutStore} from "../../../../../../store";
-import {WithSwitcherUseCase} from "../../../../../../usecase";
+import {STORE_LAYOUT, WithLayoutStore} from "../../../../../../store";
+import {USECASE_SWITCHER, WithSwitcherUseCase} from "../../../../../../usecase";
 
 
 const LOGGER = getLogger(__filename)

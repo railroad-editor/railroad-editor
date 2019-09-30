@@ -10,10 +10,9 @@ import {ValidatorForm} from 'react-material-ui-form-validator';
 import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
 import {PowerPackData} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_LAYOUT, USECASE_POWERPACK} from "constants/stores";
 import {FeederInfo} from "react-rail-components";
-import {WithLayoutStore} from "../../../../../../store";
-import {WithPowerPackUseCase} from "../../../../../../usecase";
+import {STORE_LAYOUT, WithLayoutStore} from "../../../../../../store";
+import {USECASE_POWERPACK, WithPowerPackUseCase} from "../../../../../../usecase";
 
 
 export type FeederSettingDialogProps = {

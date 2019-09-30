@@ -8,15 +8,14 @@ import getLogger from "logging";
 import LayerSettingDialog
   from "containers/Editor/Palettes/BuilderPalettes/LayerPalette/LayerSettingDialog/LayerSettingDialog";
 import {ConfirmationDialog} from "containers/Editor/Palettes/BuilderPalettes/LayerPalette/ConfirmationDialog/ConfirmationDialog";
-import {STORE_LAYER_PALETTE, STORE_LAYOUT, USECASE_LAYER} from "constants/stores";
 import {inject, observer} from "mobx-react";
 import {DEFAULT_LAYER_DATA} from "store/layoutStore";
 import {PaletteAddButton} from "components/PaletteAddButton/PaletteAddButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import {DEFAULT_LAYER_TRANSLUCENT_OPACITY} from "constants/tools";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
-import {WithLayerUseCase} from "../../../../../usecase";
-import {WithLayerPaletteStore, WithLayoutStore} from "../../../../../store";
+import {USECASE_LAYER, WithLayerUseCase} from "../../../../../usecase";
+import {STORE_LAYER_PALETTE, STORE_LAYOUT, WithLayerPaletteStore, WithLayoutStore} from "../../../../../store";
 
 const LOGGER = getLogger(__filename)
 

@@ -9,13 +9,10 @@ import {RailGroup} from "react-rail-components";
 import * as _ from 'lodash';
 import 'lodash.combinations';
 import 'lodash.product';
-import {
-  CLOSED_JOINT_ANGLE_TORELANCE,
-  CLOSED_JOINT_DISTANCE_TORELANCE,
-  FEEDER_SOCKET_FILL_COLORS
-} from "constants/parts";
+import {CLOSED_JOINT_ANGLE_TORELANCE, CLOSED_JOINT_DISTANCE_TORELANCE,} from "constants/tools";
 import {WithRailBaseProps} from "./withRailBase";
 import Feeder from "react-rail-components/lib/parts/Feeder";
+import {FEEDER_SOCKET_FILL_COLORS} from "react-rail-components/lib/constants";
 
 const LOGGER = getLogger(__filename)
 

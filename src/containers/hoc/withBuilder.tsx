@@ -5,17 +5,6 @@ import {RailData, RailGroupData} from "containers/rails";
 import {getRailComponent, getTemporaryRailGroupComponent} from "containers/rails/utils";
 import {TEMPORARY_RAIL_OPACITY, Tools} from "constants/tools";
 import {inject, observer} from "mobx-react";
-import {
-  STORE_BUILDER,
-  STORE_EDITOR,
-  STORE_LAYER_PALETTE,
-  STORE_LAYOUT,
-  STORE_UI,
-  USECASE_BUILDER,
-  USECASE_PROJECT,
-  USECASE_RAIL_TOOL,
-  USECASE_SELECTION
-} from 'constants/stores';
 import {BuilderStore} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {UiStore} from "store/uiStore";
@@ -31,6 +20,8 @@ import {RailToolUseCase} from "../../usecase/railToolUseCase";
 import {ProjectUseCase} from "../../usecase/projectUseCase";
 import {SelectionToolUseCase} from "../../usecase/selectionToolUseCase";
 import {PaletteItem, UserRailGroupData} from "../../store/types";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYER_PALETTE, STORE_LAYOUT, STORE_UI} from "../../store";
+import {USECASE_BUILDER, USECASE_PROJECT, USECASE_RAIL_TOOL, USECASE_SELECTION} from "../../usecase";
 
 
 const LOGGER = getLogger(__filename)

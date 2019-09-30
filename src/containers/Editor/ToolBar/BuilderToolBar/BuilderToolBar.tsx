@@ -22,7 +22,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 import withBuilder, {WithBuilderPublicProps} from "containers/hoc/withBuilder";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, USECASE_RAIL_TOOL} from "constants/stores";
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {EditorStore} from "store/editorStore";
 import {compose} from "recompose";
@@ -30,6 +29,8 @@ import {StyledIconButton, VerticalDivider} from "containers/Editor/ToolBar/style
 import withMoveTool, {WithMoveToolProps} from "containers/hoc/withMoveTool";
 import PowerIcon from "@material-ui/icons/Power";
 import {RailToolUseCase} from "../../../../usecase/railToolUseCase";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "../../../../store";
+import {USECASE_RAIL_TOOL} from "../../../../usecase";
 
 const LOGGER = getLogger(__filename)
 

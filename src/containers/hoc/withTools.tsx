@@ -1,10 +1,10 @@
 import * as React from 'react'
 import {Tools} from "constants/tools";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_EDITOR} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
 import {EditorStore} from "store/editorStore";
 import {when} from "mobx";
+import {STORE_BUILDER, STORE_EDITOR} from "../../store";
 
 export interface WithToolsPrivateProps {
   builder?: BuilderStore

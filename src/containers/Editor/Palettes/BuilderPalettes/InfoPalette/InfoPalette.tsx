@@ -4,11 +4,11 @@ import {Grid} from '@material-ui/core'
 import {ContentDiv, EvenGrid, GridContainer, OddGrid, ScrollablePaper} from "./InfoPalette.style";
 import Rnd from 'react-rnd'
 import getLogger from "logging";
-import {STORE_LAYOUT} from "constants/stores";
 import {inject, observer} from "mobx-react";
 import {LayoutStore} from "store/layoutStore";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
 import Typography from "@material-ui/core/Typography";
+import {STORE_LAYOUT} from "../../../../../store";
 
 const LOGGER = getLogger(__filename)
 
