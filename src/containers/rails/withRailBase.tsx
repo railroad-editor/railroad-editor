@@ -13,6 +13,7 @@ import {FreeRailPlacerStore} from "stores/freeRailPlacerStore";
 import {RailToolUseCase} from "useCases/railToolUseCase";
 import {SelectionToolUseCase} from "useCases/selectionToolUseCase";
 import {USECASE_RAIL_TOOL, USECASE_SELECTION} from "constants/useCases";
+import {STORE_BUILDER, STORE_FREE_RAIL_PLACER, STORE_LAYOUT, STORE_MEASURE} from "constants/stores";
 
 const LOGGER = getLogger(__filename)
 
@@ -68,7 +69,7 @@ export type RailBaseEnhancedProps = RailBaseProps & WithRailBaseProps
 export default function withRailBase(WrappedComponent: React.ComponentClass<RailBaseEnhancedProps>) {
 
 
-  @inject('builder', 'layout', 'measure', 'freeRailPlacer', USECASE_SELECTION, USECASE_RAIL_TOOL)
+  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_MEASURE, STORE_FREE_RAIL_PLACER, USECASE_SELECTION, USECASE_RAIL_TOOL)
   @observer
   class WithRailBase extends React.Component<RailBaseEnhancedProps, {}> {
 
