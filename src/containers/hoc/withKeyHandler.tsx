@@ -114,6 +114,16 @@ export default function withKeyHandler(WrappedComponent: React.ComponentClass<Wi
         case 'm':
           this.props.builder.setActiveTool(Tools.MEASURE)
           break
+        case 'ArrowDown':
+          this.props.builder.setAdjustmentAngle(this.props.builder.adjustmentAngle + 1)
+          break
+        case 'ArrowUp':
+          this.props.builder.setAdjustmentAngle(this.props.builder.adjustmentAngle - 1)
+          break
+        case 'Backspace':
+          this.props.layout.commit()
+          this.props.railToolUseCase.deleteSelected()
+          break
         default:
           return false
       }

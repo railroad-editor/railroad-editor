@@ -1,6 +1,5 @@
 import * as React from "react";
 import {compose, defaultProps, mapProps} from "recompose";
-import withBuilder from "containers/hoc/withBuilder";
 import withRailBase from "containers/rails/withRailBase";
 import {RailBase, RailBaseProps} from "react-rail-components";
 
@@ -11,6 +10,7 @@ import {RailBase, RailBaseProps} from "react-rail-components";
  */
 export function railHocs<TI extends React.Component, TO>(clazz: RailBase<any, any> | any) {
   return compose<TI, TO>(
+    withRailBase,
     defaultProps(clazz.defaultProps),
     mapProps((props: RailBaseProps) => {
       if (props.position instanceof Array) {
@@ -22,7 +22,5 @@ export function railHocs<TI extends React.Component, TO>(clazz: RailBase<any, an
       }
       return props
     }),
-    withBuilder,
-    withRailBase
   )(clazz)
 }

@@ -1,8 +1,6 @@
 import * as React from "react";
 import getLogger from "logging";
-import withBuilder, {WithBuilderPublicProps} from "containers/hoc/withBuilder";
 import {RailData} from "./index";
-import {compose} from "recompose";
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
@@ -14,7 +12,6 @@ import {MeasureStore} from "../../store/measureStore";
 import {FreeRailPlacerStore} from "../../store/freeRailPlacerStore";
 import {RailToolUseCase} from "../../usecase/railToolUseCase";
 import {SelectionToolUseCase} from "../../usecase/selectionToolUseCase";
-import {STORE_BUILDER, STORE_FREE_RAIL_PLACER, STORE_LAYOUT, STORE_MEASURE} from "../../store";
 import {USECASE_RAIL_TOOL, USECASE_SELECTION} from "../../usecase";
 
 const LOGGER = getLogger(__filename)
@@ -61,7 +58,7 @@ export interface WithRailBaseProps {
   railToolUseCase?: RailToolUseCase
 }
 
-export type RailBaseEnhancedProps = RailBaseProps & WithRailBaseProps & WithBuilderPublicProps
+export type RailBaseEnhancedProps = RailBaseProps & WithRailBaseProps
 
 
 /**
@@ -71,7 +68,7 @@ export type RailBaseEnhancedProps = RailBaseProps & WithRailBaseProps & WithBuil
 export default function withRailBase(WrappedComponent: React.ComponentClass<RailBaseEnhancedProps>) {
 
 
-  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_MEASURE, STORE_FREE_RAIL_PLACER, USECASE_SELECTION, USECASE_RAIL_TOOL)
+  @inject('builder', 'layout', 'measure', 'freeRailPlacer', USECASE_SELECTION, USECASE_RAIL_TOOL)
   @observer
   class WithRailBase extends React.Component<RailBaseEnhancedProps, {}> {
 
@@ -581,8 +578,6 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
 
   }
 
-  return compose<RailBaseEnhancedProps, WithRailBaseProps | any>(
-    withBuilder,
-  )(WithRailBase)
+  return WithRailBase
 }
 

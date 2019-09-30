@@ -8,7 +8,6 @@ import withMoveTool, {WithMoveToolProps} from '../hoc/withMoveTool'
 import {EditorBody, StyledToolBar, StyledWrapper} from "./Editor.style";
 
 import './Paper.css'
-import withBuilder, {WithBuilderPublicProps} from "../hoc/withBuilder";
 import getLogger from "logging";
 import withSelectTool, {WithSelectToolProps} from "containers/hoc/withSelectTool";
 import {inject, observer} from "mobx-react";
@@ -55,7 +54,6 @@ export interface EditorProps {
 type EnhancedEditorProps = EditorProps
   & WithKeyHandlerProps
   & WithMoveToolProps
-  & WithBuilderPublicProps
   & WithSelectToolProps
 
 
@@ -107,14 +105,6 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
   buildModeMouseUp = (e) => {
     this.props.selectToolMouseUp(e)
     this.props.moveToolMouseUp(e)
-  }
-
-  buildModeKeyDown = (e) => {
-    this.props.builderKeyDown(e)
-  }
-
-  builderModeKeyUp = (e) => {
-    this.props.builderKeyUp(e)
   }
 
   onFrame = (e) => {
@@ -187,8 +177,6 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
               onMouseMove={this.buildModeMouseMove}
               onMouseDrag={this.buildModeMouseDrag}
               onMouseUp={this.buildModeMouseUp}
-              onKeyDown={this.buildModeKeyDown}
-              onKeyUp={this.builderModeKeyUp}
             />
           </GridPaper>
         </EditorBody>
@@ -205,7 +193,6 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
 
 export default compose<EditorProps | any, EditorProps | any>(
-  withBuilder,
   // withFullscreen,
   withKeyHandler,
   withMoveTool,

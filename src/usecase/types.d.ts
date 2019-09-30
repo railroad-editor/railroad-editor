@@ -8,6 +8,7 @@ import {BuilderUseCase} from "./builderUseCase";
 import {RailToolUseCase} from "./railToolUseCase";
 import {LayerUseCase} from "./layerUseCase";
 import {SimulationUseCase} from "./simulationUseCase";
+import {JointInfo} from "react-rail-components";
 
 export type WithProjectUseCase = {
   projectUseCase?: ProjectUseCase
@@ -48,3 +49,9 @@ export type WithLayerUseCase = {
 export type WithSimulationUseCase = {
   simulationUseCase?: SimulationUseCase
 }
+
+export interface JointPair {
+  from: JointInfo
+  to: JointInfo
+}
+

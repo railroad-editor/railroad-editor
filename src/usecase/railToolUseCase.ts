@@ -8,7 +8,6 @@ import {
 } from "../containers/rails/utils";
 import {BuilderStore} from "../store/builderStore";
 import {FeederUseCase} from "./feederUseCase";
-import {JointPair} from "../containers/hoc/withBuilder";
 import {GapJoinerUseCase} from "./gapJoinerUseCase";
 import {SelectionToolUseCase} from "./selectionToolUseCase";
 import {TEMPORARY_RAIL_OPACITY, Tools} from "../constants/tools";
@@ -22,6 +21,7 @@ import {OpposingJoints} from "react-rail-components";
 import {UserRailGroupData} from "../store";
 import {UiStore} from "../store/uiStore";
 import {I18n} from "aws-amplify";
+import {JointPair} from "./types";
 
 const LOGGER = getLogger(__filename)
 
