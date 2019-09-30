@@ -1,7 +1,6 @@
 import * as React from "react";
 import {Point} from "paper";
 import {Layer} from "react-paper-bindings";
-import {getClosest} from "constants/utils";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
 import {PlacingMode} from "stores/builderStore";
@@ -343,4 +342,10 @@ const getSteppedAngleByMousePosition = (anchor: Point2D, cursor: Point2D, step: 
   return getClosest(angle, candidates)
 }
 
+
+const getClosest = (number: number, array: number[]) => {
+  return array.reduce((prev, curr) => {
+    return (Math.abs(curr - number) < Math.abs(prev - number) ? curr : prev);
+  })
+}
 
