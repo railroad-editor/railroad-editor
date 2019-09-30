@@ -7783,7 +7783,7 @@ pako@~1.0.5:
 
 "paper@https://github.com/railroad-editor/paper.js#dist":
   version "0.12.3"
-  resolved "https://github.com/railroad-editor/paper.js#76fe626a361a50a314977db832c0719704a9041b"
+  resolved "https://github.com/railroad-editor/paper.js#08487c8696a983f20755b78d46948cf5d7fe8a99"
 
 parallel-transform@^1.1.0:
   version "1.2.0"
@@ -9122,7 +9122,7 @@ react-monaco-editor@^0.31.0:
 
 "react-paper-bindings@https://github.com/railroad-editor/react-paper-bindings#dist":
   version "0.0.1"
-  resolved "https://github.com/railroad-editor/react-paper-bindings#fbfb281700220af5f289cd75186a524129b6d51c"
+  resolved "https://github.com/railroad-editor/react-paper-bindings#a5eb560a34560f214c9f8b0ef6083fa3c331fa7c"
   dependencies:
     fbjs "^1.0.0"
     paper "https://github.com/railroad-editor/paper.js#dist"
@@ -9133,7 +9133,7 @@ react-monaco-editor@^0.31.0:
 
 "react-rail-components@https://github.com/railroad-editor/react-rail-components#dist":
   version "0.0.1"
-  resolved "https://github.com/railroad-editor/react-rail-components#f7dca7d91c2886c54cf3576cecdb93d50518feb3"
+  resolved "https://github.com/railroad-editor/react-rail-components#376882556979997d4aa284119ffaa79852316f96"
   dependencies:
     "@types/react" "^16.8.23"
     "@types/react-dom" "^16.8.5"
