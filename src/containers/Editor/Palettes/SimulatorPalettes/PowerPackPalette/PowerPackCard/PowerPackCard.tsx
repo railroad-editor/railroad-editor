@@ -7,9 +7,9 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from "@material-ui/core/IconButton";
 import PowerIcon from "@material-ui/icons/Power";
 import Card from "@material-ui/core/Card";
-import {LayoutStore, PowerPackData} from "store/layoutStore";
+import {PowerPackData} from "store/layoutStore";
 import {inject, observer} from 'mobx-react';
-import {STORE_LAYOUT} from "constants/stores";
+import {STORE_LAYOUT, USECASE_POWERPACK} from "constants/stores";
 import PowerPackSettingDialog
   from "containers/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackSettingDialog/PowerPackSettingDialog";
 import {
@@ -22,16 +22,16 @@ import {
 } from "containers/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard.style";
 import {FeederInfo} from "react-rail-components";
 import {reaction} from "mobx";
-import SimulatorActions from "../../../../../../store/simulatorActions";
+import {WithPowerPackUseCase} from "../../../../../../usecase";
+import {WithLayoutStore} from "../../../../../../store";
 
 const LOGGER = getLogger(__filename)
 
 
-export interface PowerPackCardProps {
+export type PowerPackCardProps = {
   item: PowerPackData
   feeders: FeederInfo[]
-  layout?: LayoutStore
-}
+} & WithLayoutStore & WithPowerPackUseCase
 
 export interface PowerPackCardState {
   anchorEl: HTMLElement
@@ -40,7 +40,7 @@ export interface PowerPackCardState {
 }
 
 
-@inject(STORE_LAYOUT)
+@inject(STORE_LAYOUT, USECASE_POWERPACK)
 @observer
 export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPackCardState> {
 
@@ -122,7 +122,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
   }
 
   onDisconnectFeeder = (id) => (e) => {
-    SimulatorActions.disconnectFeederFromPowerPack(id)
+    this.props.powerPackUseCase.disconnectFeederFromPowerPack(id)
   }
 
   /**

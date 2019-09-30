@@ -5,19 +5,32 @@ import {RailData, RailGroupData} from "containers/rails";
 import {getRailComponent, getTemporaryRailGroupComponent} from "containers/rails/utils";
 import {TEMPORARY_RAIL_OPACITY, Tools} from "constants/tools";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from 'constants/stores';
-import {BuilderStore, UserRailGroupData} from "store/builderStore";
+import {
+  STORE_BUILDER,
+  STORE_EDITOR,
+  STORE_LAYER_PALETTE,
+  STORE_LAYOUT,
+  STORE_UI,
+  USECASE_BUILDER,
+  USECASE_PROJECT,
+  USECASE_RAIL_TOOL,
+  USECASE_SELECTION
+} from 'constants/stores';
+import {BuilderStore} from "store/builderStore";
 import {LayoutStore} from "store/layoutStore";
 import {UiStore} from "store/uiStore";
-import BuilderActions from "store/builderActions";
 import {EditorStore} from "store/editorStore";
-import {SimulatorActions} from "store/simulatorActions";
 import {runInAction} from "mobx";
 import {DetectionState} from "react-rail-components/lib/parts/primitives/DetectablePart";
 import {JointInfo, OpposingJoints} from "react-rail-components";
 import {LAYOUT_SAVED, NEW_RAIL_GROUP, NO_RAIL_FOR_GROUP, REQUIRE_LOGIN} from "../../constants/messages";
 import {I18n} from "aws-amplify";
-import LayoutActions from "../../store/layoutActions";
+import {LayerPaletteStore} from "../../store/layerPaletteStore";
+import {BuilderUseCase} from "../../usecase/builderUseCase";
+import {RailToolUseCase} from "../../usecase/railToolUseCase";
+import {ProjectUseCase} from "../../usecase/projectUseCase";
+import {SelectionToolUseCase} from "../../usecase/selectionToolUseCase";
+import {PaletteItem, UserRailGroupData} from "../../store/types";
 
 
 const LOGGER = getLogger(__filename)
@@ -40,8 +53,12 @@ interface WithBuilderPrivateProps {
   editor?: EditorStore
   builder?: BuilderStore
   layout?: LayoutStore
-  simulatorActions?: SimulatorActions
+  layerPaletteStore?: LayerPaletteStore
   ui?: UiStore
+  selectionToolUseCase?: SelectionToolUseCase
+  builderUseCase?: BuilderUseCase
+  railToolUseCase?: RailToolUseCase
+  projectUseCase?: ProjectUseCase
 }
 
 export type WithBuilderProps = WithBuilderPublicProps & WithBuilderPrivateProps
@@ -65,7 +82,7 @@ export interface WithBuilderState {
  */
 export default function withBuilder(WrappedComponent: React.ComponentClass<WithBuilderPublicProps>) {
 
-  @inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, STORE_UI)
+  @inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYER_PALETTE, STORE_LAYOUT, STORE_UI, USECASE_BUILDER, USECASE_RAIL_TOOL, USECASE_PROJECT, USECASE_SELECTION)
   @observer
   class WithBuilder extends React.Component<WithBuilderProps, WithBuilderState> {
 
@@ -153,7 +170,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     keyDown_Backspace = (e) => {
       // this.deleteSelectedRails()
       this.props.layout.commit()
-      BuilderActions.deleteSelected()
+      this.props.railToolUseCase.deleteSelected()
     }
 
     keyDown_CtrlC = (e) => {
@@ -187,7 +204,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
     }
 
     keyDown_CtrlA = (e) => {
-      BuilderActions.selectRails(this.props.layout.currentLayoutData.rails.map(rail => rail.id), true)
+      this.props.selectionToolUseCase.selectRails(this.props.layout.currentLayoutData.rails.map(rail => rail.id), true)
     }
 
     keyDown_CtrlO = (e) => {
@@ -200,7 +217,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
 
     keyDown_CtrlS = async (e) => {
       if (this.props.editor.isAuth) {
-        await LayoutActions.saveLayout()
+        await this.props.projectUseCase.saveLayout()
         this.props.ui.setCommonSnackbar(true, I18n.get(LAYOUT_SAVED), 'success')
       } else {
         this.props.ui.setLoginDialog(true)
@@ -249,7 +266,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       // 近傍ジョイントを検出状態に変更する
       this.setCloseJointsDetecting()
       // 重なりをチェックする
-      this.props.builder.checkIntersections()
+      this.props.railToolUseCase.checkIntersections()
     }
 
     /**
@@ -283,7 +300,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       // 近傍ジョイントを検出状態に変更する
       this.setCloseJointsDetecting()
       // 重なりをチェックする
-      this.props.builder.checkIntersections()
+      this.props.railToolUseCase.checkIntersections()
     }
 
     protected setCloseJointsDetecting = () => {
@@ -315,7 +332,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       })
       // 未接続の近傍ジョイントを接続する
       // TODO: ここもRunInActionに入れられないか調べる
-      BuilderActions.connectUnconnectedCloseJoints()
+      this.props.railToolUseCase.connectUnconnectedCloseJoints()
     }
 
     /**
@@ -326,7 +343,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       const data = {
         ..._.omitBy(rail, _.isFunction),
         name: this.props.builder.paletteItem.name,
-        layerId: this.props.builder.activeLayerId,  // 現在のレイヤーに置く
+        layerId: this.props.layerPaletteStore.activeLayerId,  // 現在のレイヤーに置く
         enableJoints: true,                         // ジョイントを有効化
         opposingJoints: {},                         // 近傍ジョイントは後で接続する
         // opacity: 1,    // Layerの設定に従う
@@ -339,7 +356,7 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       const railDatas = rails.map(rail => {
         return {
           ..._.omitBy(rail, _.isFunction),
-          layerId: this.props.builder.activeLayerId,  // 現在のレイヤーに置く
+          layerId: this.props.layerPaletteStore.activeLayerId,  // 現在のレイヤーに置く
           enableJoints: true,                         // ジョイントを有効化
           opposingJoints: {},                         // 近傍ジョイントは後で接続する
           // opacity: 1,    // Layerの設定に従う
@@ -405,9 +422,9 @@ export default function withBuilder(WrappedComponent: React.ComponentClass<WithB
       }
       this.registerRailGroupInner(rails, name)
       if (shouldDelete) {
-        BuilderActions.deleteRails(rails.map(r => r.id))
+        this.props.railToolUseCase.deleteRails(rails.map(r => r.id))
       } else {
-        BuilderActions.selectAllRails(false)
+        this.props.selectionToolUseCase.selectAllRails(false)
       }
       this.props.ui.setCommonSnackbar(true, I18n.get(NEW_RAIL_GROUP)(rails.length, name), 'success')
     }

@@ -1,11 +1,8 @@
-import {action, computed, observable, reaction, runInAction} from "mobx";
+import {action, computed, observable, runInAction} from "mobx";
 import {UserInfo} from "containers/common/Authenticator/AuthPiece/AuthPiece";
 import {LayoutMeta} from "store/layoutStore";
-import LayoutAPI from "apis/layout";
 import {DEFAULT_INITIAL_ZOOM} from "constants/tools";
-import builderStore from "store/builderStore";
 import {PaperScope} from "paper";
-import FlowSimulator from "./FlowSimulator";
 
 export enum EditorMode {
   BUILDER = 'Builder',
@@ -61,23 +58,9 @@ export class EditorStore {
     this.pan = pan
     this.panning = panning
 
-    // モード変更時に各モードの状態を復元する
-    reaction(
-      () => this.mode,
-      (mode) => {
-        switch (mode) {
-          case EditorMode.BUILDER:
-            builderStore.changeMode(builderStore.activeTool)
-            FlowSimulator.stop()
-            break
-          case EditorMode.SIMULATOR:
-            FlowSimulator.start()
-            break
-        }
-      }
-    )
   }
 
+  // ========= computed
 
   @computed
   get isAuth() {
@@ -94,19 +77,16 @@ export class EditorStore {
     return !! this.paper
   }
 
+  // ========= action
 
   @action
   setUserInfo = (userInfo: any) => {
     this.userInfo = userInfo
-    // ログインしたらロードする
-    if (userInfo) {
-      this.loadLayoutList()
-    }
   }
 
   @action
-  loadLayoutList = async () => {
-    this.layouts = await LayoutAPI.fetchLayoutList(this.currentUser)
+  setLayoutList = (layoutMeta: LayoutMeta[]) => {
+    this.layouts = layoutMeta
   }
 
   @action

@@ -5,6 +5,7 @@ import PaletteListItem
 import {inject, observer} from "mobx-react";
 import {STORE_BUILDER} from "constants/stores";
 import {BuilderStore} from "store/builderStore";
+import {PaletteItem} from "../../../../../../../store/types";
 
 export interface SelectorProps {
   items: PaletteItem[]

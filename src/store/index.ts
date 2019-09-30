@@ -1,26 +1,35 @@
-import BuilderStore, {BuilderStoreState} from "store/builderStore";
-import LayoutStore, {LayoutStoreState} from "store/layoutStore";
-import UiStore from "store/uiStore";
-import SimulatorStore from "./sandboxStore";
-import FreeRailPlacerStore, {FreeRailPlacerStoreState} from "./freeRailPlacerStore";
-import MeasureStore, {MeasureStoreState} from "./measureStore";
-import EditorStore from "./editorStore";
+import builderStore, {BuilderStore} from "store/builderStore";
+import layoutStore, {LayoutStore} from "store/layoutStore";
+import uiStore, {UiStore} from "store/uiStore";
+import sandboxStore, {SandboxStore} from "./sandboxStore";
+import freeRailPlacerStore, {FreeRailPlacerStore} from "./freeRailPlacerStore";
+import measureStore, {MeasureStore} from "./measureStore";
+import editorStore, {EditorStore} from "./editorStore";
+import layerPaletteStore, {LayerPaletteStore} from "./layerPaletteStore";
 
-export interface AppState {
-  builder: BuilderStoreState
-  freeRailPlacer: FreeRailPlacerStoreState
-  measure: MeasureStoreState
-  layout: LayoutStoreState
+export * from "./types"
+
+export type AppStores = {
+  editor: EditorStore,
+  builder: BuilderStore,
+  freeRailPlacer: FreeRailPlacerStore,
+  measure: MeasureStore,
+  layout: LayoutStore,
+  sandbox: SandboxStore,
+  ui: UiStore,
+  layerPalette: LayerPaletteStore
 }
 
-export default () => {
+
+export default (): AppStores => {
   return {
-    editor: EditorStore,
-    builder: BuilderStore,
-    freeRailPlacer: FreeRailPlacerStore,
-    measure: MeasureStore,
-    layout: LayoutStore,
-    sandbox: SimulatorStore,
-    ui: UiStore,
+    editor: editorStore,
+    builder: builderStore,
+    freeRailPlacer: freeRailPlacerStore,
+    measure: measureStore,
+    layout: layoutStore,
+    sandbox: sandboxStore,
+    ui: uiStore,
+    layerPalette: layerPaletteStore,
   };
 }

@@ -5,9 +5,9 @@ import Menu from "@material-ui/core/Menu";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from "@material-ui/core/IconButton";
 import Card from "@material-ui/core/Card";
-import {ConductionStates, LayoutStore, SwitcherData} from "store/layoutStore";
+import {ConductionStates, SwitcherData} from "store/layoutStore";
 import {inject, observer} from 'mobx-react';
-import {STORE_LAYOUT} from "constants/stores";
+import {STORE_LAYOUT, USECASE_SWITCHER} from "constants/stores";
 import SwitcherSettingDialog
   from "containers/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherSettingDialog/SwitcherSettingDialog";
 import {
@@ -19,17 +19,17 @@ import 'react-grid-layout/css/styles.css'
 import {TurnoutStateTable} from "containers/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherCard/TurnoutStateTable/TurnoutStateTable";
 import {Triangle} from "containers/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard.style";
 import {FeederInfo} from "react-rail-components";
-import SimulatorActions from "../../../../../../store/simulatorActions";
+import {WithLayoutStore} from "../../../../../../store";
+import {WithSwitcherUseCase} from "../../../../../../usecase";
 
 
 const LOGGER = getLogger(__filename)
 
 
-export interface SwitcherCardProps {
+export type SwitcherCardProps = {
   item: SwitcherData
   feeders: FeederInfo[]
-  layout?: LayoutStore
-}
+} & WithLayoutStore & WithSwitcherUseCase
 
 export interface SwitcherCardState {
   anchorEl: HTMLElement
@@ -48,7 +48,7 @@ export interface InversedConductionState {
 }
 
 
-@inject(STORE_LAYOUT)
+@inject(STORE_LAYOUT, USECASE_SWITCHER)
 @observer
 export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCardState> {
 
@@ -130,7 +130,7 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
 
 
   onDisconnect = (railId: number) => (e) => {
-    SimulatorActions.disconnectTurnoutFromSwitcher(Number(railId))
+    this.props.switcherUseCase.disconnectTurnoutFromSwitcher(Number(railId))
   }
 
 

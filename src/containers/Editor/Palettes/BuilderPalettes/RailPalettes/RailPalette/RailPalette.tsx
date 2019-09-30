@@ -11,6 +11,7 @@ import {PaletteAddButton} from "components/PaletteAddButton/PaletteAddButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
+import {PaletteItem} from "../../../../../../store/types";
 
 
 export interface RailPaletteProps {

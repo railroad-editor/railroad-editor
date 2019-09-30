@@ -7,16 +7,16 @@ import Amplify, {Auth} from "aws-amplify";
 import aws_exports from './aws-exports';
 import ResetPassword from "containers/common/Authenticator/ResetPassword/ResetPassword";
 import {inject, observer} from "mobx-react";
-import {STORE_EDITOR, STORE_UI} from "constants/stores";
-import {EditorStore} from "store/editorStore";
+import {STORE_EDITOR, STORE_UI, USECASE_PROJECT} from "constants/stores";
 import withRoot from './withRoot';
 import getLogger from "logging";
 import 'typeface-roboto'
 import './App.css'
 import Home from "./containers/Home/Home";
 import {Helmet} from "react-helmet";
-import {UiStore} from "./store/uiStore";
 import {Snackbar} from "./components/Snackbar/Snackbar";
+import {WithEditorStore, WithUiStore} from "./store";
+import {WithProjectUseCase} from "./usecase";
 
 (window as any).LOG_LEVEL = 'DEBUG';
 
@@ -25,13 +25,12 @@ Amplify.configure(aws_exports)
 const LOGGER = getLogger(__filename)
 
 
-export interface AppProps {
-  editor: EditorStore
-  ui?: UiStore
-}
+export type AppProps = {
+  // empty
+} & WithEditorStore & WithUiStore & WithProjectUseCase
 
 
-@inject(STORE_EDITOR, STORE_UI)
+@inject(STORE_EDITOR, STORE_UI, USECASE_PROJECT)
 @observer
 class App extends React.Component<AppProps, {}> {
 
@@ -53,6 +52,7 @@ class App extends React.Component<AppProps, {}> {
     if (userInfo) {
       LOGGER.info('Signed in as', userInfo) //`
       this.props.editor.setUserInfo(userInfo)
+      await this.props.projectUseCase.loadLayoutList()
     }
   }
 

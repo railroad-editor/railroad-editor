@@ -6,6 +6,7 @@ import {RailItemData} from "containers/rails/index";
 import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import AutoFocusTextValidator from "containers/common/AutoFocusTextValidator";
+import {PaletteItem} from "../../../../../../../store/types";
 
 export interface CustomStraightRailDialogProps extends FormDialogProps {
   addUserRail: (item: RailItemData) => void

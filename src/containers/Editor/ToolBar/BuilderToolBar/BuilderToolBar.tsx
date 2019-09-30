@@ -22,14 +22,14 @@ import Tooltip from "@material-ui/core/Tooltip";
 import withBuilder, {WithBuilderPublicProps} from "containers/hoc/withBuilder";
 import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "constants/stores";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, USECASE_RAIL_TOOL} from "constants/stores";
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {EditorStore} from "store/editorStore";
 import {compose} from "recompose";
-import BuilderActions from "store/builderActions";
 import {StyledIconButton, VerticalDivider} from "containers/Editor/ToolBar/styles";
 import withMoveTool, {WithMoveToolProps} from "containers/hoc/withMoveTool";
 import PowerIcon from "@material-ui/icons/Power";
+import {RailToolUseCase} from "../../../../usecase/railToolUseCase";
 
 const LOGGER = getLogger(__filename)
 
@@ -38,6 +38,7 @@ export interface BuilderToolBarProps {
   editor?: EditorStore
   builder?: BuilderStore
   layout?: LayoutStore
+  railToolUseCase?: RailToolUseCase
 }
 
 export interface BuilderToolBarState {
@@ -47,7 +48,7 @@ export interface BuilderToolBarState {
 type EnhancedBuilderToolBarProps = BuilderToolBarProps & WithBuilderPublicProps & WithMoveToolProps
 
 
-@inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT)
+@inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, USECASE_RAIL_TOOL)
 @observer
 export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps, BuilderToolBarState> {
 
@@ -85,7 +86,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
 
   onDelete = (e) => {
     this.props.layout.commit()
-    BuilderActions.deleteSelected()
+    this.props.railToolUseCase.deleteSelected()
   }
 
 

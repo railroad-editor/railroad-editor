@@ -1,6 +1,5 @@
 import {RailComponentClasses, RailData} from "containers/rails";
 import {action, computed, observable, toJS} from "mobx";
-import builderStore from "./builderStore";
 import {DEFAULT_GRID_SIZE, DEFAULT_PAPER_HEIGHT, DEFAULT_PAPER_WIDTH} from "constants/tools";
 import {getAllOpenCloseJoints} from "containers/rails/utils";
 import getLogger from "logging";
@@ -11,6 +10,7 @@ import railItems from "constants/railItems.json";
 import {computedFn} from "mobx-utils";
 import {FeederInfo, GapJoinerInfo} from "react-rail-components";
 import simulatorStore from "./sandboxStore";
+import layerPaletteStore from "./layerPaletteStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -202,14 +202,13 @@ export class LayoutStore {
 
   @computed
   get activeLayerData() {
-    return this.currentLayoutData.layers.find(layer => layer.id === builderStore.activeLayerId)
+    return this.currentLayoutData.layers.find(layer => layer.id === layerPaletteStore.activeLayerId)
   }
 
   @computed
   get activeLayerRails() {
-    return this.currentLayoutData.rails.filter(r => r.layerId === builderStore.activeLayerId)
+    return this.currentLayoutData.rails.filter(r => r.layerId === layerPaletteStore.activeLayerId)
   }
-
   @computed
   get selectedRails() {
     return this.currentLayoutData.rails.filter(r => r.selected)
