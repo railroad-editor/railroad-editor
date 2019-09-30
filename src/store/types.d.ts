@@ -1,5 +1,5 @@
 import {JointInfo, RailGroupProps} from "react-rail-components";
-import {RailData} from "../containers/rails";
+import {RailData} from "containers/rails";
 import {BuilderStore} from "./builderStore";
 import {UiStore} from "./uiStore";
 import {EditorStore} from "./editorStore";

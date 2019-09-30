@@ -13,11 +13,11 @@ import 'typeface-roboto'
 import './App.css'
 import Home from "./containers/Home/Home";
 import {Helmet} from "react-helmet";
-import {Snackbar} from "./components/Snackbar/Snackbar";
-import {WithEditorStore, WithUiStore} from "./store";
-import {WithProjectUseCase} from "./usecase";
-import {STORE_EDITOR, STORE_UI} from "./store/constants";
-import {USECASE_PROJECT} from "./usecase/constants";
+import {Snackbar} from "components/Snackbar/Snackbar";
+import {WithEditorStore, WithUiStore} from "store";
+import {WithProjectUseCase} from "usecase";
+import {STORE_EDITOR, STORE_UI} from "store/constants";
+import {USECASE_PROJECT} from "usecase";
 
 (window as any).LOG_LEVEL = 'DEBUG';
 

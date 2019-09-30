@@ -3,7 +3,7 @@ import layoutStore from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
 import {Tools} from "constants/tools";
 import measureToolStore from "../store/measureStore";
-import {EditorMode, EditorStore} from "../store/editorStore";
+import {EditorMode, EditorStore} from "store/editorStore";
 import {SelectionToolUseCase} from "./selectionToolUseCase";
 import {SimulationUseCase} from "./simulationUseCase";
 

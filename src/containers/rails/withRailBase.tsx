@@ -8,11 +8,11 @@ import {isRailTool, Tools} from "constants/tools";
 import {FlowDirection} from "react-rail-components/lib/parts/primitives/PartBase";
 import {ArcDirection} from "react-rail-components/lib/parts/primitives/ArcPart";
 import {RailBase, RailBaseProps, RailBaseState} from "react-rail-components";
-import {MeasureStore} from "../../store/measureStore";
-import {FreeRailPlacerStore} from "../../store/freeRailPlacerStore";
-import {RailToolUseCase} from "../../usecase/railToolUseCase";
-import {SelectionToolUseCase} from "../../usecase/selectionToolUseCase";
-import {USECASE_RAIL_TOOL, USECASE_SELECTION} from "../../usecase/constants";
+import {MeasureStore} from "store/measureStore";
+import {FreeRailPlacerStore} from "store/freeRailPlacerStore";
+import {RailToolUseCase} from "usecase/railToolUseCase";
+import {SelectionToolUseCase} from "usecase/selectionToolUseCase";
+import {USECASE_RAIL_TOOL, USECASE_SELECTION} from "usecase";
 
 const LOGGER = getLogger(__filename)
 

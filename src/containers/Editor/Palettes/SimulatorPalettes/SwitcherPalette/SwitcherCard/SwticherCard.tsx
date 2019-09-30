@@ -18,10 +18,10 @@ import 'react-grid-layout/css/styles.css'
 import {TurnoutStateTable} from "containers/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherCard/TurnoutStateTable/TurnoutStateTable";
 import {Triangle} from "containers/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard.style";
 import {FeederInfo} from "react-rail-components";
-import {WithLayoutStore} from "../../../../../../store";
-import {WithSwitcherUseCase} from "../../../../../../usecase";
+import {WithLayoutStore} from "store";
+import {WithSwitcherUseCase} from "usecase";
 import {STORE_LAYOUT} from 'store/constants';
-import {USECASE_SWITCHER} from "../../../../../../usecase/constants";
+import {USECASE_SWITCHER} from "usecase";
 
 
 const LOGGER = getLogger(__filename)

@@ -1,7 +1,7 @@
 import {API} from "aws-amplify";
 import {RailItemData} from "containers/rails";
 import {LayoutConfig, LayoutData, LayoutMeta} from "store/layoutStore";
-import {UserRailGroupData} from "../store/types";
+import {UserRailGroupData} from "store";
 
 
 export interface LayoutList {

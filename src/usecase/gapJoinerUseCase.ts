@@ -1,5 +1,5 @@
 import {action} from "mobx";
-import {LayoutStore} from "../store/layoutStore";
+import {LayoutStore} from "store/layoutStore";
 import {GapJoinerInfo} from "react-rail-components";
 
 

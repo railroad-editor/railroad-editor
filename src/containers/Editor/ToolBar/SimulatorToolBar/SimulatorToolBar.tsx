@@ -12,13 +12,13 @@ import CreateIcon from "@material-ui/icons/Create";
 import SettingsRemoteIcon from '@material-ui/icons/SettingsRemote'
 import TrainController from "containers/Editor/ToolBar/SimulatorToolBar/TrainController";
 import ScriptDialog from "./ScriptDialog/ScriptDialog";
-import {Snackbar} from "../../../../components/Snackbar/Snackbar";
+import {Snackbar} from "components/Snackbar/Snackbar";
 import {SimulatorSandbox} from "./ScriptDialog/SimulatorSandbox";
-import {CONNECTED_REMOTE, NO_REMOTE_SESSION} from "../../../../constants/messages";
+import {CONNECTED_REMOTE, NO_REMOTE_SESSION} from "constants/messages";
 import {I18n} from "aws-amplify";
-import {WithEditorStore, WithLayoutStore, WithSandboxStore, WithUiStore} from "../../../../store";
-import {USECASE_SWITCHER, WithSwitcherUseCase} from "../../../../usecase";
-import {STORE_EDITOR, STORE_LAYOUT, STORE_SANDBOX, STORE_UI} from "../../../../store/constants";
+import {WithEditorStore, WithLayoutStore, WithSandboxStore, WithUiStore} from "store";
+import {USECASE_SWITCHER, WithSwitcherUseCase} from "usecase";
+import {STORE_EDITOR, STORE_LAYOUT, STORE_SANDBOX, STORE_UI} from "store/constants";
 
 const LOGGER = getLogger(__filename)
 

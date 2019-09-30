@@ -11,10 +11,10 @@ import {FormControl, InputLabel, List, ListItem, MenuItem, Select} from "@materi
 import {ConductionStates, SwitcherData, SwitcherType} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {RailData} from "containers/rails";
-import {WithSwitcherUseCase} from "../../../../../../usecase";
-import {WithLayoutStore} from "../../../../../../store";
-import {STORE_LAYOUT} from "../../../../../../store/constants";
-import {USECASE_SWITCHER} from "../../../../../../usecase/constants";
+import {WithSwitcherUseCase} from "usecase";
+import {WithLayoutStore} from "store";
+import {STORE_LAYOUT} from "store/constants";
+import {USECASE_SWITCHER} from "usecase";
 
 
 export type TurnoutSettingDialogProps = {

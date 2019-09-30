@@ -18,7 +18,7 @@ import {
 } from "containers/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherSettingDialog/styles";
 import TrainController from "containers/Editor/ToolBar/SimulatorToolBar/TrainController";
 import {inject, observer} from "mobx-react";
-import {STORE_LAYOUT} from "../../../../../../store/constants";
+import {STORE_LAYOUT} from "store/constants";
 
 
 export interface SwitcherSettingDialogProps extends FormDialogProps {

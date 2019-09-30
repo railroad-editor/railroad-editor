@@ -12,7 +12,7 @@ import {CLOSED_JOINT_ANGLE_TORELANCE, CLOSED_JOINT_DISTANCE_TORELANCE,} from "co
 import {WithRailBaseProps} from "./withRailBase";
 import Feeder from "react-rail-components/lib/parts/Feeder";
 import {FEEDER_SOCKET_FILL_COLORS} from "react-rail-components/lib/constants";
-import {JointPair} from "../../usecase";
+import {JointPair} from "usecase";
 
 const LOGGER = getLogger(__filename)
 

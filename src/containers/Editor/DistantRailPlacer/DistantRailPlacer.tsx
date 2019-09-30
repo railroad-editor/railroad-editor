@@ -5,8 +5,8 @@ import {inject, observer} from "mobx-react";
 import {BuilderStore, PlacingMode} from "store/builderStore";
 import {EditorMode, EditorStore} from "store/editorStore";
 import DistantPlacingDialog from "./DistantPlacingDialog/DistantPlacingDialog";
-import {FreeRailPlacerStore} from "../../../store/freeRailPlacerStore";
-import {STORE_BUILDER, STORE_EDITOR, STORE_FREE_RAIL_PLACER} from "../../../store/constants";
+import {FreeRailPlacerStore} from "store/freeRailPlacerStore";
+import {STORE_BUILDER, STORE_EDITOR, STORE_FREE_RAIL_PLACER} from "store/constants";
 
 const LOGGER = getLogger(__filename)
 

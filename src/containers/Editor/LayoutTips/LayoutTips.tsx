@@ -5,7 +5,7 @@ import {inject, observer} from "mobx-react";
 import {EditorMode, EditorStore} from "store/editorStore";
 import FeederTips from "containers/Editor/LayoutTips/FeederTips/FeederTips";
 import RailTips from "containers/Editor/LayoutTips/RailTips/RailTips";
-import {STORE_EDITOR} from "../../../store/constants";
+import {STORE_EDITOR} from "store/constants";
 
 const LOGGER = getLogger(__filename)
 

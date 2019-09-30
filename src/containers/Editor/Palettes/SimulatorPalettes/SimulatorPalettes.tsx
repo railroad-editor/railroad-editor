@@ -6,7 +6,7 @@ import {
   StyledSwitcherPalette
 } from "containers/Editor/Palettes/SimulatorPalettes/SimulatorPalettes.style";
 import {inject, observer} from "mobx-react";
-import {STORE_LAYOUT} from "../../../../store/constants";
+import {STORE_LAYOUT} from "store/constants";
 
 
 export interface SimulatorPalettesProps {

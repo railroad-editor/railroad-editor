@@ -16,10 +16,10 @@ import FormControl from "@material-ui/core/FormControl";
 import IssuesAPI from "apis/issues";
 import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
-import {UiStore} from "../../../../../store/uiStore";
-import {BUG_REPORT_SUBMITTED} from "../../../../../constants/messages";
+import {UiStore} from "store/uiStore";
+import {BUG_REPORT_SUBMITTED} from "constants/messages";
 import {I18n} from "aws-amplify";
-import {STORE_UI} from "../../../../../store/constants";
+import {STORE_UI} from "store/constants";
 
 const LOGGER = getLogger(__filename)
 

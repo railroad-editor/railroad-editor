@@ -3,7 +3,7 @@ import getLogger from "logging";
 import {ConductionStates, SwitcherData, SwitcherType} from "store/layoutStore";
 import {inject, observer} from 'mobx-react';
 import RailIcon from "components/RailIcon/RailIcon";
-import {RailComponentClasses, RailData} from "containers/rails/index";
+import {RailComponentClasses, RailData} from "containers/rails";
 import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css'
 import {getRailComponent} from "containers/rails/utils";
@@ -22,9 +22,9 @@ import {
   USECASE_SWITCHER,
   WithPowerPackUseCase,
   WithSwitcherUseCase
-} from "../../../../../../../usecase";
-import {WithLayoutStore} from "../../../../../../../store";
-import {STORE_LAYOUT} from "../../../../../../../store/constants";
+} from "usecase";
+import {WithLayoutStore} from "store";
+import {STORE_LAYOUT} from "store/constants";
 
 
 const LOGGER = getLogger(__filename)

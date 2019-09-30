@@ -21,9 +21,9 @@ import {
 } from "containers/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard.style";
 import {FeederInfo} from "react-rail-components";
 import {reaction} from "mobx";
-import {USECASE_POWERPACK, WithPowerPackUseCase} from "../../../../../../usecase";
-import {STORE_LAYOUT} from "../../../../../../store/constants";
-import {WithLayoutStore} from "../../../../../../store";
+import {USECASE_POWERPACK, WithPowerPackUseCase} from "usecase";
+import {STORE_LAYOUT} from "store/constants";
+import {WithLayoutStore} from "store";
 
 const LOGGER = getLogger(__filename)
 

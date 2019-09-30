@@ -1,7 +1,7 @@
 import {action} from "mobx";
-import {LayoutStore} from "../store/layoutStore";
-import {Tools} from "../constants/tools";
-import {BuilderStore} from "../store/builderStore";
+import {LayoutStore} from "store/layoutStore";
+import {Tools} from "constants/tools";
+import {BuilderStore} from "store/builderStore";
 
 
 export class SelectionToolUseCase {

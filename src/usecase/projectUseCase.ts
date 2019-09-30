@@ -4,7 +4,7 @@ import {BuilderStore, PlacingMode} from "store/builderStore";
 import StorageAPI from "apis/storage"
 import LayoutAPI from "apis/layout";
 import moment from "moment";
-import {EditorMode, EditorStore} from "../store/editorStore";
+import {EditorMode, EditorStore} from "store/editorStore";
 import {SimulationUseCase} from "./simulationUseCase";
 
 

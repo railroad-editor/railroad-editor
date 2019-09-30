@@ -1,10 +1,10 @@
 import {action, comparer, reaction} from "mobx";
 import {FlowDirection, Pivot} from "react-rail-components/lib/parts/primitives/PartBase";
-import {getRailComponent} from "../containers/rails/utils";
+import {getRailComponent} from "containers/rails/utils";
 import getLogger from "../logging";
-import {TemporaryFlowDirection, TemporaryRailFlows} from "../usecase/powerPackUseCase";
-import {EditorMode, EditorStore} from "../store/editorStore";
-import {LayoutStore, PowerPackData} from "../store/layoutStore";
+import {TemporaryFlowDirection, TemporaryRailFlows} from "usecase/powerPackUseCase";
+import {EditorMode, EditorStore} from "store/editorStore";
+import {LayoutStore, PowerPackData} from "store/layoutStore";
 
 const LOGGER = getLogger(__filename)
 

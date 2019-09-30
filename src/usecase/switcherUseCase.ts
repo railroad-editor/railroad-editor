@@ -1,4 +1,4 @@
-import {ConductionStates, LayoutStore} from "../store/layoutStore";
+import {ConductionStates, LayoutStore} from "store/layoutStore";
 import {action} from "mobx";
 import {FlowDirection} from "react-rail-components/lib/parts/primitives/PartBase";
 

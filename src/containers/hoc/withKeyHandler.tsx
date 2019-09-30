@@ -2,7 +2,7 @@ import * as React from 'react'
 import {Tools} from "constants/tools";
 import {inject, observer} from "mobx-react";
 import {when} from "mobx";
-import {WithBuilderStore, WithEditorStore, WithLayoutStore, WithUiStore} from "../../store";
+import {WithBuilderStore, WithEditorStore, WithLayoutStore, WithUiStore} from "store";
 import {
   USECASE_PROJECT,
   USECASE_RAIL_TOOL,
@@ -10,10 +10,10 @@ import {
   WithProjectUseCase,
   WithRailToolUseCase,
   WithSelectionToolUseCase
-} from "../../usecase";
-import {LAYOUT_SAVED, REQUIRE_LOGIN} from "../../constants/messages";
+} from "usecase";
+import {LAYOUT_SAVED, REQUIRE_LOGIN} from "constants/messages";
 import {I18n} from "aws-amplify";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "../../store/constants";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "store/constants";
 
 export type KeyHandler = {
   keyDown: (e: KeyboardEvent | any) => void

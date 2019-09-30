@@ -2,8 +2,8 @@ import * as React from 'react'
 import {ListItemText, MenuItem} from '@material-ui/core'
 import {ActiveListItem} from "components/ActiveListItem/ActiveListItem";
 import Menu from "@material-ui/core/Menu";
-import {PaletteListItemSettingButton} from "../../../../../../../components/PaletteListItemSettingButton/PaletteListItemSettingButton";
-import {PaletteItem} from "../../../../../../../store";
+import {PaletteListItemSettingButton} from "components/PaletteListItemSettingButton/PaletteListItemSettingButton";
+import {PaletteItem} from "store";
 
 export interface PaletteListItemProps {
   item: PaletteItem

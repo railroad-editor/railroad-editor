@@ -8,7 +8,7 @@ import {EditorStore} from "store/editorStore";
 import {reaction} from "mobx";
 import FeederTip from "containers/Editor/LayoutTips/FeederTips/FeederTip/FeederTip";
 import {Pivot} from "react-rail-components/lib/parts/primitives/PartBase";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "../../../../store/constants";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "store/constants";
 
 const LOGGER = getLogger(__filename)
 

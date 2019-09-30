@@ -9,7 +9,7 @@ import {LayoutCard} from "containers/Editor/ToolBar/MenuDrawer/OpenLayoutsDialog
 import {LayoutMeta} from "store/layoutStore";
 import Grid from "@material-ui/core/Grid";
 import {ConfirmationDialog} from "containers/Editor/Palettes/BuilderPalettes/LayerPalette/ConfirmationDialog/ConfirmationDialog";
-import {UserInfo} from "../../../../common/Authenticator/AuthPiece/AuthPiece";
+import {UserInfo} from "containers/common/Authenticator/AuthPiece/AuthPiece";
 
 const LOGGER = getLogger(__filename)
 

@@ -25,9 +25,9 @@ import {compose} from "recompose";
 import {StyledIconButton, VerticalDivider} from "containers/Editor/ToolBar/styles";
 import withMoveTool, {WithMoveToolProps} from "containers/hoc/withMoveTool";
 import PowerIcon from "@material-ui/icons/Power";
-import {WithBuilderStore, WithEditorStore, WithLayoutStore} from "../../../../store";
-import {USECASE_RAIL_TOOL, WithRailToolUseCase} from "../../../../usecase";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "../../../../store/constants";
+import {WithBuilderStore, WithEditorStore, WithLayoutStore} from "store";
+import {USECASE_RAIL_TOOL, WithRailToolUseCase} from "usecase";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "store/constants";
 
 const LOGGER = getLogger(__filename)
 

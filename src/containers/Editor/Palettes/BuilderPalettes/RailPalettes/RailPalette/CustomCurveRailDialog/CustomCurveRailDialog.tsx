@@ -3,10 +3,10 @@ import {FormControlLabel} from '@material-ui/core';
 import Checkbox from "@material-ui/core/Checkbox";
 import {Tools} from "constants/tools";
 import AutoFocusTextValidator from "containers/common/AutoFocusTextValidator";
-import {RailItemData} from "containers/rails/index";
+import {RailItemData} from "containers/rails";
 import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import {PaletteItem} from "../../../../../../../store/types";
+import {PaletteItem} from "store";
 import {RAIL_SPACE} from "react-rail-components/lib/constants";
 
 export interface CustomCurveRailDialogProps extends FormDialogProps {
