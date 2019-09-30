@@ -35,7 +35,7 @@ import {MeasureEventHandler} from "./MeasureEventHandler/MeasureEventHandler";
 import {observable} from "mobx";
 import {Snackbar} from "../../components/Snackbar/Snackbar";
 import {UiStore} from "../../store/uiStore";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "../../store";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "../../store/constants";
 import withKeyHandler, {WithKeyHandlerProps} from "../hoc/withKeyHandler";
 
 const LOGGER = getLogger(__filename)

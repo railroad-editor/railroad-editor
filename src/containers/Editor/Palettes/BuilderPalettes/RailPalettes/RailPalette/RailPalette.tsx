@@ -10,7 +10,8 @@ import {PaletteAddButton} from "components/PaletteAddButton/PaletteAddButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
-import {PaletteItem, STORE_BUILDER} from "../../../../../../store";
+import {PaletteItem} from "../../../../../../store";
+import {STORE_BUILDER} from "../../../../../../store/constants";
 
 
 export interface RailPaletteProps {

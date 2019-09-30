@@ -4,7 +4,7 @@ import {compose} from "recompose";
 import {EditorMode, EditorStore} from "store/editorStore";
 import BuilderPalettes from "./BuilderPalettes/BuilderPalettes";
 import {SimulatorPalettes} from "./SimulatorPalettes/SimulatorPalettes";
-import {STORE_EDITOR} from "../../../store";
+import {STORE_EDITOR} from "../../../store/constants";
 
 
 export interface PalettesProps {

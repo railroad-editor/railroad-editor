@@ -8,7 +8,7 @@ import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {Layer as LayerComponent, Rectangle as RectangleComponent} from "react-paper-bindings";
 import {SelectionToolUseCase} from "../../usecase/selectionToolUseCase";
-import {STORE_BUILDER, STORE_LAYOUT} from "../../store";
+import {STORE_BUILDER, STORE_LAYOUT} from "../../store/constants";
 import {USECASE_SELECTION} from "../../usecase";
 
 const LOGGER = getLogger(__filename)

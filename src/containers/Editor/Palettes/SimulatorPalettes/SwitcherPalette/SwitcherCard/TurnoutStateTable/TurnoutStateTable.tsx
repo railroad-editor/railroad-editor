@@ -23,7 +23,8 @@ import {
   WithPowerPackUseCase,
   WithSwitcherUseCase
 } from "../../../../../../../usecase";
-import {STORE_LAYOUT, WithLayoutStore} from "../../../../../../../store";
+import {WithLayoutStore} from "../../../../../../../store";
+import {STORE_LAYOUT} from "../../../../../../../store/constants";
 
 
 const LOGGER = getLogger(__filename)

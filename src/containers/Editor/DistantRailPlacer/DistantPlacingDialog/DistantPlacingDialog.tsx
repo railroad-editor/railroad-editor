@@ -11,7 +11,7 @@ import {inject, observer} from "mobx-react";
 import {BuilderStore} from "../../../../store/builderStore";
 import {Point} from "paper";
 import {FreeRailPlacerStore} from "../../../../store/freeRailPlacerStore";
-import {STORE_BUILDER, STORE_FREE_RAIL_PLACER} from "../../../../store";
+import {STORE_BUILDER, STORE_FREE_RAIL_PLACER} from "../../../../store/constants";
 
 
 export interface DistantPlacingDialogProps extends FormDialogProps {

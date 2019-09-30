@@ -4,7 +4,7 @@ import {inject, observer} from "mobx-react";
 import {Point} from "paper";
 import {Layer, Line, PointText} from "react-paper-bindings";
 import {MeasureStore} from "../../../store/measureStore";
-import {STORE_MEASURE} from "store";
+import {STORE_MEASURE} from "store/constants";
 
 const LOGGER = getLogger(__filename)
 

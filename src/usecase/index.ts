@@ -15,8 +15,7 @@ import layerPaletteStore from "../store/layerPaletteStore";
 import uiStore from "../store/uiStore";
 
 export * from "./types.d";
-export * from "./constants"
-
+export * from "./constants";
 
 export type AppUseCases = {
   projectUseCase: ProjectUseCase

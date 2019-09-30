@@ -26,7 +26,7 @@ import SimulatorToolBar from "containers/Editor/ToolBar/SimulatorToolBar/Simulat
 import {UiStore} from "store/uiStore";
 import BuildIcon from '@material-ui/icons/Build';
 import PlayArrowIcon from '@material-ui/icons/PlayCircleFilled';
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "../../../store";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "../../../store/constants";
 
 const LOGGER = getLogger(__filename)
 

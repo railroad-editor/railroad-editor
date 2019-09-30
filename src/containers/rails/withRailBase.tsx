@@ -12,7 +12,7 @@ import {MeasureStore} from "../../store/measureStore";
 import {FreeRailPlacerStore} from "../../store/freeRailPlacerStore";
 import {RailToolUseCase} from "../../usecase/railToolUseCase";
 import {SelectionToolUseCase} from "../../usecase/selectionToolUseCase";
-import {USECASE_RAIL_TOOL, USECASE_SELECTION} from "../../usecase";
+import {USECASE_RAIL_TOOL, USECASE_SELECTION} from "../../usecase/constants";
 
 const LOGGER = getLogger(__filename)
 

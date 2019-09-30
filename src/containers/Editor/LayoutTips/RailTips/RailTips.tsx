@@ -8,7 +8,7 @@ import {EditorStore} from "store/editorStore";
 import {reaction} from "mobx";
 import {RailComponentClasses} from "containers/rails";
 import RailTip from "containers/Editor/LayoutTips/RailTips/RailTip/RailTip";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "../../../../store";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "../../../../store/constants";
 
 const LOGGER = getLogger(__filename)
 

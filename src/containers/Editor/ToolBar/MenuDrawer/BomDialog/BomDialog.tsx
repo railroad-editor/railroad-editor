@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import {EvenGrid, OddGrid, Spacer} from "./BomDialog.style";
 import {BuilderStore} from "../../../../../store/builderStore";
 import {Tools} from "../../../../../constants/tools";
-import {STORE_BUILDER, STORE_LAYOUT} from "../../../../../store";
+import {STORE_BUILDER, STORE_LAYOUT} from "../../../../../store/constants";
 
 const LOGGER = getLogger(__filename)
 

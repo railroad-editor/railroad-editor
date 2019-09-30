@@ -9,7 +9,7 @@ import TurnoutSettingDialog
 import {RailData} from "containers/rails";
 import {normAngle} from "containers/rails/utils";
 import {Tooltip, withStyles} from "@material-ui/core";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "../../../../../store";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "../../../../../store/constants";
 
 const LOGGER = getLogger(__filename)
 

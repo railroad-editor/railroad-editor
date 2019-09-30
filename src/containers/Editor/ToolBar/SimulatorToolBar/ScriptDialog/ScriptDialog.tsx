@@ -7,7 +7,7 @@ import {LayoutStore} from "../../../../../store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {SandboxStore} from "../../../../../store/sandboxStore";
 import MonacoEditor from "react-monaco-editor";
-import {STORE_LAYOUT, STORE_SANDBOX} from "../../../../../store";
+import {STORE_LAYOUT, STORE_SANDBOX} from "../../../../../store/constants";
 
 const styles = theme => ({
   grid: {

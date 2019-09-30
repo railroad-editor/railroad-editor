@@ -7,7 +7,7 @@ import {Point} from "paper";
 import {runInAction} from "mobx";
 import RectPart from "react-rail-components/lib/parts/primitives/RectPart";
 import {MeasureStore} from "../../../store/measureStore";
-import {STORE_LAYOUT, STORE_MEASURE} from "../../../store";
+import {STORE_LAYOUT, STORE_MEASURE} from "../../../store/constants";
 
 const LOGGER = getLogger(__filename)
 

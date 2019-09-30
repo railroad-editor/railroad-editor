@@ -6,7 +6,7 @@ import {inject, observer} from "mobx-react";
 import {LayoutStore} from "store/layoutStore";
 import {reaction} from "mobx";
 import {EditorStore} from "store/editorStore";
-import {STORE_EDITOR, STORE_LAYOUT} from "../../store";
+import {STORE_EDITOR, STORE_LAYOUT} from "../../store/constants";
 
 const LOGGER = getLogger(__filename)
 

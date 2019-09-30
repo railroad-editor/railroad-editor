@@ -7,7 +7,7 @@ import {inject, observer} from "mobx-react";
 import {LayoutStore} from "store/layoutStore";
 import {BuilderStore} from "store/builderStore";
 import {DEFAULT_SELECTED_COLOR, DEFAULT_SELECTED_WIDTH} from "constants/tools";
-import {STORE_BUILDER, STORE_LAYOUT} from "../../../store";
+import {STORE_BUILDER, STORE_LAYOUT} from "../../../store/constants";
 
 const LOGGER = getLogger(__filename)
 

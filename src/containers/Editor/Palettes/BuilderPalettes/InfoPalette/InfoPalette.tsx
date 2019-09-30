@@ -8,7 +8,7 @@ import {inject, observer} from "mobx-react";
 import {LayoutStore} from "store/layoutStore";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
 import Typography from "@material-ui/core/Typography";
-import {STORE_LAYOUT} from "../../../../../store";
+import {STORE_LAYOUT} from "../../../../../store/constants";
 
 const LOGGER = getLogger(__filename)
 

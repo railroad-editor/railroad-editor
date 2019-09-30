@@ -11,8 +11,10 @@ import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
 import {PowerPackData} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
 import {FeederInfo} from "react-rail-components";
-import {STORE_LAYOUT, WithLayoutStore} from "../../../../../../store";
-import {USECASE_POWERPACK, WithPowerPackUseCase} from "../../../../../../usecase";
+import {WithLayoutStore} from "../../../../../../store";
+import {WithPowerPackUseCase} from "../../../../../../usecase";
+import {STORE_LAYOUT} from "../../../../../../store/constants";
+import {USECASE_POWERPACK} from "../../../../../../usecase/constants";
 
 
 export type FeederSettingDialogProps = {

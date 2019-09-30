@@ -21,7 +21,7 @@ import {
 import {PowerPackCard} from "containers/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
 import {DEFAULT_POWER_PACK_COLOR} from "constants/tools";
-import {STORE_BUILDER, STORE_LAYOUT} from "../../../../../store";
+import {STORE_BUILDER, STORE_LAYOUT} from "../../../../../store/constants";
 
 
 export interface PowerPackPaletteProps {

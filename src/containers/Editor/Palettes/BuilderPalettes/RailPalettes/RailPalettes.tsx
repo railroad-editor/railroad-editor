@@ -16,15 +16,9 @@ import NewRailGroupDialog
   from "containers/Editor/Palettes/BuilderPalettes/RailPalettes/RailPalette/NewRailGroupDialog/NewRailGroupDialog";
 import {NO_RAIL_FOR_GROUP} from "../../../../../constants/messages";
 import {I18n} from "aws-amplify";
-import {
-  STORE_BUILDER,
-  STORE_LAYOUT,
-  STORE_UI,
-  WithBuilderStore,
-  WithLayoutStore,
-  WithUiStore
-} from "../../../../../store";
+import {WithBuilderStore, WithLayoutStore, WithUiStore} from "../../../../../store";
 import {USECASE_RAIL_TOOL, WithRailToolUseCase} from "../../../../../usecase";
+import {STORE_BUILDER, STORE_LAYOUT, STORE_UI} from "../../../../../store/constants";
 
 
 export type RailPaletteProps = {

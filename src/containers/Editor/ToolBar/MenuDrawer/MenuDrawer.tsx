@@ -32,8 +32,9 @@ import BomDialog from "./BomDialog/BomDialog";
 import moment from 'moment';
 import {LAYOUT_LOADED, LAYOUT_SAVED, REQUIRE_LOGIN} from "../../../../constants/messages";
 import {ProjectUseCase} from "../../../../usecase/projectUseCase";
-import {STORE_EDITOR, STORE_LAYOUT, STORE_UI, WithEditorStore, WithLayoutStore, WithUiStore} from "../../../../store";
+import {WithEditorStore, WithLayoutStore, WithUiStore} from "../../../../store";
 import {USECASE_PROJECT, WithProjectUseCase} from "../../../../usecase";
+import {STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "../../../../store/constants";
 
 const LOGGER = getLogger(__filename)
 

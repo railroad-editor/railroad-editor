@@ -15,7 +15,8 @@ import Tooltip from "@material-ui/core/Tooltip";
 import {DEFAULT_LAYER_TRANSLUCENT_OPACITY} from "constants/tools";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
 import {USECASE_LAYER, WithLayerUseCase} from "../../../../../usecase";
-import {STORE_LAYER_PALETTE, STORE_LAYOUT, WithLayerPaletteStore, WithLayoutStore} from "../../../../../store";
+import {WithLayerPaletteStore, WithLayoutStore} from "../../../../../store";
+import {STORE_LAYER_PALETTE, STORE_LAYOUT} from 'store/constants';
 
 const LOGGER = getLogger(__filename)
 
