@@ -11,8 +11,8 @@ import './Paper.css'
 import getLogger from "logging";
 import withSelectTool, {WithSelectToolProps} from "containers/hoc/withSelectTool";
 import {inject, observer} from "mobx-react";
-import {EditorMode, EditorStore} from "store/editorStore";
-import {LayoutStore} from "store/layoutStore";
+import {EditorMode, EditorStore} from "stores/editorStore";
+import {LayoutStore} from "stores/layoutStore";
 import {GridPaper} from "containers/Editor/GridPaper/GridPaper";
 import Layout from "containers/Editor/Layout/Layout";
 import {
@@ -24,7 +24,7 @@ import {
   Tools
 } from "constants/tools";
 import FreeRailPlacer from "containers/Editor/FreeRailPlacer/FreeRailPlacer";
-import {BuilderStore} from "store/builderStore";
+import {BuilderStore} from "stores/builderStore";
 import {getAllRailComponents} from "containers/rails/utils";
 import LayoutTips from "containers/Editor/LayoutTips/LayoutTips";
 import Palettes from "./Palettes/Palettes";
@@ -34,8 +34,8 @@ import {Measure} from "./Measure/Measure";
 import {MeasureEventHandler} from "./MeasureEventHandler/MeasureEventHandler";
 import {observable} from "mobx";
 import {Snackbar} from "components/Snackbar/Snackbar";
-import {UiStore} from "store/uiStore";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "store/constants";
+import {UiStore} from "stores/uiStore";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "constants/stores";
 import withKeyHandler, {WithKeyHandlerProps} from "../hoc/withKeyHandler";
 
 const LOGGER = getLogger(__filename)

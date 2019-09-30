@@ -1,6 +1,6 @@
 import * as React from "react";
 import {forwardRef, useImperativeHandle, useRef} from "react";
-import {PowerPackData, SwitcherData} from "store/layoutStore";
+import {PowerPackData, SwitcherData} from "stores/layoutStore";
 import {Sandbox} from "./Sandbox";
 import {PowerPacks} from "./PowerPacks";
 import {Switchers} from "./Switchers";

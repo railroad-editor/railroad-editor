@@ -4,8 +4,8 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import cyan from '@material-ui/core/colors/cyan';
 import green from '@material-ui/core/colors/green';
 import CssBaseline from "@material-ui/core/CssBaseline";
-import createStores from "store";
-import createUseCases from "usecase";
+import createStores from "stores";
+import createUseCases from "useCases";
 import {Provider as MobxProvider} from "mobx-react";
 import makeInspectable from 'mobx-devtools-mst';
 

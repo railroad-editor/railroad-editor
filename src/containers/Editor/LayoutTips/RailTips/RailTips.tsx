@@ -3,12 +3,12 @@ import {getRailComponent} from "containers/rails/utils";
 import getLogger from "logging";
 import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
-import {LayoutStore} from "store/layoutStore";
-import {EditorStore} from "store/editorStore";
+import {LayoutStore} from "stores/layoutStore";
+import {EditorStore} from "stores/editorStore";
 import {reaction} from "mobx";
 import {RailComponentClasses} from "containers/rails";
 import RailTip from "containers/Editor/LayoutTips/RailTips/RailTip/RailTip";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "store/constants";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "constants/stores";
 
 const LOGGER = getLogger(__filename)
 

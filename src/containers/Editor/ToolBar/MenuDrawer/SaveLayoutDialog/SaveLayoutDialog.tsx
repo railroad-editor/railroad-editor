@@ -5,7 +5,7 @@ import moment from "moment";
 import {default as AutoFocusTextValidator} from "containers/common/AutoFocusTextValidator";
 import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
-import {LayoutConfig, LayoutMeta} from "store/layoutStore";
+import {LayoutConfig, LayoutMeta} from "stores/layoutStore";
 import * as uuidv4 from "uuid/v4";
 
 

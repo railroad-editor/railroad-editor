@@ -10,7 +10,7 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 import PowerIcon from '@material-ui/icons/PowerSettingsNew';
 import NewPowerPackDialog
   from "containers/Editor/Palettes/SimulatorPalettes/PowerPackPalette/NewPowerPackDialog/NewPowerPackDialog";
-import {LayoutStore, PowerPackData} from "store/layoutStore";
+import {LayoutStore, PowerPackData} from "stores/layoutStore";
 import Rnd from "react-rnd"
 import {
   CenteredDiv,
@@ -21,7 +21,7 @@ import {
 import {PowerPackCard} from "containers/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
 import {DEFAULT_POWER_PACK_COLOR} from "constants/tools";
-import {STORE_BUILDER, STORE_LAYOUT} from "store/constants";
+import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 
 
 export interface PowerPackPaletteProps {

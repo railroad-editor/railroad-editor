@@ -1,6 +1,6 @@
 import * as React from 'react'
 import getLogger from "logging";
-import {ConductionStates, SwitcherData, SwitcherType} from "store/layoutStore";
+import {ConductionStates, SwitcherData, SwitcherType} from "stores/layoutStore";
 import {inject, observer} from 'mobx-react';
 import RailIcon from "components/RailIcon/RailIcon";
 import {RailComponentClasses, RailData} from "containers/rails";
@@ -17,14 +17,10 @@ import {
   ThreeWayTurnout,
   ThreeWayTurnoutProps
 } from "react-rail-components";
-import {
-  USECASE_POWERPACK,
-  USECASE_SWITCHER,
-  WithPowerPackUseCase,
-  WithSwitcherUseCase
-} from "usecase";
-import {WithLayoutStore} from "store";
-import {STORE_LAYOUT} from "store/constants";
+import {WithPowerPackUseCase, WithSwitcherUseCase} from "useCases";
+import {WithLayoutStore} from "stores";
+import {STORE_LAYOUT} from "constants/stores";
+import {USECASE_POWERPACK, USECASE_SWITCHER} from "constants/useCases";
 
 
 const LOGGER = getLogger(__filename)

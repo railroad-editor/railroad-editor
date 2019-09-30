@@ -1,4 +1,4 @@
-import {LayoutStore} from "store/layoutStore";
+import {LayoutStore} from "stores/layoutStore";
 import {action} from "mobx";
 import {FlowDirection} from "react-rail-components/lib/parts/primitives/PartBase";
 

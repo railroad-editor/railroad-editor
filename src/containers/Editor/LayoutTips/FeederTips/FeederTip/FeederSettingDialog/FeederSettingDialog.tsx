@@ -8,13 +8,13 @@ import {
 } from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
-import {PowerPackData} from "store/layoutStore";
+import {PowerPackData} from "stores/layoutStore";
 import {inject, observer} from "mobx-react";
 import {FeederInfo} from "react-rail-components";
-import {WithLayoutStore} from "store";
-import {WithPowerPackUseCase} from "usecase";
-import {STORE_LAYOUT} from "store/constants";
-import {USECASE_POWERPACK} from "usecase";
+import {WithLayoutStore} from "stores";
+import {WithPowerPackUseCase} from "useCases";
+import {STORE_LAYOUT} from "constants/stores";
+import {USECASE_POWERPACK} from "constants/useCases";
 
 
 export type FeederSettingDialogProps = {

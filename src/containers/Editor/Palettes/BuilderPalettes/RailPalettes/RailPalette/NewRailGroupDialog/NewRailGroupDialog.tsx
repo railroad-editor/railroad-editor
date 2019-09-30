@@ -4,8 +4,8 @@ import AutoFocusTextValidator from "containers/common/AutoFocusTextValidator";
 import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {inject, observer} from "mobx-react";
-import {PaletteItem, WithUiStore} from "store";
-import {STORE_UI} from "store/constants";
+import {PaletteItem, WithUiStore} from "stores";
+import {STORE_UI} from "constants/stores";
 
 const LOGGER = getLogger(__filename)
 

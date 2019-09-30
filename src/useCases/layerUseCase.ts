@@ -1,6 +1,6 @@
-import {LayerPaletteStore} from "store/layerPaletteStore";
+import {LayerPaletteStore} from "stores/layerPaletteStore";
 import {action} from "mobx";
-import {LayerData, LayoutStore} from "store/layoutStore";
+import {LayerData, LayoutStore} from "stores/layoutStore";
 import {RailToolUseCase} from "./railToolUseCase";
 
 export class LayerUseCase {

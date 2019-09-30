@@ -2,11 +2,11 @@ import * as React from "react";
 import getLogger from "logging";
 import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
-import {BuilderStore, PlacingMode} from "store/builderStore";
-import {EditorMode, EditorStore} from "store/editorStore";
+import {BuilderStore, PlacingMode} from "stores/builderStore";
+import {EditorMode, EditorStore} from "stores/editorStore";
 import DistantPlacingDialog from "./DistantPlacingDialog/DistantPlacingDialog";
-import {FreeRailPlacerStore} from "store/freeRailPlacerStore";
-import {STORE_BUILDER, STORE_EDITOR, STORE_FREE_RAIL_PLACER} from "store/constants";
+import {FreeRailPlacerStore} from "stores/freeRailPlacerStore";
+import {STORE_BUILDER, STORE_EDITOR, STORE_FREE_RAIL_PLACER} from "constants/stores";
 
 const LOGGER = getLogger(__filename)
 

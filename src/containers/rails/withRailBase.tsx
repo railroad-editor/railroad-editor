@@ -1,18 +1,18 @@
 import * as React from "react";
 import getLogger from "logging";
 import {RailData} from "./index";
-import {BuilderStore, PlacingMode} from "store/builderStore";
-import {LayoutStore} from "store/layoutStore";
+import {BuilderStore, PlacingMode} from "stores/builderStore";
+import {LayoutStore} from "stores/layoutStore";
 import {inject, observer} from "mobx-react";
 import {isRailTool, Tools} from "constants/tools";
 import {FlowDirection} from "react-rail-components/lib/parts/primitives/PartBase";
 import {ArcDirection} from "react-rail-components/lib/parts/primitives/ArcPart";
 import {RailBase, RailBaseProps, RailBaseState} from "react-rail-components";
-import {MeasureStore} from "store/measureStore";
-import {FreeRailPlacerStore} from "store/freeRailPlacerStore";
-import {RailToolUseCase} from "usecase/railToolUseCase";
-import {SelectionToolUseCase} from "usecase/selectionToolUseCase";
-import {USECASE_RAIL_TOOL, USECASE_SELECTION} from "usecase";
+import {MeasureStore} from "stores/measureStore";
+import {FreeRailPlacerStore} from "stores/freeRailPlacerStore";
+import {RailToolUseCase} from "useCases/railToolUseCase";
+import {SelectionToolUseCase} from "useCases/selectionToolUseCase";
+import {USECASE_RAIL_TOOL, USECASE_SELECTION} from "constants/useCases";
 
 const LOGGER = getLogger(__filename)
 

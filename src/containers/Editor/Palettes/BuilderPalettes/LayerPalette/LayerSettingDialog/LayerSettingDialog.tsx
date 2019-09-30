@@ -12,7 +12,7 @@ import {
   FormInputs
 } from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
-import {LayerData} from "store/layoutStore";
+import {LayerData} from "stores/layoutStore";
 
 
 export interface LayerSettingDialogProps extends FormDialogProps {

@@ -3,13 +3,13 @@ import {Path, Point, ToolEvent} from 'paper'
 import getLogger from "logging";
 import {DEFAULT_SELECTION_RECT_COLOR, DEFAULT_SELECTION_RECT_OPACITY, Tools} from "constants/tools";
 import {getRailComponent} from "containers/rails/utils";
-import {BuilderStore} from "store/builderStore";
-import {LayoutStore} from "store/layoutStore";
+import {BuilderStore} from "stores/builderStore";
+import {LayoutStore} from "stores/layoutStore";
 import {inject, observer} from "mobx-react";
 import {Layer as LayerComponent, Rectangle as RectangleComponent} from "react-paper-bindings";
-import {SelectionToolUseCase} from "usecase/selectionToolUseCase";
-import {STORE_BUILDER, STORE_LAYOUT} from "store/constants";
-import {USECASE_SELECTION} from "usecase";
+import {SelectionToolUseCase} from "useCases/selectionToolUseCase";
+import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
+import {USECASE_SELECTION} from "constants/useCases";
 
 const LOGGER = getLogger(__filename)
 

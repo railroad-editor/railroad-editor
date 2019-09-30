@@ -3,7 +3,7 @@ import {action, computed, observable} from "mobx";
 import {Tools} from "constants/tools";
 import builderPaletteData from "constants/railPaletteItems.json"
 import railPaletteItems from "constants/railPaletteItems.json"
-import layoutStore from "store/layoutStore";
+import layoutStore from "stores/layoutStore";
 import {reactionWithOldValue} from "./utils";
 import {FeederInfo} from "react-rail-components";
 import {LastPaletteItems, PaletteItem, PresetPaletteItemsByVendor, UserRailGroupData} from "./types";

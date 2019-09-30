@@ -8,13 +8,13 @@ import {
 } from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {FormControl, InputLabel, List, ListItem, MenuItem, Select} from "@material-ui/core";
-import {ConductionStates, SwitcherData, SwitcherType} from "store/layoutStore";
+import {ConductionStates, SwitcherData, SwitcherType} from "stores/layoutStore";
 import {inject, observer} from "mobx-react";
 import {RailData} from "containers/rails";
-import {WithSwitcherUseCase} from "usecase";
-import {WithLayoutStore} from "store";
-import {STORE_LAYOUT} from "store/constants";
-import {USECASE_SWITCHER} from "usecase";
+import {WithSwitcherUseCase} from "useCases";
+import {WithLayoutStore} from "stores";
+import {STORE_LAYOUT} from "constants/stores";
+import {USECASE_SWITCHER} from "constants/useCases";
 
 
 export type TurnoutSettingDialogProps = {

@@ -16,12 +16,12 @@ import {Auth, I18n} from "aws-amplify";
 import Divider from "@material-ui/core/Divider";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {EditorStore} from "store/editorStore";
-import {LayoutMeta, LayoutStore} from "store/layoutStore";
+import {EditorStore} from "stores/editorStore";
+import {LayoutMeta, LayoutStore} from "stores/layoutStore";
 import SaveLayoutDialog from "containers/Editor/ToolBar/MenuDrawer/SaveLayoutDialog/SaveLayoutDialog";
 import LoginDialog from "containers/Editor/ToolBar/MenuDrawer/LoginDialog/LoginDialog";
 import SignUpDialog from "containers/Editor/ToolBar/MenuDrawer/SignUpDialog/SignUpDialog";
-import {UiStore} from "store/uiStore";
+import {UiStore} from "stores/uiStore";
 import {KeyLabel} from "components/KeyLabel/KeyLabel";
 import {SettingsDialog} from "./SettingsDialog/SettingsDialog";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -31,10 +31,11 @@ import BugReportDialog from "./BugReportDialog/BugReportDialog";
 import BomDialog from "./BomDialog/BomDialog";
 import moment from 'moment';
 import {LAYOUT_LOADED, LAYOUT_SAVED, REQUIRE_LOGIN} from "constants/messages";
-import {ProjectUseCase} from "usecase/projectUseCase";
-import {WithEditorStore, WithLayoutStore, WithUiStore} from "store";
-import {USECASE_PROJECT, WithProjectUseCase} from "usecase";
-import {STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "store/constants";
+import {ProjectUseCase} from "useCases/projectUseCase";
+import {WithEditorStore, WithLayoutStore, WithUiStore} from "stores";
+import {WithProjectUseCase} from "useCases";
+import {STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "constants/stores";
+import {USECASE_PROJECT} from "constants/useCases";
 
 const LOGGER = getLogger(__filename)
 

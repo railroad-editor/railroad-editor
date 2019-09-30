@@ -1,6 +1,6 @@
 import {action, computed, observable, runInAction} from "mobx";
 import {UserInfo} from "containers/common/Authenticator/AuthPiece/AuthPiece";
-import {LayoutMeta} from "store/layoutStore";
+import {LayoutMeta} from "stores/layoutStore";
 import {DEFAULT_INITIAL_ZOOM} from "constants/tools";
 import {PaperScope} from "paper";
 

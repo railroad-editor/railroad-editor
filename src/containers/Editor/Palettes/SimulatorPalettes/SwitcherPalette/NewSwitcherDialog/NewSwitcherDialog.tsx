@@ -4,7 +4,7 @@ import AutoFocusTextValidator from "containers/common/AutoFocusTextValidator";
 import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
-import {SwitcherType} from "store/layoutStore";
+import {SwitcherType} from "stores/layoutStore";
 
 const LOGGER = getLogger(__filename)
 

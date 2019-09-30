@@ -1,10 +1,10 @@
 import * as React from 'react'
 import {inject, observer} from "mobx-react";
 import {compose} from "recompose";
-import {EditorMode, EditorStore} from "store/editorStore";
+import {EditorMode, EditorStore} from "stores/editorStore";
 import BuilderPalettes from "./BuilderPalettes/BuilderPalettes";
 import {SimulatorPalettes} from "./SimulatorPalettes/SimulatorPalettes";
-import {STORE_EDITOR} from "store/constants";
+import {STORE_EDITOR} from "constants/stores";
 
 
 export interface PalettesProps {

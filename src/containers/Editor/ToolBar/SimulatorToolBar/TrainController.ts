@@ -3,7 +3,7 @@ import Peer from 'skyway-js';
 import SessionAPI from "apis/session"
 import getLogger from "logging";
 import waitUntil from 'async-wait-until';
-import {TrainControllerConfig} from "store/layoutStore";
+import {TrainControllerConfig} from "stores/layoutStore";
 
 const LOGGER = getLogger(__filename)
 

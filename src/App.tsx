@@ -14,10 +14,10 @@ import './App.css'
 import Home from "./containers/Home/Home";
 import {Helmet} from "react-helmet";
 import {Snackbar} from "components/Snackbar/Snackbar";
-import {WithEditorStore, WithUiStore} from "store";
-import {WithProjectUseCase} from "usecase";
-import {STORE_EDITOR, STORE_UI} from "store/constants";
-import {USECASE_PROJECT} from "usecase";
+import {WithEditorStore, WithUiStore} from "stores";
+import {WithProjectUseCase} from "useCases";
+import {STORE_EDITOR, STORE_UI} from "constants/stores";
+import {USECASE_PROJECT} from "constants/useCases";
 
 (window as any).LOG_LEVEL = 'DEBUG';
 

@@ -1,12 +1,7 @@
 import {action, runInAction} from "mobx";
-import {LayoutStore} from "store/layoutStore";
-import {
-  getCloseJointsOf,
-  getRailComponent,
-  getTemporaryRailGroupComponent,
-  intersectsOf
-} from "containers/rails/utils";
-import {BuilderStore} from "store/builderStore";
+import {LayoutStore} from "stores/layoutStore";
+import {getCloseJointsOf, getRailComponent, getTemporaryRailGroupComponent, intersectsOf} from "containers/rails/utils";
+import {BuilderStore} from "stores/builderStore";
 import {FeederUseCase} from "./feederUseCase";
 import {GapJoinerUseCase} from "./gapJoinerUseCase";
 import {SelectionToolUseCase} from "./selectionToolUseCase";
@@ -14,12 +9,12 @@ import {TEMPORARY_RAIL_OPACITY, Tools} from "constants/tools";
 import {SwitcherUseCase} from "./switcherUseCase";
 import {RailData, RailGroupData} from "containers/rails";
 import {DetectionState} from "react-rail-components/lib/parts/primitives/DetectablePart";
-import {LayerPaletteStore} from "store/layerPaletteStore";
+import {LayerPaletteStore} from "stores/layerPaletteStore";
 import getLogger from "../logging";
 import {NEW_RAIL_GROUP, NO_RAIL_FOR_GROUP} from "constants/messages";
 import {OpposingJoints} from "react-rail-components";
-import {UserRailGroupData} from "store";
-import {UiStore} from "store/uiStore";
+import {UserRailGroupData} from "stores";
+import {UiStore} from "stores/uiStore";
 import {I18n} from "aws-amplify";
 import {JointPair} from "./types";
 

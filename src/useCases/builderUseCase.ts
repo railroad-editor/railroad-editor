@@ -1,9 +1,9 @@
 import {action, reaction, runInAction} from "mobx";
-import layoutStore from "store/layoutStore";
-import {BuilderStore} from "store/builderStore";
+import layoutStore from "stores/layoutStore";
+import {BuilderStore} from "stores/builderStore";
 import {Tools} from "constants/tools";
-import measureToolStore from "../store/measureStore";
-import {EditorMode, EditorStore} from "store/editorStore";
+import measureToolStore from "../stores/measureStore";
+import {EditorMode, EditorStore} from "stores/editorStore";
 import {SelectionToolUseCase} from "./selectionToolUseCase";
 import {SimulationUseCase} from "./simulationUseCase";
 

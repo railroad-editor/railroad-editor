@@ -1,10 +1,10 @@
 import {action} from "mobx";
-import {LayoutStore} from "store/layoutStore";
-import {BuilderStore, PlacingMode} from "store/builderStore";
+import {LayoutStore} from "stores/layoutStore";
+import {BuilderStore, PlacingMode} from "stores/builderStore";
 import StorageAPI from "apis/storage"
 import LayoutAPI from "apis/layout";
 import moment from "moment";
-import {EditorMode, EditorStore} from "store/editorStore";
+import {EditorMode, EditorStore} from "stores/editorStore";
 import {SimulationUseCase} from "./simulationUseCase";
 
 

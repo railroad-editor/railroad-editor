@@ -5,9 +5,8 @@ import getLogger from "logging";
 import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
 import {reaction} from "mobx";
-import {WithLayoutStore} from "store";
-import {WithBuilderStore} from "store";
-import {STORE_BUILDER, STORE_LAYOUT} from "store/constants";
+import {WithBuilderStore, WithLayoutStore} from "stores";
+import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 
 const LOGGER = getLogger(__filename)
 

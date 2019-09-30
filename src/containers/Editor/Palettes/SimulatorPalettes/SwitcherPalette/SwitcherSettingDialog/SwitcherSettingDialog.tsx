@@ -11,14 +11,14 @@ import {
   FormInputs
 } from "containers/common/FormDialog/FormDialogBase";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import {LayoutStore, SwitcherData, SwitcherType} from "store/layoutStore";
+import {LayoutStore, SwitcherData, SwitcherType} from "stores/layoutStore";
 import {
   SmallButton,
   Spacer
 } from "containers/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherSettingDialog/styles";
 import TrainController from "containers/Editor/ToolBar/SimulatorToolBar/TrainController";
 import {inject, observer} from "mobx-react";
-import {STORE_LAYOUT} from "store/constants";
+import {STORE_LAYOUT} from "constants/stores";
 
 
 export interface SwitcherSettingDialogProps extends FormDialogProps {

@@ -1,6 +1,6 @@
-import builderStore, {BuilderStore} from "store/builderStore";
-import layoutStore, {LayoutStore} from "store/layoutStore";
-import uiStore, {UiStore} from "store/uiStore";
+import builderStore, {BuilderStore} from "stores/builderStore";
+import layoutStore, {LayoutStore} from "stores/layoutStore";
+import uiStore, {UiStore} from "stores/uiStore";
 import sandboxStore, {SandboxStore} from "./sandboxStore";
 import freeRailPlacerStore, {FreeRailPlacerStore} from "./freeRailPlacerStore";
 import measureStore, {MeasureStore} from "./measureStore";

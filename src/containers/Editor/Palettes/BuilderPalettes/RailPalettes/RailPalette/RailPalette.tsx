@@ -4,14 +4,14 @@ import {CenteredDiv, HideableDiv, PaletteBodyPaper, ScrollablePaper, StyledSelec
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import {inject, observer} from "mobx-react";
-import {BuilderStore} from "store/builderStore";
+import {BuilderStore} from "stores/builderStore";
 import * as classNames from "classnames"
 import {PaletteAddButton} from "components/PaletteAddButton/PaletteAddButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
-import {PaletteItem} from "store";
-import {STORE_BUILDER} from "store/constants";
+import {PaletteItem} from "stores";
+import {STORE_BUILDER} from "constants/stores";
 
 
 export interface RailPaletteProps {

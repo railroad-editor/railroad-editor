@@ -3,9 +3,9 @@ import {List} from '@material-ui/core'
 import PaletteListItem
   from "containers/Editor/Palettes/BuilderPalettes/RailPalettes/RailPalette/PaletteListItem/PaletteListItem";
 import {inject, observer} from "mobx-react";
-import {BuilderStore} from "store/builderStore";
-import {PaletteItem} from "store";
-import {STORE_BUILDER} from "store/constants";
+import {BuilderStore} from "stores/builderStore";
+import {PaletteItem} from "stores";
+import {STORE_BUILDER} from "constants/stores";
 
 export interface SelectorProps {
   items: PaletteItem[]

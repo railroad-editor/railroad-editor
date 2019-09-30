@@ -4,17 +4,17 @@ import {Layer} from "react-paper-bindings";
 import {getClosest} from "constants/utils";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {PlacingMode} from "store/builderStore";
+import {PlacingMode} from "stores/builderStore";
 import {isRailTool, RAIL_PUTTER_MARKER_RADIUS} from "constants/tools";
-import {EditorMode} from "store/editorStore";
+import {EditorMode} from "stores/editorStore";
 import {reaction} from "mobx";
 import CirclePart from "react-rail-components/lib/parts/primitives/CirclePart";
 import RectPart from "react-rail-components/lib/parts/primitives/RectPart";
-import {WithEditorStore, WithFreeRailPlacerStore} from "store";
+import {WithBuilderStore, WithEditorStore, WithFreeRailPlacerStore, WithLayoutStore} from "stores";
 import {JOINT_DETECTION_OPACITY_RATE, JOINT_FILL_COLORS} from "react-rail-components/lib/constants";
-import {WithBuilderStore, WithLayoutStore} from "store";
-import {USECASE_RAIL_TOOL, WithRailToolUseCase} from "usecase";
-import {STORE_BUILDER, STORE_EDITOR, STORE_FREE_RAIL_PLACER, STORE_LAYOUT} from "store/constants";
+import {WithRailToolUseCase} from "useCases";
+import {STORE_BUILDER, STORE_EDITOR, STORE_FREE_RAIL_PLACER, STORE_LAYOUT} from "constants/stores";
+import {USECASE_RAIL_TOOL} from "constants/useCases";
 
 const LOGGER = getLogger(__filename)
 

@@ -8,7 +8,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 // import PowerIcon from '@material-ui/icons/Power';
 import CallSplitIcon from '@material-ui/icons/CallSplit';
-import {LayoutStore, SwitcherData, SwitcherType} from "store/layoutStore";
+import {LayoutStore, SwitcherData, SwitcherType} from "stores/layoutStore";
 import Rnd from "react-rnd"
 import {
   CenteredDiv,
@@ -21,7 +21,7 @@ import NewSwitcherDialog
 import {SwitcherCard} from "containers/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwticherCard";
 import {DEFAULT_SWITCHER_COLOR} from "constants/tools";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
-import {STORE_BUILDER, STORE_LAYOUT} from 'store/constants';
+import {STORE_BUILDER, STORE_LAYOUT} from 'constants/stores';
 
 
 export interface SwitcherPaletteProps {
