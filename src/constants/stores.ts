@@ -1,4 +1,5 @@
 export const STORE_BUILDER = 'builder';
+export const STORE_LAYER_PALETTE = 'layerPalette';
 export const STORE_LAYOUT = 'layout';
 export const STORE_EDITOR = 'editor';
 export const STORE_UI = 'ui';

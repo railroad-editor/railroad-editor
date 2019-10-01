@@ -12,37 +12,30 @@ import CustomStraightRailDialog
 import CustomCurveRailDialog
   from "containers/Editor/Palettes/BuilderPalettes/RailPalettes/RailPalette/CustomCurveRailDialog/CustomCurveRailDialog";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_LAYOUT, STORE_UI} from "constants/stores";
-import {BuilderStore} from "store/builderStore";
 import NewRailGroupDialog
   from "containers/Editor/Palettes/BuilderPalettes/RailPalettes/RailPalette/NewRailGroupDialog/NewRailGroupDialog";
-import {compose} from "recompose";
-import withBuilder, {WithBuilderPublicProps} from "containers/hoc/withBuilder";
-import {LayoutStore} from "store/layoutStore";
-import {UiStore} from "../../../../../store/uiStore";
-import {NO_RAIL_FOR_GROUP} from "../../../../../constants/messages";
+import {NO_RAIL_FOR_GROUP} from "constants/messages";
 import {I18n} from "aws-amplify";
+import {WithBuilderStore, WithLayoutStore, WithUiStore} from "stores";
+import {WithRailToolUseCase} from "useCases";
+import {STORE_BUILDER, STORE_LAYOUT, STORE_UI} from "constants/stores";
+import {USECASE_RAIL_TOOL} from "constants/useCases";
 
 
-export interface PaletteProps {
+export type RailPaletteProps = {
   className?: string
-  builder?: BuilderStore
-  layout?: LayoutStore
-  ui?: UiStore
-}
+} & WithBuilderStore & WithLayoutStore & WithUiStore & WithRailToolUseCase
 
-export interface PaletteState {
+export interface RailPaletteState {
   customDialogOpen: boolean
 }
 
-type EnhancedPaletteProps = PaletteProps & WithBuilderPublicProps
 
-
-@inject(STORE_BUILDER, STORE_LAYOUT, STORE_UI)
+@inject(STORE_BUILDER, STORE_LAYOUT, STORE_UI, USECASE_RAIL_TOOL)
 @observer
-export class RailPalettes extends React.Component<EnhancedPaletteProps, PaletteState> {
+export default class RailPalettes extends React.Component<RailPaletteProps, RailPaletteState> {
 
-  constructor(props: EnhancedPaletteProps) {
+  constructor(props: RailPaletteProps) {
     super(props)
     this.state = {
       customDialogOpen: false
@@ -150,7 +143,7 @@ export class RailPalettes extends React.Component<EnhancedPaletteProps, PaletteS
               title={'New Rail Group'}
               open={this.isActive(Tools.RAIL_GROUPS) && this.state.customDialogOpen}
               onClose={this.closeCustomDialog}
-              addUserRailGroup={this.props.builderRegisterRailGroup}
+              addUserRailGroup={this.props.railToolUseCase.registerRailGroup}
               definedItems={customRailGroups}
             />
           }
@@ -162,9 +155,4 @@ export class RailPalettes extends React.Component<EnhancedPaletteProps, PaletteS
     )
   }
 }
-
-
-export default compose<EnhancedPaletteProps, PaletteProps>(
-  withBuilder,
-)(RailPalettes)
 

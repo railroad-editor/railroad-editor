@@ -1,13 +1,13 @@
-import {FormDialogBase, FormDialogProps, FormDialogState} from "../../../../common/FormDialog/FormDialogBase";
+import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import * as React from "react";
 import Grid from "@material-ui/core/Grid";
 import {compose} from "recompose";
 import {FormControlLabel, Switch, withStyles} from "@material-ui/core";
-import {LayoutStore} from "../../../../../store/layoutStore";
+import {LayoutStore} from "stores/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_LAYOUT, STORE_SANDBOX} from "../../../../../constants/stores";
-import {SandboxStore} from "../../../../../store/sandboxStore";
+import {SandboxStore} from "stores/sandboxStore";
 import MonacoEditor from "react-monaco-editor";
+import {STORE_LAYOUT, STORE_SANDBOX} from "constants/stores";
 
 const styles = theme => ({
   grid: {

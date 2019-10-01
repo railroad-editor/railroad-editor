@@ -1,6 +1,6 @@
 import * as React from 'react'
 import getLogger from "logging";
-import {LayoutConfig, LayoutMeta} from "store/layoutStore";
+import {LayoutConfig, LayoutMeta} from "stores/layoutStore";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {
   FormDialogBase,

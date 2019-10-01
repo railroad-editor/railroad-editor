@@ -1,9 +1,8 @@
+import {ConductionStates, LayoutStore, SwitcherData} from "stores/layoutStore";
 import {action} from "mobx";
-import getLogger from "logging";
-import layoutStore, {ConductionStates, LayoutStore} from "store/layoutStore";
 import {FlowDirection} from "react-rail-components/lib/parts/primitives/PartBase";
-
-const LOGGER = getLogger(__filename)
+import TrainController from "containers/Editor/ToolBar/SimulatorToolBar/TrainController";
+import simulatorStore from "stores/sandboxStore";
 
 
 export interface TemporaryFlowDirection {
@@ -19,50 +18,36 @@ export interface TemporaryRailFlows {
   [railId: number]: TemporaryRailPartFlows
 }
 
+export class SwitcherUseCase {
+  private layoutStore: LayoutStore
 
-export class SimulatorActions {
-
-  private layout: LayoutStore
-
-  constructor(layout: LayoutStore) {
-    this.layout = layout
+  constructor(layoutStore: LayoutStore) {
+    this.layoutStore = layoutStore
   }
 
   @action
-  connectFeederToPowerPack = (feederId: number, powerPackId: number) => {
-    const target = this.getPowerPackById(powerPackId)
-    if (target == null) {
-      return
-    }
-
-    if (target.supplyingFeederIds.includes(feederId)) {
-      return
-    }
-
-    this.disconnectFeederFromPowerPack(feederId)
-
-    this.layout.updatePowerPack({
-      id: target.id,
-      supplyingFeederIds: [...target.supplyingFeederIds, feederId]
-    })
+  addSwitcher = (item: SwitcherData) => {
+    this.layoutStore.addSwitcher(item)
+    TrainController.setSwitcherState(item.id, item.currentState)
   }
 
   @action
-  disconnectFeederFromPowerPack = (feederId: number) => {
-    const target = this.layout.currentLayoutData.powerPacks.find(p => p.supplyingFeederIds.includes(feederId))
-    if (target == null) {
-      return
-    }
+  updateSwitcher = (item: Partial<SwitcherData>) => {
+    const before = this.layoutStore.getSwitcherById(item.id)
+    this.layoutStore.updateSwitcher(item)
+    const after = this.layoutStore.getSwitcherById(item.id)
 
-    if (! target.supplyingFeederIds.includes(feederId)) {
-      return
+    if (before.currentState !== after.currentState) {
+      TrainController.setSwitcherState(item.id, item.currentState)
+      if (simulatorStore.sandbox) {
+        simulatorStore.sandbox.setSwitcherDirection(item.id, item.currentState)
+      }
     }
+  }
 
-    const newFeederIds = target.supplyingFeederIds.filter(id => id !== feederId)
-    this.layout.updatePowerPack({
-      id: target.id,
-      supplyingFeederIds: newFeederIds
-    })
+  @action
+  deleteSwitcher = (item: Partial<SwitcherData>) => {
+    this.layoutStore.deleteSwitcher(item)
   }
 
   @action
@@ -79,7 +64,7 @@ export class SimulatorActions {
       newConductionStates[idx] = [...target.conductionStates[idx], ...conductionStates[idx]]
     })
 
-    this.layout.updateSwitcher({
+    this.layoutStore.updateSwitcher({
       id: switcherId,
       conductionStates: newConductionStates
     })
@@ -87,7 +72,7 @@ export class SimulatorActions {
 
   @action
   disconnectTurnoutFromSwitcher = (railId: number) => {
-    const target = this.layout.getSwitcherByRailId(railId)
+    const target = this.layoutStore.getSwitcherByRailId(railId)
     if (target == null) {
       return
     }
@@ -97,7 +82,7 @@ export class SimulatorActions {
       newConductionStates[idx] = target.conductionStates[idx].filter(state => state.railId !== railId)
     })
 
-    this.layout.updateSwitcher({
+    this.layoutStore.updateSwitcher({
       id: target.id,
       conductionStates: newConductionStates
     })
@@ -112,14 +97,14 @@ export class SimulatorActions {
 
     // レールの状態更新
     target.conductionStates[state].forEach(s => {
-      this.layout.updateRail({
+      this.layoutStore.updateRail({
         id: s.railId,
         conductionState: s.conductionState
       })
     })
 
     // Switcherの状態更新
-    this.layout.updateSwitcher({
+    this.updateSwitcher({
       id: switcherId,
       currentState: state
     })
@@ -133,27 +118,20 @@ export class SimulatorActions {
     }
 
     conductionStates[target.currentState].forEach(s => {
-      this.layout.updateRail({
+      this.layoutStore.updateRail({
         id: s.railId,
         conductionState: s.conductionState
       })
     })
 
     // Switcherの状態更新
-    this.layout.updateSwitcher({
+    this.updateSwitcher({
       id: switcherId,
       conductionStates: conductionStates
     })
   }
 
-  private getPowerPackById = (id: number) => {
-    return this.layout.currentLayoutData.powerPacks.find(p => p.id === id)
-  }
-
   private getSwitcherById = (id: number) => {
-    return this.layout.currentLayoutData.switchers.find(p => p.id === id)
+    return this.layoutStore.currentLayoutData.switchers.find(p => p.id === id)
   }
-
 }
-
-export default new SimulatorActions(layoutStore)

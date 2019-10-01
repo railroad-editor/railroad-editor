@@ -16,14 +16,12 @@ import {Auth, I18n} from "aws-amplify";
 import Divider from "@material-ui/core/Divider";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "constants/stores";
-import {EditorStore} from "store/editorStore";
-import {LayoutMeta, LayoutStore} from "store/layoutStore";
-import {BuilderStore} from "store/builderStore";
+import {EditorStore} from "stores/editorStore";
+import {LayoutMeta, LayoutStore} from "stores/layoutStore";
 import SaveLayoutDialog from "containers/Editor/ToolBar/MenuDrawer/SaveLayoutDialog/SaveLayoutDialog";
 import LoginDialog from "containers/Editor/ToolBar/MenuDrawer/LoginDialog/LoginDialog";
 import SignUpDialog from "containers/Editor/ToolBar/MenuDrawer/SignUpDialog/SignUpDialog";
-import {UiStore} from "store/uiStore";
+import {UiStore} from "stores/uiStore";
 import {KeyLabel} from "components/KeyLabel/KeyLabel";
 import {SettingsDialog} from "./SettingsDialog/SettingsDialog";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -32,27 +30,31 @@ import {runInAction} from "mobx";
 import BugReportDialog from "./BugReportDialog/BugReportDialog";
 import BomDialog from "./BomDialog/BomDialog";
 import moment from 'moment';
-import {LAYOUT_LOADED, LAYOUT_SAVED, REQUIRE_LOGIN} from "../../../../constants/messages";
-import LayoutActions from "../../../../store/layoutActions";
+import {LAYOUT_LOADED, LAYOUT_SAVED, REQUIRE_LOGIN} from "constants/messages";
+import {ProjectUseCase} from "useCases/projectUseCase";
+import {WithEditorStore, WithLayoutStore, WithUiStore} from "stores";
+import {WithProjectUseCase} from "useCases";
+import {STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "constants/stores";
+import {USECASE_PROJECT} from "constants/useCases";
 
 const LOGGER = getLogger(__filename)
 
 
-export interface MenuDrawerProps {
+export type MenuDrawerProps = {
   open: boolean
   onClose: () => void
 
   editor?: EditorStore
   layout?: LayoutStore
-  builder?: BuilderStore
   ui?: UiStore
-}
+  projectUseCase?: ProjectUseCase
+} & WithEditorStore & WithLayoutStore & WithUiStore & WithProjectUseCase
 
 export interface MenuDrawerState {
 }
 
 
-@inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, STORE_UI)
+@inject(STORE_EDITOR, STORE_LAYOUT, STORE_UI, USECASE_PROJECT)
 @observer
 export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDrawerState> {
 
@@ -71,7 +73,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
   }
 
   loadLayout = async (layoutId: string) => {
-    await LayoutActions.loadLayout(layoutId)
+    await this.props.projectUseCase.loadLayout(layoutId)
     this.props.ui.setCommonSnackbar(true, I18n.get(LAYOUT_LOADED), 'success')
   }
 
@@ -143,7 +145,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
     }
     // 先にDrawerを閉じる
     this.props.onClose()
-    await LayoutActions.saveLayout()
+    await this.props.projectUseCase.saveLayout()
     this.props.ui.setCommonSnackbar(true, I18n.get(LAYOUT_SAVED), 'success')
   }
 
@@ -155,7 +157,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
     this.props.onClose()
     // metaを更新してから保存する
     this.props.layout.setLayoutMeta(meta)
-    await LayoutActions.saveLayout()
+    await this.props.projectUseCase.saveLayout()
     this.props.ui.setCommonSnackbar(true, I18n.get(LAYOUT_SAVED), 'success')
   }
 
@@ -236,7 +238,7 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
             userInfo={this.props.editor.userInfo}
             layouts={this.props.editor.layouts}
             loadLayout={this.loadLayout}
-            loadLayoutList={this.props.editor.loadLayoutList}
+            loadLayoutList={this.props.projectUseCase.loadLayoutList}
           />
         </>
       )
@@ -348,13 +350,13 @@ export default class MenuDrawer extends React.Component<MenuDrawerProps, MenuDra
           open={ui.loginDialog}
           onClose={this.closeLoginDialog}
           setAuthData={this.props.editor.setUserInfo}
-          loadLayoutList={this.props.editor.loadLayoutList}
+          loadLayoutList={this.props.projectUseCase.loadLayoutList}
         />
         <SignUpDialog
           open={ui.signInDialog}
           onClose={this.closeSignUpDialog}
           setAuthData={this.props.editor.setUserInfo}
-          loadLayoutList={this.props.editor.loadLayoutList}
+          loadLayoutList={this.props.projectUseCase.loadLayoutList}
         />
         <SettingsDialog
           title={'Layout Settings'}

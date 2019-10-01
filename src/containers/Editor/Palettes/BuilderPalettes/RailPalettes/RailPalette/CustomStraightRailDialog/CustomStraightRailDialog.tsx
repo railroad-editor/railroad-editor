@@ -2,10 +2,11 @@ import * as React from "react";
 import {FormControlLabel} from '@material-ui/core';
 import Checkbox from "@material-ui/core/Checkbox";
 import {Tools} from "constants/tools";
-import {RailItemData} from "containers/rails/index";
+import {RailItemData} from "containers/rails";
 import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import AutoFocusTextValidator from "containers/common/AutoFocusTextValidator";
+import {PaletteItem} from "stores";
 
 export interface CustomStraightRailDialogProps extends FormDialogProps {
   addUserRail: (item: RailItemData) => void

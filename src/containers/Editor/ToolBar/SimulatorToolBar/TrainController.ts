@@ -3,7 +3,7 @@ import Peer from 'skyway-js';
 import SessionAPI from "apis/session"
 import getLogger from "logging";
 import waitUntil from 'async-wait-until';
-import {TrainControllerConfig} from "store/layoutStore";
+import {TrainControllerConfig} from "stores/layoutStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -117,11 +117,11 @@ class TrainController {
 
   private send = (data: string) => {
     if (! this.conn) {
-      LOGGER.warn(`Not connected yet. data: ${data}`)
+      LOGGER.warn(`[TrainController] Not connected yet. data: ${data}`)
       return
     }
 
-    LOGGER.info(`Sending data: ${data}`)
+    LOGGER.info(`[TrainController] Sending data: ${data}`)
     this.conn.send(data)
   }
 }

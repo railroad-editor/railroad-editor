@@ -3,19 +3,16 @@ import {compose} from 'recompose'
 
 import {Tool} from 'react-paper-bindings'
 
-import withTools, {WithToolsPrivateProps} from '../hoc/withTools'
 import withMoveTool, {WithMoveToolProps} from '../hoc/withMoveTool'
 
 import {EditorBody, StyledToolBar, StyledWrapper} from "./Editor.style";
 
 import './Paper.css'
-import withBuilder, {WithBuilderPublicProps} from "../hoc/withBuilder";
 import getLogger from "logging";
 import withSelectTool, {WithSelectToolProps} from "containers/hoc/withSelectTool";
 import {inject, observer} from "mobx-react";
-import {EditorMode, EditorStore} from "store/editorStore";
-import {LayoutStore} from "store/layoutStore";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "constants/stores";
+import {EditorMode, EditorStore} from "stores/editorStore";
+import {LayoutStore} from "stores/layoutStore";
 import {GridPaper} from "containers/Editor/GridPaper/GridPaper";
 import Layout from "containers/Editor/Layout/Layout";
 import {
@@ -27,7 +24,7 @@ import {
   Tools
 } from "constants/tools";
 import FreeRailPlacer from "containers/Editor/FreeRailPlacer/FreeRailPlacer";
-import {BuilderStore} from "store/builderStore";
+import {BuilderStore} from "stores/builderStore";
 import {getAllRailComponents} from "containers/rails/utils";
 import LayoutTips from "containers/Editor/LayoutTips/LayoutTips";
 import Palettes from "./Palettes/Palettes";
@@ -36,8 +33,10 @@ import TemporaryLayer from "./TemporaryLayer/TemporaryLayer";
 import {Measure} from "./Measure/Measure";
 import {MeasureEventHandler} from "./MeasureEventHandler/MeasureEventHandler";
 import {observable} from "mobx";
-import {Snackbar} from "../../components/Snackbar/Snackbar";
-import {UiStore} from "../../store/uiStore";
+import {Snackbar} from "components/Snackbar/Snackbar";
+import {UiStore} from "stores/uiStore";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "constants/stores";
+import withKeyHandler, {WithKeyHandlerProps} from "../hoc/withKeyHandler";
 
 const LOGGER = getLogger(__filename)
 
@@ -53,9 +52,8 @@ export interface EditorProps {
 
 
 type EnhancedEditorProps = EditorProps
-  & WithToolsPrivateProps
+  & WithKeyHandlerProps
   & WithMoveToolProps
-  & WithBuilderPublicProps
   & WithSelectToolProps
 
 
@@ -107,14 +105,6 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
   buildModeMouseUp = (e) => {
     this.props.selectToolMouseUp(e)
     this.props.moveToolMouseUp(e)
-  }
-
-  buildModeKeyDown = (e) => {
-    this.props.builderKeyDown(e)
-  }
-
-  builderModeKeyUp = (e) => {
-    this.props.builderKeyUp(e)
   }
 
   onFrame = (e) => {
@@ -187,8 +177,6 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
               onMouseMove={this.buildModeMouseMove}
               onMouseDrag={this.buildModeMouseDrag}
               onMouseUp={this.buildModeMouseUp}
-              onKeyDown={this.buildModeKeyDown}
-              onKeyUp={this.builderModeKeyUp}
             />
           </GridPaper>
         </EditorBody>
@@ -205,9 +193,8 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
 
 export default compose<EditorProps | any, EditorProps | any>(
-  withBuilder,
   // withFullscreen,
-  withTools,
+  withKeyHandler,
   withMoveTool,
   withSelectTool,
   // connect(mapStateToProps, mapDispatchToProps)

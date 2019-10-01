@@ -2,15 +2,15 @@ import * as React from "react";
 import {normAngle} from "containers/rails/utils";
 import getLogger from "logging";
 import {compose} from "recompose";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "constants/stores";
 import {inject, observer} from "mobx-react";
-import {LayoutStore} from "store/layoutStore";
+import {LayoutStore} from "stores/layoutStore";
 import {Tooltip, withStyles} from "@material-ui/core";
-import {EditorStore} from "store/editorStore";
+import {EditorStore} from "stores/editorStore";
 import FeederSettingDialog
   from "containers/Editor/LayoutTips/FeederTips/FeederTip/FeederSettingDialog/FeederSettingDialog";
 import {FlowDirection} from "react-rail-components/lib/parts/primitives/PartBase";
 import {FeederInfo} from "react-rail-components";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "constants/stores";
 
 const LOGGER = getLogger(__filename)
 

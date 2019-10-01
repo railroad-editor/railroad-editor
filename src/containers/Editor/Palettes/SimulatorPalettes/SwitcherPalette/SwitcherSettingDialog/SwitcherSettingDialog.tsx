@@ -11,7 +11,7 @@ import {
   FormInputs
 } from "containers/common/FormDialog/FormDialogBase";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import {LayoutStore, SwitcherData, SwitcherType} from "store/layoutStore";
+import {LayoutStore, SwitcherData, SwitcherType} from "stores/layoutStore";
 import {
   SmallButton,
   Spacer

@@ -19,39 +19,34 @@ import GapIcon from "../Icon/Gap";
 import getLogger from "logging";
 import * as classNames from "classnames"
 import Tooltip from "@material-ui/core/Tooltip";
-import withBuilder, {WithBuilderPublicProps} from "containers/hoc/withBuilder";
-import {LayoutStore} from "store/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "constants/stores";
-import {BuilderStore, PlacingMode} from "store/builderStore";
-import {EditorStore} from "store/editorStore";
+import {PlacingMode} from "stores/builderStore";
 import {compose} from "recompose";
-import BuilderActions from "store/builderActions";
 import {StyledIconButton, VerticalDivider} from "containers/Editor/ToolBar/styles";
 import withMoveTool, {WithMoveToolProps} from "containers/hoc/withMoveTool";
 import PowerIcon from "@material-ui/icons/Power";
+import {WithBuilderStore, WithEditorStore, WithLayoutStore} from "stores";
+import {WithRailToolUseCase} from "useCases";
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "constants/stores";
+import {USECASE_RAIL_TOOL} from "constants/useCases";
 
 const LOGGER = getLogger(__filename)
 
 
-export interface BuilderToolBarProps {
-  editor?: EditorStore
-  builder?: BuilderStore
-  layout?: LayoutStore
-}
+export type BuilderToolBarProps = {
+  // empty
+} & WithEditorStore & WithBuilderStore & WithLayoutStore & WithRailToolUseCase
 
 export interface BuilderToolBarState {
   el: HTMLElement | undefined
 }
 
-type EnhancedBuilderToolBarProps = BuilderToolBarProps & WithBuilderPublicProps & WithMoveToolProps
 
-
-@inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT)
+@inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, USECASE_RAIL_TOOL)
 @observer
-export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps, BuilderToolBarState> {
+export class BuilderToolBar extends React.Component<BuilderToolBarProps & WithMoveToolProps, BuilderToolBarState> {
 
-  constructor(props: EnhancedBuilderToolBarProps) {
+  constructor(props: BuilderToolBarProps & WithMoveToolProps) {
     super(props)
     this.state = {
       el: undefined,
@@ -80,12 +75,13 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
 
   onCut = (e) => {
     this.props.layout.commit()
-    this.props.builderRegisterRailGroup('Clipboard', true)
+    this.props.railToolUseCase.registerRailGroup('Clipboard')
+    this.props.railToolUseCase.deleteSelected()
   }
 
   onDelete = (e) => {
     this.props.layout.commit()
-    BuilderActions.deleteSelected()
+    this.props.railToolUseCase.deleteSelected()
   }
 
 
@@ -205,7 +201,7 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
         <Tooltip title={`${Commands.COPY} (Ctrl+C)`}>
           <StyledIconButton
             onClick={(e) => {
-              this.props.builderRegisterRailGroup('Clipboard', false)
+              this.props.railToolUseCase.registerRailGroup('Clipboard')
             }}>
             <CopyIcon/>
           </StyledIconButton>
@@ -257,7 +253,6 @@ export class BuilderToolBar extends React.Component<EnhancedBuilderToolBarProps,
 }
 
 
-export default compose<EnhancedBuilderToolBarProps, BuilderToolBarProps>(
-  withBuilder,
+export default compose<BuilderToolBarProps & WithMoveToolProps, BuilderToolBarProps>(
   withMoveTool
 )(BuilderToolBar)

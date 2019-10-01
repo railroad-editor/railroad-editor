@@ -8,25 +8,26 @@ import {
 } from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
-import {LayoutStore, PowerPackData} from "store/layoutStore";
+import {PowerPackData} from "stores/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_LAYOUT} from "constants/stores";
 import {FeederInfo} from "react-rail-components";
-import SimulatorActions from "../../../../../../store/simulatorActions";
+import {WithLayoutStore} from "stores";
+import {WithPowerPackUseCase} from "useCases";
+import {STORE_LAYOUT} from "constants/stores";
+import {USECASE_POWERPACK} from "constants/useCases";
 
 
-export interface FeederSettingDialogProps extends FormDialogProps {
+export type FeederSettingDialogProps = {
   feeder: FeederInfo
   powerPacks: PowerPackData[]
-  layout?: LayoutStore
-}
+} & FormDialogProps & WithLayoutStore & WithPowerPackUseCase
 
 export interface FeederSettingDialogState extends FormDialogState {
   connectedPowerPackId: number
 }
 
 
-@inject(STORE_LAYOUT)
+@inject(STORE_LAYOUT, USECASE_POWERPACK)
 @observer
 export default class FeederSettingDialog extends FormDialogBase<FeederSettingDialogProps, FeederSettingDialogState> {
 
@@ -57,9 +58,9 @@ export default class FeederSettingDialog extends FormDialogBase<FeederSettingDia
       name: this.state.inputs.name,
     })
     if (this.state.connectedPowerPackId) {
-      SimulatorActions.connectFeederToPowerPack(this.props.feeder.id, this.state.connectedPowerPackId)
+      this.props.powerPackUseCase.connectFeederToPowerPack(this.props.feeder.id, this.state.connectedPowerPackId)
     } else {
-      SimulatorActions.disconnectFeederFromPowerPack(this.props.feeder.id)
+      this.props.powerPackUseCase.disconnectFeederFromPowerPack(this.props.feeder.id)
     }
     this.onClose()
   }

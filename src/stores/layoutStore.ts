@@ -1,16 +1,14 @@
 import {RailComponentClasses, RailData} from "containers/rails";
 import {action, computed, observable, toJS} from "mobx";
-import builderStore from "./builderStore";
 import {DEFAULT_GRID_SIZE, DEFAULT_PAPER_HEIGHT, DEFAULT_PAPER_WIDTH} from "constants/tools";
 import {getAllOpenCloseJoints} from "containers/rails/utils";
 import getLogger from "logging";
 import * as uuidv4 from "uuid/v4";
 import moment from "moment";
-import TrainController from "containers/Editor/ToolBar/SimulatorToolBar/TrainController";
 import railItems from "constants/railItems.json";
 import {computedFn} from "mobx-utils";
 import {FeederInfo, GapJoinerInfo} from "react-rail-components";
-import simulatorStore from "./sandboxStore";
+import layerPaletteStore from "./layerPaletteStore";
 
 const LOGGER = getLogger(__filename)
 
@@ -202,14 +200,13 @@ export class LayoutStore {
 
   @computed
   get activeLayerData() {
-    return this.currentLayoutData.layers.find(layer => layer.id === builderStore.activeLayerId)
+    return this.currentLayoutData.layers.find(layer => layer.id === layerPaletteStore.activeLayerId)
   }
 
   @computed
   get activeLayerRails() {
-    return this.currentLayoutData.rails.filter(r => r.layerId === builderStore.activeLayerId)
+    return this.currentLayoutData.rails.filter(r => r.layerId === layerPaletteStore.activeLayerId)
   }
-
   @computed
   get selectedRails() {
     return this.currentLayoutData.rails.filter(r => r.selected)
@@ -607,29 +604,12 @@ export class LayoutStore {
       ...item,
       id: id
     })
-    // コントローラー側も初期化
-    TrainController.setPowerPackDirection(id, item.direction)
-    TrainController.setPowerPackValue(id, item.power)
   }
 
   @action
   updatePowerPack = (item: Partial<PowerPackData>) => {
     const index = this.currentLayoutData.powerPacks.findIndex(feeder => feeder.id === item.id)
     const target = this.currentLayoutData.powerPacks[index]
-
-    if (item.direction != null && item.direction !== target.direction) {
-      item.power = 0
-      TrainController.setPowerPackDirection(target.id, item.direction)
-      if (simulatorStore.sandbox) {
-        simulatorStore.sandbox.setPowerPackDirection(target.id, item.power)
-      }
-    } else if (item.power != null && item.power !== target.power) {
-      TrainController.setPowerPackValue(target.id, item.power)
-      if (simulatorStore.sandbox) {
-        simulatorStore.sandbox.setPowerPackPower(target.id, item.power)
-      }
-    }
-
     this.currentLayoutData.powerPacks[index] = {
       ...target,
       ...item
@@ -659,21 +639,12 @@ export class LayoutStore {
       id: id,
       conductionStates: observable({0: [], 1: [], 2: []})
     })
-    TrainController.setSwitcherState(id, item.currentState)
   }
 
   @action
   updateSwitcher = (item: Partial<SwitcherData>) => {
     const index = this.currentLayoutData.switchers.findIndex(sw => sw.id === item.id)
     const target = this.currentLayoutData.switchers[index]
-
-    if (item.currentState != null && item.currentState !== target.currentState) {
-      TrainController.setSwitcherState(target.id, item.currentState)
-      if (simulatorStore.sandbox) {
-        simulatorStore.sandbox.setSwitcherDirection(target.id, item.currentState)
-      }
-    }
-
     this.currentLayoutData.switchers[index] = {
       ...target,
       ...item
@@ -703,10 +674,18 @@ export class LayoutStore {
     return this.currentLayoutData.gapJoiners.find(item => item.id === id)
   }
 
+  getSwitcherById = (id: number): SwitcherData => {
+    return computed(() => this.currentLayoutData.switchers.find(sw => sw.id === id)).get()
+  }
+
   getSwitcherByRailId = (id: number): SwitcherData => {
     return computed(() => this.currentLayoutData.switchers.find(sw =>
       _.flatMap(_.values(sw.conductionStates), cs => cs.slice()).find(cs => cs.railId === id)
     )).get()
+  }
+
+  getPowerPackById = (id: number): PowerPackData => {
+    return computed(() => this.currentLayoutData.powerPacks.find(p => p.id === id)).get()
   }
 
   getPowerPackByFeederId = (id: number): PowerPackData => {

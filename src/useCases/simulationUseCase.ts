@@ -1,22 +1,28 @@
-import layoutStore, {LayoutStore, PowerPackData} from "./layoutStore";
 import {action, comparer, reaction} from "mobx";
 import {FlowDirection, Pivot} from "react-rail-components/lib/parts/primitives/PartBase";
-import {getRailComponent} from "../containers/rails/utils";
-import {TemporaryFlowDirection, TemporaryRailFlows} from "./simulatorActions";
+import {getRailComponent} from "containers/rails/utils";
 import getLogger from "../logging";
-import commonStore, {EditorMode} from "./editorStore";
+import {PowerPackUseCase, TemporaryFlowDirection, TemporaryRailFlows} from "useCases/powerPackUseCase";
+import {EditorMode, EditorStore} from "stores/editorStore";
+import {LayoutStore, PowerPackData} from "stores/layoutStore";
 
 const LOGGER = getLogger(__filename)
 
-class FlowSimulator {
+export class SimulationUseCase {
 
-  private layout: LayoutStore
+  private editorStore: EditorStore
+  private layoutStore: LayoutStore
+  private powerPackUseCase: PowerPackUseCase
+
   private temporaryRailFlows: TemporaryRailFlows
   private errorPowerPacks: PowerPackData[]
   private errorRails: any[]
 
-  constructor(layout: LayoutStore) {
-    this.layout = layout
+  constructor(editorStore: EditorStore, layoutStore: LayoutStore, powerPackUseCase: PowerPackUseCase) {
+    this.editorStore = editorStore
+    this.layoutStore = layoutStore
+    this.powerPackUseCase = powerPackUseCase
+
     this.temporaryRailFlows = []
 
     // シミュレーション更新タイミング
@@ -30,7 +36,7 @@ class FlowSimulator {
         }
       },
       (data) => {
-        if (commonStore.mode === EditorMode.SIMULATOR) {
+        if (this.editorStore.mode === EditorMode.SIMULATOR) {
           this.start()
         }
       },
@@ -43,7 +49,7 @@ class FlowSimulator {
     reaction(
       () => _.flatMap(layoutStore.currentLayoutData.switchers, sw => sw.conductionStates),
       () => {
-        if (commonStore.mode === EditorMode.SIMULATOR) {
+        if (this.editorStore.mode === EditorMode.SIMULATOR) {
           this.start()
         }
       }
@@ -60,8 +66,8 @@ class FlowSimulator {
     this.reset()
 
     // 各フィーダーの電流を仮シミュレートする
-    layoutStore.currentLayoutData.feeders.forEach(feeder =>
-      this.simulateFeederCurrentFlow(feeder.id, layoutStore.currentLayoutData.powerPacks))
+    this.layoutStore.currentLayoutData.feeders.forEach(feeder =>
+      this.simulateFeederCurrentFlow(feeder.id, this.layoutStore.currentLayoutData.powerPacks))
 
     LOGGER.info(this.temporaryRailFlows)
 
@@ -72,7 +78,7 @@ class FlowSimulator {
       })
     })
 
-    layoutStore.updateRails(this.errorRails.map(r => {
+    this.layoutStore.updateRails(this.errorRails.map(r => {
       return {
         id: r.id,
         flowDirections: {
@@ -80,7 +86,7 @@ class FlowSimulator {
         }
       }
     }))
-    layoutStore.updatePowerPacks(this.errorPowerPacks.map(p => {
+    this.powerPackUseCase.updatePowerPacks(this.errorPowerPacks.map(p => {
       return {id: p.id, power: 0, isError: true}
     }))
   }
@@ -96,13 +102,13 @@ class FlowSimulator {
 
   private reset = () => {
     this.temporaryRailFlows = {}
-    layoutStore.updateRails(layoutStore.currentLayoutData.rails.map(r => {
+    this.layoutStore.updateRails(this.layoutStore.currentLayoutData.rails.map(r => {
       return {
         id: r.id,
         flowDirections: null  // reset
       }
     }))
-    layoutStore.updatePowerPacks(layoutStore.currentLayoutData.powerPacks.map(p => {
+    this.powerPackUseCase.updatePowerPacks(this.layoutStore.currentLayoutData.powerPacks.map(p => {
       return {
         id: p.id,
         isError: false
@@ -119,8 +125,8 @@ class FlowSimulator {
       return
     }
 
-    const feeder = layoutStore.getFeederDataById(feederId)
-    const rail = layoutStore.getRailDataById(feeder.railId)
+    const feeder = this.layoutStore.getFeederDataById(feederId)
+    const rail = this.layoutStore.getRailDataById(feeder.railId)
     const joints = getRailComponent(rail.id).railPart.joints
     const feederSockets = getRailComponent(rail.id).railPart.feederSockets
     const feederedPartId = feederSockets[feeder.socketId].pivotPartIndex
@@ -164,14 +170,14 @@ class FlowSimulator {
 
 
   private isGapJoiner = (railId: number, jointId: number) => {
-    const gapJoiner = layoutStore.currentLayoutData.gapJoiners.find(gj =>
+    const gapJoiner = this.layoutStore.currentLayoutData.gapJoiners.find(gj =>
       gj.railId === railId && gj.jointId === jointId)
     return !! gapJoiner
   }
 
 
   private setCurrentFlowToRail = (railId: number, jointId: number, feederId: number, isComing: boolean) => {
-    const rail = layoutStore.getRailDataById(railId)
+    const rail = this.layoutStore.getRailDataById(railId)
     const railPart = getRailComponent(railId).railPart
     const joint = railPart.joints[jointId]
     const partId = joint.pivotPartIndex
@@ -258,7 +264,7 @@ class FlowSimulator {
       direction = FlowDirection.RIGHT_TO_LEFT
     }
 
-    layoutStore.updateRail({
+    this.layoutStore.updateRail({
       id: railId,
       flowDirections: {
         [partId]: direction
@@ -268,7 +274,7 @@ class FlowSimulator {
     if (direction === FlowDirection.ILLEGAL) {
       this.errorRails.push({id: railId, partId: partId})
       const errorPowerPacks = tempFlows.map(tf => tf.feederId)
-        .map(fid => layoutStore.getPowerPackByFeederId(fid))
+        .map(fid => this.layoutStore.getPowerPackByFeederId(fid))
       this.errorPowerPacks = _.unionWith(this.errorPowerPacks, errorPowerPacks, (p1, p2) => p1.id === p2.id)
     } else {
       _.remove(this.errorRails, r => _.isEqual(r, {id: railId, partId: partId}))
@@ -276,5 +282,3 @@ class FlowSimulator {
   }
 }
 
-
-export default new FlowSimulator(layoutStore)

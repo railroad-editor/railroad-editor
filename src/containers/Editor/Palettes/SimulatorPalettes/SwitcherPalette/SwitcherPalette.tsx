@@ -2,14 +2,13 @@ import * as React from 'react'
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import * as classNames from "classnames"
 import {PaletteAddButton} from "components/PaletteAddButton/PaletteAddButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 // import PowerIcon from '@material-ui/icons/Power';
 import CallSplitIcon from '@material-ui/icons/CallSplit';
-import {LayoutStore, SwitcherData, SwitcherType} from "store/layoutStore";
+import {SwitcherData, SwitcherType} from "stores/layoutStore";
 import Rnd from "react-rnd"
 import {
   CenteredDiv,
@@ -22,15 +21,17 @@ import NewSwitcherDialog
 import {SwitcherCard} from "containers/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwticherCard";
 import {DEFAULT_SWITCHER_COLOR} from "constants/tools";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
+import {STORE_BUILDER, STORE_LAYOUT} from 'constants/stores';
+import {WithLayoutStore} from "stores";
+import {WithSwitcherUseCase} from "useCases";
 
 
-export interface SwitcherPaletteProps {
+export type SwitcherPaletteProps = {
   className?: string
   active: boolean
   items: SwitcherData[]
   helpMessage?: string
-  layout?: LayoutStore
-}
+} & WithLayoutStore & WithSwitcherUseCase
 
 
 export interface PowerPackPaletteState {
@@ -72,7 +73,7 @@ export default class SwitcherPalette extends React.Component<SwitcherPaletteProp
         conductionStates = {0: [], 1: [], 2: []}
         break
     }
-    this.props.layout.addSwitcher({
+    this.props.switcherUseCase.addSwitcher({
       id: 0,
       name: name,
       type: type,

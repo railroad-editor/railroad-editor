@@ -8,18 +8,19 @@ import {
 } from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {FormControl, InputLabel, List, ListItem, MenuItem, Select} from "@material-ui/core";
-import {ConductionStates, LayoutStore, SwitcherData, SwitcherType} from "store/layoutStore";
+import {ConductionStates, SwitcherData, SwitcherType} from "stores/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_LAYOUT} from "constants/stores";
 import {RailData} from "containers/rails";
-import SimulatorActions from "../../../../../../store/simulatorActions";
+import {WithSwitcherUseCase} from "useCases";
+import {WithLayoutStore} from "stores";
+import {STORE_LAYOUT} from "constants/stores";
+import {USECASE_SWITCHER} from "constants/useCases";
 
 
-export interface TurnoutSettingDialogProps extends FormDialogProps {
+export type TurnoutSettingDialogProps = {
   rail: RailData
   switchers: SwitcherData[]
-  layout?: LayoutStore
-}
+} & FormDialogProps & WithLayoutStore & WithSwitcherUseCase
 
 export interface TurnoutSettingDialogState extends FormDialogState {
   connectedSwitcherId: number
@@ -27,7 +28,7 @@ export interface TurnoutSettingDialogState extends FormDialogState {
 }
 
 
-@inject(STORE_LAYOUT)
+@inject(STORE_LAYOUT, USECASE_SWITCHER)
 @observer
 export default class TurnoutSettingDialog extends FormDialogBase<TurnoutSettingDialogProps, TurnoutSettingDialogState> {
 
@@ -77,7 +78,7 @@ export default class TurnoutSettingDialog extends FormDialogBase<TurnoutSettingD
       turnoutName: this.state.inputs.turnoutName,
     })
     if (this.state.connectedSwitcherId) {
-      SimulatorActions.connectTurnoutToSwitcher(
+      this.props.switcherUseCase.connectTurnoutToSwitcher(
         this.props.rail.id, this.state.conductionStates, this.state.connectedSwitcherId)
     } else {
       // this.props.layoutLogic.disconnectFeederFromSwitcher(this.props.feeder.id, this.state.connectedSwitcherId)

@@ -25,6 +25,7 @@
     "strictNullChecks": false
   },
   "include": [
-    "src"
+    "src",
+    "node_modules/react-rail-components/src/type.d.ts"
   ]
 }

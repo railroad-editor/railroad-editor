@@ -8,10 +8,10 @@ import {
 } from "containers/common/FormDialog/FormDialogBase";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_FREE_RAIL_PLACER} from "constants/stores";
-import {BuilderStore} from "../../../../store/builderStore";
+import {BuilderStore} from "stores/builderStore";
 import {Point} from "paper";
-import {FreeRailPlacerStore} from "../../../../store/freeRailPlacerStore";
+import {FreeRailPlacerStore} from "stores/freeRailPlacerStore";
+import {STORE_BUILDER, STORE_FREE_RAIL_PLACER} from "constants/stores";
 
 
 export interface DistantPlacingDialogProps extends FormDialogProps {

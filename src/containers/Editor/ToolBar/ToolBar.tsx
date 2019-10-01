@@ -12,11 +12,10 @@ import {
 import {StyledIconButton} from "./styles";
 import MenuIcon from "@material-ui/icons/Menu";
 import getLogger from "logging";
-import {LayoutStore} from "store/layoutStore";
+import {LayoutStore} from "stores/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "constants/stores";
-import {BuilderStore} from "store/builderStore";
-import {EditorMode, EditorStore} from "store/editorStore";
+import {BuilderStore} from "stores/builderStore";
+import {EditorMode, EditorStore} from "stores/editorStore";
 import MenuDrawer from "containers/Editor/ToolBar/MenuDrawer/MenuDrawer";
 import {compose} from "recompose";
 import {EditableTypography} from "containers/common/EditableTypography/EditableTypography";
@@ -24,9 +23,10 @@ import Peer from 'skyway-js';
 import BuilderToolBar from "containers/Editor/ToolBar/BuilderToolBar/BuilderToolBar";
 import withMoveTool from "containers/hoc/withMoveTool";
 import SimulatorToolBar from "containers/Editor/ToolBar/SimulatorToolBar/SimulatorToolBar";
-import {UiStore} from "store/uiStore";
+import {UiStore} from "stores/uiStore";
 import BuildIcon from '@material-ui/icons/Build';
 import PlayArrowIcon from '@material-ui/icons/PlayCircleFilled';
+import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "constants/stores";
 
 const LOGGER = getLogger(__filename)
 

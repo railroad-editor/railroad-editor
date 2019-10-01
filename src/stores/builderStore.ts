@@ -1,34 +1,12 @@
 import {RailComponentClasses, RailData, RailGroupData, RailItemData} from "containers/rails";
-import {action, computed, observable, reaction, runInAction} from "mobx";
+import {action, computed, observable} from "mobx";
 import {Tools} from "constants/tools";
 import builderPaletteData from "constants/railPaletteItems.json"
 import railPaletteItems from "constants/railPaletteItems.json"
-import BuilderActions from "store/builderActions";
-import layoutStore from "store/layoutStore";
+import layoutStore from "stores/layoutStore";
 import {reactionWithOldValue} from "./utils";
-import {getCloseJointsOf, intersectsOf} from "../containers/rails/utils";
-import {FeederInfo, JointInfo, RailGroupProps} from "react-rail-components";
-import measureToolStore from "./measureStore";
-
-
-export interface PresetPaletteItemsByVendor {
-  [key: string]: PresetPaletteItems
-}
-
-export interface PresetPaletteItems {
-  [key: string]: PaletteItem[]
-}
-
-export interface LastPaletteItems {
-  [key: string]: PaletteItem
-}
-
-export interface UserRailGroupData extends RailGroupProps {
-  // レールグループを構成するレール
-  rails: RailData[]
-  // レールグループで未接続のジョイント
-  openJoints: JointInfo[]
-}
+import {FeederInfo} from "react-rail-components";
+import {LastPaletteItems, PaletteItem, PresetPaletteItemsByVendor, UserRailGroupData} from "./types";
 
 
 export interface BuilderStoreState {
@@ -36,7 +14,6 @@ export interface BuilderStoreState {
   paletteItem: PaletteItem
   lastPaletteItems: LastPaletteItems
   placingMode: PlacingMode
-  activeLayerId: number
   temporaryRails: RailData[]
   temporaryRailGroup: RailGroupData
   userRailGroups: UserRailGroupData[]
@@ -68,7 +45,6 @@ export const INITIAL_STATE: BuilderStoreState = {
     [Tools.GAP_JOINERS]: {type: 'GapJoiner', name: 'GapJoiner'},
   },
   placingMode: PlacingMode.FREE,
-  activeLayerId: 1,
   temporaryRails: [],
   temporaryRailGroup: null,
   userRailGroups: [],
@@ -93,8 +69,6 @@ export class BuilderStore {
   @observable lastPaletteItems: LastPaletteItems
   // レール設置モード
   @observable placingMode: PlacingMode
-  // 現在アクティブ（編集中）のレイヤーID
-  @observable activeLayerId: number
   // 仮レール（レールグループの場合は複数）
   @observable temporaryRails: RailData[]
   // 仮レールグループ
@@ -119,14 +93,13 @@ export class BuilderStore {
   @observable currentRailId: number
 
   constructor({
-                paletteItem, lastPaletteItems, placingMode, activeLayerId, temporaryRails, temporaryRailGroup, userRailGroups,
+                paletteItem, lastPaletteItems, placingMode, temporaryRails, temporaryRailGroup, userRailGroups,
                 userRails, activeTool, selecting, temporaryFeeder,
                 adjustmentAngle, currentJointId, currentRailId
               }) {
     this.paletteItem = paletteItem
     this.lastPaletteItems = lastPaletteItems
     this.placingMode = placingMode
-    this.activeLayerId = activeLayerId
     this.temporaryRails = temporaryRails
     this.temporaryRailGroup = temporaryRailGroup
     this.userRailGroups = userRailGroups
@@ -139,13 +112,6 @@ export class BuilderStore {
     this.currentJointId = currentJointId
     this.currentRailId = currentRailId
 
-    // ツール変更時
-    reaction(
-      () => this.activeTool,
-      (tool) => {
-        this.changeMode(tool)
-      }
-    )
 
     reactionWithOldValue(
       () => layoutStore.currentLayoutData.rails.length,
@@ -159,28 +125,6 @@ export class BuilderStore {
         }
       }
     )
-  }
-
-  @action
-  changeMode = (tool: Tools) => {
-    this.setCursorShape(tool)
-    switch (tool) {
-      case Tools.FEEDERS:
-        BuilderActions.changeToFeederMode()
-        break
-      case Tools.GAP_JOINERS:
-        BuilderActions.changeToGapJoinerMode()
-        break
-      case Tools.MEASURE:
-        runInAction(() => {
-          measureToolStore.setStartPosition(null)
-          measureToolStore.setEndPosition(null)
-        })
-        break
-      default:
-        BuilderActions.changeToRailMode()
-        break
-    }
   }
 
 
@@ -236,20 +180,6 @@ export class BuilderStore {
     return railPaletteItems[layoutStore.config.railSetName]
   }
 
-  /**
-   * 仮レールが他のレールと衝突しているか否かを判定する
-   */
-  @action
-  checkIntersections() {
-    const {temporaryRails} = this
-    const {currentLayoutData, activeLayerRails} = layoutStore
-
-    const jointsCloseToTempRail = _.flatMap(temporaryRails, r => getCloseJointsOf(r.id, currentLayoutData.rails))
-    // const closeJointPairForTempRail = this.props.layout.unconnectedCloseJoints.filter(ji => ji.from.railId === -1)
-    const targetRailIds = _.without(activeLayerRails.map(rail => rail.id), ...jointsCloseToTempRail.map(j => j.to.railId))
-    const intersects = temporaryRails.map(r => intersectsOf(r.id, targetRailIds)).some(e => e)
-    this.setIntersects(intersects)
-  }
 
   /**
    * 指定の名前のレールの固有Propsを返す。
@@ -311,11 +241,6 @@ export class BuilderStore {
   @action
   setPaletteItem = (paletteItem: PaletteItem) => {
     this.paletteItem = paletteItem
-  }
-
-  @action
-  setActiveLayer = (layerId: number) => {
-    this.activeLayerId = layerId
   }
 
   @action

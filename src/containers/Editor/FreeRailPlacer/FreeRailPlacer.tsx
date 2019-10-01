@@ -1,21 +1,19 @@
 import * as React from "react";
 import {Point} from "paper";
 import {Layer} from "react-paper-bindings";
-import {getClosest} from "constants/utils";
 import getLogger from "logging";
-import {default as withBuilder, WithBuilderPublicProps} from "containers/hoc/withBuilder";
-import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_EDITOR, STORE_FREE_RAIL_PLACER, STORE_LAYOUT} from "constants/stores";
-import {BuilderStore, PlacingMode} from "store/builderStore";
-import {LayoutStore} from "store/layoutStore";
+import {PlacingMode} from "stores/builderStore";
 import {isRailTool, RAIL_PUTTER_MARKER_RADIUS} from "constants/tools";
-import {JOINT_DETECTION_OPACITY_RATE, JOINT_FILL_COLORS} from "constants/parts";
-import {EditorMode, EditorStore} from "store/editorStore";
+import {EditorMode} from "stores/editorStore";
 import {reaction} from "mobx";
 import CirclePart from "react-rail-components/lib/parts/primitives/CirclePart";
 import RectPart from "react-rail-components/lib/parts/primitives/RectPart";
-import {FreeRailPlacerStore} from "../../../store/freeRailPlacerStore";
+import {WithBuilderStore, WithEditorStore, WithFreeRailPlacerStore, WithLayoutStore} from "stores";
+import {JOINT_DETECTION_OPACITY_RATE, JOINT_FILL_COLORS} from "react-rail-components/lib/constants";
+import {WithRailToolUseCase} from "useCases";
+import {STORE_BUILDER, STORE_EDITOR, STORE_FREE_RAIL_PLACER, STORE_LAYOUT} from "constants/stores";
+import {USECASE_RAIL_TOOL} from "constants/useCases";
 
 const LOGGER = getLogger(__filename)
 
@@ -26,13 +24,9 @@ enum Phase {
   SET_ANGLE
 }
 
-export interface FreeRailPlacerProps {
+export type FreeRailPlacerProps = {
   mousePosition: Point2D
-  editor?: EditorStore
-  builder?: BuilderStore
-  layout?: LayoutStore
-  freeRailPlacer?: FreeRailPlacerStore
-}
+} & WithEditorStore & WithBuilderStore & WithLayoutStore & WithFreeRailPlacerStore & WithRailToolUseCase
 
 export interface FreeRailPlacerState {
   fixedPosition: Point2D
@@ -41,16 +35,14 @@ export interface FreeRailPlacerState {
   isError: boolean
 }
 
-type FreeRailPlacerEnhancedProps = FreeRailPlacerProps & WithBuilderPublicProps
 
-
-@inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, STORE_FREE_RAIL_PLACER)
+@inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, STORE_FREE_RAIL_PLACER, USECASE_RAIL_TOOL)
 @observer
-export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps, FreeRailPlacerState> {
+export default class FreeRailPlacer extends React.Component<FreeRailPlacerProps, FreeRailPlacerState> {
 
   marker: CirclePart
 
-  constructor(props: FreeRailPlacerEnhancedProps) {
+  constructor(props: FreeRailPlacerProps) {
     super(props)
     this.state = {
       fixedPosition: null,
@@ -278,7 +270,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
         angle: angle,
       }
       LOGGER.info('[FreeRailPlacer] TemporaryRailGroup', tempRailGroup)
-      this.props.builderSetTemporaryRailGroup(tempRailGroup, rails)
+      this.props.railToolUseCase.setTemporaryRailGroup(tempRailGroup, rails)
     } else if (this.props.builder.temporaryRailGroup.angle !== angle) {
       const tempRailGroup = {
         pivotJointInfo: this.props.builder.temporaryRailGroup.pivotJointInfo,
@@ -286,7 +278,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
         angle: angle,
       }
       LOGGER.info('[FreeRailPlacer] TemporaryRailGroup', tempRailGroup)
-      this.props.builderSetTemporaryRailGroup(tempRailGroup, rails)
+      this.props.railToolUseCase.setTemporaryRailGroup(tempRailGroup, rails)
     }
   }
 
@@ -309,7 +301,7 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
         angle: angle,
         pivotJointIndex: 0
       }
-      this.props.builderSetTemporaryRail(tempRail)
+      this.props.railToolUseCase.setTemporaryRail(tempRail)
     } else if (this.props.builder.temporaryRails[0].angle !== angle) {
       // 仮レールが既に存在するならPivotJointをキープ
       const tempRail = {
@@ -318,14 +310,14 @@ export class FreeRailPlacer extends React.Component<FreeRailPlacerEnhancedProps,
         angle: angle,
         pivotJointIndex: this.props.builder.temporaryRails[0].pivotJointIndex
       }
-      this.props.builderSetTemporaryRail(tempRail)
+      this.props.railToolUseCase.setTemporaryRail(tempRail)
     }
     this.setState({steppedAngle})
   }
 
   private addRail = () => {
     // 仮レールの位置にレールを設置
-    this.props.builderAddRail()
+    this.props.railToolUseCase.addRail()
     this.setState({phase: Phase.SET_POSITION})
   }
 }
@@ -351,6 +343,9 @@ const getSteppedAngleByMousePosition = (anchor: Point2D, cursor: Point2D, step: 
 }
 
 
-export default compose<FreeRailPlacerEnhancedProps, FreeRailPlacerProps>(
-  withBuilder,
-)(FreeRailPlacer)
+const getClosest = (number: number, array: number[]) => {
+  return array.reduce((prev, curr) => {
+    return (Math.abs(curr - number) < Math.abs(prev - number) ? curr : prev);
+  })
+}
+

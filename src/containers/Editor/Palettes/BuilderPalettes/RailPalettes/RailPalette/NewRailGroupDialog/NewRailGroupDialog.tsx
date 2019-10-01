@@ -4,16 +4,15 @@ import AutoFocusTextValidator from "containers/common/AutoFocusTextValidator";
 import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {inject, observer} from "mobx-react";
-import {STORE_UI} from "../../../../../../../constants/stores";
-import {UiStore} from "../../../../../../../store/uiStore";
+import {PaletteItem, WithUiStore} from "stores";
+import {STORE_UI} from "constants/stores";
 
 const LOGGER = getLogger(__filename)
 
-export interface NewRailGroupDialogProps extends FormDialogProps {
+export type NewRailGroupDialogProps = {
   addUserRailGroup: (name: string, shouldDelete: boolean) => void
   definedItems: PaletteItem[]
-  ui?: UiStore
-}
+} & FormDialogProps & WithUiStore
 
 
 @inject(STORE_UI)

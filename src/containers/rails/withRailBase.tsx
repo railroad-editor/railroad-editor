@@ -1,19 +1,19 @@
 import * as React from "react";
 import getLogger from "logging";
-import withBuilder, {WithBuilderPublicProps} from "containers/hoc/withBuilder";
 import {RailData} from "./index";
-import {compose} from "recompose";
-import {BuilderStore, PlacingMode} from "store/builderStore";
-import {LayoutStore} from "store/layoutStore";
+import {BuilderStore, PlacingMode} from "stores/builderStore";
+import {LayoutStore} from "stores/layoutStore";
 import {inject, observer} from "mobx-react";
-import {STORE_BUILDER, STORE_FREE_RAIL_PLACER, STORE_LAYOUT, STORE_MEASURE} from "constants/stores";
-import BuilderActions from "store/builderActions";
 import {isRailTool, Tools} from "constants/tools";
 import {FlowDirection} from "react-rail-components/lib/parts/primitives/PartBase";
 import {ArcDirection} from "react-rail-components/lib/parts/primitives/ArcPart";
 import {RailBase, RailBaseProps, RailBaseState} from "react-rail-components";
-import {MeasureStore} from "../../store/measureStore";
-import {FreeRailPlacerStore} from "../../store/freeRailPlacerStore";
+import {MeasureStore} from "stores/measureStore";
+import {FreeRailPlacerStore} from "stores/freeRailPlacerStore";
+import {RailToolUseCase} from "useCases/railToolUseCase";
+import {SelectionToolUseCase} from "useCases/selectionToolUseCase";
+import {USECASE_RAIL_TOOL, USECASE_SELECTION} from "constants/useCases";
+import {STORE_BUILDER, STORE_FREE_RAIL_PLACER, STORE_LAYOUT, STORE_MEASURE} from "constants/stores";
 
 const LOGGER = getLogger(__filename)
 
@@ -55,9 +55,11 @@ export interface WithRailBaseProps {
   layout?: LayoutStore
   measure?: MeasureStore
   freeRailPlacer?: FreeRailPlacerStore
+  selectionToolUseCase?: SelectionToolUseCase
+  railToolUseCase?: RailToolUseCase
 }
 
-export type RailBaseEnhancedProps = RailBaseProps & WithRailBaseProps & WithBuilderPublicProps
+export type RailBaseEnhancedProps = RailBaseProps & WithRailBaseProps
 
 
 /**
@@ -67,7 +69,7 @@ export type RailBaseEnhancedProps = RailBaseProps & WithRailBaseProps & WithBuil
 export default function withRailBase(WrappedComponent: React.ComponentClass<RailBaseEnhancedProps>) {
 
 
-  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_MEASURE, STORE_FREE_RAIL_PLACER)
+  @inject(STORE_BUILDER, STORE_LAYOUT, STORE_MEASURE, STORE_FREE_RAIL_PLACER, USECASE_SELECTION, USECASE_RAIL_TOOL)
   @observer
   class WithRailBase extends React.Component<RailBaseEnhancedProps, {}> {
 
@@ -129,7 +131,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      */
     onGapJoinerLeftClick = (id: number, e: MouseEvent) => {
       if (this.props.builder.activeTool === Tools.GAP_JOINERS) {
-        BuilderActions.toggleSelectGapJoiner(id)
+        this.props.selectionToolUseCase.toggleSelectGapJoiner(id)
       }
     }
 
@@ -211,7 +213,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      */
     onFeederLeftClick = (id: number, e: MouseEvent) => {
       if (this.props.builder.activeTool === Tools.FEEDERS) {
-        BuilderActions.toggleSelectFeeder(id)
+        this.props.selectionToolUseCase.toggleSelectFeeder(id)
       }
     }
 
@@ -362,7 +364,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
       if (_.isEmpty(this.props.builder.temporaryRails)) {
         return false
       }
-      this.props.builderAddRail()
+      this.props.railToolUseCase.addRail()
       // 検出済状態に移行する
       return true
     }
@@ -386,7 +388,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
         })
       }
       // 仮レールの衝突判定を行う
-      this.props.builder.checkIntersections()
+      this.props.railToolUseCase.checkIntersections()
       // ジョイントのエラー状態を即座に反映する
       this.onJointMouseMove(jointId, e)
 
@@ -424,9 +426,9 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
         return false
       }
       if (e.modifiers.shift) {
-        BuilderActions.selectRail(this.props.id, ! this.props.selected)
+        this.props.selectionToolUseCase.selectRail(this.props.id, ! this.props.selected)
       } else {
-        BuilderActions.toggleSelectRail(this.props.id)
+        this.props.selectionToolUseCase.toggleSelectRail(this.props.id)
       }
       LOGGER.info(`${this.props.id} clicked.`)
       return false
@@ -534,7 +536,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
         angle: this.railPart.getGlobalJointAngle(jointId) + this.props.builder.adjustmentAngle
       }
 
-      this.props.builderSetTemporaryRailGroup(railGroup, rails)
+      this.props.railToolUseCase.setTemporaryRailGroup(railGroup, rails)
     }
 
 
@@ -554,7 +556,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
 
       const position = this.railPart.getGlobalJointPosition(jointId)
       // 仮レールを設置する
-      this.props.builderSetTemporaryRail({
+      this.props.railToolUseCase.setTemporaryRail({
         ...railData,
         position: {x: position.x, y: position.y},
         angle: this.railPart.getGlobalJointAngle(jointId) + this.props.builder.adjustmentAngle,
@@ -577,8 +579,6 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
 
   }
 
-  return compose<RailBaseEnhancedProps, WithRailBaseProps | any>(
-    withBuilder,
-  )(WithRailBase)
+  return WithRailBase
 }
 

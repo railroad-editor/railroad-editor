@@ -1,12 +1,12 @@
 import * as React from 'react'
 import {compose} from "recompose";
-import {LayoutStore} from "store/layoutStore";
+import {LayoutStore} from "stores/layoutStore";
 import {
   StyledPowerPackPalette,
   StyledSwitcherPalette
 } from "containers/Editor/Palettes/SimulatorPalettes/SimulatorPalettes.style";
 import {inject, observer} from "mobx-react";
-import {STORE_LAYOUT} from "../../../../constants/stores";
+import {STORE_LAYOUT} from "constants/stores";
 
 
 export interface SimulatorPalettesProps {

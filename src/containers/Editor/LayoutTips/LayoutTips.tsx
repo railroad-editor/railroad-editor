@@ -1,11 +1,11 @@
 import * as React from "react";
 import getLogger from "logging";
 import {compose} from "recompose";
-import {STORE_EDITOR} from "constants/stores";
 import {inject, observer} from "mobx-react";
-import {EditorMode, EditorStore} from "store/editorStore";
+import {EditorMode, EditorStore} from "stores/editorStore";
 import FeederTips from "containers/Editor/LayoutTips/FeederTips/FeederTips";
 import RailTips from "containers/Editor/LayoutTips/RailTips/RailTips";
+import {STORE_EDITOR} from "constants/stores";
 
 const LOGGER = getLogger(__filename)
 

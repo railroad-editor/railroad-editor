@@ -3,19 +3,16 @@ import RailContainers, {RailComponentClasses, RailData, RailGroupData} from "con
 import getLogger from "logging";
 import {FeederInfo, GapJoinerInfo, RailBase, RailBaseProps} from "react-rail-components/lib/RailBase";
 import {Point} from "paper";
-import {JointPair} from "containers/hoc/withBuilder";
-import {LayerData} from "store/layoutStore";
+import {LayerData} from "stores/layoutStore";
 import {RailGroup} from "react-rail-components";
 import * as _ from 'lodash';
 import 'lodash.combinations';
 import 'lodash.product';
-import {
-  CLOSED_JOINT_ANGLE_TORELANCE,
-  CLOSED_JOINT_DISTANCE_TORELANCE,
-  FEEDER_SOCKET_FILL_COLORS
-} from "constants/parts";
+import {CLOSED_JOINT_ANGLE_TORELANCE, CLOSED_JOINT_DISTANCE_TORELANCE,} from "constants/tools";
 import {WithRailBaseProps} from "./withRailBase";
 import Feeder from "react-rail-components/lib/parts/Feeder";
+import {FEEDER_SOCKET_FILL_COLORS} from "react-rail-components/lib/constants";
+import {JointPair} from "useCases";
 
 const LOGGER = getLogger(__filename)
 

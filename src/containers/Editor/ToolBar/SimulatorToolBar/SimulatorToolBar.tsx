@@ -4,36 +4,29 @@ import {Grid, Tooltip} from '@material-ui/core'
 import {Commands} from "constants/tools";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {STORE_EDITOR, STORE_LAYOUT, STORE_SANDBOX, STORE_UI} from "constants/stores";
-import {EditorStore} from "store/editorStore";
 import {compose} from "recompose";
 import withMoveTool from "containers/hoc/withMoveTool";
 import {StyledIconButton} from "containers/Editor/ToolBar/styles";
 import AspectRatioIcon from "@material-ui/icons/AspectRatio";
 import CreateIcon from "@material-ui/icons/Create";
 import SettingsRemoteIcon from '@material-ui/icons/SettingsRemote'
-import SimulatorActions from "store/simulatorActions";
-import {LayoutStore} from "store/layoutStore";
 import TrainController from "containers/Editor/ToolBar/SimulatorToolBar/TrainController";
-import {UiStore} from "../../../../store/uiStore";
 import ScriptDialog from "./ScriptDialog/ScriptDialog";
-import {Snackbar} from "../../../../components/Snackbar/Snackbar";
-import {SandboxStore} from "../../../../store/sandboxStore";
+import {Snackbar} from "components/Snackbar/Snackbar";
 import {SimulatorSandbox} from "./ScriptDialog/SimulatorSandbox";
-import {CONNECTED_REMOTE, NO_REMOTE_SESSION} from "../../../../constants/messages";
+import {CONNECTED_REMOTE, NO_REMOTE_SESSION} from "constants/messages";
 import {I18n} from "aws-amplify";
+import {WithEditorStore, WithLayoutStore, WithSandboxStore, WithUiStore} from "stores";
+import {WithSwitcherUseCase} from "useCases";
+import {STORE_EDITOR, STORE_LAYOUT, STORE_SANDBOX, STORE_UI} from "constants/stores";
+import {USECASE_SWITCHER} from "constants/useCases";
 
 const LOGGER = getLogger(__filename)
 
 
-export interface SimulatorToolBarProps {
-  editor?: EditorStore
-
+export type SimulatorToolBarProps = {
   resetViewPosition: () => void
-  layout?: LayoutStore
-  sandbox?: SandboxStore
-  ui?: UiStore
-}
+} & WithEditorStore & WithLayoutStore & WithSandboxStore & WithUiStore & WithSwitcherUseCase
 
 export interface SimulatorToolBarState {
   openSettings: boolean
@@ -43,7 +36,7 @@ export interface SimulatorToolBarState {
 type EnhancedSimulatorToolBarProps = SimulatorToolBarProps
 
 
-@inject(STORE_EDITOR, STORE_LAYOUT, STORE_UI, STORE_SANDBOX)
+@inject(STORE_EDITOR, STORE_LAYOUT, STORE_UI, STORE_SANDBOX, USECASE_SWITCHER)
 @observer
 export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarProps, SimulatorToolBarState> {
 
@@ -99,7 +92,7 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
   }
 
   onSetSwitcherDirection = (id, number) => {
-    SimulatorActions.changeSwitcherState(id, number)
+    this.props.switcherUseCase.changeSwitcherState(id, number)
   }
 
   onError = (message) => {

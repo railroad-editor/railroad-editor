@@ -8,23 +8,22 @@ import getLogger from "logging";
 import LayerSettingDialog
   from "containers/Editor/Palettes/BuilderPalettes/LayerPalette/LayerSettingDialog/LayerSettingDialog";
 import {ConfirmationDialog} from "containers/Editor/Palettes/BuilderPalettes/LayerPalette/ConfirmationDialog/ConfirmationDialog";
-import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import {inject, observer} from "mobx-react";
-import {DEFAULT_LAYER_DATA, LayoutStore} from "store/layoutStore";
-import {BuilderStore} from "store/builderStore";
+import {DEFAULT_LAYER_DATA} from "stores/layoutStore";
 import {PaletteAddButton} from "components/PaletteAddButton/PaletteAddButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import {DEFAULT_LAYER_TRANSLUCENT_OPACITY} from "constants/tools";
-import BuilderActions from "store/builderActions";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
+import {WithLayerUseCase} from "useCases";
+import {WithLayerPaletteStore, WithLayoutStore} from "stores";
+import {STORE_LAYER_PALETTE, STORE_LAYOUT} from 'constants/stores';
+import {USECASE_LAYER} from 'constants/useCases';
 
 const LOGGER = getLogger(__filename)
 
-export interface LayerPaletteProps {
+export type LayerPaletteProps = {
   className?: string
-  layout?: LayoutStore
-  builder?: BuilderStore
-}
+} & WithLayoutStore & WithLayerPaletteStore & WithLayerUseCase
 
 export interface LayerPaletteState {
   targetLayerId: number
@@ -40,7 +39,7 @@ const LayerStates = {
 }
 
 
-@inject(STORE_BUILDER, STORE_LAYOUT)
+@inject(STORE_LAYER_PALETTE, STORE_LAYOUT, USECASE_LAYER)
 @observer
 export default class LayerPalette extends React.Component<LayerPaletteProps, LayerPaletteState> {
 
@@ -72,7 +71,7 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
   onToggleVisible = (layerId: number) => (e: React.SyntheticEvent<HTMLInputElement>) => {
     const targetLayer = this.props.layout.currentLayoutData.layers.find(layer => layer.id === layerId)
     const {visible, opacity} = this.toggleLayerVisibility(targetLayer.visible, targetLayer.opacity)
-    this.props.layout.updateLayer({
+    this.props.layerUseCase.updateLayer({
       id: layerId,
       visible,
       opacity
@@ -80,7 +79,7 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
   }
 
   onChangeActive = (layerId: number) => (e: React.MouseEvent<HTMLElement>) => {
-    this.props.builder.setActiveLayer(layerId)
+    this.props.layerPalette.setActiveLayer(layerId)
   }
 
 
@@ -130,7 +129,7 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
 
   deleteLayer = () => {
     const layerId = this.state.targetLayerId
-    BuilderActions.deleteLayer(layerId)
+    this.props.layerUseCase.deleteLayer(layerId)
   }
 
 
@@ -176,7 +175,7 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
                 {/* <List> で囲わずにSecondaryActionを使うとズレる */}
                 <LayerListItem
                   button
-                  active={this.props.builder.activeLayerId === layer.id}
+                  active={this.props.layerPalette.activeLayerId === layer.id}
                   onClick={this.onChangeActive(layer.id)}
                   onDelete={this.openDeleteDialog(layer.id)}
                   onRename={this.openUpdateDialog(layer.id)}
@@ -193,14 +192,14 @@ export default class LayerPalette extends React.Component<LayerPaletteProps, Lay
           open={this.state.addDialogOpen}
           onClose={this.closeAddDialog}
           layer={DEFAULT_LAYER_DATA}
-          addLayer={this.props.layout.addLayer}
+          addLayer={this.props.layerUseCase.addLayer}
         />
         <LayerSettingDialog
           title={'Layer Settings'}
           open={this.state.updateDialogOpen}
           onClose={this.closeRenameDialog}
           layer={activeLayer}
-          updateLayer={this.props.layout.updateLayer}
+          updateLayer={this.props.layerUseCase.updateLayer}
         />
         <ConfirmationDialog
           title={'Delete Layer'}

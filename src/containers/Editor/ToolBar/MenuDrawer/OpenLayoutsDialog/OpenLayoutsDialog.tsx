@@ -6,10 +6,10 @@ import LayoutAPI from "apis/layout"
 import getLogger from "logging";
 import {getLayoutImageFileName} from "apis/storage";
 import {LayoutCard} from "containers/Editor/ToolBar/MenuDrawer/OpenLayoutsDialog/LayoutCard/LayoutCard";
-import {LayoutMeta} from "store/layoutStore";
+import {LayoutMeta} from "stores/layoutStore";
 import Grid from "@material-ui/core/Grid";
 import {ConfirmationDialog} from "containers/Editor/Palettes/BuilderPalettes/LayerPalette/ConfirmationDialog/ConfirmationDialog";
-import {UserInfo} from "../../../../common/Authenticator/AuthPiece/AuthPiece";
+import {UserInfo} from "containers/common/Authenticator/AuthPiece/AuthPiece";
 
 const LOGGER = getLogger(__filename)
 

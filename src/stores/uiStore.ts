@@ -1,7 +1,7 @@
 import {action, observable} from "mobx";
 import commonStore from "./editorStore";
-import {SnackbarVariant} from "../components/Snackbar/Snackbar";
-import {REQUIRE_LOGIN} from "../constants/messages";
+import {SnackbarVariant} from "components/Snackbar/Snackbar";
+import {REQUIRE_LOGIN} from "constants/messages";
 import {I18n} from "aws-amplify";
 
 

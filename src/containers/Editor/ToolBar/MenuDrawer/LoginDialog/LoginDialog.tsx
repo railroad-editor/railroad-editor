@@ -3,10 +3,10 @@ import Dialog from "@material-ui/core/Dialog";
 import AuthWrapper from "containers/common/AuthWrapper/AuthWrapper";
 import {AuthState, UserInfo} from "containers/common/Authenticator/AuthPiece/AuthPiece";
 import {inject, observer} from "mobx-react";
-import {STORE_UI} from "../../../../../constants/stores";
-import {UiStore} from "../../../../../store/uiStore";
-import {LOGGED_IN} from "../../../../../constants/messages";
+import {UiStore} from "stores/uiStore";
+import {LOGGED_IN} from "constants/messages";
 import {I18n} from "aws-amplify";
+import {STORE_UI} from "constants/stores";
 
 
 export interface LoginDialogProps {

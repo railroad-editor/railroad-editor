@@ -1,10 +1,9 @@
 import * as React from 'react'
 import getLogger from "logging";
-import {ConductionStates, LayoutStore, SwitcherData, SwitcherType} from "store/layoutStore";
+import {ConductionStates, SwitcherData, SwitcherType} from "stores/layoutStore";
 import {inject, observer} from 'mobx-react';
-import {STORE_LAYOUT} from "constants/stores";
 import RailIcon from "components/RailIcon/RailIcon";
-import {RailComponentClasses, RailData} from "containers/rails/index";
+import {RailComponentClasses, RailData} from "containers/rails";
 import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css'
 import {getRailComponent} from "containers/rails/utils";
@@ -18,20 +17,22 @@ import {
   ThreeWayTurnout,
   ThreeWayTurnoutProps
 } from "react-rail-components";
-import SimulatorActions from "../../../../../../../store/simulatorActions";
+import {WithPowerPackUseCase, WithSwitcherUseCase} from "useCases";
+import {WithLayoutStore} from "stores";
+import {STORE_LAYOUT} from "constants/stores";
+import {USECASE_POWERPACK, USECASE_SWITCHER} from "constants/useCases";
 
 
 const LOGGER = getLogger(__filename)
 
 
-export interface TurnoutStateTableProps {
+export type TurnoutStateTableProps = {
   switcher: SwitcherData
   rail: RailData
-  layout?: LayoutStore
-}
+} & WithLayoutStore & WithPowerPackUseCase & WithSwitcherUseCase
 
 
-@inject(STORE_LAYOUT)
+@inject(STORE_LAYOUT, USECASE_POWERPACK, USECASE_SWITCHER)
 @observer
 export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {}> {
 
@@ -127,7 +128,7 @@ export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {
   onSwitcherStateChange = (state: number) => (e) => {
     // ドラッグ直後のクリックイベントも発生するので、ドラッグ中かどうか判断する
     if (! this.dragging) {
-      SimulatorActions.changeSwitcherState(this.props.switcher.id, state)
+      this.props.switcherUseCase.changeSwitcherState(this.props.switcher.id, state)
     }
     this.dragging = false
     this.debounceCount = 0
@@ -166,7 +167,7 @@ export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {
     // LOGGER.info('rail', railId, 'table changed!!', switchStateTable)
     // ConductionStatesを元に戻し、Switcherの状態を変更する
     const switchStateTable = this.revertSwitcherConductionStates(transformedConductionStates)
-    SimulatorActions.changeSwitcherConductionTable(this.props.switcher.id, switchStateTable)
+    this.props.switcherUseCase.changeSwitcherConductionTable(this.props.switcher.id, switchStateTable)
 
     this.stateGridLayout = _.cloneDeep(stateGridLayout)
   }

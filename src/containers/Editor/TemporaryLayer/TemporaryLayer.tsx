@@ -3,19 +3,17 @@ import {Layer} from "react-paper-bindings";
 import {createFeederComponent, createRailOrRailGroupComponent, getRailComponent} from "containers/rails/utils";
 import getLogger from "logging";
 import {compose} from "recompose";
-import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import {inject, observer} from "mobx-react";
-import {LayoutStore} from "store/layoutStore";
-import {BuilderStore} from "store/builderStore";
 import {reaction} from "mobx";
+import {WithBuilderStore, WithLayoutStore} from "stores";
+import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 
 const LOGGER = getLogger(__filename)
 
 
-export interface TemporaryLayerProps {
-  layout?: LayoutStore
-  builder?: BuilderStore
-}
+export type TemporaryLayerProps = {
+  // empty
+} & WithBuilderStore & WithLayoutStore
 
 export interface LayoutState {
   shouldConnect: boolean

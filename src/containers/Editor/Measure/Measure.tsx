@@ -1,10 +1,10 @@
 import * as React from "react";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
-import {STORE_MEASURE} from "constants/stores";
 import {Point} from "paper";
 import {Layer, Line, PointText} from "react-paper-bindings";
-import {MeasureStore} from "../../../store/measureStore";
+import {MeasureStore} from "stores/measureStore";
+import {STORE_MEASURE} from "constants/stores";
 
 const LOGGER = getLogger(__filename)
 
