@@ -1,5 +1,4 @@
 import * as React from "react";
-import getLogger from "logging";
 import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
 import {BuilderStore, PlacingMode} from "stores/builderStore";
@@ -8,7 +7,6 @@ import DistantPlacingDialog from "./DistantPlacingDialog/DistantPlacingDialog";
 import {FreeRailPlacerStore} from "stores/freeRailPlacerStore";
 import {STORE_BUILDER, STORE_EDITOR, STORE_FREE_RAIL_PLACER} from "constants/stores";
 
-const LOGGER = getLogger(__filename)
 
 export interface DistantRailPlacerProps {
   editor?: EditorStore

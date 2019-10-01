@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Auth, Logger} from 'aws-amplify';
+import {Auth} from 'aws-amplify';
 import AuthPiece, {
   AuthPieceProps,
   AuthPieceState,
@@ -13,8 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import {RouteComponentProps, withRouter} from "react-router";
 import {DialogTitle} from '@material-ui/core';
 
-const logger = new Logger('ResetPassword');
-
+// const logger = new Logger('ResetPassword');
 
 interface ResetPasswordProps extends AuthPieceProps, RouteComponentProps {
   code: string

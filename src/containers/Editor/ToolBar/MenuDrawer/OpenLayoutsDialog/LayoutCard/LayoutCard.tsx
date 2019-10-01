@@ -3,15 +3,12 @@ import {ReactEventHandler} from 'react'
 import {CardContent, CardHeader, MenuItem} from '@material-ui/core'
 import Typography from "@material-ui/core/Typography";
 import {S3Image} from 'aws-amplify-react';
-import getLogger from "logging";
 import moment from "moment";
 import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from "@material-ui/core/IconButton";
 import Card from "@material-ui/core/Card";
-
-const LOGGER = getLogger(__filename)
 
 
 export interface LayoutCardProps {

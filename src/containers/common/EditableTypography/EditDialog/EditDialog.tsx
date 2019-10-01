@@ -1,10 +1,8 @@
 import * as React from 'react'
-import getLogger from "logging";
 import AutoFocusTextValidator from "containers/common/AutoFocusTextValidator";
 import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 
-const LOGGER = getLogger(__filename)
 
 export interface EditDialogProps extends FormDialogProps {
   title: string

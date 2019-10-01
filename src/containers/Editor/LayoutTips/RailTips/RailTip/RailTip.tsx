@@ -1,5 +1,4 @@
 import * as React from "react";
-import getLogger from "logging";
 import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
 import {LayoutStore, SwitcherData} from "stores/layoutStore";
@@ -11,7 +10,6 @@ import {normAngle} from "containers/rails/utils";
 import {Tooltip, withStyles} from "@material-ui/core";
 import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "constants/stores";
 
-const LOGGER = getLogger(__filename)
 
 const createColoredTooltip = (color: string) => withStyles({
   tooltip: {

@@ -1,14 +1,11 @@
 import * as React from "react";
 import {Layer} from "react-paper-bindings";
 import {createFeederComponent, createRailOrRailGroupComponent, getRailComponent} from "containers/rails/utils";
-import getLogger from "logging";
 import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
 import {reaction} from "mobx";
 import {WithBuilderStore, WithLayoutStore} from "stores";
 import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
-
-const LOGGER = getLogger(__filename)
 
 
 export type TemporaryLayerProps = {

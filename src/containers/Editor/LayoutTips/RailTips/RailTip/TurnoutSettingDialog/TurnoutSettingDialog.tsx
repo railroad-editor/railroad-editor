@@ -7,8 +7,8 @@ import {
   FormInputs
 } from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
-import {FormControl, InputLabel, List, ListItem, MenuItem, Select} from "@material-ui/core";
-import {ConductionStates, SwitcherData, SwitcherType} from "stores/layoutStore";
+import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
+import {ConductionStates, SwitcherData} from "stores/layoutStore";
 import {inject, observer} from "mobx-react";
 import {RailData} from "containers/rails";
 import {WithSwitcherUseCase} from "useCases";
@@ -106,24 +106,7 @@ export default class TurnoutSettingDialog extends FormDialogBase<TurnoutSettingD
 
 
   renderContent = () => {
-    const {rail, switchers} = this.props
-    const {connectedSwitcherId, conductionStates} = this.state
-    const connectedSwitcher = switchers.find(sw => sw.id === connectedSwitcherId)
-
-    let conductionStatesPart
-    if (connectedSwitcher && connectedSwitcher.type === SwitcherType.NORMAL) {
-      conductionStatesPart = (
-        <List>
-          {_.keys(conductionStates).map(idx => {
-            return (
-              <ListItem button>
-                {idx}
-              </ListItem>
-            )
-          })}
-        </List>
-      )
-    }
+    const {switchers} = this.props
 
     return (
       <>
@@ -166,8 +149,6 @@ export default class TurnoutSettingDialog extends FormDialogBase<TurnoutSettingD
             </Select>
           </FormControl>
         </form>
-
-        {/*{conductionStatesPart}*/}
       </>
     )
   }

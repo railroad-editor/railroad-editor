@@ -64,7 +64,6 @@ export type RailBaseEnhancedProps = RailBaseProps & WithRailBaseProps
 
 /**
  * Railの各種イベントハンドラを提供するHOC
- * 依存: WithBuilder
  */
 export default function withRailBase(WrappedComponent: React.ComponentClass<RailBaseEnhancedProps>) {
 
@@ -74,11 +73,6 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
   class WithRailBase extends React.Component<RailBaseEnhancedProps, {}> {
 
     rail: RailBase<any, any>
-
-    constructor(props: RailBaseEnhancedProps) {
-      super(props)
-
-    }
 
     get railPart() {
       return this.rail.railPart
@@ -276,7 +270,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
       // 矩形選択中は仮レールを表示させない
       if (this.props.builder.selecting) return
       // 自由設置モードの場合は何もしない
-      if (this.props.builder.placingMode == PlacingMode.FREE) return
+      if (this.props.builder.placingMode === PlacingMode.FREE) return
 
       // 仮レール表示ジョイントをセットする
       this.props.builder.setCurrentJoint(this.rail.props.id, jointId)
@@ -325,7 +319,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
       let shouldChangeJointState = false
       if (isRailTool(activeTool)) {
         shouldChangeJointState = this.onJointLeftClickForRailTool(jointId, e)
-      } else if (activeTool == Tools.MEASURE) {
+      } else if (activeTool === Tools.MEASURE) {
         shouldChangeJointState = this.onJointLeftClickForMeasureTool(jointId, e)
       }
       // 仮レール表示ジョイントをリセットする
@@ -338,7 +332,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
     onJointLeftClickForMeasureTool = (jointId: number, e: MouseEvent) => {
       const start = this.props.measure.startPosition
       const end = this.props.measure.endPosition
-      if (! start && ! end || start && end) {
+      if ((! start && ! end) || (start && end)) {
         this.props.measure.setEndPosition(null)
         this.props.measure.setStartPosition(this.joints[jointId].globalPosition)
       }
@@ -354,7 +348,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * @param {MouseEvent} e
      */
     onJointLeftClickForRailTool = (jointId: number, e: MouseEvent) => {
-      if (this.props.builder.placingMode == PlacingMode.FREE) {
+      if (this.props.builder.placingMode === PlacingMode.FREE) {
         // クリックしたジョイントの位置を記録し、ダイアログを表示する
         this.props.freeRailPlacer.setClickedJointPosition(this.joints[jointId].globalPosition)
         this.props.freeRailPlacer.setFreePlacingDialog(true)

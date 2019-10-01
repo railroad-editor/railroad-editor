@@ -22,8 +22,6 @@ import {
 import {FeederInfo} from "react-rail-components";
 import {reaction} from "mobx";
 import {WithPowerPackUseCase} from "useCases";
-import {STORE_LAYOUT} from "constants/stores";
-import {WithLayoutStore} from "stores";
 import {USECASE_POWERPACK} from 'constants/useCases';
 
 const LOGGER = getLogger(__filename)
@@ -32,7 +30,7 @@ const LOGGER = getLogger(__filename)
 export type PowerPackCardProps = {
   item: PowerPackData
   feeders: FeederInfo[]
-} & WithLayoutStore & WithPowerPackUseCase
+} & WithPowerPackUseCase
 
 export interface PowerPackCardState {
   anchorEl: HTMLElement
@@ -41,7 +39,7 @@ export interface PowerPackCardState {
 }
 
 
-@inject(STORE_LAYOUT, USECASE_POWERPACK)
+@inject(USECASE_POWERPACK)
 @observer
 export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPackCardState> {
 
@@ -64,10 +62,13 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
 
     // スライダーをドラッグした時に、画面の再描画とコントローラーのコマンド送信の頻度を抑えるためにPowerPackの状態更新をスロットルする
     // TODO: Wait時間を再考する
-    this.throttledUpdatePowerPack = _.throttle((data) => this.props.layout.updatePowerPack(data), 1000, {
-      leading: true,
-      trailing: true
-    })
+    this.throttledUpdatePowerPack = _.throttle(
+      (data) => this.props.powerPackUseCase.updatePowerPack(data),
+      1000,
+      {
+        leading: true,
+        trailing: true
+      })
   }
 
   componentDidUpdate() {
@@ -99,7 +100,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
   }
 
   onDelete = (e: React.MouseEvent<HTMLElement>) => {
-    this.props.layout.deletePowerPack({
+    this.props.powerPackUseCase.deletePowerPack({
       id: this.props.item.id
     })
     this.onMenuClose(e)
@@ -115,7 +116,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
 
   onDirectionChange = (e) => {
     // TODO: 電流を自動で0にするかどうかは設定で変えられるようにすべき
-    this.props.layout.updatePowerPack({
+    this.props.powerPackUseCase.updatePowerPack({
       id: this.props.item.id,
       power: 0,
       direction: e.target.checked,
@@ -134,7 +135,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
     this.setState({
       sliderValue: 0
     })
-    this.props.layout.updatePowerPack({
+    this.props.powerPackUseCase.updatePowerPack({
       id: this.props.item.id,
       power: 0
     })
@@ -142,7 +143,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
 
 
   render() {
-    const {name, direction, power, supplyingFeederIds, color, isError} = this.props.item
+    const {name, direction, supplyingFeederIds, color} = this.props.item
 
     LOGGER.debug('slider', this.state.sliderValue)
     return (
@@ -219,7 +220,7 @@ export class PowerPackCard extends React.Component<PowerPackCardProps, PowerPack
           open={this.state.dialogOpen}
           onClose={this.onSettingDialogClosed}
           powerPack={this.props.item}
-          updatePowerPack={this.props.layout.updatePowerPack}
+          updatePowerPack={this.props.powerPackUseCase.updatePowerPack}
         />
       </>
     )

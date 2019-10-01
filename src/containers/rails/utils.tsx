@@ -61,7 +61,7 @@ const onUnmount = (ref) => {
  * @param {LayerData} layer
  */
 export const createRailComponent = (item: RailData, layer: LayerData, feeders?: FeederInfo[], gapJoiners?: GapJoinerInfo[]) => {
-  const {id: id, type: type, ...props} = item
+  const {id, type, ...props} = item
   let RailContainer = RailContainers[type]
   if (RailContainer == null) {
     throw Error(`'${type}' is not a valid Rail type!`)
@@ -93,7 +93,7 @@ export const createRailComponent = (item: RailData, layer: LayerData, feeders?: 
  * @returns {any}
  */
 export const createRailGroupComponent = (item: RailGroupData, children: RailData[], layer: LayerData) => {
-  const {id: id, type: type, ...props} = item
+  const {id, type, ...props} = item
   if (type !== 'RailGroup') {
     throw Error(`'${type}' is not a RailGroup!`)
   }
@@ -125,7 +125,7 @@ export const createRailGroupComponent = (item: RailGroupData, children: RailData
  * @param {number} tolerance 許容誤差
  * @returns {boolean}
  */
-export const pointsEqual = (p1, p2, tolerance = 0.0000001) => {
+export const pointsEqual = (p1: Point, p2: Point, tolerance = 0.0000001) => {
   if (p1 && p2) {
     return (Math.abs(p1.x - p2.x) < tolerance && Math.abs(p1.y - p2.y) < tolerance)
   } else if (! p1 && ! p2) {
@@ -194,11 +194,11 @@ export const hasOpenJoint = (rail: RailData): boolean => {
  * @returns {any}
  */
 export const intersectsBetween = (r1: number, r2: number): boolean => {
-  let r1Paths = getRailComponent(r1).railPart.path.children.filter(p => p.data.type == 'Detect')
+  let r1Paths = getRailComponent(r1).railPart.path.children.filter(p => p.data.type === 'Detect')
   if (r1Paths.length === 0) {
     r1Paths = getRailComponent(r1).railPart.path.children
   }
-  let r2Paths = getRailComponent(r2).railPart.path.children.filter(p => p.data.type == 'Detect')
+  let r2Paths = getRailComponent(r2).railPart.path.children.filter(p => p.data.type === 'Detect')
   if (r2Paths.length === 0) {
     r2Paths = getRailComponent(r2).railPart.path.children
   }
@@ -236,7 +236,7 @@ export const getCloseJointsBetween = (r1: number, r2: number): JointPair[] => {
   const closeJointPairs = []
   combinations.forEach(cmb => {
     // 両方が未接続でなければ抜ける
-    if (cmb[0].props.hasOpposingJoint && cmb[1].props.hasOpposingJoint
+    if ((cmb[0].props.hasOpposingJoint && cmb[1].props.hasOpposingJoint)
       || (! cmb[0].props.visible || ! cmb[1].props.visible)) {
       return
     }

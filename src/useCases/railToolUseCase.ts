@@ -314,7 +314,7 @@ export class RailToolUseCase {
     // このレールグループメンバーのレールID
     const memberRailIds = rails.map(r => r.id)
     const openJoints = []
-    rails.map((rail, idx) => {
+    rails.forEach((rail, idx) => {
       // 他のメンバーに接続されているジョイントだけをリストアップする
       const opposingJointIds = _.toPairs(rail.opposingJoints as OpposingJoints)
         .filter(([k, v]) => memberRailIds.includes(v.railId))

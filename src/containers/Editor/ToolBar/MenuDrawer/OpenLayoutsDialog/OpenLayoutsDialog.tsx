@@ -3,7 +3,6 @@ import {DialogContent, DialogTitle} from '@material-ui/core'
 import Dialog from "@material-ui/core/Dialog";
 import Typography from "@material-ui/core/Typography";
 import LayoutAPI from "apis/layout"
-import getLogger from "logging";
 import {getLayoutImageFileName} from "apis/storage";
 import {LayoutCard} from "containers/Editor/ToolBar/MenuDrawer/OpenLayoutsDialog/LayoutCard/LayoutCard";
 import {LayoutMeta} from "stores/layoutStore";
@@ -11,7 +10,6 @@ import Grid from "@material-ui/core/Grid";
 import {ConfirmationDialog} from "containers/Editor/Palettes/BuilderPalettes/LayerPalette/ConfirmationDialog/ConfirmationDialog";
 import {UserInfo} from "containers/common/Authenticator/AuthPiece/AuthPiece";
 
-const LOGGER = getLogger(__filename)
 
 export interface OpenLayoutDialogProps {
   open: boolean
@@ -72,7 +70,7 @@ export default class OpenLayoutsDialog extends React.Component<OpenLayoutDialogP
 
   renderLayoutCards = () => {
     const sortedLayouts = this.props.layouts.sort((a, b) => b.lastModified - a.lastModified)
-    if (sortedLayouts.length == 0) {
+    if (sortedLayouts.length === 0) {
       return null
     }
 

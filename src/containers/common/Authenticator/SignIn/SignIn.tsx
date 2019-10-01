@@ -77,7 +77,6 @@ export default class SignIn extends AuthPiece<SignInProps, AuthPieceState> {
   }
 
   showComponent() {
-    const {authState, federated, onStateChange} = this.props;
 
     return (
       <div>

@@ -28,11 +28,6 @@ export class GridPaper extends React.Component<GridPaperProps, {}> {
 
   view: View
 
-  constructor(props: GridPaperProps) {
-    super(props)
-  }
-
-
   componentDidMount() {
     this.props.editor.setPaperScope(this.view.scope)
   }

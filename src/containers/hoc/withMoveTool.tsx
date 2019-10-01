@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {DEFAULT_INITIAL_ZOOM, ZOOM_CORRECTION, ZOOM_FACTOR, ZOOM_MAX, ZOOM_MIN} from "constants/tools";
-import {PaperScope, Point, ToolEvent, View} from 'paper'
+import {Point, ToolEvent, View} from 'paper'
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
 import {LayoutStore} from "stores/layoutStore";
@@ -104,7 +104,6 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
      * Mouse wheel handler
      *
      * @param  {SyntheticEvent} e    React's SyntheticEvent
-     * @param  {PaperScope}     view Paper.js PaperScope instance
      */
     mouseWheel = (e: React.WheelEvent<HTMLElement>) => {
       e.nativeEvent.preventDefault()

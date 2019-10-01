@@ -35,10 +35,6 @@ export type AppProps = {
 @observer
 class App extends React.Component<AppProps, {}> {
 
-  constructor(props: any) {
-    super(props)
-  }
-
   componentDidMount(): void {
     const params = qs.parse((window as any).location.search)
     if (params.confirmed === 'true') {
@@ -48,7 +44,7 @@ class App extends React.Component<AppProps, {}> {
 
   async componentWillMount() {
     // セッションストレージからユーザー情報を取り出す
-    const session = await Auth.currentSession()
+    // const session = await Auth.currentSession()
     const userInfo = await Auth.currentUserInfo()
     if (userInfo) {
       LOGGER.info('Signed in as', userInfo) //`

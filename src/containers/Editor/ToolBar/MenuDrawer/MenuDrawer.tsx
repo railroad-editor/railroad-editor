@@ -14,7 +14,6 @@ import ArchiveIcon from "@material-ui/icons/Archive";
 import OpenLayoutsDialog from "containers/Editor/ToolBar/MenuDrawer/OpenLayoutsDialog/OpenLayoutsDialog";
 import {Auth, I18n} from "aws-amplify";
 import Divider from "@material-ui/core/Divider";
-import getLogger from "logging";
 import {inject, observer} from "mobx-react";
 import {EditorStore} from "stores/editorStore";
 import {LayoutMeta, LayoutStore} from "stores/layoutStore";
@@ -36,8 +35,6 @@ import {WithEditorStore, WithLayoutStore, WithUiStore} from "stores";
 import {WithProjectUseCase} from "useCases";
 import {STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "constants/stores";
 import {USECASE_PROJECT} from "constants/useCases";
-
-const LOGGER = getLogger(__filename)
 
 
 export type MenuDrawerProps = {

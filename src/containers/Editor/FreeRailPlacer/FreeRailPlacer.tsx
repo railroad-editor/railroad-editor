@@ -220,7 +220,7 @@ export default class FreeRailPlacer extends React.Component<FreeRailPlacerProps,
         </Layer>
         {
           /* マーカー */
-          this.isActive() && this.state.phase != Phase.SET_POSITION &&
+          this.isActive() && this.state.phase !== Phase.SET_POSITION &&
           <CirclePart
             radius={radius}
             position={position}
