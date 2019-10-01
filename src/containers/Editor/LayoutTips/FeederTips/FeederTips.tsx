@@ -1,6 +1,5 @@
 import * as React from "react";
 import {getRailComponent} from "containers/rails/utils";
-import getLogger from "logging";
 import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
 import {LayoutStore} from "stores/layoutStore";
@@ -9,8 +8,6 @@ import {reaction} from "mobx";
 import FeederTip from "containers/Editor/LayoutTips/FeederTips/FeederTip/FeederTip";
 import {Pivot} from "react-rail-components/lib/parts/primitives/PartBase";
 import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "constants/stores";
-
-const LOGGER = getLogger(__filename)
 
 
 export interface FeederTipProps {

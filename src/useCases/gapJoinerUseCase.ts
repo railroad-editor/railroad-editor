@@ -36,7 +36,7 @@ export class GapJoinerUseCase {
       .forEach(gapJoiner => this.layoutStore.deleteGapJoiner(gapJoiner))
 
     // 対向ジョイントにギャップジョイナーが存在したら削除する
-    _.values(target.opposingJoints).map(joint => {
+    _.values(target.opposingJoints).forEach(joint => {
       const opposingGapJoiner = this.layoutStore.currentLayoutData.gapJoiners
         .find(gapJoiner => gapJoiner.railId === joint.railId && gapJoiner.jointId === joint.jointId)
       if (opposingGapJoiner) {

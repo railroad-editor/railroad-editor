@@ -1,5 +1,4 @@
 import * as React from 'react'
-import getLogger from "logging";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import {
   FormDialogBase,
@@ -20,8 +19,6 @@ import {UiStore} from "stores/uiStore";
 import {BUG_REPORT_SUBMITTED} from "constants/messages";
 import {I18n} from "aws-amplify";
 import {STORE_UI} from "constants/stores";
-
-const LOGGER = getLogger(__filename)
 
 const styles = theme => ({
   grid: {
@@ -57,7 +54,7 @@ export class BugReportDialog extends FormDialogBase<BugReportDialogProps, FormDi
 
   onOK = async () => {
     const {issueType, issueTitle, issueComment} = this.state.inputs
-    const res = await IssuesAPI.createIssue({
+    await IssuesAPI.createIssue({
       type: issueType,
       title: issueTitle,
       comment: issueComment,

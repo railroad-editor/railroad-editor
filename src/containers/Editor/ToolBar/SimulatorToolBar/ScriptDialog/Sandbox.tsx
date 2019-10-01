@@ -55,6 +55,7 @@ export const Sandbox = forwardRef((props: SandboxProps, ref: any) => {
 
   return (
     <iframe
+      title={'sandbox'}
       ref={iframeRef}
       src={script}
       style={{

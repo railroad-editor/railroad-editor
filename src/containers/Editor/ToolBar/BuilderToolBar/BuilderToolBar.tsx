@@ -16,7 +16,6 @@ import FreePlacingModeIcon from "@material-ui/icons/LocationOn";
 import ConnectModeIcon from "@material-ui/icons/CompareArrows";
 import StraightenIcon from "@material-ui/icons/Straighten";
 import GapIcon from "../Icon/Gap";
-import getLogger from "logging";
 import * as classNames from "classnames"
 import Tooltip from "@material-ui/core/Tooltip";
 import {inject, observer} from "mobx-react";
@@ -29,8 +28,6 @@ import {WithBuilderStore, WithEditorStore, WithLayoutStore} from "stores";
 import {WithRailToolUseCase} from "useCases";
 import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "constants/stores";
 import {USECASE_RAIL_TOOL} from "constants/useCases";
-
-const LOGGER = getLogger(__filename)
 
 
 export type BuilderToolBarProps = {

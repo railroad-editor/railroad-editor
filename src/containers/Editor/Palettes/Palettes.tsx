@@ -1,23 +1,18 @@
 import * as React from 'react'
 import {inject, observer} from "mobx-react";
 import {compose} from "recompose";
-import {EditorMode, EditorStore} from "stores/editorStore";
+import {EditorMode} from "stores/editorStore";
 import BuilderPalettes from "./BuilderPalettes/BuilderPalettes";
 import {SimulatorPalettes} from "./SimulatorPalettes/SimulatorPalettes";
 import {STORE_EDITOR} from "constants/stores";
+import {WithEditorStore} from "stores";
 
 
-export interface PalettesProps {
-  editor?: EditorStore
-}
+export type PalettesProps = {} & WithEditorStore
 
 @inject(STORE_EDITOR)
 @observer
 export class Palettes extends React.Component<PalettesProps> {
-
-  constructor(props: PalettesProps) {
-    super(props)
-  }
 
   render() {
     return (

@@ -355,7 +355,7 @@ const iconizeThreeWayTurnoutProps = (props: ThreeWayTurnoutProps) => {
 
 
 export const createRailComponentForIcon = (item: RailData, conductionState: number) => {
-  const {id: id, type: type, ...props} = item
+  const {id, type, ...props} = item
   let RailContainer = RailComponentClasses[type]
   if (RailContainer == null) {
     throw Error(`'${type}' is not a valid Rail type!`)

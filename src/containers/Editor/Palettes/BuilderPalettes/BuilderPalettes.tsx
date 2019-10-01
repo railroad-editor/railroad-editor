@@ -12,10 +12,6 @@ export interface BuilderPalettesProps {
 
 export class BuilderPalettes extends React.Component<BuilderPalettesProps> {
 
-  constructor(props: BuilderPalettesProps) {
-    super(props)
-  }
-
   render() {
     return (
       <>

@@ -8,7 +8,6 @@ import withMoveTool, {WithMoveToolProps} from '../hoc/withMoveTool'
 import {EditorBody, StyledToolBar, StyledWrapper} from "./Editor.style";
 
 import './Paper.css'
-import getLogger from "logging";
 import withSelectTool, {WithSelectToolProps} from "containers/hoc/withSelectTool";
 import {inject, observer} from "mobx-react";
 import {EditorMode, EditorStore} from "stores/editorStore";
@@ -38,7 +37,7 @@ import {UiStore} from "stores/uiStore";
 import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "constants/stores";
 import withKeyHandler, {WithKeyHandlerProps} from "../hoc/withKeyHandler";
 
-const LOGGER = getLogger(__filename)
+// const LOGGER = getLogger(__filename)
 
 
 export interface EditorProps {
@@ -67,10 +66,6 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
 
   // マウス位置
   @observable mousePosition = {x: 0, y: 0}
-
-  constructor(props: EnhancedEditorProps) {
-    super(props)
-  }
 
   async componentDidMount() {
     this.props.resetViewPosition()

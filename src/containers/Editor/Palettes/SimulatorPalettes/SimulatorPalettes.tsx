@@ -1,26 +1,20 @@
 import * as React from 'react'
 import {compose} from "recompose";
-import {LayoutStore} from "stores/layoutStore";
 import {
   StyledPowerPackPalette,
   StyledSwitcherPalette
 } from "containers/Editor/Palettes/SimulatorPalettes/SimulatorPalettes.style";
 import {inject, observer} from "mobx-react";
 import {STORE_LAYOUT} from "constants/stores";
+import {WithLayoutStore} from "stores";
 
 
-export interface SimulatorPalettesProps {
-  layout?: LayoutStore
-}
+export type SimulatorPalettesProps = {} & WithLayoutStore
 
 
 @inject(STORE_LAYOUT)
 @observer
 export class SimulatorPalettes extends React.Component<SimulatorPalettesProps> {
-
-  constructor(props: SimulatorPalettesProps) {
-    super(props)
-  }
 
   render() {
     return (

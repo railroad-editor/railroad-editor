@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Logger} from 'aws-amplify';
 import AuthPiece, {AuthPieceProps, AuthState} from "containers/common/Authenticator/AuthPiece/AuthPiece";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
@@ -7,7 +6,6 @@ import Typography from "@material-ui/core/Typography";
 import {DialogTitle} from '@material-ui/core';
 import {StyledDialogContent} from "containers/common/Authenticator/styles";
 
-const logger = new Logger('ConfirmEmail');
 
 export interface ConfirmEmailProps extends AuthPieceProps {
   title: string

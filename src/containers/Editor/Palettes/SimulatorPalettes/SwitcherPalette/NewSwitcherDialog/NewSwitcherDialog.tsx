@@ -1,12 +1,10 @@
 import * as React from 'react'
-import getLogger from "logging";
 import AutoFocusTextValidator from "containers/common/AutoFocusTextValidator";
 import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
 import {SwitcherType} from "stores/layoutStore";
 
-const LOGGER = getLogger(__filename)
 
 export interface NewSwitcherDialogProps extends FormDialogProps {
   addSwitcher: (name: string, type: SwitcherType) => void

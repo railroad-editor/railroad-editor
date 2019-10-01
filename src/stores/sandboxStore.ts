@@ -1,7 +1,4 @@
 import {action, observable} from "mobx";
-import getLogger from "logging";
-
-const LOGGER = getLogger(__filename)
 
 
 export interface SandboxStoreState {

@@ -1,6 +1,5 @@
 import * as React from 'react'
 import * as md5 from "js-md5";
-import getLogger from "logging";
 import moment from "moment";
 import {default as AutoFocusTextValidator} from "containers/common/AutoFocusTextValidator";
 import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
@@ -8,8 +7,6 @@ import {ValidatorForm} from 'react-material-ui-form-validator';
 import {LayoutConfig, LayoutMeta} from "stores/layoutStore";
 import * as uuidv4 from "uuid/v4";
 
-
-const LOGGER = getLogger(__filename)
 
 export interface SaveLayoutDialogProps extends FormDialogProps {
   onOK: (meta: LayoutMeta) => void

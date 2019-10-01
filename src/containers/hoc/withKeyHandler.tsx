@@ -181,15 +181,9 @@ export default function withKeyHandler(WrappedComponent: React.ComponentClass<Wi
     }
 
     render() {
-      const keyHandler = {
-        keyDown: this.keyDown,
-        keyUp: this.keyUp
-      }
-
       return (
         <WrappedComponent
           {...this.props}
-          // keyHandler={keyHandler}
         />
       )
     }

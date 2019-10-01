@@ -20,10 +20,6 @@ export interface SelectorProps {
 @observer
 export default class Selector extends React.Component<SelectorProps, {}> {
 
-  constructor(props: SelectorProps) {
-    super(props)
-  }
-
   onDelete = (item: PaletteItem) => {
     if (item.type === 'RailGroup') {
       this.props.builder.deleteUserRailGroup(item)

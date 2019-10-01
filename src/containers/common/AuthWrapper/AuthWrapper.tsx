@@ -22,12 +22,8 @@ export interface AuthWrapperProps {
 
 export default class AuthWrapper extends React.Component<AuthWrapperProps, {}> {
 
-  constructor(props: AuthWrapperProps) {
-    super(props)
-  }
-
   onStateChange = async (state, data) => {
-    if (state == 'signedIn' && this.props.onSignedIn) {
+    if (state === 'signedIn' && this.props.onSignedIn) {
       const userInfo = await Auth.currentUserInfo()
       this.props.setAuthData(userInfo)
       this.props.onSignedIn(userInfo)

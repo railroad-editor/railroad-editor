@@ -3,30 +3,22 @@ import InfoIcon from '@material-ui/icons/Info';
 import {Grid} from '@material-ui/core'
 import {ContentDiv, EvenGrid, GridContainer, OddGrid, ScrollablePaper} from "./InfoPalette.style";
 import Rnd from 'react-rnd'
-import getLogger from "logging";
 import {inject, observer} from "mobx-react";
 import {LayoutStore} from "stores/layoutStore";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
 import Typography from "@material-ui/core/Typography";
 import {STORE_LAYOUT} from "constants/stores";
 
-const LOGGER = getLogger(__filename)
 
 export interface InfoPaletteProps {
   className?: string
   layout?: LayoutStore
 }
 
-export interface InfoPaletteState {
-}
 
 @inject(STORE_LAYOUT)
 @observer
-export default class InfoPalette extends React.Component<InfoPaletteProps, InfoPaletteState> {
-
-  constructor(props: InfoPaletteProps) {
-    super(props)
-  }
+export default class InfoPalette extends React.Component<InfoPaletteProps, {}> {
 
   renderContent = () => {
     const selectedRails = this.props.layout.selectedRails

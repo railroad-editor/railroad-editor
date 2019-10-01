@@ -2,7 +2,6 @@ import * as React from 'react'
 import {createRef} from 'react'
 import {Grid, Tooltip} from '@material-ui/core'
 import {Commands} from "constants/tools";
-import getLogger from "logging";
 import {inject, observer} from "mobx-react";
 import {compose} from "recompose";
 import withMoveTool from "containers/hoc/withMoveTool";
@@ -20,8 +19,6 @@ import {WithEditorStore, WithLayoutStore, WithSandboxStore, WithUiStore} from "s
 import {WithSwitcherUseCase} from "useCases";
 import {STORE_EDITOR, STORE_LAYOUT, STORE_SANDBOX, STORE_UI} from "constants/stores";
 import {USECASE_SWITCHER} from "constants/useCases";
-
-const LOGGER = getLogger(__filename)
 
 
 export type SimulatorToolBarProps = {

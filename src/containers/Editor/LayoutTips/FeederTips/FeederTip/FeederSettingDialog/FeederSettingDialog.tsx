@@ -75,7 +75,7 @@ export default class FeederSettingDialog extends FormDialogBase<FeederSettingDia
 
 
   renderContent = () => {
-    const {feeder, powerPacks} = this.props
+    const {powerPacks} = this.props
 
     return (
       <>

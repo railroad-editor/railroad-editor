@@ -1,6 +1,5 @@
 import * as React from "react";
 import {normAngle} from "containers/rails/utils";
-import getLogger from "logging";
 import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
 import {LayoutStore} from "stores/layoutStore";
@@ -12,7 +11,6 @@ import {FlowDirection} from "react-rail-components/lib/parts/primitives/PartBase
 import {FeederInfo} from "react-rail-components";
 import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "constants/stores";
 
-const LOGGER = getLogger(__filename)
 
 const createColoredTooltip = (color: string) => withStyles({
   tooltip: {
@@ -92,7 +90,7 @@ export class FeederTip extends React.Component<FeederTipProps, FeederTipState> {
   }
 
   render() {
-    const {feeder, open, position, angle, color} = this.props
+    const {feeder, open, position, color} = this.props
     const placement = this.getPlacement()
     const StyledTooltip = createColoredTooltip(color)
 

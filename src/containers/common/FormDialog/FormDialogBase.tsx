@@ -2,10 +2,8 @@ import * as React from 'react'
 import {DialogActions, DialogContent, DialogTitle} from '@material-ui/core'
 import Dialog from "@material-ui/core/Dialog";
 import Button from "@material-ui/core/Button";
-import getLogger from "logging";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 
-const LOGGER = getLogger(__filename)
 
 export interface FormDialogProps {
   open: boolean
