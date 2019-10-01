@@ -92,8 +92,8 @@ export default class SwitcherSettingDialog extends FormDialogBase<SwitcherSettin
     })
   }
 
+  /* eslint no-useless-escape: 0 */
   renderContent = () => {
-
     return (
       <>
         <ValidatorForm

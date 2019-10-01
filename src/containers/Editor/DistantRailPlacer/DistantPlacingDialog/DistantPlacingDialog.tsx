@@ -44,6 +44,7 @@ export default class DistantPlacingDialog extends FormDialogBase<DistantPlacingD
     this.onClose()
   }
 
+  /* eslint no-useless-escape: 0 */
   renderContent = () => {
     return (
       <>

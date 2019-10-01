@@ -43,6 +43,7 @@ export const Sandbox = forwardRef((props: SandboxProps, ref: any) => {
       }
     }
   })
+  /* eslint react-hooks/exhaustive-deps: 0 */
   useEffect(() => {
     window.addEventListener('message', props.onMessage)
     return () => {
