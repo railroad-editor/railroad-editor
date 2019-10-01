@@ -1,6 +1,8 @@
-import {LayoutStore} from "stores/layoutStore";
+import {LayoutStore, PowerPackData} from "stores/layoutStore";
 import {action} from "mobx";
 import {FlowDirection} from "react-rail-components/lib/parts/primitives/PartBase";
+import TrainController from "containers/Editor/ToolBar/SimulatorToolBar/TrainController";
+import simulatorStore, {SandboxStore} from "stores/sandboxStore";
 
 
 export interface TemporaryFlowDirection {
@@ -18,9 +20,47 @@ export interface TemporaryRailFlows {
 
 export class PowerPackUseCase {
   private layoutStore: LayoutStore
+  private sandboxStore: SandboxStore
 
-  constructor(layoutStore: LayoutStore) {
+  constructor(layoutStore: LayoutStore, sandboxStore: SandboxStore) {
     this.layoutStore = layoutStore
+    this.sandboxStore = sandboxStore
+  }
+
+  @action
+  addPowerPack = (item: PowerPackData) => {
+    this.layoutStore.addPowerPack(item)
+    // コントローラー側も初期化
+    TrainController.setPowerPackDirection(item.id, item.direction)
+    TrainController.setPowerPackValue(item.id, item.power)
+  }
+
+  @action
+  updatePowerPack = (item: Partial<PowerPackData>) => {
+    this.layoutStore.updatePowerPack(item)
+
+    if (item.direction != null && item.direction !== item.direction) {
+      item.power = 0
+      TrainController.setPowerPackDirection(item.id, item.direction)
+      if (simulatorStore.sandbox) {
+        simulatorStore.sandbox.setPowerPackDirection(item.id, item.direction)
+      }
+    } else if (item.power != null && item.power !== item.power) {
+      TrainController.setPowerPackValue(item.id, item.power)
+      if (simulatorStore.sandbox) {
+        simulatorStore.sandbox.setPowerPackPower(item.id, item.power)
+      }
+    }
+  }
+
+  @action
+  updatePowerPacks = (items: Partial<PowerPackData>[]) => {
+    items.forEach(item => this.updatePowerPack(item))
+  }
+
+  @action
+  deletePowerPack = (item: Partial<PowerPackData>) => {
+    this.layoutStore.deletePowerPack(item)
   }
 
   @action

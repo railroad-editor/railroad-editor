@@ -2,7 +2,7 @@ import {action, comparer, reaction} from "mobx";
 import {FlowDirection, Pivot} from "react-rail-components/lib/parts/primitives/PartBase";
 import {getRailComponent} from "containers/rails/utils";
 import getLogger from "../logging";
-import {TemporaryFlowDirection, TemporaryRailFlows} from "useCases/powerPackUseCase";
+import {PowerPackUseCase, TemporaryFlowDirection, TemporaryRailFlows} from "useCases/powerPackUseCase";
 import {EditorMode, EditorStore} from "stores/editorStore";
 import {LayoutStore, PowerPackData} from "stores/layoutStore";
 
@@ -12,14 +12,17 @@ export class SimulationUseCase {
 
   private editorStore: EditorStore
   private layoutStore: LayoutStore
+  private powerPackUseCase: PowerPackUseCase
 
   private temporaryRailFlows: TemporaryRailFlows
   private errorPowerPacks: PowerPackData[]
   private errorRails: any[]
 
-  constructor(editorStore: EditorStore, layoutStore: LayoutStore) {
+  constructor(editorStore: EditorStore, layoutStore: LayoutStore, powerPackUseCase: PowerPackUseCase) {
     this.editorStore = editorStore
     this.layoutStore = layoutStore
+    this.powerPackUseCase = powerPackUseCase
+
     this.temporaryRailFlows = []
 
     // シミュレーション更新タイミング
@@ -83,7 +86,7 @@ export class SimulationUseCase {
         }
       }
     }))
-    this.layoutStore.updatePowerPacks(this.errorPowerPacks.map(p => {
+    this.powerPackUseCase.updatePowerPacks(this.errorPowerPacks.map(p => {
       return {id: p.id, power: 0, isError: true}
     }))
   }
@@ -105,7 +108,7 @@ export class SimulationUseCase {
         flowDirections: null  // reset
       }
     }))
-    this.layoutStore.updatePowerPacks(this.layoutStore.currentLayoutData.powerPacks.map(p => {
+    this.powerPackUseCase.updatePowerPacks(this.layoutStore.currentLayoutData.powerPacks.map(p => {
       return {
         id: p.id,
         isError: false

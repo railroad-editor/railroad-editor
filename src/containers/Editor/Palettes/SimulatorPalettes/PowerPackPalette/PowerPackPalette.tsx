@@ -10,7 +10,7 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 import PowerIcon from '@material-ui/icons/PowerSettingsNew';
 import NewPowerPackDialog
   from "containers/Editor/Palettes/SimulatorPalettes/PowerPackPalette/NewPowerPackDialog/NewPowerPackDialog";
-import {LayoutStore, PowerPackData} from "stores/layoutStore";
+import {PowerPackData} from "stores/layoutStore";
 import Rnd from "react-rnd"
 import {
   CenteredDiv,
@@ -21,16 +21,18 @@ import {
 import {PowerPackCard} from "containers/Editor/Palettes/SimulatorPalettes/PowerPackPalette/PowerPackCard/PowerPackCard";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
 import {DEFAULT_POWER_PACK_COLOR} from "constants/tools";
-import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
+import {STORE_LAYOUT} from "constants/stores";
+import {USECASE_POWERPACK} from "constants/useCases";
+import {WithLayoutStore} from "stores";
+import {WithPowerPackUseCase} from "useCases";
 
 
-export interface PowerPackPaletteProps {
+export type PowerPackPaletteProps = {
   className?: string
   active: boolean
   items: PowerPackData[]
   helpMessage?: string
-  layout?: LayoutStore
-}
+} & WithLayoutStore & WithPowerPackUseCase
 
 
 export interface PowerPackPaletteState {
@@ -38,7 +40,7 @@ export interface PowerPackPaletteState {
 }
 
 
-@inject(STORE_BUILDER, STORE_LAYOUT)
+@inject(STORE_LAYOUT, USECASE_POWERPACK)
 @observer
 export default class PowerPackPalette extends React.Component<PowerPackPaletteProps, PowerPackPaletteState> {
 
@@ -63,7 +65,7 @@ export default class PowerPackPalette extends React.Component<PowerPackPalettePr
   }
 
   addPowerPack = (name: string) => {
-    this.props.layout.addPowerPack({
+    this.props.powerPackUseCase.addPowerPack({
       id: 0,
       name: name,
       power: 0,

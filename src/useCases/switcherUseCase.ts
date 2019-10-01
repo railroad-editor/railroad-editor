@@ -1,6 +1,8 @@
-import {ConductionStates, LayoutStore} from "stores/layoutStore";
+import {ConductionStates, LayoutStore, SwitcherData} from "stores/layoutStore";
 import {action} from "mobx";
 import {FlowDirection} from "react-rail-components/lib/parts/primitives/PartBase";
+import TrainController from "containers/Editor/ToolBar/SimulatorToolBar/TrainController";
+import simulatorStore from "stores/sandboxStore";
 
 
 export interface TemporaryFlowDirection {
@@ -23,6 +25,27 @@ export class SwitcherUseCase {
     this.layoutStore = layoutStore
   }
 
+  @action
+  addSwitcher = (item: SwitcherData) => {
+    this.layoutStore.addSwitcher(item)
+    TrainController.setSwitcherState(item.id, item.currentState)
+  }
+
+  @action
+  updateSwitcher = (item: Partial<SwitcherData>) => {
+    this.layoutStore.updateSwitcher(item)
+    if (item.currentState != null && item.currentState !== item.currentState) {
+      TrainController.setSwitcherState(item.id, item.currentState)
+      if (simulatorStore.sandbox) {
+        simulatorStore.sandbox.setSwitcherDirection(item.id, item.currentState)
+      }
+    }
+  }
+
+  @action
+  deleteSwitcher = (item: Partial<SwitcherData>) => {
+    this.layoutStore.deleteSwitcher(item)
+  }
 
   @action
   connectTurnoutToSwitcher = (railId: number, conductionStates: ConductionStates, switcherId: number) => {

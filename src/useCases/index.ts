@@ -13,6 +13,7 @@ import builderStore from "../stores/builderStore";
 import editorStore from "../stores/editorStore";
 import layerPaletteStore from "../stores/layerPaletteStore";
 import uiStore from "../stores/uiStore";
+import sandboxStore from "stores/sandboxStore";
 
 export * from "./types.d";
 
@@ -33,10 +34,10 @@ export type AppUseCases = {
 export default (): AppUseCases => {
 
   const selectionToolUseCase = new SelectionToolUseCase(layoutStore, builderStore)
-  const powerPackUseCase = new PowerPackUseCase(layoutStore)
+  const powerPackUseCase = new PowerPackUseCase(layoutStore, sandboxStore)
   const switcherUseCase = new SwitcherUseCase(layoutStore)
   const gapJoinerUseCase = new GapJoinerUseCase(layoutStore)
-  const simulationUseCase = new SimulationUseCase(editorStore, layoutStore)
+  const simulationUseCase = new SimulationUseCase(editorStore, layoutStore, powerPackUseCase)
 
   const projectUseCase = new ProjectUseCase(layoutStore, builderStore, editorStore, simulationUseCase)
   const feederUseCase = new FeederUseCase(layoutStore, powerPackUseCase)
