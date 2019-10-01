@@ -33,8 +33,11 @@ export class SwitcherUseCase {
 
   @action
   updateSwitcher = (item: Partial<SwitcherData>) => {
+    const before = this.layoutStore.getSwitcherById(item.id)
     this.layoutStore.updateSwitcher(item)
-    if (item.currentState != null && item.currentState !== item.currentState) {
+    const after = this.layoutStore.getSwitcherById(item.id)
+
+    if (before.currentState !== after.currentState) {
       TrainController.setSwitcherState(item.id, item.currentState)
       if (simulatorStore.sandbox) {
         simulatorStore.sandbox.setSwitcherDirection(item.id, item.currentState)
@@ -101,7 +104,7 @@ export class SwitcherUseCase {
     })
 
     // Switcherの状態更新
-    this.layoutStore.updateSwitcher({
+    this.updateSwitcher({
       id: switcherId,
       currentState: state
     })
@@ -122,7 +125,7 @@ export class SwitcherUseCase {
     })
 
     // Switcherの状態更新
-    this.layoutStore.updateSwitcher({
+    this.updateSwitcher({
       id: switcherId,
       conductionStates: conductionStates
     })

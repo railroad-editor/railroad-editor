@@ -87,7 +87,7 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
   }
 
   onDelete = (e: React.MouseEvent<HTMLElement>) => {
-    this.props.layout.deleteSwitcher({
+    this.props.switcherUseCase.deleteSwitcher({
       id: this.props.item.id
     })
     this.onMenuClose(e)
@@ -195,7 +195,7 @@ export class SwitcherCard extends React.Component<SwitcherCardProps, SwitcherCar
           open={this.state.dialogOpen}
           onClose={this.onSettingDialogClosed}
           switcher={this.props.item}
-          updateSwitcher={this.props.layout.updateSwitcher}
+          updateSwitcher={this.props.switcherUseCase.updateSwitcher}
         />
       </>
     )

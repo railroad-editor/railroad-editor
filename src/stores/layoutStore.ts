@@ -674,10 +674,18 @@ export class LayoutStore {
     return this.currentLayoutData.gapJoiners.find(item => item.id === id)
   }
 
+  getSwitcherById = (id: number): SwitcherData => {
+    return computed(() => this.currentLayoutData.switchers.find(sw => sw.id === id)).get()
+  }
+
   getSwitcherByRailId = (id: number): SwitcherData => {
     return computed(() => this.currentLayoutData.switchers.find(sw =>
       _.flatMap(_.values(sw.conductionStates), cs => cs.slice()).find(cs => cs.railId === id)
     )).get()
+  }
+
+  getPowerPackById = (id: number): PowerPackData => {
+    return computed(() => this.currentLayoutData.powerPacks.find(p => p.id === id)).get()
   }
 
   getPowerPackByFeederId = (id: number): PowerPackData => {

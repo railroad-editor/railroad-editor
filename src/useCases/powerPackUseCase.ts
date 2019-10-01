@@ -37,15 +37,18 @@ export class PowerPackUseCase {
 
   @action
   updatePowerPack = (item: Partial<PowerPackData>) => {
+    const before = this.layoutStore.getPowerPackById(item.id)
     this.layoutStore.updatePowerPack(item)
+    const after = this.layoutStore.getPowerPackById(item.id)
 
-    if (item.direction != null && item.direction !== item.direction) {
+    if (before.direction !== after.direction) {
       item.power = 0
       TrainController.setPowerPackDirection(item.id, item.direction)
       if (simulatorStore.sandbox) {
         simulatorStore.sandbox.setPowerPackDirection(item.id, item.direction)
       }
-    } else if (item.power != null && item.power !== item.power) {
+    }
+    if (before.power !== after.power) {
       TrainController.setPowerPackValue(item.id, item.power)
       if (simulatorStore.sandbox) {
         simulatorStore.sandbox.setPowerPackPower(item.id, item.power)
