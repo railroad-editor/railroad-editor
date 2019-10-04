@@ -121,6 +121,7 @@ export default function withKeyHandler(WrappedComponent: React.ComponentClass<Wi
       switch (e.key) {
         case 'c':
           this.props.railToolUseCase.registerRailGroup('Clipboard')
+          this.props.selectionToolUseCase.selectAllRails(false)
           break
         case 'x':
           this.props.layout.commit()

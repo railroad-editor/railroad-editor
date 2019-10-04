@@ -8,7 +8,7 @@ import {STORE_UI} from "constants/stores";
 
 
 export type NewRailGroupDialogProps = {
-  addUserRailGroup: (name: string, shouldDelete: boolean) => void
+  addUserRailGroup: (name: string) => void
   definedItems: PaletteItem[]
 } & FormDialogProps & WithUiStore
 
@@ -36,7 +36,7 @@ export default class NewRailGroupDialog extends FormDialogBase<NewRailGroupDialo
   }
 
   onOK = (e) => {
-    this.props.addUserRailGroup(this.state.inputs.name, false)
+    this.props.addUserRailGroup(this.state.inputs.name)
     this.onClose()
   }
 

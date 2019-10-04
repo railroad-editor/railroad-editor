@@ -17,21 +17,21 @@ import NewRailGroupDialog
 import {NO_RAIL_FOR_GROUP} from "constants/messages";
 import {I18n} from "aws-amplify";
 import {WithBuilderStore, WithLayoutStore, WithUiStore} from "stores";
-import {WithRailToolUseCase} from "useCases";
+import {WithRailToolUseCase, WithSelectionToolUseCase} from "useCases";
 import {STORE_BUILDER, STORE_LAYOUT, STORE_UI} from "constants/stores";
-import {USECASE_RAIL_TOOL} from "constants/useCases";
+import {USECASE_RAIL_TOOL, USECASE_SELECTION} from "constants/useCases";
 
 
 export type RailPaletteProps = {
   className?: string
-} & WithBuilderStore & WithLayoutStore & WithUiStore & WithRailToolUseCase
+} & WithBuilderStore & WithLayoutStore & WithUiStore & WithRailToolUseCase & WithSelectionToolUseCase
 
 export interface RailPaletteState {
   customDialogOpen: boolean
 }
 
 
-@inject(STORE_BUILDER, STORE_LAYOUT, STORE_UI, USECASE_RAIL_TOOL)
+@inject(STORE_BUILDER, STORE_LAYOUT, STORE_UI, USECASE_RAIL_TOOL, USECASE_SELECTION)
 @observer
 export default class RailPalettes extends React.Component<RailPaletteProps, RailPaletteState> {
 
@@ -60,6 +60,11 @@ export default class RailPalettes extends React.Component<RailPaletteProps, Rail
     this.setState({
       customDialogOpen: false
     })
+  }
+
+  addUserRailGroup = (name: string) => {
+    this.props.railToolUseCase.registerRailGroup(name)
+    this.props.selectionToolUseCase.selectAllRails(false)
   }
 
 
@@ -143,7 +148,7 @@ export default class RailPalettes extends React.Component<RailPaletteProps, Rail
               title={'New Rail Group'}
               open={this.isActive(Tools.RAIL_GROUPS) && this.state.customDialogOpen}
               onClose={this.closeCustomDialog}
-              addUserRailGroup={this.props.railToolUseCase.registerRailGroup}
+              addUserRailGroup={this.addUserRailGroup}
               definedItems={customRailGroups}
             />
           }

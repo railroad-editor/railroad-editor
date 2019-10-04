@@ -16,14 +16,14 @@ import {SimulatorSandbox} from "./ScriptDialog/SimulatorSandbox";
 import {CONNECTED_REMOTE, NO_REMOTE_SESSION} from "constants/messages";
 import {I18n} from "aws-amplify";
 import {WithEditorStore, WithLayoutStore, WithSandboxStore, WithUiStore} from "stores";
-import {WithSwitcherUseCase} from "useCases";
+import {WithPowerPackUseCase, WithSwitcherUseCase} from "useCases";
 import {STORE_EDITOR, STORE_LAYOUT, STORE_SANDBOX, STORE_UI} from "constants/stores";
-import {USECASE_SWITCHER} from "constants/useCases";
+import {USECASE_POWERPACK, USECASE_SWITCHER} from "constants/useCases";
 
 
 export type SimulatorToolBarProps = {
   resetViewPosition: () => void
-} & WithEditorStore & WithLayoutStore & WithSandboxStore & WithUiStore & WithSwitcherUseCase
+} & WithEditorStore & WithLayoutStore & WithSandboxStore & WithUiStore & WithPowerPackUseCase & WithSwitcherUseCase
 
 export interface SimulatorToolBarState {
   openSettings: boolean
@@ -33,7 +33,7 @@ export interface SimulatorToolBarState {
 type EnhancedSimulatorToolBarProps = SimulatorToolBarProps
 
 
-@inject(STORE_EDITOR, STORE_LAYOUT, STORE_UI, STORE_SANDBOX, USECASE_SWITCHER)
+@inject(STORE_EDITOR, STORE_LAYOUT, STORE_UI, STORE_SANDBOX, USECASE_POWERPACK, USECASE_SWITCHER)
 @observer
 export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarProps, SimulatorToolBarState> {
 
@@ -81,11 +81,11 @@ export class SimulatorToolBar extends React.Component<EnhancedSimulatorToolBarPr
   }
 
   onSetPowerPackPower = (id, power) => {
-    this.props.layout.updatePowerPack({id, power})
+    this.props.powerPackUseCase.updatePowerPack({id, power})
   }
 
   onSetPowerPackDirection = (id, direction) => {
-    this.props.layout.updatePowerPack({id, direction})
+    this.props.powerPackUseCase.updatePowerPack({id, direction})
   }
 
   onSetSwitcherDirection = (id, number) => {
