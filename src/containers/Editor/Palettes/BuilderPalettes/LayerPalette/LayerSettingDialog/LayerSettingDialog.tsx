@@ -123,7 +123,6 @@ export default class LayerSettingDialog extends FormDialogBase<LayerSettingDialo
               onClick={this.openColorPicker}
               buttonRef={ref => this.anchorEl = ref}
               style={{backgroundColor: this.state.inputs.color}}
-
             />
           </Grid>
         </Grid>

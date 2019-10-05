@@ -132,7 +132,6 @@ export default class PowerPackSettingDialog extends FormDialogBase<PowerPackSett
               onClick={this.openColorPicker}
               buttonRef={ref => this.anchorEl = ref}
               style={{backgroundColor: this.state.inputs.color}}
-
             />
           </Grid>
         </Grid>
