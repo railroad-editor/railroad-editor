@@ -112,8 +112,11 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
     return false;
   }
 
-  closeCommonSnackbar = () => {
-    this.props.ui.setCommonSnackbar(false)
+  closeCommonSnackbar = (e, reason) => {
+    // TODO: Snackbarが速攻閉じられてしまう問題を解消するためのWorkaround
+    if (reason !== 'clickaway') {
+      this.props.ui.setCommonSnackbar(false)
+    }
   }
 
 

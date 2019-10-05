@@ -47,13 +47,19 @@ export default class RailPalettes extends React.Component<RailPaletteProps, Rail
   }
 
   openCustomDialog = () => {
-    if (this.props.layout.selectedRails.length === 0 && this.isActive(Tools.RAIL_GROUPS)) {
-      this.props.ui.setCommonSnackbar(true, I18n.get(NO_RAIL_FOR_GROUP), 'warning')
-      return
-    }
     this.setState({
       customDialogOpen: true
     })
+  }
+
+  openRailGroupDialog = (e) => {
+    if (this.props.layout.selectedRails.length > 0) {
+      this.setState({
+        customDialogOpen: true
+      })
+    } else {
+      this.props.ui.setCommonSnackbar(true, I18n.get(NO_RAIL_FOR_GROUP), 'warning')
+    }
   }
 
   closeCustomDialog = () => {
@@ -152,7 +158,7 @@ export default class RailPalettes extends React.Component<RailPaletteProps, Rail
               definedItems={customRailGroups}
             />
           }
-          openCustomDialog={this.openCustomDialog}
+          openCustomDialog={this.openRailGroupDialog}
           tooltipTitle={'Add Rail Group'}
           helpMessage={'To add a new rail group, select rails and click + button.'}
         />
