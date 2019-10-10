@@ -14,16 +14,14 @@ export class SimulationUseCase {
   private layoutStore: LayoutStore
   private powerPackUseCase: PowerPackUseCase
 
-  private temporaryRailFlows: TemporaryRailFlows
-  private errorPowerPacks: PowerPackData[]
-  private errorRails: any[]
+  private temporaryRailFlows: TemporaryRailFlows = []
+  private errorPowerPacks: PowerPackData[] = []
+  private errorRails: any[] = []
 
   constructor(editorStore: EditorStore, layoutStore: LayoutStore, powerPackUseCase: PowerPackUseCase) {
     this.editorStore = editorStore
     this.layoutStore = layoutStore
     this.powerPackUseCase = powerPackUseCase
-
-    this.temporaryRailFlows = []
 
     // シミュレーション更新タイミング
     // 1. 電流のON/OFFまたは向きの変更時
@@ -199,6 +197,10 @@ export class SimulationUseCase {
     const opposingJoint = rail.opposingJoints[anotherJointId]
     // 接続されていなければ終了
     if (! opposingJoint) {
+      return
+    }
+    // このジョイントか、対向ジョイントがギャップジョイナーなら終了
+    if (this.isGapJoiner(railId, anotherJointId) || this.isGapJoiner(opposingJoint.railId, opposingJoint.jointId)) {
       return
     }
 
