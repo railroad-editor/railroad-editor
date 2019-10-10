@@ -57,7 +57,6 @@ export class EditorStore {
     this.zooming = zooming
     this.pan = pan
     this.panning = panning
-
   }
 
   // ========= computed

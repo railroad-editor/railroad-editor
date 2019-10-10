@@ -41,7 +41,7 @@ export default (): AppUseCases => {
 
   const projectUseCase = new ProjectUseCase(layoutStore, builderStore, editorStore, simulationUseCase)
   const feederUseCase = new FeederUseCase(layoutStore, powerPackUseCase)
-  const builderUseCase = new BuilderUseCase(editorStore, builderStore, selectionToolUseCase, simulationUseCase)
+  const builderUseCase = new BuilderUseCase(editorStore, layoutStore, builderStore, selectionToolUseCase, simulationUseCase)
   const railToolUseCase = new RailToolUseCase(layoutStore, builderStore, layerPaletteStore, uiStore, feederUseCase, gapJoinerUseCase, switcherUseCase, selectionToolUseCase)
   const layerUseCase = new LayerUseCase(layoutStore, layerPaletteStore, railToolUseCase)
 
