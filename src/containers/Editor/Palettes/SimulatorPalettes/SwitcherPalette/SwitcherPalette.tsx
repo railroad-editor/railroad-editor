@@ -24,6 +24,7 @@ import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.sty
 import {STORE_BUILDER, STORE_LAYOUT} from 'constants/stores';
 import {WithLayoutStore} from "stores";
 import {WithSwitcherUseCase} from "useCases";
+import {USECASE_SWITCHER} from "constants/useCases";
 
 
 export type SwitcherPaletteProps = {
@@ -39,7 +40,7 @@ export interface PowerPackPaletteState {
 }
 
 
-@inject(STORE_BUILDER, STORE_LAYOUT)
+@inject(STORE_BUILDER, STORE_LAYOUT, USECASE_SWITCHER)
 @observer
 export default class SwitcherPalette extends React.Component<SwitcherPaletteProps, PowerPackPaletteState> {
 
