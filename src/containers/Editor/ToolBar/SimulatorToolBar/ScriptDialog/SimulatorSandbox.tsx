@@ -1,9 +1,9 @@
 import * as React from "react";
-import {forwardRef, useImperativeHandle, useRef} from "react";
 import {PowerPackData, SwitcherData} from "stores/layoutStore";
 import {Sandbox} from "./Sandbox";
 import {PowerPacks} from "./PowerPacks";
 import {Switchers} from "./Switchers";
+import {observer} from "mobx-react";
 
 
 const BASE_CODE = `
@@ -46,90 +46,90 @@ export interface SimulatorSandboxProps {
 }
 
 
-export const SimulatorSandbox = forwardRef((props: SimulatorSandboxProps, ref: any) => {
+@observer
+export class SimulatorSandbox extends React.Component<SimulatorSandboxProps, {}> {
 
-  const code = BASE_CODE + props.code
-  const globals = {
-    PowerPacks: new PowerPacks(props.powerPacks),
-    Switchers: new Switchers(props.switchers)
+  sandboxRef: any
+
+  setPowerPackPower(id: number, power: number) {
+    this.sandboxRef.postMessage({
+      source: 'railroad-editor',
+      type: 'PowerPack',
+      func: 'setPower',
+      payload: {id, power}
+    })
   }
-  const handlerForScriptEvent = function (e) {
-    const {source, type, func, payload} = e.data
-    if (source !== 'simulator-script') {
-      return
+
+  setPowerPackDirection(id: number, direction: number) {
+    this.sandboxRef.postMessage({
+      source: 'railroad-editor',
+      type: 'PowerPack',
+      func: 'setDirection',
+      payload: {id, direction}
+    })
+  }
+
+  setSwitcherDirection(id: number, direction: number) {
+    this.sandboxRef.postMessage({
+      source: 'railroad-editor',
+      type: 'Switcher',
+      func: 'setDirection',
+      payload: {id, direction}
+    })
+  }
+
+  render() {
+    const props = this.props
+    const code = BASE_CODE + props.code
+    const globals = {
+      PowerPacks: new PowerPacks(props.powerPacks),
+      Switchers: new Switchers(props.switchers)
     }
-    console.log('Message from simulator-script: ', type, func, payload);
-    const HANDLERS = {
-      PowerPack: {
-        setPower: function (payload) {
-          const {id, power} = payload
-          props.onSetPowerPackPower(id, power)
+    const handlerForScriptEvent = function (e) {
+      const {source, type, func, payload} = e.data
+      if (source !== 'simulator-script') {
+        return
+      }
+      console.log('Message from simulator-script: ', type, func, payload);
+      const HANDLERS = {
+        PowerPack: {
+          setPower: function (payload) {
+            const {id, power} = payload
+            props.onSetPowerPackPower(id, power)
+          },
+          setDirection: function (payload) {
+            const {id, direction} = payload
+            props.onSetPowerPackDirection(id, direction)
+          }
         },
-        setDirection: function (payload) {
-          const {id, direction} = payload
-          props.onSetPowerPackDirection(id, direction)
-        }
-      },
-      Switcher: {
-        setDirection: function (payload) {
-          const {id, direction} = payload
-          props.onSetSwitcherDirection(id, direction)
-        }
-      },
-      Error: {
-        show: function (payload) {
-          const {message} = payload
-          props.onError(message)
+        Switcher: {
+          setDirection: function (payload) {
+            const {id, direction} = payload
+            props.onSetSwitcherDirection(id, direction)
+          }
+        },
+        Error: {
+          show: function (payload) {
+            const {message} = payload
+            props.onError(message)
+          }
         }
       }
-    }
-    HANDLERS[type][func](payload)
-  };
+      HANDLERS[type][func](payload)
+    };
 
-  const sandboxRef = useRef<any>();
-  useImperativeHandle(ref, () => {
-    return {
-      setPowerPackPower(id: number, power: number) {
-        sandboxRef.current.postMessage({
-          source: 'railroad-editor',
-          type: 'PowerPack',
-          func: 'setPower',
-          payload: {id, power}
-        })
-      },
-      setPowerPackDirection(id: number, direction: number) {
-        sandboxRef.current.postMessage({
-          source: 'railroad-editor',
-          type: 'PowerPack',
-          func: 'setDirection',
-          payload: {id, direction}
-        })
-      },
-      setSwitcherDirection(id: number, direction: number) {
-        sandboxRef.current.postMessage({
-          source: 'railroad-editor',
-          type: 'Switcher',
-          func: 'setDirection',
-          payload: {id, direction}
-        })
-      }
-    }
-  });
+    return (
+      <Sandbox
+        ref={this.getRef}
+        code={code}
+        globals={globals}
+        onMessage={handlerForScriptEvent}
+      />
+    );
+  }
 
-  // useEffect(() => {
-  //   props.simulator.setSandbox(sandboxRef.current)
-  //   return () => {
-  //     props.simulator.setSandbox(null)
-  //   }
-  // }, [])
-
-  return (
-    <Sandbox
-      ref={sandboxRef}
-      code={code}
-      globals={globals}
-      onMessage={handlerForScriptEvent}
-    />
-  );
-})
+  getRef = (ref) => {
+    if (ref) this.sandboxRef = ref
+  }
+}
 
