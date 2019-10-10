@@ -59,6 +59,42 @@
       },
       {
         "type": "CurveRail",
+        "name": "C103-60",
+        "radius": 103,
+        "centerAngle": 60
+      },
+      {
+        "type": "CurveRail",
+        "name": "C103-30",
+        "radius": 103,
+        "centerAngle": 30
+      },
+      {
+        "type": "CurveRail",
+        "name": "C140-60",
+        "radius": 140,
+        "centerAngle": 60
+      },
+      {
+        "type": "CurveRail",
+        "name": "C140-30",
+        "radius": 140,
+        "centerAngle": 30
+      },
+      {
+        "type": "CurveRail",
+        "name": "C177-60",
+        "radius": 177,
+        "centerAngle": 60
+      },
+      {
+        "type": "CurveRail",
+        "name": "C177-30",
+        "radius": 177,
+        "centerAngle": 30
+      },
+      {
+        "type": "CurveRail",
         "name": "C243-45",
         "radius": 243,
         "centerAngle": 45
@@ -142,6 +178,22 @@
         "innerRadius": 354,
         "outerRadius": 391,
         "centerAngle": 45
+      },
+      {
+        "type": "SimpleTurnout",
+        "name": "PR140-30",
+        "length": 70,
+        "radius": 140,
+        "centerAngle": 30,
+        "branchDirection": "Right"
+      },
+      {
+        "type": "SimpleTurnout",
+        "name": "PL140-30",
+        "length": 70,
+        "radius": 140,
+        "centerAngle": 30,
+        "branchDirection": "Left"
       },
       {
         "type": "SimpleTurnout",
