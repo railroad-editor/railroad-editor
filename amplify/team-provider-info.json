@@ -15,7 +15,8 @@
                 "railroadeditorbe0a4b20": {}
             },
             "function": {
-                "layoutApi": {}
+                "layoutApi": {},
+                "cognitoCustomMessage": {}
             }
         }
     },

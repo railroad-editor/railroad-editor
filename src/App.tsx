@@ -1,22 +1,23 @@
 import * as React from 'react'
-import Editor from 'components/Editor/Editor'
+import Editor from 'containers/Editor/Editor'
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import {Redirect} from "react-router";
 import * as qs from "query-string"
 import Amplify, {Auth} from "aws-amplify";
 import aws_exports from './aws-exports';
-import ResetPassword from "components/common/Authenticator/ResetPassword/ResetPassword";
+import ResetPassword from "containers/common/Authenticator/ResetPassword/ResetPassword";
 import {inject, observer} from "mobx-react";
-import {STORE_COMMON, STORE_UI} from "constants/stores";
-import {CommonStore} from "store/commonStore";
 import withRoot from './withRoot';
 import getLogger from "logging";
 import 'typeface-roboto'
 import './App.css'
-import Home from "./components/Home/Home";
+import Home from "./containers/Home/Home";
 import {Helmet} from "react-helmet";
-import {UiStore} from "./store/uiStore";
-import MySnackbar from "./components/common/Snackbar/MySnackbar";
+import {Snackbar} from "components/Snackbar/Snackbar";
+import {WithEditorStore, WithUiStore} from "stores";
+import {WithProjectUseCase} from "useCases";
+import {STORE_EDITOR, STORE_UI} from "constants/stores";
+import {USECASE_PROJECT} from "constants/useCases";
 
 (window as any).LOG_LEVEL = 'DEBUG';
 
@@ -25,19 +26,14 @@ Amplify.configure(aws_exports)
 const LOGGER = getLogger(__filename)
 
 
-export interface AppProps {
-  common?: CommonStore
-  ui?: UiStore
-}
+export type AppProps = {
+  // empty
+} & WithEditorStore & WithUiStore & WithProjectUseCase
 
 
-@inject(STORE_COMMON, STORE_UI)
+@inject(STORE_EDITOR, STORE_UI, USECASE_PROJECT)
 @observer
 class App extends React.Component<AppProps, {}> {
-
-  constructor(props: any) {
-    super(props)
-  }
 
   componentDidMount(): void {
     const params = qs.parse((window as any).location.search)
@@ -48,11 +44,12 @@ class App extends React.Component<AppProps, {}> {
 
   async componentWillMount() {
     // セッションストレージからユーザー情報を取り出す
-    const session = await Auth.currentSession()
+    // const session = await Auth.currentSession()
     const userInfo = await Auth.currentUserInfo()
     if (userInfo) {
       LOGGER.info('Signed in as', userInfo) //`
-      this.props.common.setUserInfo(userInfo)
+      this.props.editor.setUserInfo(userInfo)
+      await this.props.projectUseCase.loadLayoutList()
     }
   }
 
@@ -83,10 +80,10 @@ class App extends React.Component<AppProps, {}> {
             />
           </div>
         </Router>
-        <MySnackbar open={this.props.ui.confirmedSnackbar}
-                    onClose={this.closeConfirmedSnackbar}
-                    message={'Confirmed successfully. Please login from Menu.'}
-                    variant="success"
+        <Snackbar open={this.props.ui.confirmedSnackbar}
+                  onClose={this.closeConfirmedSnackbar}
+                  message={'Confirmed successfully. Please login from Menu.'}
+                  variant="success"
         />
       </div>
     )

@@ -4,7 +4,8 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import cyan from '@material-ui/core/colors/cyan';
 import green from '@material-ui/core/colors/green';
 import CssBaseline from "@material-ui/core/CssBaseline";
-import {createStores} from "store/createStore";
+import createStores from "stores";
+import createUseCases from "useCases";
 import {Provider as MobxProvider} from "mobx-react";
 import makeInspectable from 'mobx-devtools-mst';
 
@@ -24,7 +25,10 @@ export const theme = createMuiTheme({
 });
 
 
-const stores = createStores();
+const stores = {
+  ...createStores(),
+  ...createUseCases()
+};
 makeInspectable(stores);
 
 
@@ -37,8 +41,10 @@ function withRoot(Component: React.ComponentType) {
         <MuiThemeProvider theme={theme}>
           {/* Reboot kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline>
-            {/* the rest of your app belongs here, e.g. the router */}
-            <Component {...props} />
+            <div>
+              {/* the rest of your app belongs here, e.g. the router */}
+              <Component {...props} />
+            </div>
           </CssBaseline>
         </MuiThemeProvider>
       </MobxProvider>
