@@ -43,7 +43,7 @@ export class ResetPassword extends AuthPiece<ResetPasswordProps, ResetPasswordSt
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // custom rule will have name 'isPasswordMatch'
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => value === this.state.inputs.password);
   }

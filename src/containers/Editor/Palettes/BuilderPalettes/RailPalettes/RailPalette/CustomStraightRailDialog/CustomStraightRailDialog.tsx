@@ -32,7 +32,7 @@ export default class CustomStraightRailDialog extends FormDialogBase<CustomStrai
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     ValidatorForm.addValidationRule('isUniqueName', (value) => {
       return ! this.props.definedItems.map(i => i.name).includes(value);
     });

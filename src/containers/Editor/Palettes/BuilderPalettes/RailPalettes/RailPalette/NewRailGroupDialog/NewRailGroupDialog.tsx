@@ -22,7 +22,7 @@ export default class NewRailGroupDialog extends FormDialogBase<NewRailGroupDialo
     this.state = this.getInitialState()
   }
 
-  componentWillMount() {
+  componentDidMount() {
     ValidatorForm.addValidationRule('isUniqueName', (value) => {
       return ! this.props.definedItems.map(i => i.name).includes(value);
     });

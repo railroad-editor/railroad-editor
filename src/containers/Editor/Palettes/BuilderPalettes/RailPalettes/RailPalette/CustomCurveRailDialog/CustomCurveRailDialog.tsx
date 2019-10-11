@@ -24,8 +24,6 @@ export default class CustomCurveRailDialog extends FormDialogBase<CustomCurveRai
   constructor(props: CustomCurveRailDialogProps) {
     super(props)
     this.state = this.getInitialState()
-
-    this.onDoubleChange = this.onDoubleChange.bind(this)
   }
 
   getInitialState = () => {
@@ -35,7 +33,7 @@ export default class CustomCurveRailDialog extends FormDialogBase<CustomCurveRai
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     ValidatorForm.addValidationRule('isUniqueName', (value) => {
       return ! this.props.definedItems.map(i => i.name).includes(value);
     });

@@ -35,21 +35,25 @@ export type AppProps = {
 @observer
 class App extends React.Component<AppProps, {}> {
 
-  componentDidMount(): void {
-    const params = qs.parse((window as any).location.search)
-    if (params.confirmed === 'true') {
-      this.props.ui.setConfirmedSnackbar(true)
-    }
+  componentDidMount() {
+    this.openConfirmedSnackbar()
+    this.setUserInfo()
   }
 
-  async componentWillMount() {
-    // セッションストレージからユーザー情報を取り出す
-    // const session = await Auth.currentSession()
+  setUserInfo = async () => {
     const userInfo = await Auth.currentUserInfo()
     if (userInfo) {
       LOGGER.info('Signed in as', userInfo) //`
       this.props.editor.setUserInfo(userInfo)
       await this.props.projectUseCase.loadLayoutList()
+    }
+  }
+
+
+  openConfirmedSnackbar = () => {
+    const params = qs.parse(window.location.search)
+    if (params.confirmed === 'true') {
+      this.props.ui.setConfirmedSnackbar(true)
     }
   }
 

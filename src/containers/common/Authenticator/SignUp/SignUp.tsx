@@ -31,7 +31,7 @@ export default class SignUp extends AuthPiece<AuthPieceProps, SignUpState> {
     this.signUp = this.signUp.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // custom rule will have name 'isPasswordMatch'
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => value === this.state.inputs.password);
   }

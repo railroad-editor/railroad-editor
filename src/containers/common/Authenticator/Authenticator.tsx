@@ -46,7 +46,7 @@ export default class Authenticator extends React.Component<AuthenticatorProps, A
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const config = this.props.amplifyConfig;
     if (config) {
       Amplify.configure(config);
