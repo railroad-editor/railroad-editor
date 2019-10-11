@@ -88,6 +88,11 @@ export default class RailPalettes extends React.Component<RailPaletteProps, Rail
         return {name: rg.name, type: 'RailGroup'}
       })
 
+    const presetRailItems = Object.keys(this.props.builder.presetRailPaletteItems)
+      .map(key => this.props.builder.presetRailPaletteItems[key])
+      .flat()
+    const allRailItems = [].concat(presetRailItems, customStraightRails, customCurveRails, customRailGroups)
+
     return (
       <Rnd
         className={this.props.className}
@@ -105,7 +110,7 @@ export default class RailPalettes extends React.Component<RailPaletteProps, Rail
               open={this.isActive(Tools.STRAIGHT_RAILS) && this.state.customDialogOpen}
               onClose={this.closeCustomDialog}
               addUserRail={this.props.builder.addUserRail}
-              definedItems={this.props.builder.presetRailPaletteItems[Tools.STRAIGHT_RAILS].concat(customStraightRails)}
+              definedItems={allRailItems}
             />
           }
           openCustomDialog={this.openCustomDialog}
@@ -124,7 +129,7 @@ export default class RailPalettes extends React.Component<RailPaletteProps, Rail
               open={this.isActive(Tools.CURVE_RAILS) && this.state.customDialogOpen}
               onClose={this.closeCustomDialog}
               addUserRail={this.props.builder.addUserRail}
-              definedItems={this.props.builder.presetRailPaletteItems[Tools.CURVE_RAILS].concat(customStraightRails)}
+              definedItems={allRailItems}
             />
           }
           openCustomDialog={this.openCustomDialog}
@@ -155,7 +160,7 @@ export default class RailPalettes extends React.Component<RailPaletteProps, Rail
               open={this.isActive(Tools.RAIL_GROUPS) && this.state.customDialogOpen}
               onClose={this.closeCustomDialog}
               addUserRailGroup={this.addUserRailGroup}
-              definedItems={customRailGroups}
+              definedItems={allRailItems}
             />
           }
           openCustomDialog={this.openRailGroupDialog}

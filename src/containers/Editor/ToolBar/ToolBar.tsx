@@ -17,11 +17,8 @@ import {inject, observer} from "mobx-react";
 import {BuilderStore} from "stores/builderStore";
 import {EditorMode, EditorStore} from "stores/editorStore";
 import MenuDrawer from "containers/Editor/ToolBar/MenuDrawer/MenuDrawer";
-import {compose} from "recompose";
 import {EditableTypography} from "containers/common/EditableTypography/EditableTypography";
-import Peer from 'skyway-js';
 import BuilderToolBar from "containers/Editor/ToolBar/BuilderToolBar/BuilderToolBar";
-import withMoveTool from "containers/hoc/withMoveTool";
 import SimulatorToolBar from "containers/Editor/ToolBar/SimulatorToolBar/SimulatorToolBar";
 import {UiStore} from "stores/uiStore";
 import BuildIcon from '@material-ui/icons/Build';
@@ -50,10 +47,7 @@ export interface ToolBarState {
 
 @inject(STORE_EDITOR, STORE_BUILDER, STORE_LAYOUT, STORE_UI)
 @observer
-export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
-
-  myPeerId: string
-  peer: Peer
+export default class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
 
   constructor(props: ToolBarProps) {
     super(props)
@@ -62,19 +56,6 @@ export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
       el: undefined,
       editorMode: EditorMode.BUILDER
     }
-  }
-
-  componentDidMount() {
-    this.peer = new Peer({
-      key: '423ec210-715b-4916-971f-bd800a835414',
-      debug: 3,
-    });
-    // Show this peer's ID.
-    this.peer.on('open', id => {
-      this.myPeerId = id
-      console.log('open', this.myPeerId)
-    });
-
   }
 
   openMenu = (e) => {
@@ -172,8 +153,3 @@ export class ToolBar extends React.Component<ToolBarProps, ToolBarState> {
   }
 }
 
-
-export default compose<ToolBarProps, ToolBarProps>(
-  withMoveTool,
-  // withStyles(styles)
-)(ToolBar)

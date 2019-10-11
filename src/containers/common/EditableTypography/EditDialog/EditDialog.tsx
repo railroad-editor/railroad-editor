@@ -33,7 +33,6 @@ export default class EditDialog extends FormDialogBase<EditDialogProps, FormDial
   }
 
   renderContent = () => {
-    console.log(this.state.inputs)
     return (
       <ValidatorForm
         ref={this.getFormRef}
