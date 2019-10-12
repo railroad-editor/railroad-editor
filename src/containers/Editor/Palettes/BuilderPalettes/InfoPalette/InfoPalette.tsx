@@ -84,10 +84,10 @@ export default class InfoPalette extends React.Component<InfoPaletteProps, {}> {
             {itemData.name}
           </Typography>
         </OddGrid>
-        <OddGrid item alignItems="center" xs={4}>
+        <OddGrid item xs={4}>
           <Typography>Preview</Typography>
         </OddGrid>
-        <OddGrid item alignItems="center" xs={8}>
+        <OddGrid item xs={8}>
           <RailIcon width={110} height={90} rail={RailComponentRegistry.createRailForIcon(itemData)} zoom={0.4}/>
         </OddGrid>
       </GridContainer>

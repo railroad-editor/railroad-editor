@@ -35,7 +35,7 @@ export default class RailIcon extends React.Component<RailIconProps, RailIconSta
   setZoom = () => {
     const rect = this._rail.railPart.path.bounds
     const maxZoom = Math.min(this.props.height / rect.height, this.props.width / rect.width)
-    const zoom = Math.min(this.props.zoom, maxZoom)
+    const zoom = Math.min(this.props.zoom, maxZoom) - 0.01
     this._view.scale(zoom, new Point(this.props.width / 2, this.props.height / 2))
   }
 
