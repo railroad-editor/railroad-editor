@@ -40,7 +40,8 @@ export class FeederTips extends React.Component<FeederTipProps, FeederTipState> 
         {
           layout.feeders.map(feeder => {
             const c = RailComponentRegistry.getRailById(feeder.railId)
-            const positionOnCanvas = c.feeders[feeder.socketId].part.getGlobalPosition(Pivot.CENTER)
+            // Feederの2つめのPartの位置を使う
+            const positionOnCanvas = c.feeders[feeder.socketId].part.children[1].getGlobalPosition(Pivot.CENTER)
             const position = this.props.editor.paper.view.projectToView(positionOnCanvas)
             const powerPack = this.props.layout.getPowerPackByFeederId(feeder.id)
             const color = powerPack ? powerPack.color : null

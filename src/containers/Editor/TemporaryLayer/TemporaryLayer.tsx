@@ -9,6 +9,7 @@ import RailComponentRegistry from "containers/rails/RailComponentRegistry";
 import {FeederInfo} from "react-rail-components";
 import Feeder from "react-rail-components/lib/parts/Feeder";
 import {FEEDER_SOCKET_FILL_COLORS} from "react-rail-components/lib/constants";
+import {Pivot} from "react-rail-components/lib/parts/primitives/PartBase";
 
 
 export type TemporaryLayerProps = {
@@ -57,6 +58,7 @@ export class TemporaryLayer extends React.Component<TemporaryLayerProps, LayoutS
         angle={rail.railPart.getPivotAngleToParent(pivotInfo)}
         fillColor={FEEDER_SOCKET_FILL_COLORS[2]}
         opacity={0.8}
+        pivot={Pivot.TOP}
       />
     )
   }
