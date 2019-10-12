@@ -1,4 +1,4 @@
-import RailContainers, {RailData, RailGroupData} from "containers/rails";
+import RailContainers, {RailComponentClasses, RailData, RailGroupData} from "containers/rails";
 import {LayerData} from "stores/layoutStore";
 import {FeederInfo, GapJoinerInfo, RailBase, RailBaseProps, RailGroup} from "react-rail-components";
 import * as React from "react";
@@ -81,6 +81,16 @@ export class RailComponentRegistry {
 
   getRailGroupById = (id: number): RailGroup => {
     return this.railGroups[id]
+  }
+
+  createRailForIcon = (item: RailData) => {
+    const {type, ...props} = item
+    let RailContainer = RailComponentClasses[type]
+    if (RailContainer == null) {
+      throw Error(`'${type}' is not a valid Rail type!`)
+    }
+
+    return <RailContainer {...props} />
   }
 }
 

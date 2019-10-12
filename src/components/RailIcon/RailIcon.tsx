@@ -8,6 +8,7 @@ export interface RailIconProps extends ListItemProps {
   width: number
   height: number
   rail: any
+  zoom?: number
 }
 
 export interface RailIconState {
@@ -24,13 +25,17 @@ export default class RailIcon extends React.Component<RailIconProps, RailIconSta
     }
   }
 
-  _view: View
-  _rail: RailBase<any, any>
+  private _view: View
+  private _rail: RailBase<any, any>
 
   componentDidMount() {
-    const rect = this._rail.railPart.path.bounds
+    this.setZoom()
+  }
 
-    const zoom = Math.min(this.props.height / rect.height, this.props.width / rect.width) + 0.1
+  setZoom = () => {
+    const rect = this._rail.railPart.path.bounds
+    const maxZoom = Math.min(this.props.height / rect.height, this.props.width / rect.width)
+    const zoom = Math.min(this.props.zoom, maxZoom)
     this._view.scale(zoom, new Point(this.props.width / 2, this.props.height / 2))
   }
 
@@ -38,6 +43,7 @@ export default class RailIcon extends React.Component<RailIconProps, RailIconSta
     const {width, height, rail} = this.props
     const extendedRail = React.cloneElement(rail as any, {
       ...rail.props,
+      id: 0,
       position: {x: width / 2, y: height / 2},
       enableJoints: false,
       pivotJointIndex: undefined,
@@ -55,18 +61,16 @@ export default class RailIcon extends React.Component<RailIconProps, RailIconSta
       <ViewComponent
         width={width}
         height={height}
-        settings={{
-          applyMatrix: false
-        }}
-        ref={(ref) => {
-          if (ref) {
-            this._view = ref.scope.view
-          }
-        }}
+        settings={{applyMatrix: false}}
+        ref={this.getViewRef}
       >
         {extendedRail}
       </ViewComponent>
     )
+  }
+
+  private getViewRef = (ref) => {
+    if (ref) this._view = ref.scope.view
   }
 }
 
