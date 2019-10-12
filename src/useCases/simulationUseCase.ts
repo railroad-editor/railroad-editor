@@ -1,10 +1,10 @@
 import {action, comparer, reaction} from "mobx";
 import {FlowDirection, Pivot} from "react-rail-components/lib/parts/primitives/PartBase";
-import {getRailComponent} from "containers/rails/utils";
 import getLogger from "../logging";
 import {PowerPackUseCase, TemporaryFlowDirection, TemporaryRailFlows} from "useCases/powerPackUseCase";
 import {EditorMode, EditorStore} from "stores/editorStore";
 import {LayoutStore, PowerPackData} from "stores/layoutStore";
+import RailComponentRegistry from "containers/rails/RailComponentRegistry";
 
 const LOGGER = getLogger(__filename)
 
@@ -125,8 +125,8 @@ export class SimulationUseCase {
 
     const feeder = this.layoutStore.getFeederDataById(feederId)
     const rail = this.layoutStore.getRailDataById(feeder.railId)
-    const joints = getRailComponent(rail.id).railPart.joints
-    const feederSockets = getRailComponent(rail.id).railPart.feederSockets
+    const joints = RailComponentRegistry.getRailById(rail.id).railPart.joints
+    const feederSockets = RailComponentRegistry.getRailById(rail.id).railPart.feederSockets
     const feederedPartId = feederSockets[feeder.socketId].pivotPartIndex
     const flowDirection = powerPack.direction ? feeder.direction : this.toggleFeederDirection(feeder.direction)
 
@@ -176,7 +176,7 @@ export class SimulationUseCase {
 
   private setCurrentFlowToRail = (railId: number, jointId: number, feederId: number, isComing: boolean) => {
     const rail = this.layoutStore.getRailDataById(railId)
-    const railPart = getRailComponent(railId).railPart
+    const railPart = RailComponentRegistry.getRailById(railId).railPart
     const joint = railPart.joints[jointId]
     const partId = joint.pivotPartIndex
     // パーツが通電可能であるかを確認

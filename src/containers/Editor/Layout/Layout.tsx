@@ -1,10 +1,10 @@
 import * as React from "react";
 import {Layer} from "react-paper-bindings";
-import {createRailComponent} from "containers/rails/utils";
 import {inject, observer} from "mobx-react";
 import {DEFAULT_SELECTED_COLOR, DEFAULT_SELECTED_WIDTH} from "constants/tools";
 import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import {WithLayoutStore} from "stores";
+import RailComponentRegistry from "containers/rails/RailComponentRegistry";
 
 
 export type LayoutProps = {} & WithLayoutStore
@@ -31,7 +31,7 @@ export default class Layout extends React.Component<LayoutProps, {}> {
               {
                 currentLayoutData.rails
                   .filter(r => r.layerId === layer.id)
-                  .map(item => createRailComponent(item, layer,
+                  .map(item => RailComponentRegistry.createRail(item, layer,
                     this.props.layout.feedersByRailId(item.id),
                     this.props.layout.gapJoinersByRailId(item.id)))
               }

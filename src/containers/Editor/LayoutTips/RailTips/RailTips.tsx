@@ -1,5 +1,4 @@
 import * as React from "react";
-import {getRailComponent} from "containers/rails/utils";
 import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
 import {LayoutStore} from "stores/layoutStore";
@@ -8,6 +7,7 @@ import {reaction} from "mobx";
 import {RailComponentClasses} from "containers/rails";
 import RailTip from "containers/Editor/LayoutTips/RailTips/RailTip/RailTip";
 import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "constants/stores";
+import RailComponentRegistry from "containers/rails/RailComponentRegistry";
 
 
 export interface RailTipProps {
@@ -41,7 +41,7 @@ export class RailTips extends React.Component<RailTipProps, RailTipsState> {
       <>
         {
           turnoutRails.map(rail => {
-            const c = getRailComponent(rail.id)
+            const c = RailComponentRegistry.getRailById(rail.id)
             const tipPos = c.railPart.getPivotPositionToParent(c.railPart.tip)
             const position = this.props.editor.paper.view.projectToView(tipPos)
             const switcher = this.props.layout.getSwitcherByRailId(rail.id)

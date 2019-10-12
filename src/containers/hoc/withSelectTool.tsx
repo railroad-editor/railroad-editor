@@ -2,7 +2,6 @@ import * as React from 'react';
 import {Path, Point, ToolEvent} from 'paper'
 import getLogger from "logging";
 import {DEFAULT_SELECTION_RECT_COLOR, DEFAULT_SELECTION_RECT_OPACITY, Tools} from "constants/tools";
-import {getRailComponent} from "containers/rails/utils";
 import {BuilderStore} from "stores/builderStore";
 import {LayoutStore} from "stores/layoutStore";
 import {inject, observer} from "mobx-react";
@@ -10,6 +9,7 @@ import {Layer as LayerComponent, Rectangle as RectangleComponent} from "react-pa
 import {SelectionToolUseCase} from "useCases/selectionToolUseCase";
 import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
 import {USECASE_SELECTION} from "constants/useCases";
+import RailComponentRegistry from "containers/rails/RailComponentRegistry";
 
 const LOGGER = getLogger(__filename)
 
@@ -137,7 +137,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
     private selectRails = () => {
       // 選択対象は半透明でない全てのレール
       const rails = this.props.layout.currentLayoutData.rails
-        .map(r => getRailComponent(r.id))
+        .map(r => RailComponentRegistry.getRailById(r.id))
         .filter(r => r.props.opacity === 1)
 
       const selected = []
@@ -162,7 +162,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
 
     private selectFeeders = () => {
       // 選択対象は現在のレイヤーのレールとする
-      const rails = this.props.layout.currentLayoutData.rails.map(r => getRailComponent(r.id))
+      const rails = this.props.layout.currentLayoutData.rails.map(r => RailComponentRegistry.getRailById(r.id))
       const feeders = _.flatMap(rails, rail => rail.feeders).filter(feeder => feeder)
 
       const selected = []
@@ -187,7 +187,7 @@ export default function withSelectTool(WrappedComponent: React.ComponentClass<Wi
 
     private selectGapJoiners = () => {
       // 選択対象は現在のレイヤーのレールとする
-      const rails = this.props.layout.currentLayoutData.rails.map(r => getRailComponent(r.id))
+      const rails = this.props.layout.currentLayoutData.rails.map(r => RailComponentRegistry.getRailById(r.id))
       const gapJoiners = _.flatMap(rails, rail => rail.gapJoiners).filter(g => g)
 
       const selected = []

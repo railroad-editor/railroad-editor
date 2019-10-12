@@ -24,7 +24,6 @@ import {
 } from "constants/tools";
 import FreeRailPlacer from "containers/Editor/FreeRailPlacer/FreeRailPlacer";
 import {BuilderStore} from "stores/builderStore";
-import {getAllRailComponents} from "containers/rails/utils";
 import LayoutTips from "containers/Editor/LayoutTips/LayoutTips";
 import Palettes from "./Palettes/Palettes";
 import {DistantRailPlacer} from "./DistantRailPlacer/DistantRailPlacer";
@@ -36,6 +35,7 @@ import {Snackbar} from "components/Snackbar/Snackbar";
 import {UiStore} from "stores/uiStore";
 import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT, STORE_UI} from "constants/stores";
 import withKeyHandler, {WithKeyHandlerProps} from "../hoc/withKeyHandler";
+import RailComponentRegistry from "containers/rails/RailComponentRegistry";
 
 // const LOGGER = getLogger(__filename)
 
@@ -103,7 +103,7 @@ class Editor extends React.Component<EnhancedEditorProps, EditorState> {
   }
 
   onFrame = (e) => {
-    getAllRailComponents().forEach(r => r.onFrame(e))
+    RailComponentRegistry.rails.forEach(r => r.onFrame(e))
   }
 
   // コンテキストメニュー無効化

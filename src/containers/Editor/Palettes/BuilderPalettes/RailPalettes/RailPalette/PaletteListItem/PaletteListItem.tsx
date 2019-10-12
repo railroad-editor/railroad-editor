@@ -70,6 +70,9 @@ export default class PaletteListItem extends React.Component<PaletteListItemProp
           onClick={this.handleClick}
           color="primary"
         >
+          {/*<ListItemIcon>*/}
+          {/*  <RailIcon width={24} height={24} rail={createRailComponent(this.props.paletteItem,{} as any, [], [])}/>*/}
+          {/*</ListItemIcon>*/}
           <ListItemText primary={item.name}/>
           {menuButton}
         </ActiveListItem>

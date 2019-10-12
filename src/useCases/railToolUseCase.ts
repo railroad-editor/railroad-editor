@@ -1,6 +1,6 @@
 import {action, runInAction} from "mobx";
 import {LayoutStore} from "stores/layoutStore";
-import {getCloseJointsOf, getRailComponent, getTemporaryRailGroupComponent, intersectsOf} from "containers/rails/utils";
+import {getCloseJointsOf, intersectsOf} from "containers/rails/utils";
 import {BuilderStore} from "stores/builderStore";
 import {FeederUseCase} from "./feederUseCase";
 import {GapJoinerUseCase} from "./gapJoinerUseCase";
@@ -17,6 +17,7 @@ import {UserRailGroupData} from "stores";
 import {UiStore} from "stores/uiStore";
 import {I18n} from "aws-amplify";
 import {JointPair} from "./types";
+import RailComponentRegistry from "containers/rails/RailComponentRegistry";
 
 const LOGGER = getLogger(__filename)
 
@@ -128,10 +129,10 @@ export class RailToolUseCase {
 
 
   private addRailGroup = (railGroup: RailGroupData, children: RailData[]) => {
-    const tmpRGC = getTemporaryRailGroupComponent()
+    const tmpRGC = RailComponentRegistry.getRailGroupById(-1)
     LOGGER.info('withBuilder#addRailGroup', 'temporaryRailGroup', tmpRGC)
     const railDatas = children.map(child => {
-      const position = getRailComponent(child.id).railPart.getGlobalJointPosition(child.pivotJointIndex)
+      const position = RailComponentRegistry.getRailById(child.id).railPart.getGlobalJointPosition(child.pivotJointIndex)
       const angle = child.angle + tmpRGC.getAngle()
       LOGGER.info('withBuilder#addRailGroup', children, position, angle)
       return {
@@ -164,7 +165,7 @@ export class RailToolUseCase {
   private changeJointState = (pairs: JointPair[], state: DetectionState, isError = false) => {
     pairs.forEach(pair => {
       // LOGGER.info(`change joint state`, pair) //`
-      const rail = getRailComponent(pair.to.railId)
+      const rail = RailComponentRegistry.getRailById(pair.to.railId)
       const part = rail.joints[pair.to.jointId].part
       if (part.state.detectionState !== state) {
         part.setState({
@@ -320,7 +321,7 @@ export class RailToolUseCase {
         .filter(([k, v]) => memberRailIds.includes(v.railId))
         .map(([k, v]) => Number(k))
       // このレールのジョイント数を取得し、未接続ジョイントのIDをリストアップする
-      const numJoints = getRailComponent(rail.id).props.numJoints
+      const numJoints = RailComponentRegistry.getRailById(rail.id).props.numJoints
       const openJointIds = _.without(_.range(numJoints), ...opposingJointIds)
       openJointIds.forEach(id => openJoints.push({railId: idx, jointId: id}))
     })

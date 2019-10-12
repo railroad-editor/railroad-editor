@@ -6,7 +6,6 @@ import RailIcon from "components/RailIcon/RailIcon";
 import {RailComponentClasses, RailData} from "containers/rails";
 import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css'
-import {getRailComponent} from "containers/rails/utils";
 import {InversedConductionStates} from "containers/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwticherCard";
 import {ActiveSmallButton} from "containers/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwitchCard.style";
 import {
@@ -21,6 +20,7 @@ import {WithPowerPackUseCase, WithSwitcherUseCase} from "useCases";
 import {WithLayoutStore} from "stores";
 import {STORE_LAYOUT} from "constants/stores";
 import {USECASE_POWERPACK, USECASE_SWITCHER} from "constants/useCases";
+import RailComponentRegistry from "containers/rails/RailComponentRegistry";
 
 
 const LOGGER = getLogger(__filename)
@@ -373,7 +373,7 @@ export const createRailComponentForIcon = (item: RailData, conductionState: numb
       break
   }
 
-  const globalAngle = getRailComponent(item.id).railPart.getJointAngleToParent(1)
+  const globalAngle = RailComponentRegistry.getRailById(item.id).railPart.getJointAngleToParent(1)
   LOGGER.info('angle', globalAngle)
 
   return (

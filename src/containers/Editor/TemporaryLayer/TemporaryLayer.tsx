@@ -1,11 +1,14 @@
 import * as React from "react";
 import {Layer} from "react-paper-bindings";
-import {createFeederComponent, createRailOrRailGroupComponent, getRailComponent} from "containers/rails/utils";
 import {compose} from "recompose";
 import {inject, observer} from "mobx-react";
 import {reaction} from "mobx";
 import {WithBuilderStore, WithLayoutStore} from "stores";
 import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
+import RailComponentRegistry from "containers/rails/RailComponentRegistry";
+import {FeederInfo} from "react-rail-components";
+import Feeder from "react-rail-components/lib/parts/Feeder";
+import {FEEDER_SOCKET_FILL_COLORS} from "react-rail-components/lib/constants";
 
 
 export type TemporaryLayerProps = {
@@ -30,12 +33,33 @@ export class TemporaryLayer extends React.Component<TemporaryLayerProps, LayoutS
       (adjustmentAngle) => {
         // 現在仮レールを表示しているレールであれば、仮レールを再描画する
         // 仮レールを設置する
-        getRailComponent(this.props.builder.currentRailId).props.showTemporaryRailOrRailGroup(this.props.builder.currentJointId)
+        RailComponentRegistry.getRailById(this.props.builder.currentRailId).props.showTemporaryRailOrRailGroup(this.props.builder.currentJointId)
         this.forceUpdate()
       }
     )
   }
 
+  renderRailOrRailGroup = (railGroup, rails, layer) => {
+    if (railGroup) {
+      return RailComponentRegistry.createRailGroup(railGroup, rails, layer)
+    } else {
+      return rails.map(r => RailComponentRegistry.createRail(r, layer))
+    }
+  }
+
+  renderFeeder = (feeder: FeederInfo) => {
+    const rail = RailComponentRegistry.getRailById(feeder.railId)
+    const pivotInfo = {pivotPartIndex: feeder.socketId, pivot: feeder.pivot}
+    return (
+      <Feeder
+        {...feeder}
+        position={rail.railPart.getPivotPositionToParent(pivotInfo)}
+        angle={rail.railPart.getPivotAngleToParent(pivotInfo)}
+        fillColor={FEEDER_SOCKET_FILL_COLORS[2]}
+        opacity={0.8}
+      />
+    )
+  }
 
   render() {
     const {temporaryRails, temporaryRailGroup, temporaryFeeder} = this.props.builder
@@ -55,11 +79,11 @@ export class TemporaryLayer extends React.Component<TemporaryLayerProps, LayoutS
       >
         {
           temporaryRails.length > 0 &&
-          createRailOrRailGroupComponent(temporaryRailGroup, temporaryRails, temporaryLayer)
+          this.renderRailOrRailGroup(temporaryRailGroup, temporaryRails, temporaryLayer)
         }
         {
           temporaryFeeder &&
-          createFeederComponent(temporaryFeeder)
+          this.renderFeeder(temporaryFeeder)
         }
       </Layer>
     )

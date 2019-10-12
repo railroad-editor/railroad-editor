@@ -10,11 +10,6 @@ ReactDOM.render(<App />, document.getElementById('root'));
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-
-window.RAIL_COMPONENTS = {}
-window.RAIL_GROUP_COMPONENTS = {}
-
-
 const EVENTS_TO_MODIFY = ['touchstart', 'touchmove', 'touchend', 'touchcancel', 'wheel'];
 
 // @ts-ignore
