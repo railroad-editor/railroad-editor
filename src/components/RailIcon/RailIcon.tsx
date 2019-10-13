@@ -36,7 +36,12 @@ export default class RailIcon extends React.Component<RailIconProps, RailIconSta
   setZoom = () => {
     const rect = this._rail.railPart.path.bounds
     const maxZoom = Math.min(this.props.height / rect.height, this.props.width / rect.width)
-    const zoom = Math.min(this.props.zoom, maxZoom) - 0.01
+    let zoom
+    if (this.props.zoom) {
+      zoom = Math.min(this.props.zoom, maxZoom) - 0.01
+    } else {
+      zoom = maxZoom - 0.01
+    }
     this._view.scale(zoom, new Point(this.props.width / 2, this.props.height / 2))
   }
 
@@ -46,6 +51,7 @@ export default class RailIcon extends React.Component<RailIconProps, RailIconSta
       ...rail.props,
       id: 0,
       position: {x: width / 2, y: height / 2},
+      pivotJointIndex: undefined,
       enableJoints: false,
       ref: (ref) => {
         if (ref) this._rail = ref
