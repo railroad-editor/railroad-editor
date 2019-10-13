@@ -19,6 +19,7 @@ import {
 export interface BuilderStoreState {
   presetPaletteItems: PresetPaletteItemsByVendor
   paletteItem: PaletteItem
+  paletteItemIndex: number
   lastPaletteItems: LastPaletteItems
   placingMode: PlacingMode
   temporaryRails: RailData[]
@@ -42,6 +43,7 @@ export enum PlacingMode {
 export const INITIAL_STATE: BuilderStoreState = {
   presetPaletteItems: builderPaletteData,
   paletteItem: {type: 'StraightRail', name: 'S280'},
+  paletteItemIndex: 0,
   lastPaletteItems: {
     [Tools.STRAIGHT_RAILS]: {type: 'StraightRail', name: 'S280'},
     [Tools.CURVE_RAILS]: {type: 'CurveRail', name: 'C280-45'},
@@ -72,6 +74,8 @@ export const INITIAL_STATE: BuilderStoreState = {
 export class BuilderStore {
   // パレットで選択中のアイテム
   @observable paletteItem: PaletteItem
+  // パレットで選択中のアイテムのIndex
+  @observable paletteItemIndex: number
   // パレット切替の直前に選択していたアイテム
   @observable lastPaletteItems: LastPaletteItems
   // レール設置モード
@@ -100,11 +104,13 @@ export class BuilderStore {
   @observable currentRailId: number
 
   constructor({
-                paletteItem, lastPaletteItems, placingMode, temporaryRails, temporaryRailGroup, userRailGroups,
-                userRails, activeTool, selecting, temporaryFeeder,
+                paletteItem, paletteItemIndex, lastPaletteItems, placingMode,
+                temporaryRails, temporaryRailGroup, userRailGroups, userRails,
+                activeTool, selecting, temporaryFeeder,
                 adjustmentAngle, currentJointId, currentRailId
               }) {
     this.paletteItem = paletteItem
+    this.paletteItemIndex = paletteItemIndex
     this.lastPaletteItems = lastPaletteItems
     this.placingMode = placingMode
     this.temporaryRails = temporaryRails
@@ -403,6 +409,11 @@ export class BuilderStore {
   setCurrentJoint = (railId: number, jointId: number) => {
     this.currentRailId = railId
     this.currentJointId = jointId
+  }
+
+  @action
+  setPaletteItemIndex = (index: number) => {
+    this.paletteItemIndex = index
   }
 }
 

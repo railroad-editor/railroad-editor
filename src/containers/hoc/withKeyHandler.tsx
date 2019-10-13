@@ -85,6 +85,7 @@ export default function withKeyHandler(WrappedComponent: React.ComponentClass<Wi
       const idx = KEYS.findIndex(k => k === e.key);
       if (idx >= 0 && idx < items.length) {
         this.props.builder.setPaletteItem(items[idx])
+        this.props.builder.setPaletteItemIndex(idx)
         return true
       }
       return false

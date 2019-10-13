@@ -10,15 +10,17 @@ export const HideableDiv = styled.div`
 
 export const PaletteBodyPaper = styled(Paper)`
   && {
-    width: 200px;
+    min-width: 200px;
     max-width: 200px;
   }
 `
 
 export const ScrollablePaper = styled(Paper as any)`
   && {
+    min-width: 200px;
     max-width: 200px;
-    max-height: 1100px;
+    // 15個のアイテムを表示 (47.7 * 15 + 76.41)
+    max-height: 792px;
     overflow: scroll;
     ::-webkit-scrollbar {
         -webkit-appearance: none;

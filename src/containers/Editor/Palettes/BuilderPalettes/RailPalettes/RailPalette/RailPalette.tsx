@@ -1,20 +1,26 @@
 import * as React from 'react'
 import {ReactNode} from 'react'
-import {CenteredDiv, HideableDiv, PaletteBodyPaper, ScrollablePaper, StyledSelector,} from "./style";
+import {
+  CenteredDiv,
+  HideableDiv,
+  PaletteBodyPaper,
+  ScrollablePaper,
+  StyledSelector,
+} from "containers/Editor/Palettes/BuilderPalettes/RailPalettes/RailPalette/RailPalette.style";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import {inject, observer} from "mobx-react";
-import {BuilderStore} from "stores/builderStore";
 import * as classNames from "classnames"
 import {PaletteAddButton} from "components/PaletteAddButton/PaletteAddButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
-import {PaletteItem, RailData} from "stores";
+import {PaletteItem, RailData, WithBuilderStore} from "stores";
 import {STORE_BUILDER} from "constants/stores";
+import {reaction} from "mobx";
 
 
-export interface RailPaletteProps {
+export type RailPaletteProps = {
   className?: string
   active: boolean
   title: string
@@ -25,20 +31,37 @@ export interface RailPaletteProps {
   customDialog?: ReactNode
   openCustomDialog?: (e: React.SyntheticEvent<HTMLElement>) => void
   tooltipTitle?: string
-  builder?: BuilderStore
   helpMessage?: string
-}
+} & WithBuilderStore
 
 
 @inject(STORE_BUILDER)
 @observer
 export default class RailPalette extends React.Component<RailPaletteProps, {}> {
 
+  scrollablePaper: any
+
   constructor(props: RailPaletteProps) {
     super(props)
     this.state = {
       addDialogOpen: false
     }
+
+    reaction(
+      () => this.props.builder.paletteItemIndex,
+      (idx) => {
+        if (! this.props.active) {
+          return
+        }
+        const topIndex = this.scrollablePaper.scrollTop / 47.7
+        if (idx < topIndex) {
+          this.scrollablePaper.scrollTop = idx * 47.7
+        }
+        if (idx > topIndex + 15) {
+          this.scrollablePaper.scrollTop = (idx - 15) * 47.7
+        }
+      }
+    )
   }
 
   render() {
@@ -100,11 +123,13 @@ export default class RailPalette extends React.Component<RailPaletteProps, {}> {
               </Tooltip>
               }
             </TitleDiv>
-            <ScrollablePaper>
-              {presetItems}
-              {customItems}
-              {helpMessage}
-            </ScrollablePaper>
+            <div>
+              <ScrollablePaper ref={(ref) => this.scrollablePaper = ref}>
+                {presetItems}
+                {customItems}
+                {helpMessage}
+              </ScrollablePaper>
+            </div>
           </PaletteBodyPaper>
         </HideableDiv>
         {this.props.customDialog}
