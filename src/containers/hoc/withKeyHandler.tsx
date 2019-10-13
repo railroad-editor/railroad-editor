@@ -58,9 +58,15 @@ export default function withKeyHandler(WrappedComponent: React.ComponentClass<Wi
       // ダイアログの表示中はツールの切替を行わない
       if (this.dialogExists()) return
 
-      let result
-      if (e.ctrlKey) {
+      const {ctrlKey, altKey, metaKey} = e
+
+      let result = false
+      if (ctrlKey) {
         result = this.keyDownCtrl(e)
+      } else if (altKey) {
+        // noop
+      } else if (metaKey) {
+        // noop
       } else {
         result = this.keyDownNormal(e)
       }
