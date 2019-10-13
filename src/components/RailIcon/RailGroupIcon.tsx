@@ -14,10 +14,6 @@ export interface RailGroupIconProps extends ListItemProps {
 
 export default class RailGroupIcon extends React.Component<RailGroupIconProps, {}> {
 
-  constructor(props) {
-    super(props)
-  }
-
   private _view: View
   private _railGroup: RailGroup
 
