@@ -4,7 +4,7 @@ import {Point} from "paper";
 import * as _ from 'lodash';
 import 'lodash.combinations';
 import 'lodash.product';
-import {CLOSED_JOINT_ANGLE_TORELANCE, CLOSED_JOINT_DISTANCE_TORELANCE,} from "constants/tools";
+import {CLOSED_JOINT_ANGLE_TOLERANCE, CLOSED_JOINT_DISTANCE_TOLERANCE} from "constants/tools";
 import {JointPair} from "useCases";
 import RailComponentRegistry from "containers/rails/RailComponentRegistry";
 import {RailData} from "stores";
@@ -37,7 +37,8 @@ export const pointsEqual = (p1: Point, p2: Point, tolerance = 0.0000001) => {
  * @returns {boolean}
  */
 export const anglesEqual = (a1, a2, tolerance = 0.0000001) => {
-  return Math.abs((a1 + 360) % 360 - (a2 + 360) % 360) < tolerance
+  const diff = Math.abs((a1 + 360) % 360 - (a2 + 360) % 360)
+  return diff < tolerance || 360 - diff < tolerance
 }
 
 export const hasOpenJoint = (rail: RailData): boolean => {
@@ -103,11 +104,11 @@ export const getCloseJointsBetween = (r1: number, r2: number): JointPair[] => {
     // }
     // LOGGER.debug(cmb[0].props.data.railId, cmb[0].globalPosition, cmb[0].globalAngle, cmb[1].props.data.railId, cmb[1].globalPosition, cmb[1].globalAngle)
     // ジョイント同士が十分近く、かつ角度が一致していればリストに加える
-    const isClose = pointsEqual(cmb[0].globalPosition, cmb[1].globalPosition, CLOSED_JOINT_DISTANCE_TORELANCE)
+    const isClose = pointsEqual(cmb[0].globalPosition, cmb[1].globalPosition, CLOSED_JOINT_DISTANCE_TOLERANCE)
     if (! isClose) {
       return
     }
-    const isSameAngle = anglesEqual(cmb[0].globalAngle, cmb[1].globalAngle + 180, CLOSED_JOINT_ANGLE_TORELANCE)
+    const isSameAngle = anglesEqual(cmb[0].globalAngle, cmb[1].globalAngle + 180, CLOSED_JOINT_ANGLE_TOLERANCE)
     if (! isSameAngle) {
       return
     }

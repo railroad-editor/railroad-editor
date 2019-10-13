@@ -357,6 +357,10 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
       if (_.isEmpty(this.props.builder.temporaryRails)) {
         return false
       }
+      // ジョイントがエラー状態なら何もしない
+      // if (this.rail.joints[jointId].part.state.isError) {
+      //   return false
+      // }
       this.props.railToolUseCase.addRail()
       // 検出済状態に移行する
       return true

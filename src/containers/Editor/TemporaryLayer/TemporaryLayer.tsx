@@ -34,7 +34,10 @@ export class TemporaryLayer extends React.Component<TemporaryLayerProps, LayoutS
       (adjustmentAngle) => {
         // 現在仮レールを表示しているレールであれば、仮レールを再描画する
         // 仮レールを設置する
-        RailComponentRegistry.getRailById(this.props.builder.currentRailId).props.showTemporaryRailOrRailGroup(this.props.builder.currentJointId)
+        const rail = RailComponentRegistry.getRailById(this.props.builder.currentRailId)
+        rail.props.showTemporaryRailOrRailGroup(this.props.builder.currentJointId)
+        // ジョイントの状態を更新する
+        // rail.props.onJointMouseMove(this.props.builder.currentJointId, null)
         this.forceUpdate()
       }
     )
