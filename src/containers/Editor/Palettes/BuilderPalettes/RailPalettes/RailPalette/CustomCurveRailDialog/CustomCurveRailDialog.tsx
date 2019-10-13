@@ -3,10 +3,9 @@ import {FormControlLabel} from '@material-ui/core';
 import Checkbox from "@material-ui/core/Checkbox";
 import {Tools} from "constants/tools";
 import AutoFocusTextValidator from "containers/common/AutoFocusTextValidator";
-import {RailItemData} from "containers/rails";
 import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import {PaletteItem} from "stores";
+import {PaletteItem, RailItemData} from "stores";
 import {RAIL_SPACE} from "react-rail-components/lib/constants";
 
 export interface CustomCurveRailDialogProps extends FormDialogProps {
@@ -43,20 +42,20 @@ export default class CustomCurveRailDialog extends FormDialogBase<CustomCurveRai
     const {radius, innerRadius, outerRadius, centerAngle, name} = this.state.inputs
     if (this.state.isDouble) {
       this.props.addUserRail({
+        paletteName: Tools.CURVE_RAILS,
         type: 'DoubleCurveRail',
         innerRadius: parseInt(innerRadius),   // string -> number への変換を忘れないように
         outerRadius: parseInt(outerRadius),
         centerAngle: parseInt(centerAngle),
         name: name,
-        paletteName: Tools.CURVE_RAILS,
       })
     } else {
       this.props.addUserRail({
+        paletteName: Tools.CURVE_RAILS,
         type: 'CurveRail',
         radius: parseInt(radius),
         centerAngle: parseInt(centerAngle),
         name: name,
-        paletteName: Tools.CURVE_RAILS,
       })
     }
 

@@ -72,7 +72,7 @@ export class BuilderToolBar extends React.Component<BuilderToolBarProps & WithMo
 
   onCut = (e) => {
     this.props.layout.commit()
-    this.props.railToolUseCase.registerRailGroup('Clipboard')
+    this.props.railToolUseCase.registerSelectedRailsAsRailGroup('Clipboard')
     this.props.railToolUseCase.deleteSelected()
   }
 
@@ -198,7 +198,7 @@ export class BuilderToolBar extends React.Component<BuilderToolBarProps & WithMo
         <Tooltip title={`${Commands.COPY} (Ctrl+C)`}>
           <StyledIconButton
             onClick={(e) => {
-              this.props.railToolUseCase.registerRailGroup('Clipboard')
+              this.props.railToolUseCase.registerSelectedRailsAsRailGroup('Clipboard')
             }}>
             <CopyIcon/>
           </StyledIconButton>

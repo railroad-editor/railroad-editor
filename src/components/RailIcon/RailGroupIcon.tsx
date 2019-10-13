@@ -1,54 +1,46 @@
 import * as React from 'react'
-import {ReactElement} from 'react'
 import {ListItemProps} from "@material-ui/core/ListItem";
 import {View as ViewComponent} from "react-paper-bindings";
 import {Point, View} from "paper";
-import {RailBase, RailBaseProps, RailBaseState} from "react-rail-components";
+import {RailGroup, RailGroupProps} from "react-rail-components";
 
-export interface RailIconProps extends ListItemProps {
+export interface RailGroupIconProps extends ListItemProps {
   width: number
   height: number
-  rail: ReactElement<RailBase<RailBaseProps, RailBaseState>>
+  railGroup: React.ReactElement<RailGroupProps>
   zoom?: number
 }
 
-export interface RailIconState {
-  zoom: number
-}
 
-
-export default class RailIcon extends React.Component<RailIconProps, RailIconState> {
+export default class RailGroupIcon extends React.Component<RailGroupIconProps, {}> {
 
   constructor(props) {
     super(props)
-    this.state = {
-      zoom: 1
-    }
   }
 
   private _view: View
-  private _rail: RailBase<any, any>
+  private _railGroup: RailGroup
 
   componentDidMount() {
     this.setZoom()
   }
 
   setZoom = () => {
-    const rect = this._rail.railPart.path.bounds
+    const rect = this._railGroup.group.bounds
     const maxZoom = Math.min(this.props.height / rect.height, this.props.width / rect.width)
     const zoom = Math.min(this.props.zoom, maxZoom) - 0.01
     this._view.scale(zoom, new Point(this.props.width / 2, this.props.height / 2))
   }
 
   render() {
-    const {width, height, rail} = this.props
-    const extendedRail = React.cloneElement<RailBaseProps & any>(rail, {
-      ...rail.props,
+    const {width, height, railGroup} = this.props
+    const extendedRailGroup = React.cloneElement<RailGroupProps & any>(railGroup, {
+      ...railGroup.props,
       id: 0,
       position: {x: width / 2, y: height / 2},
       enableJoints: false,
       ref: (ref) => {
-        if (ref) this._rail = ref
+        if (ref) this._railGroup = ref
       }
     })
 
@@ -59,7 +51,7 @@ export default class RailIcon extends React.Component<RailIconProps, RailIconSta
         settings={{applyMatrix: false}}
         ref={this.getViewRef}
       >
-        {extendedRail}
+        {extendedRailGroup}
       </ViewComponent>
     )
   }

@@ -3,7 +3,7 @@ import getLogger from "logging";
 import {ConductionStates, SwitcherData, SwitcherType} from "stores/layoutStore";
 import {inject, observer} from 'mobx-react';
 import RailIcon from "components/RailIcon/RailIcon";
-import {RailComponentClasses, RailData} from "containers/rails";
+import {RailComponentClasses} from "containers/rails";
 import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css'
 import {InversedConductionStates} from "containers/Editor/Palettes/SimulatorPalettes/SwitcherPalette/SwitcherCard/SwticherCard";
@@ -17,7 +17,7 @@ import {
   ThreeWayTurnoutProps
 } from "react-rail-components";
 import {WithPowerPackUseCase, WithSwitcherUseCase} from "useCases";
-import {WithLayoutStore} from "stores";
+import {RailData, WithLayoutStore} from "stores";
 import {STORE_LAYOUT} from "constants/stores";
 import {USECASE_POWERPACK, USECASE_SWITCHER} from "constants/useCases";
 import RailComponentRegistry from "containers/rails/RailComponentRegistry";

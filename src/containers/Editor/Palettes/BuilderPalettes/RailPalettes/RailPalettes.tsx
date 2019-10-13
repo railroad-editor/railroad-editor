@@ -69,7 +69,7 @@ export default class RailPalettes extends React.Component<RailPaletteProps, Rail
   }
 
   addUserRailGroup = (name: string) => {
-    this.props.railToolUseCase.registerRailGroup(name)
+    this.props.railToolUseCase.registerSelectedRailsAsRailGroup(name)
     this.props.selectionToolUseCase.selectAllRails(false)
   }
 
