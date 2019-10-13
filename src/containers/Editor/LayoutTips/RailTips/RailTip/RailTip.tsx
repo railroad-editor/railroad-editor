@@ -5,10 +5,10 @@ import {LayoutStore, SwitcherData} from "stores/layoutStore";
 import {EditorStore} from "stores/editorStore";
 import TurnoutSettingDialog
   from "containers/Editor/LayoutTips/RailTips/RailTip/TurnoutSettingDialog/TurnoutSettingDialog";
-import {RailData} from "containers/rails";
 import {normAngle} from "containers/rails/utils";
 import {Tooltip, withStyles} from "@material-ui/core";
 import {STORE_BUILDER, STORE_EDITOR, STORE_LAYOUT} from "constants/stores";
+import {RailData} from "stores";
 
 
 const createColoredTooltip = (color: string) => withStyles({

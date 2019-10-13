@@ -120,12 +120,12 @@ export default function withKeyHandler(WrappedComponent: React.ComponentClass<Wi
     keyDownCtrl = (e) => {
       switch (e.key) {
         case 'c':
-          this.props.railToolUseCase.registerRailGroup('Clipboard')
+          this.props.railToolUseCase.registerSelectedRailsAsRailGroup('Clipboard')
           this.props.selectionToolUseCase.selectAllRails(false)
           break
         case 'x':
           this.props.layout.commit()
-          this.props.railToolUseCase.registerRailGroup('Clipboard')
+          this.props.railToolUseCase.registerSelectedRailsAsRailGroup('Clipboard')
           this.props.railToolUseCase.deleteSelectedRails()
           break
         case 'a':

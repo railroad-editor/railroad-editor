@@ -7,10 +7,10 @@ import {inject, observer} from "mobx-react";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
 import Typography from "@material-ui/core/Typography";
 import {STORE_BUILDER, STORE_LAYOUT} from "constants/stores";
-import {WithBuilderStore, WithLayoutStore} from "stores";
+import {RailData, RailGroupData, WithBuilderStore, WithLayoutStore} from "stores";
 import RailComponentRegistry from "containers/rails/RailComponentRegistry";
 import RailIcon from "components/RailIcon/RailIcon";
-import {RailData} from "containers/rails";
+import RailGroupIcon from "components/RailIcon/RailGroupIcon"
 
 
 export type InfoPaletteProps = {
@@ -94,6 +94,30 @@ export default class InfoPalette extends React.Component<InfoPaletteProps, {}> {
     )
   }
 
+  renderPaletteRailGroupInfo = (itemData: RailGroupData) => {
+    if (this.props.builder.paletteRailGroupData) {
+      itemData = this.props.builder.paletteRailGroupData
+    } else {
+      return
+    }
+    return (
+      <GridContainer container alignItems="center" spacing={1}>
+        <OddGrid item xs={4}>
+          <Typography>Name</Typography>
+        </OddGrid>
+        <OddGrid item xs={8}>
+          <Typography>
+            {itemData.name}
+          </Typography>
+        </OddGrid>
+        <OddGrid item xs={12}>
+          <RailGroupIcon width={110} height={90} railGroup={RailComponentRegistry.createRailGroupForIcon(itemData)}
+                         zoom={0.3}/>
+        </OddGrid>
+      </GridContainer>
+    )
+  }
+
   renderNoInfo = () => {
     return (
       <GridContainer container spacing={1}>
@@ -110,12 +134,15 @@ export default class InfoPalette extends React.Component<InfoPaletteProps, {}> {
 
     if (selectedRails.length === 0) {
       const paletteItem = this.props.builder.paletteItem
-      const itemData = this.props.builder.getRailItemData(paletteItem.name)
-      if (itemData) {
-        return this.renderPaletteRailInfo(itemData)
-      } else {
-        return this.renderNoInfo()
+      const railData = this.props.builder.getRailItemData(paletteItem.name)
+      if (railData) {
+        return this.renderPaletteRailInfo(railData)
       }
+      const railGroupData = this.props.builder.getRailGroupItemData(paletteItem.name)
+      if (railGroupData) {
+        return this.renderPaletteRailGroupInfo(railGroupData)
+      }
+      return this.renderNoInfo()
     }
 
     if (selectedRails.length === 1) {

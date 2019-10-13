@@ -10,9 +10,8 @@ import {ValidatorForm} from 'react-material-ui-form-validator';
 import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
 import {ConductionStates, SwitcherData} from "stores/layoutStore";
 import {inject, observer} from "mobx-react";
-import {RailData} from "containers/rails";
 import {WithSwitcherUseCase} from "useCases";
-import {WithLayoutStore} from "stores";
+import {RailData, WithLayoutStore} from "stores";
 import {STORE_LAYOUT} from "constants/stores";
 import {USECASE_SWITCHER} from "constants/useCases";
 

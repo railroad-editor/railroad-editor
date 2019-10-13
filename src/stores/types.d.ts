@@ -1,5 +1,4 @@
-import {JointInfo, RailGroupProps} from "react-rail-components";
-import {RailData} from "containers/rails";
+import {JointInfo, RailBaseProps, RailGroupProps} from "react-rail-components";
 import {BuilderStore} from "./builderStore";
 import {UiStore} from "./uiStore";
 import {EditorStore} from "./editorStore";
@@ -58,10 +57,16 @@ declare interface LastPaletteItems {
   [key: string]: PaletteItem
 }
 
-declare interface UserRailGroupData extends RailGroupProps {
+// TODO: 本当は全てのレールのPropsの or であるべきだが、パフォーマンス上の問題でこうしている
+declare type RailData = RailBaseProps & any
+
+declare interface RailGroupData extends RailGroupProps {
   // レールグループを構成するレール
   rails: RailData[]
   // レールグループで未接続のジョイント
   openJoints: JointInfo[]
 }
 
+declare interface RailItemData extends RailData {
+  paletteName: string
+}

@@ -7,13 +7,12 @@ import {GapJoinerUseCase} from "./gapJoinerUseCase";
 import {SelectionToolUseCase} from "./selectionToolUseCase";
 import {TEMPORARY_RAIL_OPACITY, Tools} from "constants/tools";
 import {SwitcherUseCase} from "./switcherUseCase";
-import {RailData, RailGroupData} from "containers/rails";
 import {DetectionState} from "react-rail-components/lib/parts/primitives/DetectablePart";
 import {LayerPaletteStore} from "stores/layerPaletteStore";
 import getLogger from "../logging";
 import {NEW_RAIL_GROUP, NO_RAIL_FOR_GROUP} from "constants/messages";
 import {OpposingJoints} from "react-rail-components";
-import {UserRailGroupData} from "stores";
+import {RailData, RailGroupData} from "stores";
 import {UiStore} from "stores/uiStore";
 import {I18n} from "aws-amplify";
 import {JointPair} from "./types";
@@ -57,9 +56,9 @@ export class RailToolUseCase {
     // 仮レールデータ
     const tempRail = {
       ...railData,
-      id: -1,                             // 仮のレールID
-      name: this.builderStore.paletteItem.name,              //
-      layerId: -1,                        // 仮のレイヤーに設置
+      id: -1,                             // 仮レールID
+      name: this.builderStore.paletteItem.name,   // レール名
+      layerId: -1,                        // 仮レイヤー
       enableJoints: false,                // ジョイントを無効化
       opacity: TEMPORARY_RAIL_OPACITY,    // 半透明
       visible: true,
@@ -73,12 +72,12 @@ export class RailToolUseCase {
   }
 
   setTemporaryRailGroup = (railGroupData: RailGroupData | any, childRails: RailData[]) => {
-    // 仮レールグループメンバー
+    // 仮レールグループメンバーデータ
     const children = childRails.map((r, idx) => {
       return {
         ...r,
-        id: -2 - idx,                       // 仮のレールIDを割り当て
-        layerId: -1,                        // 仮のレイヤーに設置
+        id: -2 - idx,                       // 仮レールID
+        layerId: -1,                        // 仮レイヤー
         enableJoints: false,                // ジョイントを無効化
         opacity: TEMPORARY_RAIL_OPACITY,    // 半透明
         visible: true,
@@ -298,20 +297,20 @@ export class RailToolUseCase {
 
   /**
    * 選択中のレールを新しいレールグループとして登録する
-   * @param {string} name
+   * @param {string} name レールグループ名
    */
   @action
-  registerRailGroup = (name: string) => {
+  registerSelectedRailsAsRailGroup = (name: string) => {
     const rails = this.layoutStore.selectedRails
     if (rails.length === 0) {
       this.uiStore.setCommonSnackbar(true, I18n.get(NO_RAIL_FOR_GROUP), 'warning')
       return
     }
-    this.registerRailGroupInner(rails, name)
+    this.registerRailGroup(rails, name)
     this.uiStore.setCommonSnackbar(true, I18n.get(NEW_RAIL_GROUP)(rails.length, name), 'success')
   }
 
-  private registerRailGroupInner = (rails: RailData[], name: string) => {
+  private registerRailGroup = (rails: RailData[], name: string) => {
     // このレールグループメンバーのレールID
     const memberRailIds = rails.map(r => r.id)
     const openJoints = []
@@ -325,19 +324,21 @@ export class RailToolUseCase {
       const openJointIds = _.without(_.range(numJoints), ...opposingJointIds)
       openJointIds.forEach(id => openJoints.push({railId: idx, jointId: id}))
     })
-    // レールグループメンバー
+    // レールグループメンバーデータ
     let newRails = rails.map((rail, idx) => {
       return {
         ..._.omitBy(rail, _.isFunction),
-        id: -2 - idx,           // 仮のレールIDを割り当て
+        id: -2 - idx,           // 仮レールID
         enableJoints: false,    // ジョイント無効
         selected: false,        // 選択状態を解除
-        railGroup: -1           // 仮のレールグループIDを割り当て
+        railGroup: -1,          // 仮レールグループID
+        opacity: 1,
+        visible: true
       }
     })
 
     // レールグループデータ
-    const railGroup: UserRailGroupData = {
+    const railGroup: RailGroupData = {
       type: 'RailGroup',
       rails: newRails,
       id: 0,

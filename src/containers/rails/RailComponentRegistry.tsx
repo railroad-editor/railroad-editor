@@ -1,9 +1,10 @@
-import RailContainers, {RailComponentClasses, RailData, RailGroupData} from "containers/rails";
+import RailContainers, {RailComponentClasses} from "containers/rails";
 import {LayerData} from "stores/layoutStore";
 import {FeederInfo, GapJoinerInfo, RailBase, RailBaseProps, RailGroup} from "react-rail-components";
 import * as React from "react";
 import getLogger from "logging";
 import {WithRailBaseProps} from "containers/rails/withRailBase";
+import {RailData, RailGroupData} from "stores";
 
 const LOGGER = getLogger(__filename)
 
@@ -91,6 +92,19 @@ export class RailComponentRegistry {
     }
 
     return <RailContainer {...props} />
+  }
+
+  createRailGroupForIcon = (item: RailGroupData) => {
+    const {id, type, ...props} = item
+    if (type !== 'RailGroup') {
+      throw Error(`'${type}' is not a RailGroup!`)
+    }
+
+    return (
+      <RailContainers.RailGroup id={id} {...props}>
+        {item.rails.map(rail => this.createRailForIcon(rail))}
+      </RailContainers.RailGroup>
+    )
   }
 }
 

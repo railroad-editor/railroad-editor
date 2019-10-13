@@ -22,9 +22,9 @@ export default class Selector extends React.Component<SelectorProps, {}> {
 
   onDelete = (item: PaletteItem) => {
     if (item.type === 'RailGroup') {
-      this.props.builder.deleteUserRailGroup(item)
+      this.props.builder.deleteUserRailGroup(item.name)
     } else {
-      this.props.builder.deleteUserRail(item)
+      this.props.builder.deleteUserRail(item.name)
     }
   }
 

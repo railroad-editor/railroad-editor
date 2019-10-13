@@ -1,6 +1,5 @@
 import * as React from "react";
 import getLogger from "logging";
-import {RailData} from "./index";
 import {BuilderStore, PlacingMode} from "stores/builderStore";
 import {LayoutStore} from "stores/layoutStore";
 import {inject, observer} from "mobx-react";
@@ -14,6 +13,7 @@ import {RailToolUseCase} from "useCases/railToolUseCase";
 import {SelectionToolUseCase} from "useCases/selectionToolUseCase";
 import {USECASE_RAIL_TOOL, USECASE_SELECTION} from "constants/useCases";
 import {STORE_BUILDER, STORE_FREE_RAIL_PLACER, STORE_LAYOUT, STORE_MEASURE} from "constants/stores";
+import {RailData} from "stores";
 
 const LOGGER = getLogger(__filename)
 

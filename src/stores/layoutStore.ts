@@ -1,4 +1,4 @@
-import {RailComponentClasses, RailData} from "containers/rails";
+import {RailComponentClasses} from "containers/rails";
 import {action, computed, observable, toJS} from "mobx";
 import {DEFAULT_GRID_SIZE, DEFAULT_PAPER_HEIGHT, DEFAULT_PAPER_WIDTH} from "constants/tools";
 import {getAllOpenCloseJoints} from "containers/rails/utils";
@@ -9,6 +9,7 @@ import railItems from "constants/railItems.json";
 import {computedFn} from "mobx-utils";
 import {FeederInfo, GapJoinerInfo} from "react-rail-components";
 import layerPaletteStore from "./layerPaletteStore";
+import {RailData} from "stores/types";
 
 const LOGGER = getLogger(__filename)
 

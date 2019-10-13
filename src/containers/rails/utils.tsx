@@ -1,4 +1,4 @@
-import {RailComponentClasses, RailData} from "containers/rails/index";
+import {RailComponentClasses} from "containers/rails/index";
 import getLogger from "logging";
 import {Point} from "paper";
 import * as _ from 'lodash';
@@ -7,6 +7,7 @@ import 'lodash.product';
 import {CLOSED_JOINT_ANGLE_TORELANCE, CLOSED_JOINT_DISTANCE_TORELANCE,} from "constants/tools";
 import {JointPair} from "useCases";
 import RailComponentRegistry from "containers/rails/RailComponentRegistry";
+import {RailData} from "stores";
 
 const LOGGER = getLogger(__filename)
 

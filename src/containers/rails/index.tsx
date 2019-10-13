@@ -8,7 +8,6 @@ import {
   EndRail,
   GappedStraightRail,
   RailGroup,
-  RailGroupProps,
   SimpleTurnout,
   StraightRail,
   ThreeWayTurnout,
@@ -26,7 +25,6 @@ import CurvedTurnoutContainer from "containers/rails/CurvedTurnout";
 import ThreeWayTurnoutContainer from "containers/rails/ThreeWayTurnout";
 import EndRailContainer from "containers/rails/EndRail";
 import CrossingRailContainer from "containers/rails/CrossingRail";
-import {RailBaseProps} from "react-rail-components/lib/RailBase";
 
 // クラス名の文字列とクラスオブジェクトを関連付ける連想配列
 // 新しいレールクラスを作成したらここに追加する必要がある
@@ -63,18 +61,3 @@ export const RailComponentClasses = {
 
 export default RailContainerClasses
 
-
-// TODO: RailProps の方がわかりやすい名前では？
-export type RailData = RailBaseProps | any
-
-
-export interface RailGroupData extends RailGroupProps {
-  rails: number[]
-}
-
-export interface RailItemData {
-  type: string
-  name: string
-
-  [x: string]: any
-}

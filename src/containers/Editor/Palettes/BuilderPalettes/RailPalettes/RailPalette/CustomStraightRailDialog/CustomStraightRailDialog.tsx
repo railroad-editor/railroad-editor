@@ -2,11 +2,10 @@ import * as React from "react";
 import {FormControlLabel} from '@material-ui/core';
 import Checkbox from "@material-ui/core/Checkbox";
 import {Tools} from "constants/tools";
-import {RailItemData} from "containers/rails";
 import {FormDialogBase, FormDialogProps, FormDialogState} from "containers/common/FormDialog/FormDialogBase";
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import AutoFocusTextValidator from "containers/common/AutoFocusTextValidator";
-import {PaletteItem} from "stores";
+import {PaletteItem, RailItemData} from "stores";
 
 export interface CustomStraightRailDialogProps extends FormDialogProps {
   addUserRail: (item: RailItemData) => void
@@ -42,10 +41,10 @@ export default class CustomStraightRailDialog extends FormDialogBase<CustomStrai
     const {isDouble, inputs} = this.state
     let type = isDouble ? 'DoubleStraightRail' : 'StraightRail'
     this.props.addUserRail({
+      paletteName: Tools.STRAIGHT_RAILS,
       type: type,
       length: Number(inputs.length),
       name: inputs.name,
-      paletteName: Tools.STRAIGHT_RAILS,
     })
 
     this.onClose()

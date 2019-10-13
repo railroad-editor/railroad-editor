@@ -1,4 +1,4 @@
-import {RailComponentClasses, RailData, RailGroupData, RailItemData} from "containers/rails";
+import {RailComponentClasses} from "containers/rails";
 import {action, computed, observable} from "mobx";
 import {Tools} from "constants/tools";
 import builderPaletteData from "constants/railPaletteItems.json"
@@ -6,7 +6,14 @@ import railPaletteItems from "constants/railPaletteItems.json"
 import layoutStore from "stores/layoutStore";
 import {reactionWithOldValue} from "./utils";
 import {FeederInfo} from "react-rail-components";
-import {LastPaletteItems, PaletteItem, PresetPaletteItemsByVendor, UserRailGroupData} from "./types";
+import {
+  LastPaletteItems,
+  PaletteItem,
+  PresetPaletteItemsByVendor,
+  RailData,
+  RailGroupData,
+  RailItemData
+} from "./types";
 
 
 export interface BuilderStoreState {
@@ -16,7 +23,7 @@ export interface BuilderStoreState {
   placingMode: PlacingMode
   temporaryRails: RailData[]
   temporaryRailGroup: RailGroupData
-  userRailGroups: UserRailGroupData[]
+  userRailGroups: RailGroupData[]
   userRails: any
   intersects: boolean
   activeTool: string
@@ -76,9 +83,9 @@ export class BuilderStore {
   // 仮レールと他のレールが重なっているか否か
   @observable intersects: boolean
   // カスタムレール
-  @observable userRails: any
+  @observable userRails: RailItemData[]
   // ユーザーが登録したレールグループ
-  @observable userRailGroups: UserRailGroupData[]
+  @observable userRailGroups: RailGroupData[]
   // 現在アクティブなツール（パレット）
   @observable activeTool: Tools
   // 矩形選択中か否か
@@ -187,7 +194,7 @@ export class BuilderStore {
    * @param {string} name
    * @returns {any}
    */
-  getRailItemData(name?: string) {
+  getRailItemData(name?: string): RailData {
     return computed(() => {
       if (! name) {
         name = this.paletteItem.name
@@ -210,7 +217,7 @@ export class BuilderStore {
    * @param {string} name
    * @returns {any}
    */
-  getRailGroupItemData = (name?: string) => {
+  getRailGroupItemData = (name?: string): RailGroupData => {
     return computed(() => {
       if (! name) {
         name = this.paletteItem.name
@@ -308,7 +315,7 @@ export class BuilderStore {
   setTemporaryRailGroup = (item: RailGroupData, children: RailData[]) => {
     this.temporaryRails = children
     this.temporaryRailGroup = item
-    this.temporaryRailGroup.rails = children.map(c => c.id)
+    this.temporaryRailGroup.rails = children
   }
 
   @action
@@ -320,7 +327,7 @@ export class BuilderStore {
   }
 
   @action
-  setUserRailGroups = (items: UserRailGroupData[]) => {
+  setUserRailGroups = (items: RailGroupData[]) => {
     this.userRailGroups = items
     if (items.length > 0) {
       this.lastPaletteItems['Rail Groups'] = {
@@ -331,7 +338,7 @@ export class BuilderStore {
   }
 
   @action
-  addUserRailGroup = (item: UserRailGroupData) => {
+  addUserRailGroup = (item: RailGroupData) => {
     // 同じ名前のレールグループが居たら上書きする
     const idx = this.userRailGroups.findIndex(rg => rg.name === item.name)
     if (idx >= 0) {
@@ -349,8 +356,8 @@ export class BuilderStore {
   }
 
   @action
-  deleteUserRailGroup = (item: PaletteItem) => {
-    this.userRailGroups = _.reject(this.userRailGroups, r => r.name === item.name)
+  deleteUserRailGroup = (name: string) => {
+    this.userRailGroups = _.reject(this.userRailGroups, r => name === r.name)
   }
 
   @action
@@ -364,8 +371,8 @@ export class BuilderStore {
   }
 
   @action
-  deleteUserRail = (item: RailItemData) => {
-    this.userRails = _.reject(this.userRails, r => item.name === r.name && item.type === r.type)
+  deleteUserRail = (name: string) => {
+    this.userRails = _.reject(this.userRails, r => name === r.name)
   }
 
   @action
