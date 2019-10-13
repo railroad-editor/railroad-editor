@@ -1,13 +1,14 @@
 import * as React from 'react'
+import {ReactElement} from 'react'
 import {ListItemProps} from "@material-ui/core/ListItem";
 import {View as ViewComponent} from "react-paper-bindings";
 import {Point, View} from "paper";
-import {RailBase} from "react-rail-components";
+import {RailBase, RailBaseProps, RailBaseState} from "react-rail-components";
 
 export interface RailIconProps extends ListItemProps {
   width: number
   height: number
-  rail: any
+  rail: ReactElement<RailBase<RailBaseProps, RailBaseState>>
   zoom?: number
 }
 
@@ -41,19 +42,13 @@ export default class RailIcon extends React.Component<RailIconProps, RailIconSta
 
   render() {
     const {width, height, rail} = this.props
-    const extendedRail = React.cloneElement(rail as any, {
+    const extendedRail = React.cloneElement<RailBaseProps & any>(rail, {
       ...rail.props,
       id: 0,
       position: {x: width / 2, y: height / 2},
       enableJoints: false,
-      pivotJointIndex: undefined,
-      ref: (r) => {
-        if (r) this._rail = r
-        // Call the original ref, if any
-        const {ref} = rail;
-        if (typeof ref === 'function') {
-          ref(r);
-        }
+      ref: (ref) => {
+        if (ref) this._rail = ref
       }
     })
 

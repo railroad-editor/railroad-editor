@@ -2,12 +2,12 @@ import * as React from 'react'
 import {ListItemProps} from "@material-ui/core/ListItem";
 import {View as ViewComponent} from "react-paper-bindings";
 import {Point, View} from "paper";
-import {RailGroup} from "react-rail-components";
+import {RailGroup, RailGroupProps} from "react-rail-components";
 
 export interface RailGroupIconProps extends ListItemProps {
   width: number
   height: number
-  railGroup: any
+  railGroup: React.ReactElement<RailGroupProps>
   zoom?: number
 }
 
@@ -34,19 +34,13 @@ export default class RailGroupIcon extends React.Component<RailGroupIconProps, {
 
   render() {
     const {width, height, railGroup} = this.props
-    const extendedRailGroup = React.cloneElement(railGroup, {
+    const extendedRailGroup = React.cloneElement<RailGroupProps & any>(railGroup, {
       ...railGroup.props,
       id: 0,
       position: {x: width / 2, y: height / 2},
       enableJoints: false,
-      pivotJointIndex: undefined,
-      ref: (r) => {
-        if (r) this._railGroup = r
-        // Call the original ref, if any
-        const {ref} = railGroup;
-        if (typeof ref === 'function') {
-          ref(r);
-        }
+      ref: (ref) => {
+        if (ref) this._railGroup = ref
       }
     })
 
