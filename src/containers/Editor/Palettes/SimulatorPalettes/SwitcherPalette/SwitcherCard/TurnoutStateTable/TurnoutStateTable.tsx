@@ -287,8 +287,8 @@ export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {
                     color="secondary"
                   >
                     <RailIcon
-                      width={30}
-                      height={30}
+                      width={34}
+                      height={34}
                       rail={createRailComponentForIcon(rail, conductionState)}
                     />
                   </ActiveSmallButton>
@@ -335,27 +335,36 @@ export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {
 
 
 const iconizeSimpleTurnoutProps = (props: SimpleTurnoutProps) => {
-  props.length = 70
-  props.centerAngle = 30
-  props.radius = 140
+  return {
+    ...props,
+    length: 70,
+    centerAngle: 30,
+    radius: 140
+  }
 }
 
 const iconizeDoubleCrossTurnoutProps = (props: DoubleCrossTurnoutProps) => {
-  props.length = 70
-  props.centerAngle = 60
+  return {
+    ...props,
+    length: 70,
+    centerAngle: 60,
+  }
 }
 
 const iconizeThreeWayTurnoutProps = (props: ThreeWayTurnoutProps) => {
-  props.length = 70
-  props.rightCenterAngle = 30
-  props.rightRadius = 140
-  props.leftCenterAngle = 30
-  props.leftRadius = 140
+  return {
+    ...props,
+    length: 70,
+    rightCenterAngle: 30,
+    rightRadius: 140,
+    leftCenterAngle: 30,
+    leftRadius: 140
+  }
 }
 
 
 export const createRailComponentForIcon = (item: RailData, conductionState: number) => {
-  const {id, type, ...props} = item
+  let {id, type, ...props} = item
   let RailContainer = RailComponentClasses[type]
   if (RailContainer == null) {
     throw Error(`'${type}' is not a valid Rail type!`)
@@ -363,30 +372,28 @@ export const createRailComponentForIcon = (item: RailData, conductionState: numb
 
   switch (RailContainer) {
     case SimpleTurnout:
-      iconizeSimpleTurnoutProps(props as SimpleTurnoutProps)
+      props = iconizeSimpleTurnoutProps(props)
       break
     case DoubleCrossTurnout:
-      iconizeDoubleCrossTurnoutProps(props as DoubleCrossTurnoutProps)
+      props = iconizeDoubleCrossTurnoutProps(props)
       break
     case ThreeWayTurnout:
-      iconizeThreeWayTurnoutProps(props as ThreeWayTurnoutProps)
+      props = iconizeThreeWayTurnoutProps(props)
       break
   }
 
-  const globalAngle = RailComponentRegistry.getRailById(item.id).railPart.getJointAngleToParent(1)
-  LOGGER.info('angle', globalAngle)
+  props = {
+    ...props,
+    conductionState: conductionState,
+    fillColors: {[conductionState]: 'orange'},
+    opacity: 1,
+    visible: true,
+    showGap: false,
+    showJoints: false
+  }
 
-  return (
-    <RailContainer
-      // key={id}
-      // id={id}
-      {...props}
-      angle={globalAngle}
-      conductionState={conductionState}
-      fillColors={{[conductionState]: 'orange'}}
-      opacity={1.0}
-      showGap={false}
-      showJoints={false}
-    />
-  )
+  // const globalAngle = RailComponentRegistry.getRailById(item.id).railPart.getJointAngleToParent(1)
+  // LOGGER.info('angle', globalAngle)
+
+  return RailComponentRegistry.createRailComponent({id, type, ...props})
 }

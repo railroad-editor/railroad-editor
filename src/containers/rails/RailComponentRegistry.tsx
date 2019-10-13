@@ -84,7 +84,7 @@ export class RailComponentRegistry {
     return this.railGroups[id]
   }
 
-  createRailForIcon = (item: RailData) => {
+  createRailComponent = (item: RailData) => {
     const {type, ...props} = item
     let RailContainer = RailComponentClasses[type]
     if (RailContainer == null) {
@@ -94,7 +94,7 @@ export class RailComponentRegistry {
     return <RailContainer {...props} />
   }
 
-  createRailGroupForIcon = (item: RailGroupData) => {
+  createRailGroupComponent = (item: RailGroupData) => {
     const {id, type, ...props} = item
     if (type !== 'RailGroup') {
       throw Error(`'${type}' is not a RailGroup!`)
@@ -102,7 +102,7 @@ export class RailComponentRegistry {
 
     return (
       <RailContainers.RailGroup id={id} {...props}>
-        {item.rails.map(rail => this.createRailForIcon(rail))}
+        {item.rails.map(rail => this.createRailComponent(rail))}
       </RailContainers.RailGroup>
     )
   }

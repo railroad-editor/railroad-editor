@@ -88,7 +88,7 @@ export default class InfoPalette extends React.Component<InfoPaletteProps, {}> {
           <Typography>Preview</Typography>
         </OddGrid>
         <OddGrid item xs={8}>
-          <RailIcon width={110} height={90} rail={RailComponentRegistry.createRailForIcon(itemData)} zoom={0.4}/>
+          <RailIcon width={110} height={90} rail={RailComponentRegistry.createRailComponent(itemData)} zoom={0.4}/>
         </OddGrid>
       </GridContainer>
     )
@@ -111,7 +111,7 @@ export default class InfoPalette extends React.Component<InfoPaletteProps, {}> {
           </Typography>
         </OddGrid>
         <OddGrid item xs={12}>
-          <RailGroupIcon width={110} height={90} railGroup={RailComponentRegistry.createRailGroupForIcon(itemData)}
+          <RailGroupIcon width={110} height={90} railGroup={RailComponentRegistry.createRailGroupComponent(itemData)}
                          zoom={0.3}/>
         </OddGrid>
       </GridContainer>
