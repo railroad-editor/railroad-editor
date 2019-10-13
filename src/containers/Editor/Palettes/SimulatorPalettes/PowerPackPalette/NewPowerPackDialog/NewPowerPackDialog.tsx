@@ -22,7 +22,6 @@ export default class NewPowerPackDialog extends FormDialogBase<NewPowerPackDialo
   }
 
   renderContent = () => {
-    console.log(this.state.inputs)
     return (
       <ValidatorForm
         ref={this.getFormRef}

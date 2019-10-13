@@ -74,7 +74,6 @@ export class SettingsDialog extends FormDialogBase<SettingsDialogProps, FormDial
 
   readImageFile = (e) => {
     const file = e.target.files[0]
-    console.log(e.target.files)
     const fr = new FileReader()
     fr.onload = () => {
       const data = fr.result

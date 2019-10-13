@@ -62,7 +62,7 @@ class App extends React.Component<AppProps, {}> {
   }
 
   render() {
-    console.log(process.env)
+    LOGGER.debug('env', process.env)
     return (
       <div id="app" className='App'>
         <Helmet>

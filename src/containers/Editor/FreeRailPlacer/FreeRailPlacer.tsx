@@ -289,7 +289,6 @@ export default class FreeRailPlacer extends React.Component<FreeRailPlacerProps,
     const angle = steppedAngle + this.props.builder.adjustmentAngle
 
     if (this.state.steppedAngle !== steppedAngle) {
-      console.log('reset angle')
       this.props.builder.setAdjustmentAngle(0)
     }
 

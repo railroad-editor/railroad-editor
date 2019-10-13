@@ -54,7 +54,6 @@ export class ScriptDialog extends FormDialogBase<ScriptDialogProps, ScriptDialog
   }
 
   editorDidMount = (editor, monaco) => {
-    console.log('editorDidMount', editor);
     editor.focus();
   }
 

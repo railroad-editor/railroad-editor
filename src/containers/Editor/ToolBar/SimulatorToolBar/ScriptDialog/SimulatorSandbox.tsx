@@ -90,7 +90,7 @@ export class SimulatorSandbox extends React.Component<SimulatorSandboxProps, {}>
       if (source !== 'simulator-script') {
         return
       }
-      console.log('Message from simulator-script: ', type, func, payload);
+      // console.log('Message from simulator-script: ', type, func, payload);
       const HANDLERS = {
         PowerPack: {
           setPower: function (payload) {

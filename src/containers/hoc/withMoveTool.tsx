@@ -209,7 +209,6 @@ export default function withMoveTool(WrappedComponent: React.ComponentClass<With
       const zoom = Math.min(window.innerWidth / paperWidth, window.innerHeight / paperHeight)
       const correctedZoom = zoom - ZOOM_CORRECTION
       this.props.editor.setInitialZoom(correctedZoom)
-      LOGGER.info('Corrected Zoom', correctedZoom)
       return zoom
     }
 

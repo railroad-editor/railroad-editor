@@ -129,11 +129,9 @@ export class RailToolUseCase {
 
   private addRailGroup = (railGroup: RailGroupData, children: RailData[]) => {
     const tmpRGC = RailComponentRegistry.getRailGroupById(-1)
-    LOGGER.info('withBuilder#addRailGroup', 'temporaryRailGroup', tmpRGC)
     const railDatas = children.map(child => {
       const position = RailComponentRegistry.getRailById(child.id).railPart.getGlobalJointPosition(child.pivotJointIndex)
       const angle = child.angle + tmpRGC.getAngle()
-      LOGGER.info('withBuilder#addRailGroup', children, position, angle)
       return {
         ...child,
         position,
@@ -348,7 +346,6 @@ export class RailToolUseCase {
       openJoints: openJoints
     }
 
-    LOGGER.info('withBuilder#registerRailGroupInner', railGroup)
     this.builderStore.addUserRailGroup(railGroup)
   }
 }

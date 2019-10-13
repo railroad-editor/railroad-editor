@@ -41,7 +41,6 @@ export default class NewRailGroupDialog extends FormDialogBase<NewRailGroupDialo
   }
 
   renderContent = () => {
-    console.log(this.state.inputs)
     return (
       <ValidatorForm
         ref={this.getFormRef}
