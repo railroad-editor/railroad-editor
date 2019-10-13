@@ -1,9 +1,28 @@
 import * as React from 'react'
-import {ListItemText, MenuItem} from '@material-ui/core'
+import {Avatar, ListItemAvatar, ListItemText, MenuItem} from '@material-ui/core'
 import {ActiveListItem} from "components/ActiveListItem/ActiveListItem";
 import Menu from "@material-ui/core/Menu";
 import {PaletteListItemSettingButton} from "components/PaletteListItemSettingButton/PaletteListItemSettingButton";
 import {PaletteItem} from "stores";
+import styled from "styled-components";
+import {amber} from "@material-ui/core/colors";
+
+const SmallListItemAvatar = styled(ListItemAvatar)`
+  && {
+    min-width: 34px;
+  }
+`
+
+const SmallAvatar = styled(Avatar)`
+  && {
+    width: 22px;
+    height: 22px;
+    font-size: 0.8rem;
+    background-color: ${amber[400]};
+    color: black;
+  }
+`
+
 
 export type PaletteListItemProps = {
   item: PaletteItem
@@ -11,6 +30,7 @@ export type PaletteListItemProps = {
   selectItem: any
   hasMenu?: boolean
   onDelete?: (item: PaletteItem) => void
+  avatarIconLetter: string
 }
 
 export interface PaletteListItemState {
@@ -44,7 +64,7 @@ export default class PaletteListItem extends React.Component<PaletteListItemProp
   }
 
   render() {
-    const {item, paletteItem, hasMenu} = this.props
+    const {item, paletteItem, hasMenu, avatarIconLetter} = this.props
 
     let menuButton, menu
     if (hasMenu) {
@@ -70,6 +90,9 @@ export default class PaletteListItem extends React.Component<PaletteListItemProp
           onClick={this.handleClick}
           color="primary"
         >
+          <SmallListItemAvatar>
+            <SmallAvatar>{avatarIconLetter}</SmallAvatar>
+          </SmallListItemAvatar>
           <ListItemText primary={item.name}/>
           {menuButton}
         </ActiveListItem>

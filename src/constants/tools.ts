@@ -39,9 +39,6 @@ export const COMMAND_HOT_KEYS = {
 }
 
 
-export const isRailTool = (tool: Tools): boolean => {
-  return [Tools.STRAIGHT_RAILS, Tools.CURVE_RAILS, Tools.TURNOUTS, Tools.SPECIAL_RAILS, Tools.RAIL_GROUPS].includes(tool)
-}
 
 export const DEFAULT_VIEW_WIDTH = 3840
 export const DEFAULT_VIEW_HEIGHT = 2160

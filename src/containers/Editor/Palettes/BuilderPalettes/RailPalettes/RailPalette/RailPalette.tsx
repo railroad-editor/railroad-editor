@@ -10,7 +10,7 @@ import {PaletteAddButton} from "components/PaletteAddButton/PaletteAddButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import {TitleDiv, TitleTypography} from "containers/Editor/Palettes/Palettes.style";
-import {PaletteItem} from "stores";
+import {PaletteItem, RailData} from "stores";
 import {STORE_BUILDER} from "constants/stores";
 
 
@@ -20,7 +20,8 @@ export interface RailPaletteProps {
   title: string
   icon: ReactNode
   items: PaletteItem[]
-  customItems?: any[]
+  // TODO: 型を整理する
+  customItems?: (PaletteItem | RailData)[]
   customDialog?: ReactNode
   openCustomDialog?: (e: React.SyntheticEvent<HTMLElement>) => void
   tooltipTitle?: string

@@ -85,7 +85,7 @@ export class BuilderToolBar extends React.Component<BuilderToolBarProps & WithMo
   render() {
     return (
       <Grid item xs justify="center" alignItems="center" style={{display: 'flex'}}>
-        <Tooltip title={"Straight Rails (S)"}>
+        <Tooltip title={"Straight Rails (1)"}>
           <StyledIconButton
             className={classNames({
               'active': this.isActive(Tools.STRAIGHT_RAILS)
@@ -95,7 +95,7 @@ export class BuilderToolBar extends React.Component<BuilderToolBarProps & WithMo
             <StraightRailIcon/>
           </StyledIconButton>
         </Tooltip>
-        <Tooltip title={"Curve Rails (C)"}>
+        <Tooltip title={"Curve Rails (2)"}>
           <StyledIconButton
             className={classNames({
               'active': this.isActive(Tools.CURVE_RAILS)
@@ -105,7 +105,7 @@ export class BuilderToolBar extends React.Component<BuilderToolBarProps & WithMo
             <CurveRailIcon/>
           </StyledIconButton>
         </Tooltip>
-        <Tooltip title={"Turnouts (T)"}>
+        <Tooltip title={"Turnouts (3)"}>
           <StyledIconButton
             className={classNames({
               'active': this.isActive(Tools.TURNOUTS)
@@ -115,7 +115,7 @@ export class BuilderToolBar extends React.Component<BuilderToolBarProps & WithMo
             <TurnoutIcon/>
           </StyledIconButton>
         </Tooltip>
-        <Tooltip title={"Special Rails (X)"}>
+        <Tooltip title={"Special Rails (4)"}>
           <StyledIconButton
             className={classNames({
               'active': this.isActive(Tools.SPECIAL_RAILS)
@@ -126,7 +126,7 @@ export class BuilderToolBar extends React.Component<BuilderToolBarProps & WithMo
           </StyledIconButton>
         </Tooltip>
 
-        <Tooltip title={"Rail Groups (G)"}>
+        <Tooltip title={"Rail Groups (5)"}>
           <StyledIconButton
             className={classNames({
               'active': this.isActive(Tools.RAIL_GROUPS)
@@ -137,18 +137,17 @@ export class BuilderToolBar extends React.Component<BuilderToolBarProps & WithMo
           </StyledIconButton>
         </Tooltip>
 
-        <Tooltip title={"Feeders (F)"}>
+        <Tooltip title={"Feeders (6)"}>
           <StyledIconButton
             className={classNames({
               'active': this.isActive(Tools.FEEDERS)
             })}
             onClick={this.onClickObjectTools(Tools.FEEDERS)}
           >
-            {/*<FeederIcon/>*/}
             <PowerIcon/>
           </StyledIconButton>
         </Tooltip>
-        <Tooltip title={"Gap Joiners (J)"}>
+        <Tooltip title={"Gap Joiners (7)"}>
           <StyledIconButton
             className={classNames({
               'active': this.isActive(Tools.GAP_JOINERS)
@@ -159,7 +158,7 @@ export class BuilderToolBar extends React.Component<BuilderToolBarProps & WithMo
           </StyledIconButton>
         </Tooltip>
 
-        <Tooltip title={`${Tools.MEASURE} (M)`}>
+        <Tooltip title={`${Tools.MEASURE} (8)`}>
           <StyledIconButton
             className={classNames({
               'active': this.isActive(Tools.MEASURE)

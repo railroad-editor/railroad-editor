@@ -44,27 +44,7 @@
     ],
     "Curve Rails": [
       {
-        "name": "C103-60",
-        "type": "CurveRail"
-      },
-      {
-        "name": "C103-30",
-        "type": "CurveRail"
-      },
-      {
-        "name": "C140-60",
-        "type": "CurveRail"
-      },
-      {
-        "name": "C140-30",
-        "type": "CurveRail"
-      },
-      {
-        "name": "C177-60",
-        "type": "CurveRail"
-      },
-      {
-        "name": "C177-30",
+        "name": "C243-15",
         "type": "CurveRail"
       },
       {
@@ -72,27 +52,11 @@
         "type": "CurveRail"
       },
       {
-        "name": "C280-45",
-        "type": "CurveRail"
-      },
-      {
-        "name": "C317-45",
-        "type": "CurveRail"
-      },
-      {
-        "name": "C354-45",
-        "type": "CurveRail"
-      },
-      {
-        "name": "C391-45",
-        "type": "CurveRail"
-      },
-      {
-        "name": "C243-15",
-        "type": "CurveRail"
-      },
-      {
         "name": "C280-15",
+        "type": "CurveRail"
+      },
+      {
+        "name": "C280-45",
         "type": "CurveRail"
       },
       {
@@ -100,11 +64,23 @@
         "type": "CurveRail"
       },
       {
+        "name": "C317-45",
+        "type": "CurveRail"
+      },
+      {
         "name": "C354-15",
         "type": "CurveRail"
       },
       {
+        "name": "C354-45",
+        "type": "CurveRail"
+      },
+      {
         "name": "C391-15",
+        "type": "CurveRail"
+      },
+      {
+        "name": "C391-45",
         "type": "CurveRail"
       },
       {
@@ -118,17 +94,33 @@
       {
         "name": "DC391-354-45",
         "type": "DoubleCurveRail"
+      },
+      {
+        "name": "C103-30",
+        "type": "CurveRail"
+      },
+      {
+        "name": "C103-60",
+        "type": "CurveRail"
+      },
+      {
+        "name": "C140-30",
+        "type": "CurveRail"
+      },
+      {
+        "name": "C140-60",
+        "type": "CurveRail"
+      },
+      {
+        "name": "C177-30",
+        "type": "CurveRail"
+      },
+      {
+        "name": "C177-60",
+        "type": "CurveRail"
       }
     ],
     "Turnouts": [
-      {
-        "name": "PR140-30",
-        "type": "SimpleTurnout"
-      },
-      {
-        "name": "PL140-30",
-        "type": "SimpleTurnout"
-      },
       {
         "name": "PR541-15",
         "type": "SimpleTurnout"
@@ -168,6 +160,14 @@
       {
         "name": "N-PX280",
         "type": "DoubleCrossTurnout"
+      },
+      {
+        "name": "PR140-30",
+        "type": "SimpleTurnout"
+      },
+      {
+        "name": "PL140-30",
+        "type": "SimpleTurnout"
       }
     ],
     "Special Rails": [

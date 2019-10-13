@@ -7,7 +7,7 @@ export interface LayoutList {
   layouts: LayoutMeta[]
 }
 
-export interface LayoutDataWithMeta {
+export interface ProjectData {
   layout: LayoutData
   meta: LayoutMeta
   config: LayoutConfig
@@ -21,7 +21,7 @@ const fetchLayoutList = async (userId: string): Promise<LayoutMeta[]> => {
   return result.layouts.map(layout => layout.meta)
 }
 
-const fetchLayoutData = async (userId: string, layoutId: string): Promise<LayoutDataWithMeta> => {
+const fetchLayoutData = async (userId: string, layoutId: string): Promise<ProjectData> => {
   return await API.get('layout', `/users/${userId}/layouts/${layoutId}`, {headers: {}})
 }
 
@@ -33,7 +33,7 @@ const saveLayoutData = async (userId: string,
                               userCustomRails: RailItemData[]
 ) => {
   const layoutId = layoutMeta.id
-  const body: LayoutDataWithMeta = {
+  const body: ProjectData = {
     layout: layoutData,
     meta: layoutMeta,
     config: layoutConfig,

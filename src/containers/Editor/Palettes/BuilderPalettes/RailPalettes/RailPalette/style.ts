@@ -10,15 +10,15 @@ export const HideableDiv = styled.div`
 
 export const PaletteBodyPaper = styled(Paper)`
   && {
-    width: 180px;
-    max-width: 180px;
+    width: 200px;
+    max-width: 200px;
   }
 `
 
 export const ScrollablePaper = styled(Paper as any)`
   && {
-    max-width: 180px;
-    max-height: 600px;
+    max-width: 200px;
+    max-height: 1100px;
     overflow: scroll;
     ::-webkit-scrollbar {
         -webkit-appearance: none;

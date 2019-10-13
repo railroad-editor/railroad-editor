@@ -4,7 +4,7 @@ import {Layer} from "react-paper-bindings";
 import getLogger from "logging";
 import {inject, observer} from "mobx-react";
 import {PlacingMode} from "stores/builderStore";
-import {isRailTool, RAIL_PUTTER_MARKER_RADIUS} from "constants/tools";
+import {RAIL_PUTTER_MARKER_RADIUS} from "constants/tools";
 import {EditorMode} from "stores/editorStore";
 import {reaction} from "mobx";
 import CirclePart from "react-rail-components/lib/parts/primitives/CirclePart";
@@ -174,9 +174,9 @@ export default class FreeRailPlacer extends React.Component<FreeRailPlacerProps,
   }
 
   isActive = () => {
-    return this.props.editor.mode === EditorMode.BUILDER &&
-      isRailTool(this.props.builder.activeTool) &&
-      this.props.builder.placingMode === PlacingMode.FREE
+    return this.props.editor.mode === EditorMode.BUILDER
+      && this.props.builder.isRailTool
+      && this.props.builder.placingMode === PlacingMode.FREE
   }
 
   render() {

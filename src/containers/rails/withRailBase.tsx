@@ -3,7 +3,7 @@ import getLogger from "logging";
 import {BuilderStore, PlacingMode} from "stores/builderStore";
 import {LayoutStore} from "stores/layoutStore";
 import {inject, observer} from "mobx-react";
-import {isRailTool, Tools} from "constants/tools";
+import {Tools} from "constants/tools";
 import {FlowDirection} from "react-rail-components/lib/parts/primitives/PartBase";
 import {ArcDirection} from "react-rail-components/lib/parts/primitives/ArcPart";
 import {RailBase, RailBaseProps, RailBaseState} from "react-rail-components";
@@ -260,8 +260,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * @param {MouseEvent} e
      */
     onJointMouseEnter = (jointId: number, e: MouseEvent) => {
-      let activeTool = this.props.builder.activeTool
-      if (isRailTool(activeTool)) {
+      if (this.props.builder.isRailTool) {
         this.onJointMouseEnterForRailTools(jointId, e)
       }
     }
@@ -317,7 +316,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
     onJointLeftClick = (jointId: number, e: MouseEvent) => {
       let activeTool = this.props.builder.activeTool
       let shouldChangeJointState = false
-      if (isRailTool(activeTool)) {
+      if (this.props.builder.isRailTool) {
         shouldChangeJointState = this.onJointLeftClickForRailTool(jointId, e)
       } else if (activeTool === Tools.MEASURE) {
         shouldChangeJointState = this.onJointLeftClickForMeasureTool(jointId, e)

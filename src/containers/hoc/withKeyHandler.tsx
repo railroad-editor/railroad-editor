@@ -27,6 +27,8 @@ export type WithKeyHandlerProps =
   & WithProjectUseCase
 
 
+const KEYS = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
+
 /**
  * キーボードでのツールの切替機能を提供するHOC。
  */
@@ -69,35 +71,49 @@ export default function withKeyHandler(WrappedComponent: React.ComponentClass<Wi
       }
     }
 
+    keyDownNormalInRailMode = (e) => {
+      if (! this.props.builder.isRailTool) {
+        return false
+      }
+      const items = this.props.builder.presetRailPaletteItems[this.props.builder.activeTool]
+      const idx = KEYS.findIndex(k => k === e.key);
+      if (idx >= 0 && idx < items.length) {
+        this.props.builder.setPaletteItem(items[idx])
+        return true
+      }
+      return false
+    }
+
     keyDownNormal = (e) => {
+      let result = true
       switch (e.key) {
-        case 's':
+        case '1':
           this.props.builder.setActiveTool(Tools.STRAIGHT_RAILS)
           this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[Tools.STRAIGHT_RAILS])
           break
-        case 'c':
+        case '2':
           this.props.builder.setActiveTool(Tools.CURVE_RAILS)
           this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[Tools.CURVE_RAILS])
           break
-        case 't':
+        case '3':
           this.props.builder.setActiveTool(Tools.TURNOUTS)
           this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[Tools.TURNOUTS])
           break
-        case 'x':
+        case '4':
           this.props.builder.setActiveTool(Tools.SPECIAL_RAILS)
           this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[Tools.SPECIAL_RAILS])
           break
-        case 'g':
+        case '5':
           this.props.builder.setActiveTool(Tools.RAIL_GROUPS)
           this.props.builder.setPaletteItem(this.props.builder.lastPaletteItems[Tools.RAIL_GROUPS])
           break
-        case 'f':
+        case '6':
           this.props.builder.setActiveTool(Tools.FEEDERS)
           break
-        case 'j':
+        case '7':
           this.props.builder.setActiveTool(Tools.GAP_JOINERS)
           break
-        case 'm':
+        case '8':
           this.props.builder.setActiveTool(Tools.MEASURE)
           break
         case 'ArrowDown':
@@ -111,9 +127,10 @@ export default function withKeyHandler(WrappedComponent: React.ComponentClass<Wi
           this.props.railToolUseCase.deleteSelected()
           break
         default:
-          return false
+          result = false
       }
-      return true
+      result = result || this.keyDownNormalInRailMode(e)
+      return result
     }
 
 

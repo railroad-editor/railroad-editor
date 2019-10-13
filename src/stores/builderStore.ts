@@ -187,6 +187,10 @@ export class BuilderStore {
     return railPaletteItems[layoutStore.config.railSetName]
   }
 
+  @computed
+  get isRailTool(): boolean {
+    return [Tools.STRAIGHT_RAILS, Tools.CURVE_RAILS, Tools.TURNOUTS, Tools.SPECIAL_RAILS, Tools.RAIL_GROUPS].includes(this.activeTool)
+  }
 
   /**
    * 指定の名前のレールの固有Propsを返す。
