@@ -286,6 +286,10 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
      * @param {MouseEvent} e
      */
     onJointMouseMove = (jointId: number, e: MouseEvent) => {
+      this.updateJointState(jointId)
+    }
+
+    updateJointState = (jointId: number) => {
       if (this.props.builder.intersects) {
         this.joints[jointId].part.setState({
           isError: true
