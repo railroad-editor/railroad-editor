@@ -9,7 +9,7 @@ import {amber} from "@material-ui/core/colors";
 
 const SmallListItemAvatar = styled(ListItemAvatar)`
   && {
-    min-width: 34px;
+    min-width: 38px;
   }
 `
 
