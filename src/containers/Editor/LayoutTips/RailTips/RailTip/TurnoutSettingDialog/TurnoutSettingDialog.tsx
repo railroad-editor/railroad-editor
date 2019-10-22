@@ -8,7 +8,7 @@ import {
 } from "containers/common/FormDialog/FormDialogBase";
 import {ValidatorForm} from 'react-material-ui-form-validator';
 import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
-import {ConductionStates, SwitcherData} from "stores/layoutStore";
+import {ConductionStates, SwitcherData, SwitcherType} from "stores/layoutStore";
 import {inject, observer} from "mobx-react";
 import {WithSwitcherUseCase} from "useCases";
 import {RailData, WithLayoutStore} from "stores";
@@ -88,19 +88,46 @@ export default class TurnoutSettingDialog extends FormDialogBase<TurnoutSettingD
   onChangeConnectedSwitcher = (e) => {
     // currentTarget は使ってはいけない
     const switcherId = e.target.value ? Number(e.target.value) : null
-    this.setState({
-      connectedSwitcherId: switcherId,
-      conductionStates: {
-        0: [{
-          railId: this.props.rail.id,
-          conductionState: 0
-        }],
-        1: [{
-          railId: this.props.rail.id,
-          conductionState: 1
-        }]
+    if (switcherId == null) {
+      this.props.switcherUseCase.disconnectTurnoutFromSwitcher(this.props.rail.id)
+    } else {
+      const switcher = this.props.switchers.find(sw => sw.id === switcherId)
+      let conductionStates = null
+      switch (switcher.type) {
+        case SwitcherType.NORMAL:
+          conductionStates = {
+            0: [{
+              railId: this.props.rail.id,
+              conductionState: 0
+            }],
+            1: [{
+              railId: this.props.rail.id,
+              conductionState: 1
+            }]
+          }
+          break
+        case SwitcherType.THREE_WAY:
+          conductionStates = {
+            0: [{
+              railId: this.props.rail.id,
+              conductionState: 0
+            }],
+            1: [{
+              railId: this.props.rail.id,
+              conductionState: 1
+            }],
+            2: [{
+              railId: this.props.rail.id,
+              conductionState: 2
+            }]
+          }
+          break
       }
-    })
+      this.setState({
+        connectedSwitcherId: switcherId,
+        conductionStates: conductionStates
+      })
+    }
   }
 
 

@@ -181,86 +181,6 @@ export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {
     this.dragging = true
   }
 
-
-  createStateTable = (switcher: SwitcherData, rail: RailData) => {
-    const railConductionStates = switcher.conductionStates[switcher.currentState]
-    // _.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId && cs.conductionState === 0)))
-    // LOGGER.info('rail', rail.id, rail.conductionState)
-    // LOGGER.info('railConductionStates', railConductionStates)
-    // LOGGER.info('active 0', railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === 0))
-    // LOGGER.info('active 1', railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === 1))
-    // LOGGER.info('onClick 0' , Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === 0)))))
-    // LOGGER.info('onClick 1' , Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === 1)))))
-
-    switch (switcher.type) {
-      case SwitcherType.NORMAL:
-        return (
-          <GridLayout className="layout" layout={this.initialStateGridLayout}
-                      cols={2} rowHeight={50} width={120} isResizable={false}
-                      compactType="horizontal" margin={[0, 0]}
-                      onLayoutChange={this.onStateGridLayoutChange(rail.id)}
-                      onDrag={this.onDrag}
-          >
-            {
-              _.range(0, 2).map(conductionState => {
-                return (
-                  <ActiveSmallButton
-                    // このセルのIdentity、つまりこのレールのConductionState
-                    key={`${conductionState}`}  //`
-                    //
-                    active={!! railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === conductionState)}
-                    onClick={this.onSwitcherStateChange(
-                      Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === conductionState)))))}
-                    color="secondary"
-                  >
-                    <RailIcon
-                      width={30}
-                      height={30}
-                      rail={createRailComponentForIcon(rail, conductionState)}
-                    />
-                  </ActiveSmallButton>
-                )
-              })
-            }
-          </GridLayout>
-        )
-      // TODO: Implement
-      case SwitcherType.THREE_WAY:
-        return (
-          <GridLayout className="layout" layout={this.initialStateGridLayout}
-                      cols={3} rowHeight={50} width={120} isResizable={false}
-                      compactType="horizontal" margin={[0, 0]}
-                      onLayoutChange={this.onStateGridLayoutChange(rail.id)}
-                      onDrag={this.onDrag}
-          >
-            {
-              _.range(0, 3).map(conductionState => {
-                return (
-                  <ActiveSmallButton
-                    // このセルのIdentity、つまりこのレールのConductionState
-                    key={`${conductionState}`}  //`
-                    //
-                    active={!! railConductionStates.find(cond => cond.railId === rail.id && cond.conductionState === conductionState)}
-                    onClick={this.onSwitcherStateChange(
-                      Number(_.findKey(switcher.conductionStates, (css => css.find(cs => cs.railId === rail.id && cs.conductionState === conductionState)))))}
-                    color="secondary"
-                  >
-                    <RailIcon
-                      width={25}
-                      height={25}
-                      rail={createRailComponentForIcon(rail, conductionState)}
-                    />
-                  </ActiveSmallButton>
-                )
-              })
-            }
-          </GridLayout>
-        )
-    }
-  }
-
-
-  // TODO: きれいにする
   render() {
     const {switcher, rail} = this.props
     const railConductionStates = switcher.conductionStates[switcher.currentState]
@@ -297,7 +217,6 @@ export class TurnoutStateTable extends React.Component<TurnoutStateTableProps, {
             }
           </GridLayout>
         )
-      // TODO: Implement
       case SwitcherType.THREE_WAY:
         return (
           <GridLayout className="layout" layout={this.initialStateGridLayout}
