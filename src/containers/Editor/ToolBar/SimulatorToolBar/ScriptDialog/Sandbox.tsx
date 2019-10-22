@@ -61,7 +61,8 @@ export const Sandbox = forwardRef((props: SandboxProps, ref: any) => {
       src={script}
       style={{
         width: '0px',
-        height: '0px'
+        height: '0px',
+        visibility: 'hidden'
       }}
     >
     </iframe>
