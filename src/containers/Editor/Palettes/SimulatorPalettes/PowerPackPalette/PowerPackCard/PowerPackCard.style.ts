@@ -38,7 +38,7 @@ export const StyledList = styled(List)`
 `
 
 export const Triangle = styled.div`
-  position: absolute;
+  margin-bottom: -40px;
   width: 0;
   height: 0;
   border: 20px solid transparent;

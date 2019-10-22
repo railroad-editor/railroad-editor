@@ -362,6 +362,7 @@ export default function withRailBase(WrappedComponent: React.ComponentClass<Rail
         return false
       }
       // ジョイントがエラー状態なら何もしない
+      // TODO: 置けないとストレスがマッハの可能性があるためいったん保留で
       // if (this.rail.joints[jointId].part.state.isError) {
       //   return false
       // }

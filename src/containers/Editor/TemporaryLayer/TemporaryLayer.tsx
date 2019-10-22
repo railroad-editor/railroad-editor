@@ -36,6 +36,7 @@ export class TemporaryLayer extends React.Component<TemporaryLayerProps, LayoutS
         // 仮レールを設置する
         const rail = RailComponentRegistry.getRailById(this.props.builder.currentRailId)
         rail.props.showTemporaryRailOrRailGroup(this.props.builder.currentJointId)
+        // TODO: ジョイントの状態だけ更新するハンドラを呼ぶ
         rail.props.onJointMouseMove(this.props.builder.currentJointId, null)
       }
     )

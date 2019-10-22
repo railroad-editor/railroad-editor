@@ -18,7 +18,8 @@ export const PaletteBodyPaper = styled(Paper)`
 export const ScrollablePaper = styled(Paper as any)`
   && {
     max-width: 240px;
-    max-height: 600px;
+    // 251.82 * 3 = 20 = 775.46
+    max-height: 776px;
     overflow: scroll;
     ::-webkit-scrollbar {
         -webkit-appearance: none;
