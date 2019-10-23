@@ -34,7 +34,7 @@ Switchers.prototype.getByName = function (name) {
 
 export function Switcher(switcherData) {
   this.id = switcherData.id
-  this.direction = switcherData.direction
+  this.direction = switcherData.currentState
   this.onDirectionChangeCallback = null
 }
 
@@ -47,6 +47,7 @@ Switcher.prototype.setDirection = function (direction) {
     func: 'setDirection',
     payload: payload
   }, '*');
+  this.direction = direction
 }
 
 Switcher.prototype.onDirectionChange = function (callback) {

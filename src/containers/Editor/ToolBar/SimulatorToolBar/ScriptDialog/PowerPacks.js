@@ -57,6 +57,7 @@ PowerPack.prototype.setDirection = function (direction) {
     func: 'setDirection',
     payload: payload
   }, '*');
+  this.direction = direction
 }
 
 PowerPack.prototype.onPowerChange = function (callback) {
